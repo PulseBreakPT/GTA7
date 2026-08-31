@@ -1,0 +1,132 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import { ArrowLeft, Heart, Zap, Eye, CircleDot, ExternalLink } from 'lucide-react'
+import DbTabs from '@/components/site/dbtabs'
+import MiniMap from '@/components/site/minimap'
+import { StatusBadge, cx } from '@/components/site/ui'
+import { vehicles, vehicleClasses } from '@/lib/content'
+import Image from 'next/image'
+import { Car } from 'lucide-react'
+
+function App() {
+  const { slug } = useParams()
+  const v = vehicles.find((x) => x.slug === slug)
+  const [favs, setFavs] = useState([])
+
+  useEffect(() => {
+    try { setFavs(JSON.parse(localStorage.getItem('la:favs') || '[]')) } catch { /* noop */ }
+  }, [])
+
+  if (!v) {
+    return (
+      <div className="px-8 py-24 text-center">
+        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
+        <Link href="/database/vehicles" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO GARAGE</Link>
+      </div>
+    )
+  }
+
+  const isFav = favs.includes(v.slug)
+  const toggleFav = () => {
+    const next = isFav ? favs.filter((s) => s !== v.slug) : [...favs, v.slug]
+    setFavs(next)
+    localStorage.setItem('la:favs', JSON.stringify(next))
+  }
+
+  const stats = [
+    { icon: Heart, label: 'SPEED', value: v.stats[0], color: '#F1A3C3' },
+    { icon: Zap, label: 'ACCELERATION', value: v.stats[1], color: '#65DCCB' },
+    { icon: Eye, label: 'BRAKING', value: v.stats[2], color: '#9B83F4' },
+    { icon: CircleDot, label: 'HANDLING', value: v.stats[3], color: '#F5F4F0' },
+  ]
+  const related = vehicles.filter((x) => x.cls === v.cls && x.slug !== v.slug).slice(0, 4)
+
+  return (
+    <div className="flex-1 flex flex-col">
+      <DbTabs active="vehicles" />
+      <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto">
+        <Link href="/database/vehicles" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
+          <ArrowLeft size={15} /> GARAGE
+        </Link>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6 mt-2">
+          <div className="relative panel rounded-sm overflow-hidden aspect-[16/10]">
+            {v.image ? (
+              <Image src={v.image} alt={v.name} fill priority sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
+            ) : (
+              <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
+                <Car size={40} aria-hidden="true" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.24em]">AWAITING VISUAL</span>
+              </span>
+            )}
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(vehicleClasses.find((c) => c.id === v.cls) || {}).label || v.cls}</span>
+              <StatusBadge status={v.status} />
+            </div>
+            <h1 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[46px] sm:text-[56px] mt-2">{v.name}</h1>
+
+            <div className="mt-5 flex flex-col gap-3">
+              {stats.map((s) => (
+                <div key={s.label} className="flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: s.color }} aria-hidden="true"><s.icon size={14} /></span>
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[13px] text-paper w-[110px] shrink-0">{s.label}</span>
+                  <span className="relative flex-1 h-[7px] bg-white/10" role="img" aria-label={`${s.label}: ${s.value} of 100`}>
+                    <span className="absolute inset-y-0 left-0" style={{ width: `${s.value}%`, backgroundColor: s.color }} />
+                  </span>
+                  <span className="font-mono text-[12px] text-dim tabular-nums w-8 text-right">{s.value}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {v.specs.map((s, i) => <span key={i} className="panel2 rounded-sm px-2.5 py-1.5 font-cond uppercase text-[12px] tracking-[0.1em] text-paper">{s}</span>)}
+            </div>
+
+            <button type="button" onClick={toggleFav} aria-pressed={isFav} className={cx('mt-5 inline-flex items-center gap-2 border h-12 px-5 font-cond font-semibold uppercase tracking-[0.14em] text-[14px] transition-colors', isFav ? 'border-pink text-pink' : 'border-line text-paper hover:border-white/50')}>
+              <Heart size={15} fill={isFav ? '#F1A3C3' : 'transparent'} />
+              {isFav ? 'IN YOUR COLLECTION' : 'ADD TO FAVOURITES'}
+            </button>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <a href={v.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+                SOURCE: {v.sourceName.toUpperCase()} <ExternalLink size={11} />
+              </a>
+              <span className="font-mono text-[10px] text-dim uppercase">UPDATED {v.updatedAt}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-6 mt-8">
+          <div>
+            <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">WHERE TO FIND</h2>
+            <MiniMap className="mt-3 w-full aspect-[3/1.9]" label={v.findLabel} route="M60,40 L60,110 L140,110 L140,150 L226,150" marker={{ x: 226, y: 150 }} start={{ x: 60, y: 40 }} />
+            <p className="font-cond uppercase tracking-[0.18em] text-[10px] text-dim mt-3">APPROXIMATE POSITION</p>
+            <p className="text-[13px] text-dim leading-relaxed mt-1.5">{v.find}</p>
+          </div>
+          {related.length > 0 && (
+            <div>
+              <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME CLASS</h2>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                {related.map((r) => (
+                  <Link key={r.slug} href={`/database/vehicles/${r.slug}`} className="panel rounded-sm p-3 hover:border-white/30 transition-colors">
+                    <span className="font-mono text-[11px] text-dim tabular-nums">{r.num}</span>
+                    <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-1 truncate">{r.name}</span>
+                    <StatusBadge status={r.status} className="mt-2" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default App;
