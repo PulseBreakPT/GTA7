@@ -58,7 +58,7 @@ function App() {
               <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
               <StatusBadge status={c.status} />
             </div>
-            <h1 data-ghost="PERSONNEL" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{c.name}</h1>
+            <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{c.name}</h1>
             <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[520px]">{c.bio}</p>
             <p className="text-dim text-[14px] leading-[1.8] mt-3 max-w-[560px]">{c.long}</p>
             <div className="mt-5 flex flex-wrap items-center gap-3">

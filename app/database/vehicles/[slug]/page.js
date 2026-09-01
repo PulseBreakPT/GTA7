@@ -74,7 +74,7 @@ function App() {
               <StatusBadge status={v.status} />
               <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
             </div>
-            <h1 data-ghost="GARAGE" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[46px] sm:text-[56px] mt-2">{v.name}</h1>
+            <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[46px] sm:text-[56px] mt-2">{v.name}</h1>
             {v.association && (
               <div className="mt-4 border-l-2 border-mint/70 pl-3">
                 <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Association / content</p>

@@ -68,7 +68,7 @@ function App() {
               <GhostBadge status="confirmed" label={typeLabel} />
               <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span>
             </div>
-            <h1 data-ghost="ARSENAL" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[48px] sm:text-[58px] mt-2">{w.name}</h1>
+            <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[48px] sm:text-[58px] mt-2">{w.name}</h1>
             <p className="text-dim text-[14px] leading-relaxed mt-3">{w.desc}</p>
             {w.association && (
               <div className="mt-4 border-l-2 border-mint/70 pl-3">
