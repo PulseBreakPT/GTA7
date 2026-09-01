@@ -96,6 +96,11 @@ function App() {
   const rating = src ? src.rating : 4
   const related = relatedArticlesFor(a.slug)
   const categories = categoriesForArticle(a.slug)
+  const visuals = articleVisuals(a).map((src, index) => ({
+    src,
+    label: `Reference ${String(index + 1).padStart(2, '0')}`,
+    alt: `${a.title} visual reference ${index + 1}`,
+  }))
 
   return (
     <article className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
@@ -143,6 +148,17 @@ function App() {
         <p className="mt-2 text-[16px] sm:text-[17px] leading-[1.65] text-paper font-medium">{a.excerpt}</p>
       </aside>
 
+      {/* A referência visual estava no fim, a seguir ao artigo todo e ao «back
+          to top»: chegava-lhe só quem já não precisava dela. Sobe para junto
+          do resumo e antes do corpo — vê-se do que trata, depois lê-se.
+          Em modo compacto e sem segundo título de secção: o hero já está
+          logo acima, e dois cabeçalhos grandes seguidos eram ruído. */}
+      {visuals.length > 0 && (
+        <section className="mt-6 max-w-[900px]" aria-label="Visual reference gallery">
+          <MediaCarousel compact label="Visual reference · promotional media" items={visuals} />
+        </section>
+      )}
+
       <div className="mt-7">
         <FormattedArticleBody body={a.body} />
       </div>
@@ -151,27 +167,25 @@ function App() {
         <a href="#top" onClick={(event) => { event.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }} className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.13em] text-[10px] text-pink hover:text-paper"><ChevronUp size={14} /> BACK TO TOP</a>
       </div>
 
-      <section className="mt-9 max-w-[900px]" aria-label="Visual reference gallery">
-        <div className="flex items-end justify-between gap-4 border-b hairline pb-2"><h2 className="chromatic-title font-cond font-bold uppercase tracking-[0.1em] text-[21px] text-paper">VISUAL REFERENCE</h2><span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">PROMOTIONAL MEDIA · CONTEXTUAL</span></div>
-        <div className="mt-4"><MediaCarousel label="Promotional media · contextual" items={articleVisuals(a).map((src, index) => ({ src, label: `Reference ${String(index + 1).padStart(2, '0')}`, alt: `${a.title} visual reference ${index + 1}` }))} /></div>
-      </section>
-
-      <section className="mt-12" aria-label="Related articles">
-        <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[22px] text-paper border-b hairline pb-2">MORE FROM THE ARCHIVE</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      <section className="mt-12 max-w-[900px]" aria-label="Related articles">
+        <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[21px] text-paper border-b hairline pb-2">MORE FROM THE ARCHIVE</h2>
+        {/* Cartões de remate, não manchetes: a grelha começa logo no telemóvel
+            em vez de empilhar um cartão de largura inteira por artigo, e a
+            imagem é 16/9 para o cartão não crescer em altura. */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
           {related.map((r) => (
             <Link key={r.slug} href={`/news/${r.slug}`} className="panel rounded-sm overflow-hidden group hover:border-white/30 transition-colors">
-              <div className="relative aspect-[16/8]">
-                <Image src={r.image} alt={r.title} fill sizes="33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
+              <div className="relative aspect-[16/9]">
+                <Image src={r.image} alt={r.title} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
               </div>
-              <div className="p-4">
+              <div className="p-3">
                 <GhostBadge status={r.status} />
-                <h3 className="font-cond font-bold uppercase text-paper text-[18px] leading-[1.05] mt-2 clamp-2">{r.title}</h3>
-                <p className="font-cond uppercase tracking-[0.12em] text-[11px] text-dim mt-2">{fmtDate(r.publishedAt)}</p>
+                <h3 className="font-cond font-bold uppercase text-paper text-[13px] sm:text-[14px] leading-[1.1] mt-1.5 clamp-2">{r.title}</h3>
+                <p className="font-cond uppercase tracking-[0.12em] text-[10px] text-dim mt-1.5">{fmtDate(r.publishedAt)}</p>
               </div>
             </Link>
           ))}
-          {related.length === 0 && <p className="text-[13px] text-dim">No related records have been assigned to this category yet.</p>}
+          {related.length === 0 && <p className="col-span-full text-[13px] text-dim">No related records have been assigned to this category yet.</p>}
         </div>
       </section>
     </article>
