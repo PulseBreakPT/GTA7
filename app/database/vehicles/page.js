@@ -10,7 +10,10 @@ import MiniMap from '@/components/site/minimap'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
-const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat }
+// Um id sem ícone aqui devolve `undefined` e parte a renderização da página
+// inteira, por isso o fallback é obrigatório, não uma cortesia.
+const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat, offroad: Car }
+const classIcon = (id) => CLASS_ICONS[id] || Car
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
 
@@ -127,7 +130,7 @@ function App() {
             <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim px-1">CLASSES</h2>
             <div className="mt-2 flex flex-col gap-1" role="tablist" aria-label="Vehicle classes">
               {vehicleClasses.map((c) => {
-                const Icon = CLASS_ICONS[c.id]
+                const Icon = classIcon(c.id)
                 const active = c.id === cls
                 return (
                   <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
@@ -177,9 +180,20 @@ function App() {
             <StatusBadge status={selected.status} />
           </div>
 
-          <div className="mt-5 flex flex-col gap-3.5">
-            {stats.map((s) => <StatRow key={s.label} {...s} />)}
-          </div>
+          {/* Sem números publicados não se desenham barras — dizê-lo é a
+              informação honesta, e é mais útil do que um gráfico inventado. */}
+          {selected.unpublished ? (
+            <div className="mt-5 border border-line rounded-sm p-4">
+              <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Stats not published</p>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-dim">
+                This vehicle is documented in official material, but no performance figures have been released for it.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-5 flex flex-col gap-3.5">
+              {stats.map((s) => <StatRow key={s.label} {...s} />)}
+            </div>
+          )}
 
           <div className="mt-5 grid grid-cols-4 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
             {selected.specs.map((spec, i) => {
