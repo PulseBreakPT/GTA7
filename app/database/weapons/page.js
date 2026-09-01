@@ -106,11 +106,11 @@ function App() {
               const count = weapons.filter((w) => w.type === t.id).length
               return (
                 <button key={t.id} type="button" role="tab" aria-selected={active} onClick={() => pickType(t.id)}
-                  className={cx('flex items-center gap-3 px-3 h-12 border rounded-sm transition-all duration-150',
+                  className={cx('flex items-center gap-2 px-2.5 h-9 border rounded-sm transition-all duration-150',
                     active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
                   <WeaponGlyph type={t.id} size={19} className={active ? 'text-pink' : 'text-dim'} />
-                  <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[15px] flex-1 text-left">{t.label}</span>
-                  <span className="font-mono text-[12px] tabular-nums">{pad(count)}</span>
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] flex-1 text-left">{t.label}</span>
+                  <span className="font-mono text-[10px] tabular-nums">{pad(count)}</span>
                 </button>
               )
             })}

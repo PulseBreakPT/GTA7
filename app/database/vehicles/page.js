@@ -138,11 +138,11 @@ function App() {
                 const active = c.id === cls
                 return (
                   <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
-                    className={cx('flex items-center gap-3 px-2.5 h-11 border rounded-sm transition-all duration-150',
+                    className={cx('flex items-center gap-2 px-2 h-9 border rounded-sm transition-all duration-150',
                       active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-transparent text-dim hover:text-paper hover:border-line')}>
                     <Icon size={16} aria-hidden="true" />
-                    <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[14px] flex-1 text-left">{c.label}</span>
-                    <span className="font-mono text-[12px] tabular-nums">{c.count}</span>
+                    <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] flex-1 text-left">{c.label}</span>
+                    <span className="font-mono text-[10px] tabular-nums">{c.count}</span>
                   </button>
                 )
               })}
