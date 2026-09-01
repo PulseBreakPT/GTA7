@@ -4,14 +4,15 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check } from 'lucide-react'
+import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check, Truck, Bus, Train, Siren, Construction, Wrench } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 // Um id sem ícone aqui devolve `undefined` e parte a renderização da página
 // inteira, por isso o fallback é obrigatório, não uma cortesia.
-const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat, aircraft: CarFront, offroad: Car }
+const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat, aircraft: CarFront, offroad: Car,
+  sedans: Car, suvs: CarFront, vans: Bus, trucks: Truck, trains: Train, cycles: Bike, emergency: Siren, industrial: Construction, service: Wrench }
 const classIcon = (id) => CLASS_ICONS[id] || Car
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
