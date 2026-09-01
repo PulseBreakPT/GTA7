@@ -192,12 +192,12 @@ function App() {
           </div>
 
           {/* carousel */}
-          <div className="mt-4 flex gap-3 overflow-x-auto pb-2" role="listbox" aria-label="Weapon carousel">
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pb-2" role="listbox" aria-label="Weapon grid">
             {list.map((w) => {
               const active = selected && w.slug === selected.slug
               return (
                 <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => setSelectedSlug(w.slug)}
-                  className={cx('shrink-0 w-[164px] panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                  className={cx('w-full panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                   <WeaponVisual w={w} className="h-[84px] w-full rounded-[2px]" sizes="164px" />
                   <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper mt-2 truncate text-center">{w.name}</span>
                   <span className="font-mono text-[11px] text-dim tabular-nums text-center">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>

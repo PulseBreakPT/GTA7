@@ -103,7 +103,7 @@ function App() {
             })}
           </div>
 
-          <div className="mt-3 flex flex-col gap-2" role="listbox" aria-label="Characters">
+          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2" role="listbox" aria-label="Character grid">
             {list.map((c) => {
               const active = c.slug === selected.slug
               return (

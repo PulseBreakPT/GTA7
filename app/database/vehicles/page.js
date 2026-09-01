@@ -233,13 +233,13 @@ function App() {
 
       {/* CAROUSEL */}
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-3 overflow-x-auto pb-2" role="listbox" aria-label="Vehicle carousel">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pb-2" role="listbox" aria-label="Vehicle grid">
           {list.map((v) => {
             const active = v.slug === selected.slug
             const fav = favs.includes(v.slug)
             const inCmp = comparePair.includes(v.slug)
             return (
-              <div key={v.slug} className={cx('relative shrink-0 w-[210px] panel rounded-sm transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+              <div key={v.slug} className={cx('relative panel rounded-sm transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                 <button type="button" role="option" aria-selected={active} onClick={() => setSelectedSlug(v.slug)} aria-label={`Select ${v.name}`} className="w-full text-left">
                   <span className="flex items-center justify-between px-3 pt-2.5">
                     <span className="font-mono text-[12px] text-paper tabular-nums">{v.num}</span>
