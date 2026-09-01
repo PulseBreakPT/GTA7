@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { Search, Plus, Minus, RotateCcw, Route, Triangle, X, SlidersHorizontal, Compass, Check, BadgeCheck, Eye } from 'lucide-react'
-import { regions, mapFilters, locations, easterEggs } from '@/lib/content'
+import { regions, mapFilters, locations, easterEggs, settingReferences, featureBriefs } from '@/lib/content'
 import { GhostBadge, StatusBadge, cx } from '@/components/site/ui'
 
 const VBW = 1000, VBH = 620
@@ -185,6 +185,11 @@ function MapPage() {
       (!q || l.name.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q) || l.category.includes(q))
     )
   }, [query, region, cats])
+  const visibleRegions = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return regions
+    return regions.filter((item) => `${item.label} ${item.blurb || ''}`.toLowerCase().includes(q))
+  }, [query])
 
   const sel = locations.find((l) => l.slug === selected)
   const selVisible = sel && markers.some((m) => m.slug === sel.slug)
@@ -331,52 +336,82 @@ function MapPage() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[48px] sm:text-[64px]">LEONIDA MAP</h1>
-        <label className="flex items-center gap-2 w-full sm:w-[340px] h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
+      <div className="ghost-type flex flex-wrap items-end justify-between gap-4" data-ghost="FIELD GUIDE">
+        <div><div className="data-rail max-w-[360px] !text-mint">ARCHIVE ATLAS · REGION INTELLIGENCE</div><h1 className="chromatic-title mt-4 font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[56px] sm:text-[78px]">LEONIDA MAP</h1></div>
+        <label className="tech-mask-sm glass-panel flex items-center gap-2 w-full sm:w-[340px] h-11 px-3 focus-within:border-white/40">
           <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search location, activity or clue…" aria-label="Search locations" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a Leonida region…" aria-label="Search Leonida regions" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
         </label>
       </div>
 
-      <div className="mt-5 flex-1 grid grid-cols-1 lg:grid-cols-[264px_1fr] xl:grid-cols-[264px_1fr_330px] gap-4 min-h-0">
+      <div className="mt-5 grid grid-cols-1 gap-4 min-h-0 max-w-[1240px]">
         {/* sidebar */}
-        <aside className="hidden lg:block panel rounded-md p-4 self-start">{FiltersPanel}</aside>
+        <aside className="hidden">{FiltersPanel}</aside>
 
-        {/* map */}
-        <div className="relative panel rounded-2xl overflow-hidden min-h-[420px] lg:min-h-[560px]">
-          <MapSurface view={view} setView={setView} dragging={dragging} setDragging={setDragging} markers={markers} selected={selected} onSelect={selectMarker} showRoute={showRoute} />
-          {/* controls */}
-          <div className="absolute top-3 right-3 flex flex-col gap-1.5">
-            <button type="button" onClick={() => zoom(1)} aria-label="Zoom in" className="w-11 h-11 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40"><Plus size={16} /></button>
-            <button type="button" onClick={() => zoom(-1)} aria-label="Zoom out" className="w-11 h-11 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40"><Minus size={16} /></button>
-            <button type="button" onClick={reset} aria-label="Reset view" className="w-11 h-11 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40"><RotateCcw size={15} /></button>
-            <button type="button" onClick={() => setShowRoute((v) => !v)} aria-pressed={showRoute} aria-label="Toggle route visibility" className={cx('w-11 h-11 panel2 rounded-sm flex items-center justify-center hover:border-white/40', showRoute ? 'text-pink' : 'text-dim')}><Route size={16} /></button>
+        {/* region information */}
+        <section className="tech-mask glass-panel p-4 sm:p-6" aria-labelledby="region-intel-heading">
+          <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
+            <div>
+              <p className="font-cond text-[11px] uppercase tracking-[0.18em] text-pink">Leonida field guide</p>
+              <h2 id="region-intel-heading" className="font-cond font-bold uppercase tracking-tight text-[28px] sm:text-[34px] text-paper">Region intel</h2>
+              <p className="mt-1 text-[13px] leading-relaxed text-dim">A source-labelled index for every named Leonida region in this archive.</p>
+            </div>
+            <span className="panel2 rounded-sm px-2.5 py-1.5 font-mono text-[11px] text-dim">{visibleRegions.length} OF {regions.length} REGIONS</span>
           </div>
-          {/* legend */}
-          <div className="absolute bottom-3 left-3 panel2 rounded-sm px-3 py-2.5 flex flex-col gap-1.5" aria-label="Legend">
-            {mapFilters.map((f) => (
-              <span key={f.id} className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: f.color }} aria-hidden="true" />
-                <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">{f.label}</span>
-              </span>
-            ))}
+          <div className="focus-grid grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {visibleRegions.map((r2, index) => {
+              const regionMarkers = locations.filter((l) => l.region === r2.id)
+              const active = region === r2.id
+                return (
+                <Link key={r2.id} href={`/map/${r2.id}`}
+                  className={cx('focus-card spotlight-card tech-mask-sm group text-left border overflow-hidden transition-all', index % 2 ? 'sm:mt-8' : '', active ? 'border-pink bg-surface2' : 'border-line hover:border-white/40')}>
+                  {r2.image && <span className="corner-brackets film-frame block relative aspect-[16/7] overflow-hidden bg-surface2"><Image src={r2.image} alt={`Imagem de ${r2.label}`} fill sizes="(max-width: 640px) 100vw, 420px" className="object-cover transition-transform duration-700 group-hover:scale-[1.06]" /><span className="absolute right-3 top-3 z-[4] font-mono text-[9px] tracking-[0.15em] text-paper/80">ZONE {String(index + 1).padStart(2, '0')}</span></span>}
+                  <span className="block p-4">
+                    <span className="flex items-center justify-between gap-2">
+                      <span className="font-cond font-bold uppercase tracking-[0.12em] text-[17px] text-paper">{r2.label}</span>
+                      <span className="font-mono text-[10px] text-dim">{regionMarkers.length} ENTRIES</span>
+                    </span>
+                    <span className="mt-2 block text-[13px] leading-relaxed text-dim">{r2.blurb}</span>
+                    <span className="mt-3 block font-cond uppercase tracking-[0.14em] text-[10px] text-dim/70">{r2.sourced ? 'Official description' : 'Read from official imagery'}</span>
+                  </span>
+                </Link>
+              )
+            })}
           </div>
-          {/* marker count */}
-          <span className="absolute top-3 left-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[11px] text-dim tabular-nums">{markers.length} MARKERS</span>
-          {/* mobile filter trigger */}
-          <button type="button" onClick={() => setSheet('filters')} className="lg:hidden absolute bottom-3 right-3 panel2 rounded-sm h-11 px-4 flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-paper">
-            <SlidersHorizontal size={15} /> FILTERS
-          </button>
-        </div>
+          {visibleRegions.length === 0 && <p className="mt-5 border border-line rounded-sm p-5 text-[13px] text-dim">No named region matches this search. Try Vice City, Keys, Ambrosia, Grassrivers, Mount Kalaga or Port Gellhorn.</p>}
+          <div className="mt-5 border-t border-line pt-5">
+            <p className="font-cond text-[11px] uppercase tracking-[0.18em] text-pink">County references</p>
+            <p className="mt-1 text-[13px] text-dim">Context supplied through the GTA Wiki summary. These references are not official map coordinates.</p>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+              {settingReferences.map((item) => (
+                <div key={item.name} className="tech-mask-sm glass-panel p-3">
+                  <p className="font-cond font-semibold uppercase tracking-[0.12em] text-[14px] text-paper">{item.name}</p>
+                  <p className="mt-1 text-[12px] leading-relaxed text-dim">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+              <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">Feature roundup · named context</p>
+              <ul className="mt-2 space-y-2 text-[12px] leading-relaxed text-dim">
+                {featureBriefs.map.confirmed.map((item) => <li key={item}>• {item}</li>)}
+              </ul>
+            </div>
+            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+              <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Reported, not official</p>
+              <ul className="mt-2 space-y-2 text-[12px] leading-relaxed text-dim">
+                {featureBriefs.map.reported.map((item) => <li key={item}>• {item}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
 
-        {/* inspector (desktop) */}
-        <aside className="hidden xl:flex panel rounded-md p-5 flex-col">{DetailPanel}</aside>
+        <aside className="hidden">{DetailPanel}</aside>
       </div>
 
-      {/* inspector below map on lg only */}
-      <div className="hidden lg:block xl:hidden panel rounded-md p-5 mt-4">{DetailPanel}</div>
+      <div className="hidden">{DetailPanel}</div>
 
       {/* mobile bottom sheets */}
       {sheet && (

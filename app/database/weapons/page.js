@@ -4,10 +4,10 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, MapPin, ChevronRight, Crosshair, Pill, BatteryFull } from 'lucide-react'
+import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, Crosshair, Pill, BatteryFull } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
-import { weapons, weaponTypes, weaponCounters } from '@/lib/content'
+import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -67,10 +67,20 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="weapons" />
+      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.weapons.join(' · ')}</p>
+        </div>
+        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+        </div>
+      </section>
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_372px] gap-6 flex-1">
         {/* LEFT */}
         <aside className="min-w-0">
-          <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[56px]">ARSENAL</h1>
+          <div className="ghost-type" data-ghost="ARSENAL"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARSENAL</h1></div>
           <div className="flex items-stretch mt-3">
             {weaponCounters.map(([n, label], i) => (
               <div key={label} className={cx('pr-5 flex flex-col leading-none', i > 0 && 'pl-5 border-l hairline')}>
@@ -80,7 +90,7 @@ function App() {
             ))}
           </div>
 
-          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
+          <label className="tech-mask-sm glass-panel mt-5 flex items-center gap-2 h-11 px-3 focus-within:border-white/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>
@@ -101,6 +111,16 @@ function App() {
             })}
           </div>
 
+          {/* Rockstar não publicou estatísticas de arma nenhuma. Onde não as
+              há, dizemo-lo em vez de desenhar barras que seriam inventadas. */}
+          {selected.unpublished ? (
+            <div className="mt-6 border border-line rounded-sm p-4">
+              <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Stats not published</p>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-dim">
+                This weapon is documented in official imagery, but Rockstar has released no performance figures for it. No numbers are shown here rather than invented ones.
+              </p>
+            </div>
+          ) : (
           <div className="mt-6 flex flex-col gap-3" aria-label="Selected weapon core stats">
             {barStats.map((b) => (
               <div key={b.label} className="flex items-center gap-3">
@@ -113,6 +133,7 @@ function App() {
               </div>
             ))}
           </div>
+          )}
         </aside>
 
         {/* CENTER: circular inventory */}
@@ -148,7 +169,7 @@ function App() {
                       style={{ left: `${cxp}%`, top: `${cyp}%`, transform: 'translate(-50%,-50%)' }}
                     >
                       <WeaponVisual w={w} className="flex-1 w-full rounded-[2px]" sizes="110px" />
-                      <span className="font-mono text-[11px] text-paper/90 tabular-nums text-center pt-1">{pad(w.ammo)} / {w.mag}</span>
+                      <span className="font-mono text-[11px] text-paper/90 tabular-nums text-center pt-1">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>
                     </button>
                   ) : (
                     <div
@@ -174,7 +195,7 @@ function App() {
                   className={cx('shrink-0 w-[164px] panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                   <WeaponVisual w={w} className="h-[84px] w-full rounded-[2px]" sizes="164px" />
                   <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper mt-2 truncate text-center">{w.name}</span>
-                  <span className="font-mono text-[11px] text-dim tabular-nums text-center">{pad(w.ammo)} / {w.mag}</span>
+                  <span className="font-mono text-[11px] text-dim tabular-nums text-center">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>
                 </button>
               )
             })}
@@ -211,7 +232,7 @@ function App() {
             <WeaponVisual w={selected} className="mt-4 h-[200px] w-full rounded-sm border border-line scanlines" sizes="370px" />
 
             <div className="mt-4 grid grid-cols-3 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
-              {[['RANGE', selected.stats[3]], ['CAPACITY', selected.stats[4]], ['WEIGHT', `${selected.stats[5]} KG`]].map(([label, val]) => (
+              {[['RANGE', selected.unpublished ? '—' : selected.stats[3]], ['CAPACITY', selected.unpublished ? '—' : selected.stats[4]], ['WEIGHT', selected.unpublished ? '—' : `${selected.stats[5]} KG`]].map(([label, val]) => (
                 <div key={label} className="py-3 text-center">
                   <span className="block font-cond text-[10px] text-dim uppercase tracking-[0.18em]">{label}</span>
                   <span className="block font-cond font-bold text-[24px] text-paper tabular-nums mt-0.5">{val}</span>
@@ -238,16 +259,9 @@ function App() {
               </div>
             </div>
 
-            <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim mt-5">APPEARS IN</h3>
-            <div className="mt-2 flex flex-col gap-2">
-              {selected.locations.map((loc) => (
-                <Link key={loc} href="/map" className="flex items-center gap-3 border border-line rounded-sm px-3 h-11 group hover:border-white/40 transition-colors">
-                  <MapPin size={14} className="text-pink shrink-0" aria-hidden="true" />
-                  <span className="flex-1 text-[13px] text-paper truncate">{loc}</span>
-                  <ChevronRight size={14} className="text-dim group-hover:text-paper" aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
+            {/* Sai o «APPEARS IN» pela mesma razão que sai na página de cada
+                arma: os bairros eram invenção, e o default repetia-os por
+                todo o arsenal. */}
           </aside>
         )}
       </div>

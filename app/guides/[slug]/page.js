@@ -13,7 +13,7 @@ function App() {
 
   if (!g) {
     return (
-      <div className="px-8 py-24 text-center">
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
         <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
         <Link href="/guides" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO GUIDES</Link>
       </div>
@@ -28,7 +28,7 @@ function App() {
         <ArrowLeft size={15} /> ALL GUIDES
       </Link>
 
-      <div className="relative aspect-[21/8] overflow-hidden rounded-sm border border-line mt-3">
+      <div className="relative aspect-[21/8] overflow-hidden corner-brackets tech-mask glass-panel border border-line mt-3">
         <Image src={g.image} alt={g.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
         <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" aria-hidden="true" />
         <span className="absolute top-4 left-4"><StatusBadge status={g.status} /></span>
@@ -45,7 +45,7 @@ function App() {
 
       <ol className="mt-6 flex flex-col gap-3 max-w-[760px]">
         {g.steps.map((s, i) => (
-          <li key={i} className="panel rounded-sm p-4 flex gap-4">
+          <li key={i} className="panel tech-mask-sm p-4 flex gap-4">
             <span className="font-cond font-bold text-[22px] text-pink tabular-nums w-9 shrink-0">{String(i + 1).padStart(2, '0')}</span>
             <p className="text-[14px] leading-relaxed text-paper/90 pt-1">{s}</p>
           </li>
@@ -56,7 +56,7 @@ function App() {
         <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[20px] text-paper border-b hairline pb-2">MORE GUIDES</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
           {others.map((o) => (
-            <Link key={o.slug} href={`/guides/${o.slug}`} className="panel rounded-sm p-4 hover:border-white/30 transition-colors">
+            <Link key={o.slug} href={`/guides/${o.slug}`} className="panel tech-mask-sm p-4 hover:border-white/30 transition-colors">
               <StatusBadge status={o.status} />
               <h3 className="font-cond font-bold uppercase text-[18px] text-paper leading-tight mt-2">{o.title}</h3>
               <p className="font-cond uppercase tracking-[0.12em] text-[11px] text-dim mt-2">{o.readTime} MIN · {o.steps.length} STEPS</p>

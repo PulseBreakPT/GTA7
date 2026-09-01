@@ -12,6 +12,10 @@ html, body { max-width: 100vw; overflow-x: hidden; }
 
 body {
   background-color: #07090E;
+  background-image:
+    radial-gradient(circle at 12% 12%, rgba(155, 131, 244, 0.10), transparent 24rem),
+    radial-gradient(circle at 88% 18%, rgba(241, 163, 195, 0.10), transparent 28rem),
+    radial-gradient(circle at 48% 90%, rgba(101, 220, 203, 0.07), transparent 34rem);
   color: #F5F4F0;
   -webkit-font-smoothing: antialiased;
 }
@@ -33,13 +37,179 @@ body {
   box-shadow: 0 -14px 34px -16px rgba(241,163,195,0.7), inset 0 1px 0 rgba(241,163,195,0.38), 0 0 0 1px rgba(241,163,195,0.12);
 }
 
-.panel { background-color: #0C1017; border: 1px solid rgba(255,255,255,0.16); }
-.panel2 { background-color: #111720; border: 1px solid rgba(255,255,255,0.16); }
+.panel {
+  background: linear-gradient(145deg, rgba(18,24,35,0.98), rgba(9,12,19,0.98));
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 16px 42px -32px rgba(0,0,0,0.95);
+}
+.panel2 {
+  background: linear-gradient(145deg, rgba(28,36,49,0.95), rgba(13,18,27,0.95));
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* Default card geometry: the archive never falls back to generic rounded
+   SaaS rectangles. Small controls retain their own compact shape. */
+main .panel, main .panel2, main .card-active {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+}
+main .panel2 {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+main .panel > .relative[class*="aspect-"], main .card-active > .relative[class*="aspect-"] {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+
+.panel:hover { border-color: rgba(241,163,195,0.34); }
 
 .hairline { border-color: rgba(255,255,255,0.16); }
 
 .btn-hero {
-  box-shadow: 0 0 22px -6px rgba(241,163,195,0.55), inset 0 0 0 1px rgba(241,163,195,0.10);
+  box-shadow: 0 0 26px -6px rgba(241,163,195,0.60), inset 0 0 0 1px rgba(241,163,195,0.16);
+}
+
+/* Shared visual system: coloured cues make source status and dense archive
+   content easier to scan on every route. */
+main { position: relative; isolation: isolate; }
+main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(241,163,195,0.025), transparent 28%, rgba(101,220,203,0.02) 70%, transparent);
+}
+
+/* LUSORAE visual language: restrained intelligence-archive layers. */
+.archive-grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.24;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 42%, transparent 70%, black 100%);
+}
+
+.glass-panel {
+  background: linear-gradient(135deg, rgba(19,25,36,0.82), rgba(7,9,14,0.72));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.075), 0 28px 70px -56px rgba(0,0,0,0.95);
+  backdrop-filter: blur(10px);
+}
+
+.data-rail {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #969BA5;
+  font: 500 10px/1 var(--font-mono), ui-monospace, monospace;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.data-rail::before, .data-rail::after { content: ''; height: 1px; background: rgba(255,255,255,0.16); flex: 1; min-width: 1.25rem; }
+.data-rail::after { max-width: 4.5rem; }
+
+.ghost-type { position: relative; isolation: isolate; }
+.ghost-type::before {
+  content: attr(data-ghost);
+  position: absolute;
+  top: -0.38em;
+  left: -0.055em;
+  z-index: -1;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  color: rgba(245,244,240,0.035);
+  font-family: var(--font-cond), sans-serif;
+  font-size: clamp(4.5rem, 14vw, 12rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: .8;
+}
+
+.corner-brackets { position: relative; }
+.corner-brackets::before, .corner-brackets::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: 0.8;
+}
+.corner-brackets::before { left: 10px; top: 10px; border-left: 1px solid rgba(101,220,203,.8); border-top: 1px solid rgba(101,220,203,.8); }
+.corner-brackets::after { right: 10px; bottom: 10px; border-right: 1px solid rgba(241,163,195,.85); border-bottom: 1px solid rgba(241,163,195,.85); }
+
+.tech-mask { clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 34px 100%, 0 calc(100% - 34px)); }
+.tech-mask-sm { clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
+
+.spotlight-card { position: relative; isolation: isolate; overflow: hidden; }
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 280ms ease;
+  background: radial-gradient(420px circle at 50% 0%, rgba(255,255,255,.13), transparent 42%);
+}
+@media (hover: hover) and (pointer: fine) { .spotlight-card:hover::before { opacity: 1; } }
+
+.film-frame { position: relative; }
+.film-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(7,9,14,.24), transparent 25%, transparent 70%, rgba(7,9,14,.36)); }
+.film-rail { mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent); }
+
+.ambient-bloom { position: relative; isolation: isolate; }
+.ambient-bloom::before { content: ''; position: absolute; z-index: -1; inset: 15% -8% -10%; background: radial-gradient(ellipse at 50% 35%, rgba(241,163,195,.13), transparent 58%); filter: blur(24px); pointer-events: none; }
+.ambient-bloom.mint-bloom::before { background: radial-gradient(ellipse at 50% 35%, rgba(101,220,203,.12), transparent 58%); }
+
+.chromatic-title { text-shadow: 1px 0 rgba(241,163,195,.18), -1px 0 rgba(101,220,203,.14), 0 14px 28px rgba(0,0,0,.4); }
+@media (hover: hover) and (pointer: fine) { .chromatic-title:hover { text-shadow: 2px 0 rgba(241,163,195,.38), -2px 0 rgba(101,220,203,.28), 0 18px 34px rgba(0,0,0,.5); } }
+
+.archive-header { position: relative; }
+.archive-header::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 22%; height: 1px; background: linear-gradient(90deg, transparent, #65DCCB, #F1A3C3, transparent); opacity: .7; }
+.magnetic-button { transition: transform 220ms cubic-bezier(.2,.9,.25,1), box-shadow 220ms ease, background-color 220ms ease, color 220ms ease; }
+@media (hover: hover) and (pointer: fine) { .magnetic-button:hover { transform: translate(2px,-2px); box-shadow: 0 16px 32px -19px rgba(241,163,195,.85); } }
+.magnetic-button:active { transform: translate(0,1px) scale(.985); }
+@media (hover: hover) and (pointer: fine) { .focus-grid:hover .focus-card { opacity: .6; filter: saturate(.72); } .focus-grid:hover .focus-card:hover { opacity: 1; filter: saturate(1.1); transform: translateY(-3px); } }
+
+::selection { color: #07090E; background: #65DCCB; }
+
+.font-cond.font-bold {
+  text-shadow: 0 1px 14px rgba(0,0,0,0.35);
+}
+
+/* Typography and blocks should keep their hierarchy when a desktop panel
+   turns into a narrow, single-column reading flow. */
+main h1, main h2, main h3 { text-wrap: balance; }
+main p { text-wrap: pretty; }
+main img { max-width: 100%; }
+main [class*="grid"] > *, main [class*="flex"] > * { min-width: 0; }
+
+/* Wide editorial layouts preserve a deliberate reading measure. On small
+   screens the type scales down before cards become crowded or horizontal
+   labels start competing with their data. */
+main a, main button, main input { -webkit-tap-highlight-color: rgba(241,163,195,0.22); }
+main [class*="overflow-x-auto"] { scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
+main [class*="overflow-x-auto"] > * { scroll-snap-align: start; }
+
+@media (hover: hover) and (pointer: fine) {
+  .panel, .panel2 { transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+  a.panel:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 38px -28px rgba(0,0,0,0.96), 0 0 22px -16px rgba(241,163,195,0.54); }
+}
+
+@media (max-width: 1023px) {
+  .grain::after { opacity: 0.032; }
+  main::before {
+    background: linear-gradient(160deg, rgba(241,163,195,0.035), transparent 35%, rgba(101,220,203,0.025) 75%, transparent);
+  }
 }
 
 .text-condensed { font-family: var(--font-cond), 'Arial Narrow', sans-serif; }
@@ -77,4 +247,60 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+@media (max-width: 640px) {
+  body {
+    background-image:
+      radial-gradient(circle at 10% 8%, rgba(155, 131, 244, 0.08), transparent 16rem),
+      radial-gradient(circle at 92% 25%, rgba(241, 163, 195, 0.075), transparent 18rem);
+  }
+  .panel {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 12px 26px -24px rgba(0,0,0,0.9);
+  }
+  .card-active { box-shadow: 0 -10px 24px -18px rgba(241,163,195,0.72), inset 0 1px 0 rgba(241,163,195,0.35); }
+  main h1 { font-size: clamp(2.45rem, 12vw, 3.55rem) !important; line-height: 0.92 !important; letter-spacing: -0.035em !important; }
+  main h2 { line-height: 1 !important; }
+  main [class*="overflow-x-auto"] { margin-inline: -0.25rem; padding-inline: 0.25rem; }
+  .archive-grid::after { background-size: 32px 32px; opacity: .17; }
+  .ghost-type::before { font-size: clamp(4rem, 20vw, 7.5rem); }
+}
+
+/* Archive geometry: editorial blocks and visual media never revert to generic
+   rounded SaaS cards. Small circular status/navigation controls remain circular
+   intentionally; every content surface gets the same cut-corner language. */
+main .panel,
+main .panel2,
+main .card-active {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+}
+main .panel2 { clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px)); }
+
+/* This reaches imagery shared by every route, including database portraits,
+   guides, maps and article previews without affecting buttons or status dots. */
+main .relative.overflow-hidden,
+main [class*="aspect-"].overflow-hidden {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
+main .relative.overflow-hidden > img,
+main [class*="aspect-"].overflow-hidden > img { border-radius: 0 !important; }
+
+/* Carousels read as an uninterrupted film/contact strip: their individual
+   frames deliberately use precise square edges, not the dossier cut. */
+.carousel-frame,
+.film-rail > *,
+main [role="listbox"] > .panel {
+  border-radius: 0 !important;
+  clip-path: none !important;
+}
+
+@media (max-width: 640px) {
+  main .panel, main .card-active,
+  main .relative.overflow-hidden,
+  main [class*="aspect-"].overflow-hidden {
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  main .panel2 { clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px)); }
 }

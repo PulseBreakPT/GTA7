@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ExternalLink, ChevronRight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
-import { mechanics, characters } from '@/lib/content'
+import { mechanics, characters, featureBriefs, officialCatalog } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
 const FILTERS = ['all', 'confirmed', 'verified', 'analysis', 'rumour']
@@ -40,7 +40,18 @@ function MechanicsPage() {
       <DbTabs active="mechanics" counters={counters} />
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0">
-          <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[56px] sm:text-[64px]">MECHANICS</h1>
+          <div className="ghost-type" data-ghost="SYSTEMS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MECHANICS</h1></div>
+
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially documented delivery details</p>
+              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.mechanics.join(' ')}</p>
+            </div>
+            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+            </div>
+          </div>
 
           <div className="mt-4 inline-flex border border-line rounded-sm overflow-hidden flex-wrap" role="tablist" aria-label="Mechanic status filters">
             {FILTERS.map((f) => (
@@ -58,7 +69,7 @@ function MechanicsPage() {
               const active = m.slug === selected.slug
               return (
                 <button key={m.slug} type="button" onClick={() => setSelectedSlug(m.slug)} aria-pressed={active}
-                  className={cx('panel rounded-sm p-4 text-left flex flex-col min-h-[140px] transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                  className={cx('spotlight-card tech-mask-sm glass-panel p-4 text-left flex flex-col min-h-[140px] transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                   <span className="flex items-start justify-between gap-3">
                     <span className="flex items-center gap-3">
                       <Icon size={26} className={active ? 'text-pink' : 'text-dim'} strokeWidth={1.8} aria-hidden="true" />
@@ -79,7 +90,7 @@ function MechanicsPage() {
           </div>
         </div>
 
-        <aside className="panel rounded-md p-5 self-start">
+        <aside className="tech-mask glass-panel p-5 self-start">
           <div className="flex items-center gap-3">
             <span className="w-12 h-12 rounded-sm panel2 flex items-center justify-center text-pink" aria-hidden="true"><SelIcon size={24} strokeWidth={1.8} /></span>
             <div>

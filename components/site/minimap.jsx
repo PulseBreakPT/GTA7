@@ -1,6 +1,6 @@
 'use client'
 
-// Rounded mini-map module with simplified 3D buildings, pink route and player marker.
+// Technical mini-map module with simplified 3D buildings, pink route and player marker.
 export default function MiniMap({ label = 'VICE CITY · 1.86 MI', className = '', route = 'M40,150 L110,150 L110,96 L196,96 L196,60 L268,60', marker = { x: 268, y: 60 }, start = { x: 40, y: 150 } }) {
   const buildings = [
     [22, 30, 40, 34], [76, 22, 30, 46], [120, 34, 44, 28], [178, 20, 34, 30],
@@ -8,7 +8,7 @@ export default function MiniMap({ label = 'VICE CITY · 1.86 MI', className = ''
     [238, 112, 44, 30], [70, 118, 40, 26], [222, 74, 26, 24],
   ]
   return (
-    <div className={`relative overflow-hidden rounded-2xl border border-line bg-surface2 ${className}`}>
+    <div className={`relative overflow-hidden tech-mask border border-line bg-surface2 ${className}`}>
       <svg viewBox="0 0 300 180" className="w-full h-full" role="img" aria-label={`Mini map: ${label}`} preserveAspectRatio="xMidYMid slice">
         <rect width="300" height="180" fill="#131a24" />
         {/* water on the right */}
