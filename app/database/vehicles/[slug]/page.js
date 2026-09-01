@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { ArrowLeft, Heart, Zap, Eye, CircleDot, ExternalLink } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import MiniMap from '@/components/site/minimap'
 import { StatusBadge, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
@@ -103,14 +102,12 @@ function App() {
           </div>
         </div>
 
-        <div className="data-rail mt-12">FIELD REFERENCE · LOCATION & RELATED UNITS</div>
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-6 mt-5">
-          <div>
-            <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">WHERE TO FIND</h2>
-            <MiniMap className="mt-3 w-full aspect-[3/1.9]" label={v.findLabel} route="M60,40 L60,110 L140,110 L140,150 L226,150" marker={{ x: 226, y: 150 }} start={{ x: 60, y: 40 }} />
-            <p className="font-cond uppercase tracking-[0.18em] text-[10px] text-dim mt-3">APPROXIMATE POSITION</p>
-            <p className="text-[13px] text-dim leading-relaxed mt-1.5">{v.find}</p>
-          </div>
+        {/* Havia aqui um «WHERE TO FIND» com minimapa. O traçado era literal e
+            igual para todos os veículos, e o texto dava sítios de spawn e
+            distâncias de um jogo que ainda não saiu. Era invenção apresentada
+            como levantamento de campo, e sai. */}
+        <div className="data-rail mt-12">FIELD REFERENCE · RELATED UNITS</div>
+        <div className="grid grid-cols-1 gap-6 mt-5">
           {related.length > 0 && (
             <div>
               <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME CLASS</h2>

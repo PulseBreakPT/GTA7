@@ -22,7 +22,9 @@ function App() {
     )
   }
 
-  const typeLabel = weaponTypes.find((t) => t.id === w.type).label
+  // Um tipo sem entrada em `weaponTypes` devolvia `undefined` e rebentava a
+  // página inteira. O fallback é obrigatório, não cortesia.
+  const typeLabel = weaponTypes.find((t) => t.id === w.type)?.label || w.type.toUpperCase()
   const bars = [
     { icon: Heart, label: 'DAMAGE', value: w.stats[0], color: '#F1A3C3' },
     { icon: Zap, label: 'FIRE RATE', value: w.stats[1], color: '#65DCCB' },

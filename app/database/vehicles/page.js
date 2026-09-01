@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import MiniMap from '@/components/site/minimap'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
@@ -118,7 +117,7 @@ function App() {
         </div>
       </section>
 
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.35fr)_minmax(250px,0.95fr)_minmax(230px,0.8fr)] gap-5 items-start">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.5fr)_minmax(280px,1fr)] gap-5 items-start">
         {/* SIDEBAR */}
         <aside id="vehicle-filters" className="min-w-0">
           <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
@@ -219,13 +218,9 @@ function App() {
           </button>
         </div>
 
-        {/* MAP */}
-        <div className="min-w-0">
-          <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">WHERE TO FIND</h2>
-          <MiniMap className="mt-3 w-full aspect-[3/2.1]" label={selected.findLabel} route="M60,40 L60,110 L140,110 L140,150 L226,150" marker={{ x: 226, y: 150 }} start={{ x: 60, y: 40 }} />
-          <p className="font-cond uppercase tracking-[0.18em] text-[10px] text-dim mt-3">APPROXIMATE POSITION</p>
-          <p className="text-[13px] text-dim leading-relaxed mt-1.5">{selected.find}</p>
-        </div>
+        {/* Aqui ficava o «WHERE TO FIND»: o mesmo traçado literal para todos os
+            veículos, e locais de spawn de um jogo por sair. Sai a coluna
+            inteira — a grelha acima passou de quatro colunas para três. */}
       </div>
 
       {/* CAROUSEL */}
