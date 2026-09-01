@@ -103,18 +103,15 @@ function App() {
             })}
           </div>
 
-          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2" role="listbox" aria-label="Character grid">
+          <div className="mt-3 grid grid-cols-2 gap-3" role="listbox" aria-label="Character grid">
             {list.map((c) => {
               const active = c.slug === selected.slug
               return (
                 <button key={c.slug} type="button" role="option" aria-selected={active} onClick={() => selectCharacter(c.slug)}
-                  className={cx('panel rounded-sm p-2.5 flex items-center gap-3 text-left transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
-                  <Portrait c={c} className="w-[62px] h-[62px] rounded-sm border border-line shrink-0 text-[18px]" sizes="62px" />
-                  <span className="flex-1 min-w-0">
-                    <span className="block font-cond font-bold uppercase tracking-[0.06em] text-[19px] text-paper leading-none truncate">{c.name}</span>
-                    <span className={cx('block font-cond font-semibold uppercase tracking-[0.16em] text-[10px] mt-1.5', c.role === 'PROTAGONIST' ? 'text-pink' : 'text-dim')}>{c.role}</span>
-                  </span>
-                  <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-dim shrink-0" aria-hidden="true"><ChevronRight size={14} /></span>
+                  className={cx('panel rounded-sm p-2 text-left transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                  <Portrait c={c} className="w-full h-32 rounded-sm border border-line text-[18px]" sizes="180px" />
+                  <span className="block font-cond font-bold uppercase tracking-[0.04em] text-[17px] text-paper leading-none truncate mt-2">{c.name}</span>
+                  <span className={cx('block font-cond font-semibold uppercase tracking-[0.12em] text-[10px] mt-1', c.slug === 'lucia-caminos' ? 'text-pink' : c.slug === 'jason-duval' ? 'text-mint' : 'text-dim')}>{c.role}</span>
                 </button>
               )
             })}
@@ -138,7 +135,7 @@ function App() {
           </span>
           <div className="p-5 sm:p-7 flex flex-col relative">
             <span className="absolute inset-0 bg-gradient-to-br from-transparent to-pink/[0.03] pointer-events-none" aria-hidden="true" />
-            <h1 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[58px]">
+            <h1 className={cx('font-cond font-bold uppercase tracking-tight leading-[0.9] text-[46px] sm:text-[58px]', selected.slug === 'lucia-caminos' ? 'text-pink' : selected.slug === 'jason-duval' ? 'text-mint' : 'text-paper')}>
               {selected.name.split(' ').map((w, i) => <span key={i} className="block">{w}</span>)}
             </h1>
             <div className="flex items-center gap-2 mt-4">
