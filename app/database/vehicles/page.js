@@ -6,11 +6,13 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import MiniMap from '@/components/site/minimap'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
-import { vehicles, vehicleClasses, vehicleCounters } from '@/lib/content'
+import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
-const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat }
+// Um id sem ícone aqui devolve `undefined` e parte a renderização da página
+// inteira, por isso o fallback é obrigatório, não uma cortesia.
+const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat, offroad: Car }
+const classIcon = (id) => CLASS_ICONS[id] || Car
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
 
@@ -50,7 +52,7 @@ function App() {
   const router = useRouter()
   const [cls, setCls] = useState('muscle')
   const [query, setQuery] = useState('')
-  const [selectedSlug, setSelectedSlug] = useState('bravado-gauntlet')
+  const [selectedSlug, setSelectedSlug] = useState('vapid-ganado-retro')
   const [favs, setFavs] = useState([])
   const [sortMode, setSortMode] = useState(0) // 0 number, 1 name, 2 speed
   const [compareMode, setCompareMode] = useState(false)
@@ -104,7 +106,18 @@ function App() {
     <div className="flex-1 flex flex-col">
       <DbTabs active="vehicles" counters={vehicleCounters} />
 
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.35fr)_minmax(250px,0.95fr)_minmax(230px,0.8fr)] gap-5 items-start">
+      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition vehicles</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.vehicles.join(' · ')}</p>
+        </div>
+        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+        </div>
+      </section>
+
+      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.5fr)_minmax(280px,1fr)] gap-5 items-start">
         {/* SIDEBAR */}
         <aside id="vehicle-filters" className="min-w-0">
           <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
@@ -116,7 +129,7 @@ function App() {
             <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim px-1">CLASSES</h2>
             <div className="mt-2 flex flex-col gap-1" role="tablist" aria-label="Vehicle classes">
               {vehicleClasses.map((c) => {
-                const Icon = CLASS_ICONS[c.id]
+                const Icon = classIcon(c.id)
                 const active = c.id === cls
                 return (
                   <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
@@ -148,8 +161,8 @@ function App() {
 
         {/* CENTER IMAGE */}
         <div className="min-w-0">
-          <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[52px] sm:text-[60px]">GARAGE</h1>
-          <div className="card-active relative rounded-sm mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
+          <div className="ghost-type" data-ghost="GARAGE"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[60px] sm:text-[78px]">GARAGE</h1></div>
+          <div className="corner-brackets tech-mask card-active relative mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
             <VehicleVisual v={selected} className="absolute inset-0" sizes="(max-width:1280px) 100vw, 45vw" priority />
             <span className="absolute top-3 right-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[12px] text-paper tabular-nums">{String(selIndex + 1).padStart(2, '0')} / {clsMeta ? clsMeta.count : list.length}</span>
             <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-3 left-3 w-10 h-10 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40">
@@ -166,9 +179,20 @@ function App() {
             <StatusBadge status={selected.status} />
           </div>
 
-          <div className="mt-5 flex flex-col gap-3.5">
-            {stats.map((s) => <StatRow key={s.label} {...s} />)}
-          </div>
+          {/* Sem números publicados não se desenham barras — dizê-lo é a
+              informação honesta, e é mais útil do que um gráfico inventado. */}
+          {selected.unpublished ? (
+            <div className="mt-5 border border-line rounded-sm p-4">
+              <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Stats not published</p>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-dim">
+                This vehicle is documented in official material, but no performance figures have been released for it.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-5 flex flex-col gap-3.5">
+              {stats.map((s) => <StatRow key={s.label} {...s} />)}
+            </div>
+          )}
 
           <div className="mt-5 grid grid-cols-4 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
             {selected.specs.map((spec, i) => {
@@ -194,13 +218,9 @@ function App() {
           </button>
         </div>
 
-        {/* MAP */}
-        <div className="min-w-0">
-          <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">WHERE TO FIND</h2>
-          <MiniMap className="mt-3 w-full aspect-[3/2.1]" label={selected.findLabel} route="M60,40 L60,110 L140,110 L140,150 L226,150" marker={{ x: 226, y: 150 }} start={{ x: 60, y: 40 }} />
-          <p className="font-cond uppercase tracking-[0.18em] text-[10px] text-dim mt-3">APPROXIMATE POSITION</p>
-          <p className="text-[13px] text-dim leading-relaxed mt-1.5">{selected.find}</p>
-        </div>
+        {/* Aqui ficava o «WHERE TO FIND»: o mesmo traçado literal para todos os
+            veículos, e locais de spawn de um jogo por sair. Sai a coluna
+            inteira — a grelha acima passou de quatro colunas para três. */}
       </div>
 
       {/* CAROUSEL */}

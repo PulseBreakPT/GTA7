@@ -6,11 +6,11 @@ import { Search, X, Newspaper, Users, Car, Crosshair, Cog, MapPin, Egg, BookOpen
 import { articles, characters, vehicles, weapons, mechanics, locations, easterEggs, guides } from '@/lib/content'
 import { GhostBadge, cx } from './ui'
 
-const TYPE_ICONS = { NEWS: Newspaper, CHARACTER: Users, VEHICLE: Car, WEAPON: Crosshair, MECHANIC: Cog, LOCATION: MapPin, 'EASTER EGG': Egg, GUIDE: BookOpen }
+const TYPE_ICONS = { ARTICLE: Newspaper, CHARACTER: Users, VEHICLE: Car, WEAPON: Crosshair, MECHANIC: Cog, LOCATION: MapPin, 'EASTER EGG': Egg, GUIDE: BookOpen }
 
 function buildIndex() {
   const idx = []
-  articles.forEach((a) => idx.push({ type: 'NEWS', title: a.title, status: a.status, href: `/news/${a.slug}`, sub: a.excerpt }))
+  articles.forEach((a) => idx.push({ type: 'ARTICLE', title: a.title, status: a.status, href: `/news/${a.slug}`, sub: a.excerpt }))
   characters.forEach((c) => idx.push({ type: 'CHARACTER', title: c.name, status: c.status, href: `/database/characters/${c.slug}`, sub: c.bio }))
   vehicles.forEach((v) => idx.push({ type: 'VEHICLE', title: v.name, status: v.status, href: `/database/vehicles/${v.slug}`, sub: v.cls.toUpperCase() }))
   weapons.forEach((w) => idx.push({ type: 'WEAPON', title: w.name, status: w.status, href: `/database/weapons/${w.slug}`, sub: w.desc }))

@@ -10,14 +10,15 @@ import { cx } from './ui'
 
 const NAV = [
   { label: 'HOME', href: '/', match: (p) => p === '/' },
-  { label: 'NEWS', href: '/news', match: (p) => p.startsWith('/news') },
+  { label: 'ARTICLES', href: '/news', match: (p) => p.startsWith('/news') },
+  { label: 'CATEGORIES', href: '/categories', match: (p) => p.startsWith('/categories') },
   { label: 'MAP', href: '/map', match: (p) => p.startsWith('/map') || p.startsWith('/easter-eggs') },
   { label: 'DATABASE', href: '/database/weapons', match: (p) => p.startsWith('/database') },
-  { label: 'GUIDES', href: '/guides', match: (p) => p.startsWith('/guides') },
+  { label: 'EDITIONS', href: '/editions', match: (p) => p.startsWith('/editions') },
 ]
 
 function countersFor(p) {
-  if (p.startsWith('/news')) return SITE_COUNTERS.news
+  if (p.startsWith('/news') || p.startsWith('/categories')) return SITE_COUNTERS.news
   if (p.startsWith('/map') || p.startsWith('/easter-eggs')) return SITE_COUNTERS.map
   if (p.startsWith('/database/characters')) return SITE_COUNTERS.characters
   return SITE_COUNTERS.home
@@ -43,13 +44,13 @@ export default function Header() {
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
   return (
-    <header className="sticky top-0 z-[70] bg-ink/95 backdrop-blur-sm border-b hairline">
-      <div className="px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4 lg:gap-6">
-        <Link href="/" className="font-cond font-bold text-[24px] sm:text-[26px] tracking-wide text-paper whitespace-nowrap leading-none">
+    <header className="archive-header sticky top-0 z-[70] bg-ink/88 backdrop-blur-md border-b hairline">
+      <div className="px-3 sm:px-6 lg:px-8 h-16 flex items-center gap-2 sm:gap-4 lg:gap-6">
+        <Link href="/" className="chromatic-title font-cond font-bold text-[21px] sm:text-[26px] tracking-wide text-paper whitespace-nowrap leading-none shrink-0">
           LEONIDA ARCHIVE
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1 ml-4" aria-label="Primary">
+        <nav className="hidden lg:flex items-center gap-1 ml-2" aria-label="Primary">
           {NAV.map((item) => {
             const active = item.match(pathname)
             return (
@@ -58,7 +59,7 @@ export default function Header() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cx(
-                  'font-cond font-semibold uppercase tracking-[0.12em] text-[15px] px-4 py-2 transition-colors duration-150',
+                  'font-cond font-semibold uppercase tracking-[0.12em] text-[14px] px-3 py-2 transition-colors duration-150',
                   active ? 'bg-paper text-ink' : 'text-dim hover:text-paper'
                 )}
               >
@@ -68,12 +69,12 @@ export default function Header() {
           })}
         </nav>
 
-        <div className="flex-1" />
+        <div className="flex-1 min-w-0" />
 
         <button
           type="button"
           onClick={() => setSearchOpen(true)}
-          className="hidden md:flex items-center gap-2 w-[240px] xl:w-[300px] h-10 px-3 bg-surface2/70 border border-line rounded-sm text-left hover:border-white/30 transition-colors"
+          className="glass-panel tech-mask-sm hidden md:flex items-center gap-2 w-[240px] xl:w-[300px] h-10 px-3 text-left hover:border-white/30 transition-colors"
           aria-label="Search the archive"
         >
           <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
@@ -84,15 +85,6 @@ export default function Header() {
         <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-dim hover:text-paper" aria-label="Search the archive">
           <Search size={19} />
         </button>
-
-        <div className="hidden xl:flex items-stretch">
-          {counters.map(([n, label], i) => (
-            <div key={label} className={cx('px-4 flex flex-col justify-center leading-none', i > 0 && 'border-l hairline')}>
-              <span className="font-cond font-bold text-[24px] text-paper tabular-nums text-center">{n}</span>
-              <span className="font-cond text-[9px] text-dim uppercase tracking-[0.2em] mt-0.5 text-center">{label}</span>
-            </div>
-          ))}
-        </div>
 
         <button type="button" onClick={() => setMenuOpen((v) => !v)} className="lg:hidden w-11 h-11 flex items-center justify-center text-paper" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}>
           {menuOpen ? <X size={22} /> : <Menu size={22} />}

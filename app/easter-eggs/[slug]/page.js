@@ -13,7 +13,7 @@ function App() {
 
   if (!egg) {
     return (
-      <div className="px-8 py-24 text-center">
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
         <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
         <Link href="/map" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO THE MAP</Link>
       </div>
@@ -24,18 +24,19 @@ function App() {
   const others = easterEggs.filter((e) => e.slug !== egg.slug).slice(0, 3)
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto flex-1">
+    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto flex-1">
       <Link href="/map" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
         <ArrowLeft size={15} /> LEONIDA MAP
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-2">
+      <div className="data-rail mt-2">SECRET INDEX · EVIDENCE RECORD · {egg.region}</div>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5">
         <div>
           <div className="flex items-center gap-2">
             <StatusBadge status={egg.status} />
             <span className="font-cond font-semibold uppercase tracking-[0.16em] text-[11px] text-dim">{egg.region}</span>
           </div>
-          <h1 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{egg.name}</h1>
+          <h1 data-ghost="CLASSIFIED" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{egg.name}</h1>
           <p className="text-paper/85 text-[15px] leading-relaxed mt-3 max-w-[440px]">{egg.summary}</p>
 
           <div className="mt-6">
@@ -70,13 +71,14 @@ function App() {
           <p className="font-mono text-[10px] text-dim uppercase mt-3">UPDATED {egg.updatedAt}</p>
         </div>
 
-        <div className="relative panel rounded-sm overflow-hidden min-h-[320px] lg:min-h-[480px]">
+        <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden min-h-[320px] lg:min-h-[480px]">
           <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
           <span className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/30" aria-hidden="true" />
         </div>
       </div>
 
-      <section className="mt-10" aria-label="More secrets">
+      <section className="mt-12" aria-label="More secrets">
+        <div className="data-rail">ADJACENT RECORDS · SECRET INDEX</div>
         <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[20px] text-paper border-b hairline pb-2">MORE SECRETS</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
           {others.map((e) => (

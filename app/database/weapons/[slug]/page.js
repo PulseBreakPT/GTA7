@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ExternalLink, MapPin, Heart, Zap, Eye, Target, Layers, Weight } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Heart, Zap, Eye, Target, Layers, Weight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge } from '@/components/site/ui'
 import { weapons, weaponTypes } from '@/lib/content'
@@ -15,14 +15,16 @@ function App() {
 
   if (!w) {
     return (
-      <div className="px-8 py-24 text-center">
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
         <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
         <Link href="/database/weapons" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO ARSENAL</Link>
       </div>
     )
   }
 
-  const typeLabel = weaponTypes.find((t) => t.id === w.type).label
+  // Um tipo sem entrada em `weaponTypes` devolvia `undefined` e rebentava a
+  // página inteira. O fallback é obrigatório, não cortesia.
+  const typeLabel = weaponTypes.find((t) => t.id === w.type)?.label || w.type.toUpperCase()
   const bars = [
     { icon: Heart, label: 'DAMAGE', value: w.stats[0], color: '#F1A3C3' },
     { icon: Zap, label: 'FIRE RATE', value: w.stats[1], color: '#65DCCB' },
@@ -34,13 +36,14 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="weapons" />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto">
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto">
         <Link href="/database/weapons" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
           <ArrowLeft size={15} /> ARSENAL
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-6 mt-2">
-          <div className="relative panel rounded-sm overflow-hidden min-h-[320px]">
+        <div className="data-rail mt-2">ARSENAL FILE · DOCUMENTED REFERENCE · ID {w.slug.toUpperCase()}</div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-6 mt-5">
+          <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden min-h-[320px]">
             {w.image ? (
               <>
                 <Image src={w.image} alt={w.name} fill sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
@@ -59,14 +62,14 @@ function App() {
               <StatusBadge status={w.status} />
               <GhostBadge status="analysis" label={typeLabel} />
             </div>
-            <h1 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[48px] sm:text-[58px] mt-2">{w.name}</h1>
+            <h1 data-ghost="ARSENAL" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[48px] sm:text-[58px] mt-2">{w.name}</h1>
             <p className="text-dim text-[14px] leading-relaxed mt-3">{w.desc}</p>
 
             <div className="mt-5 flex flex-col gap-3">
               {bars.map((b) => (
                 <div key={b.label} className="flex items-center gap-3">
                   <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: b.color }} aria-hidden="true"><b.icon size={14} /></span>
-                  <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-paper w-[84px] shrink-0">{b.label}</span>
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px] sm:text-[13px] text-paper w-[72px] sm:w-[84px] shrink-0">{b.label}</span>
                   <span className="relative flex-1 h-[7px] bg-white/10" role="img" aria-label={`${b.label}: ${b.value} of 100`}>
                     <span className="absolute inset-y-0 left-0" style={{ width: `${b.value}%`, backgroundColor: b.color }} />
                   </span>
@@ -91,20 +94,15 @@ function App() {
               <span className="font-mono text-[10px] text-dim uppercase">UPDATED {w.updatedAt}</span>
             </div>
 
-            <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim mt-5">APPEARS IN</h2>
-            <div className="mt-2 flex flex-col gap-2">
-              {w.locations.map((loc) => (
-                <Link key={loc} href="/map" className="flex items-center gap-3 border border-line rounded-sm px-3 h-11 hover:border-white/40 transition-colors">
-                  <MapPin size={14} className="text-pink" aria-hidden="true" />
-                  <span className="text-[13px] text-paper">{loc}</span>
-                </Link>
-              ))}
-            </div>
+            {/* O «APPEARS IN» dava bairros onde cada arma aparecia, e o default
+                punha Little Haiti e Vice Point em tudo o que não trouxesse
+                lista. Ninguém sabe onde aparece uma arma num jogo por sair. */}
           </div>
         </div>
 
         {related.length > 0 && (
-          <section className="mt-10" aria-label="Related weapons">
+          <section className="mt-12" aria-label="Related weapons">
+            <div className="data-rail">RELATED FILES · SAME CLASS</div>
             <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[20px] text-paper border-b hairline pb-2">SAME RACK</h2>
             <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
               {related.map((r) => (

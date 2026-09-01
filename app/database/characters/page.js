@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
-import { characters, characterFilters, relationships, mechanics, characterBySlug } from '@/lib/content'
+import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
 const REL_BARS = [
@@ -59,6 +59,14 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="characters" />
+
+      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] border border-line bg-surface2/40 p-4 sm:p-5">
+        <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Story context · community reference</p>
+        <div className="mt-2 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+          <p className="max-w-3xl text-[14px] leading-relaxed text-paper/85">{extendedLookBrief.synopsis}</p>
+          <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-dim shrink-0">{extendedLookBrief.protagonists.join(' · ')}</span>
+        </div>
+      </section>
 
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[300px_1fr] xl:grid-cols-[300px_minmax(0,1.35fr)_minmax(300px,0.95fr)] gap-5 items-start">
         {/* LEFT: list */}
