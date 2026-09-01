@@ -3,8 +3,8 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, BadgeCheck, Eye, ChevronRight, Triangle, Info, Star } from 'lucide-react'
-import { articles, liveUpdates, sources, mostRead } from '@/lib/content'
+import { Heart, BadgeCheck, Eye, ChevronRight, Triangle, Info } from 'lucide-react'
+import { articles, encyclopediaCategories, gtaWikiPageLedger, guides, liveUpdates, sources, mostRead } from '@/lib/content'
 import { StatusBadge, GhostBadge, cx, fmtDate } from '@/components/site/ui'
 
 const FILTERS = [
@@ -15,9 +15,9 @@ const FILTERS = [
 ]
 
 const SUMMARY = [
-  { icon: Heart, label: 'OFFICIAL', count: 238, value: 78, color: '#F1A3C3' },
-  { icon: BadgeCheck, label: 'VERIFIED', count: 165, value: 58, color: '#65DCCB' },
-  { icon: Eye, label: 'RUMOUR', count: 73, value: 30, color: '#9B83F4' },
+  { icon: Heart, label: 'ARTICLES', count: articles.length, value: 100, color: '#F1A3C3' },
+  { icon: BadgeCheck, label: 'CATEGORIES', count: encyclopediaCategories.length, value: 100, color: '#65DCCB' },
+  { icon: Eye, label: 'GUIDES', count: guides.length, value: 100, color: '#9B83F4' },
 ]
 
 function ArticleCard({ a }) {
@@ -47,11 +47,17 @@ function App() {
   const [selectedUpdate, setSelectedUpdate] = useState(0)
   const [allUpdates, setAllUpdates] = useState(false)
   const [sourceIdx, setSourceIdx] = useState(0)
-  const [ratings, setRatings] = useState(() => sources.map((s) => s.rating))
   const [fullRanking, setFullRanking] = useState(false)
 
   const lead = articles.find((a) => a.slug === 'extended-look-everything-revealed')
   const support = [articles.find((a) => a.slug === 'the-new-inventory-system'), articles.find((a) => a.slug === 'six-star-wanted-level-returns')]
+  const featureRoundup = articles.filter((a) => [
+    'leonida-map-source-ledger', 'jason-lucia-story-context', 'combat-and-police-claims-ledger',
+    'systems-visuals-and-world-interactions', 'vehicles-and-online-separate-the-known',
+  ].includes(a.slug))
+  const wikiExtraction = articles.filter((a) => [
+    'gta-wiki-development-and-release-ledger', 'gta-wiki-media-gallery-and-reception', 'gta-wiki-claims-leaks-and-source-boundaries', 'four-creators-rockstar-north-preview', 'creator-preview-record-how-to-read-it', 'creator-preview-session-format-and-boundaries', 'creator-preview-systems-index', 'davy-jones-rockstar-north-preview-record', 'tgg-rockstar-north-preview-record', 'el-rubius-rockstar-north-preview-record', 'mikeshowsha-rockstar-north-preview-record',
+  ].includes(a.slug))
   const filtered = useMemo(() => articles.filter((a) => filter === 'all' || a.category === filter), [filter])
   const updates = allUpdates ? liveUpdates : liveUpdates.slice(0, 4)
   const ranking = fullRanking
@@ -62,7 +68,10 @@ function App() {
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 xl:grid-cols-[1fr_408px] gap-6">
       {/* LEFT */}
       <div className="min-w-0">
-        <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[56px] sm:text-[72px]">NEWS</h1>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div><p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Leonida reference archive</p><h1 className="mt-1 font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[56px] sm:text-[72px]">ARTICLES</h1></div>
+          <Link href="/categories" className="inline-flex min-h-[44px] items-center gap-2 border border-line px-4 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-pink">{encyclopediaCategories.length} categories <ChevronRight size={14} /></Link>
+        </div>
 
         <div className="mt-4 inline-flex border border-line rounded-sm overflow-hidden" role="tablist" aria-label="News filters">
           {FILTERS.map((f) => (
@@ -96,11 +105,11 @@ function App() {
               </div>
               <div className="p-5 sm:p-6">
                 <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[36px] sm:text-[46px] max-w-[560px]">
-                  EXTENDED LOOK:<br />EVERYTHING REVEALED
+                  EXTENDED LOOK:<br />WHAT THE SUMMARY ADDS
                 </h2>
                 <p className="text-dim text-[14px] leading-relaxed mt-3 max-w-[520px]">{lead.excerpt}</p>
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-                  <span className="font-cond uppercase tracking-[0.16em] text-[13px] text-dim">AUG 27, 2026&nbsp;&nbsp;·&nbsp;&nbsp;12 MIN</span>
+                  <span className="font-cond uppercase tracking-[0.16em] text-[13px] text-dim">AUG 27, 2026&nbsp;&nbsp;·&nbsp;&nbsp;12 MIN&nbsp;&nbsp;·&nbsp;&nbsp;COMMUNITY REFERENCE</span>
                   <span className="inline-flex items-center gap-3 border border-paper/90 px-5 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper group-hover:bg-paper group-hover:text-ink transition-colors duration-200">
                     READ ANALYSIS
                     <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
@@ -112,6 +121,31 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               {support.map((a) => <ArticleCard key={a.slug} a={a} />)}
             </div>
+            <section className="mt-7" aria-labelledby="feature-roundup-heading">
+              <div className="flex items-end justify-between gap-4 border-b hairline pb-2">
+                <div>
+                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">GTA Base feature roundup</p>
+                  <h2 id="feature-roundup-heading" className="mt-1 font-cond font-bold uppercase tracking-[0.08em] text-[24px] text-paper">Source-led feature briefings</h2>
+                </div>
+                <Link href="/guides/feature-roundup-source-guide" className="font-cond uppercase tracking-[0.12em] text-[12px] text-dim hover:text-paper">How we label sources</Link>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                {featureRoundup.map((a) => <ArticleCard key={a.slug} a={a} />)}
+              </div>
+            </section>
+            <section className="mt-7 border-t hairline pt-5" aria-labelledby="wiki-extraction-heading">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">{gtaWikiPageLedger.sourceName}</p>
+                  <h2 id="wiki-extraction-heading" className="mt-1 font-cond font-bold uppercase tracking-[0.08em] text-[24px] text-paper">Full-page source index</h2>
+                </div>
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Extracted {gtaWikiPageLedger.extractedAt}</span>
+              </div>
+              <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-dim">{gtaWikiPageLedger.caution}</p>
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {wikiExtraction.map((a) => <ArticleCard key={a.slug} a={a} />)}
+              </div>
+            </section>
           </>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
@@ -147,13 +181,13 @@ function App() {
         </div>
 
         {/* Open signal */}
-        <div className="panel rounded-sm p-4">
+        <div className="hidden">
           <div className="flex items-center justify-between gap-3">
             <span className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-pink animate-pulse" aria-hidden="true" />
-              <span className="font-cond font-bold uppercase tracking-[0.1em] text-[20px] text-paper">OPEN SIGNAL</span>
+              <span className="font-cond font-bold uppercase tracking-[0.1em] text-[20px] text-paper">ARCHIVE LOG</span>
             </span>
-            <span className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">LIVE UPDATES</span>
+            <span className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">REFERENCE NOTES</span>
           </div>
           <ul className="mt-3 flex flex-col gap-2" aria-label="Live updates">
             {updates.map((u2, i) => (
@@ -181,16 +215,10 @@ function App() {
         <div className="panel rounded-sm p-4">
           <div className="flex items-center justify-between gap-3">
             <span className="flex items-center gap-2">
-              <span className="font-cond font-bold uppercase tracking-[0.1em] text-[18px] text-paper">SOURCE CONFIDENCE</span>
+              <span className="font-cond font-bold uppercase tracking-[0.1em] text-[18px] text-paper">SOURCE KEY</span>
               <Info size={13} className="text-dim" aria-hidden="true" />
             </span>
-            <span className="flex items-center gap-1" role="img" aria-label={`Credibility: ${ratings[sourceIdx]} of 5 stars`}>
-              {[1,2,3,4,5].map((n) => (
-                <button key={n} type="button" aria-label={`Rate ${n} of 5`} onClick={() => setRatings((r) => r.map((v, i) => (i === sourceIdx ? n : v)))} className="p-0.5">
-                  <Star size={17} className={n <= ratings[sourceIdx] ? 'text-pink' : 'text-white/20'} fill={n <= ratings[sourceIdx] ? '#F1A3C3' : 'transparent'} />
-                </button>
-              ))}
-            </span>
+            <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">LABELLED, NOT SCORED</span>
           </div>
           <div className="mt-4 flex items-center gap-2.5 flex-wrap">
             {sources.map((s, i) => (
@@ -207,15 +235,12 @@ function App() {
             ))}
           </div>
           <p className="mt-3 text-[12px] text-dim"><span className="text-paper font-medium">{sources[sourceIdx].name}</span> · {sources[sourceIdx].kind}</p>
-          <p className="mt-2 inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[12px] text-dim">
-            RATE SOURCE
-            <span className="w-6 h-6 rounded-full border border-line flex items-center justify-center" aria-hidden="true"><ChevronRight size={12} /></span>
-          </p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">Archive labels explain whether a record is official, community-sourced, analysis or rumour. They are not crowd ratings.</p>
         </div>
 
         {/* Most read */}
         <div className="panel rounded-sm p-4">
-          <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[18px] text-paper">MOST READ</h2>
+          <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[18px] text-paper">READING LIST</h2>
           <ol className="mt-3 flex flex-col">
             {ranking.map((m) => (
               <li key={m.rank} className="border-b hairline last:border-b-0">

@@ -8,7 +8,7 @@ import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, DoorClosed,
 import DbTabs from '@/components/site/dbtabs'
 import MiniMap from '@/components/site/minimap'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
-import { vehicles, vehicleClasses, vehicleCounters } from '@/lib/content'
+import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat }
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
@@ -104,6 +104,17 @@ function App() {
     <div className="flex-1 flex flex-col">
       <DbTabs active="vehicles" counters={vehicleCounters} />
 
+      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition vehicles</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.vehicles.join(' · ')}</p>
+        </div>
+        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+        </div>
+      </section>
+
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.35fr)_minmax(250px,0.95fr)_minmax(230px,0.8fr)] gap-5 items-start">
         {/* SIDEBAR */}
         <aside id="vehicle-filters" className="min-w-0">
@@ -148,8 +159,8 @@ function App() {
 
         {/* CENTER IMAGE */}
         <div className="min-w-0">
-          <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[52px] sm:text-[60px]">GARAGE</h1>
-          <div className="card-active relative rounded-sm mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
+          <div className="ghost-type" data-ghost="GARAGE"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[60px] sm:text-[78px]">GARAGE</h1></div>
+          <div className="corner-brackets tech-mask card-active relative mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
             <VehicleVisual v={selected} className="absolute inset-0" sizes="(max-width:1280px) 100vw, 45vw" priority />
             <span className="absolute top-3 right-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[12px] text-paper tabular-nums">{String(selIndex + 1).padStart(2, '0')} / {clsMeta ? clsMeta.count : list.length}</span>
             <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-3 left-3 w-10 h-10 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40">

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, MapPin, ChevronRight, Crosshair, Pill, BatteryFull } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
-import { weapons, weaponTypes, weaponCounters } from '@/lib/content'
+import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -67,10 +67,20 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="weapons" />
+      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.weapons.join(' · ')}</p>
+        </div>
+        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+        </div>
+      </section>
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_372px] gap-6 flex-1">
         {/* LEFT */}
         <aside className="min-w-0">
-          <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[56px]">ARSENAL</h1>
+          <div className="ghost-type" data-ghost="ARSENAL"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARSENAL</h1></div>
           <div className="flex items-stretch mt-3">
             {weaponCounters.map(([n, label], i) => (
               <div key={label} className={cx('pr-5 flex flex-col leading-none', i > 0 && 'pl-5 border-l hairline')}>
@@ -80,7 +90,7 @@ function App() {
             ))}
           </div>
 
-          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
+          <label className="tech-mask-sm glass-panel mt-5 flex items-center gap-2 h-11 px-3 focus-within:border-white/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>

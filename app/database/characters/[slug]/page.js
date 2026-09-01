@@ -32,7 +32,7 @@ function App() {
 
   if (!c) {
     return (
-      <div className="px-8 py-24 text-center">
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
         <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
         <Link href="/database/characters" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO CHARACTERS</Link>
       </div>
@@ -45,19 +45,20 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="characters" />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto">
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto">
         <Link href="/database/characters" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
           <ArrowLeft size={15} /> CHARACTERS
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.3fr] gap-6 mt-2">
-          <Portrait c={c} className="rounded-sm border border-line min-h-[380px] text-[48px]" sizes="(max-width:1024px) 100vw, 40vw" />
+        <div className="data-rail mt-2">CHARACTER FILE · SOURCE-BOUND RECORD · ID {c.slug.toUpperCase()}</div>
+        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.3fr] gap-6 mt-5">
+          <Portrait c={c} className="corner-brackets tech-mask glass-panel border border-line min-h-[380px] text-[48px]" sizes="(max-width:1024px) 100vw, 40vw" />
           <div>
             <div className="flex items-center gap-2">
               <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
               <StatusBadge status={c.status} />
             </div>
-            <h1 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{c.name}</h1>
+            <h1 data-ghost="PERSONNEL" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{c.name}</h1>
             <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[520px]">{c.bio}</p>
             <p className="text-dim text-[14px] leading-[1.8] mt-3 max-w-[560px]">{c.long}</p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -74,13 +75,13 @@ function App() {
                 const other = characterBySlug(r.a === c.slug ? r.b : r.a)
                 if (!other) return null
                 return (
-                  <Link key={other.slug} href={`/database/characters/${other.slug}`} className="panel rounded-sm p-3 flex items-center gap-3 hover:border-white/30 transition-colors">
+                  <Link key={other.slug} href={`/database/characters/${other.slug}`} className="panel rounded-sm p-3 flex flex-wrap sm:flex-nowrap items-center gap-3 hover:border-white/30 transition-colors">
                     <Portrait c={other} className="w-[46px] h-[46px] rounded-sm border border-line shrink-0 text-[14px]" sizes="46px" />
-                    <span className="min-w-0 w-[110px] shrink-0">
+                    <span className="min-w-0 flex-1 sm:flex-none sm:w-[110px]">
                       <span className="block font-cond font-bold uppercase text-[14px] text-paper truncate">{other.name}</span>
                       <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5">{other.role}{r.primary ? ' · PRIMARY' : ''}</span>
                     </span>
-                    <span className="flex-1 flex flex-col gap-1">
+                    <span className="basis-full sm:basis-auto flex-1 flex flex-col gap-1">
                       {REL_BARS.map((b) => (
                         <span key={b.key} className="flex items-center gap-1.5">
                           <span className="font-cond uppercase text-[7px] tracking-[0.14em] text-dim w-10">{b.label}</span>
@@ -96,7 +97,8 @@ function App() {
           </div>
         </div>
 
-        <section className="mt-10" aria-label="Associated mechanics">
+        <section className="mt-12" aria-label="Associated mechanics">
+          <div className="data-rail">LINKED SYSTEMS · CHARACTER CONTEXT</div>
           <h2 className="font-cond font-semibold uppercase tracking-[0.22em] text-[13px] text-pink">ASSOCIATED MECHANICS</h2>
           <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {mechs.map((m) => (

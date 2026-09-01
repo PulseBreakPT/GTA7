@@ -12,7 +12,7 @@ const TABS = [
 
 export default function DbTabs({ active, counters }) {
   return (
-    <div className="border-b hairline bg-ink">
+    <div className="border-b hairline bg-ink/70 backdrop-blur-md">
       <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 overflow-x-auto">
         <nav className="flex items-center" aria-label="Database sections">
           {TABS.map((t) => {
@@ -28,7 +28,7 @@ export default function DbTabs({ active, counters }) {
                 )}
               >
                 {t.label}
-                {isActive && <span className="absolute bottom-0 left-3 right-3 h-[3px] bg-pink" aria-hidden="true" />}
+                {isActive && <span className="absolute bottom-0 left-3 right-3 h-[3px] bg-gradient-to-r from-mint via-pink to-violet" aria-hidden="true" />}
               </Link>
             )
           })}

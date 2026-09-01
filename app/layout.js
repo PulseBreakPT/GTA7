@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
       <body className={`${cond.variable} ${inter.variable} ${mono.variable} font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
         <Providers>
           <Header />
-          <main className="flex-1 flex flex-col">{children}</main>
+          <main className="archive-grid flex-1 flex flex-col">{children}</main>
           <Footer />
         </Providers>
       </body>
