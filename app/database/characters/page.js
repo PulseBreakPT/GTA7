@@ -74,7 +74,7 @@ function App() {
     <div className="flex-1 flex flex-col">
       <DbTabs active="characters" />
 
-      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] border border-line bg-surface2/40 p-4 sm:p-5">
+      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] border border-line bg-surface2/40 p-4 sm:p-5 order-10">
         <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Story context · community reference</p>
         <div className="mt-2 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
           <p className="max-w-3xl text-[14px] leading-relaxed text-paper/85">{extendedLookBrief.synopsis}</p>

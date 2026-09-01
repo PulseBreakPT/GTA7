@@ -71,7 +71,7 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="weapons" />
-      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3">
+      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3 order-10">
         <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
           <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
           <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.weapons.join(' · ')}</p>
