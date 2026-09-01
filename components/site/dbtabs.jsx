@@ -8,6 +8,7 @@ const TABS = [
   { id: 'vehicles', label: 'VEHICLES', href: '/database/vehicles' },
   { id: 'characters', label: 'CHARACTERS', href: '/database/characters' },
   { id: 'mechanics', label: 'MECHANICS', href: '/database/mechanics' },
+  { id: 'radio', label: 'RADIO', href: '/database/radio' },
 ]
 
 export default function DbTabs({ active, counters }) {
