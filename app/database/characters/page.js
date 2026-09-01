@@ -192,7 +192,7 @@ function App() {
             )}
           </div>
 
-          <div className="mt-3 flex flex-col gap-2">
+          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
             {others.map((r) => {
               const other = characterBySlug(r.a === selected.slug ? r.b : r.a)
               if (!other) return null
