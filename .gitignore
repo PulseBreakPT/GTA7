@@ -45,6 +45,13 @@ dump.rdb
 .DS_Store
 *.pem
 
+# Ambiente — o .env guarda a ligação à base de dados e não entra no
+# repositório. Ficava de fora do ignore, o que tornava fácil commitar
+# um segredo sem dar por isso.
+.env
+.env.*
+!.env.example
+
 # Python
 __pycache__/
 *pyc*
