@@ -10,11 +10,12 @@ import { cx } from './ui'
 
 const NAV = [
   { label: 'HOME', href: '/', match: (p) => p === '/' },
-  { label: 'ARTICLES', href: '/news', match: (p) => p.startsWith('/news') },
-  { label: 'CATEGORIES', href: '/categories', match: (p) => p.startsWith('/categories') },
-  { label: 'MAP', href: '/map', match: (p) => p.startsWith('/map') || p.startsWith('/easter-eggs') },
   { label: 'DATABASE', href: '/database/weapons', match: (p) => p.startsWith('/database') },
+  { label: 'MAP', href: '/map', match: (p) => p.startsWith('/map') || p.startsWith('/easter-eggs') },
+  { label: 'ARTICLES', href: '/news', match: (p) => p.startsWith('/news') },
   { label: 'FACTIONS', href: '/gangs-factions', match: (p) => p.startsWith('/gangs-factions') },
+  { label: 'GUIDES', href: '/guides', match: (p) => p.startsWith('/guides') },
+  { label: 'CATEGORIES', href: '/categories', match: (p) => p.startsWith('/categories') },
   { label: 'EDITIONS', href: '/editions', match: (p) => p.startsWith('/editions') },
 ]
 
