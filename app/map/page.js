@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { Search, Plus, Minus, RotateCcw, Route, Triangle, X, SlidersHorizontal, Compass, Check, BadgeCheck, Eye } from 'lucide-react'
-import { regions, mapFilters, locations, easterEggs, settingReferences, featureBriefs } from '@/lib/content'
+import { regions, mapFilters, locations, easterEggs, featureBriefs } from '@/lib/content'
 import { GhostBadge, StatusBadge, cx } from '@/components/site/ui'
 
 const VBW = 1000, VBH = 620
@@ -161,7 +161,7 @@ function MapPage() {
   const [query, setQuery] = useState('')
   const [region, setRegion] = useState(null)
   const [cats, setCats] = useState(() => new Set(mapFilters.map((f) => f.id)))
-  const [selected, setSelected] = useState('panther-mural')
+  const [selected, setSelected] = useState('ocean-beach')
   const [view, setView] = useState({ x: 0, y: 0, k: 1 })
   const [dragging, setDragging] = useState(false)
   const [showRoute, setShowRoute] = useState(true)
@@ -344,6 +344,7 @@ function MapPage() {
           {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
         </label>
       </div>
+      <p className="mt-3 max-w-[900px] font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Official location index only · Rockstar has not published a complete labelled map, boundaries, coordinates or scale.</p>
 
       <div className="mt-5 grid grid-cols-1 gap-4 min-h-0 max-w-[1240px]">
         {/* sidebar */}
@@ -380,18 +381,6 @@ function MapPage() {
             })}
           </div>
           {visibleRegions.length === 0 && <p className="mt-5 border border-line rounded-sm p-5 text-[13px] text-dim">No named region matches this search. Try Vice City, Keys, Ambrosia, Grassrivers, Mount Kalaga or Port Gellhorn.</p>}
-          <div className="mt-5 border-t border-line pt-5">
-            <p className="font-cond text-[11px] uppercase tracking-[0.18em] text-pink">County references</p>
-            <p className="mt-1 text-[13px] text-dim">Context supplied through the GTA Wiki summary. These references are not official map coordinates.</p>
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
-              {settingReferences.map((item) => (
-                <div key={item.name} className="tech-mask-sm glass-panel p-3">
-                  <p className="font-cond font-semibold uppercase tracking-[0.12em] text-[14px] text-paper">{item.name}</p>
-                  <p className="mt-1 text-[12px] leading-relaxed text-dim">{item.detail}</p>
-                </div>
-              ))}
-            </div>
-          </div>
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
               <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">Feature roundup · named context</p>
@@ -400,10 +389,8 @@ function MapPage() {
               </ul>
             </div>
             <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
-              <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Reported, not official</p>
-              <ul className="mt-2 space-y-2 text-[12px] leading-relaxed text-dim">
-                {featureBriefs.map.reported.map((item) => <li key={item}>• {item}</li>)}
-              </ul>
+              <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Map boundary</p>
+              <p className="mt-2 text-[12px] leading-relaxed text-dim">Community reconstructions, inferred county borders, routes and exact marker positions are not shown as Rockstar facts.</p>
             </div>
           </div>
         </section>

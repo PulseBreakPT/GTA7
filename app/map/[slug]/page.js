@@ -81,7 +81,7 @@ export default function RegionPage() {
           </div>
           <div className="mt-5 border-t border-line pt-4">
             <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Source note</p>
-            <p className="mt-1 text-[12px] leading-relaxed text-dim">County and named-place details are organised from the supplied community reference. They provide archive context and are not a Rockstar confirmation.</p>
+            <p className="mt-1 text-[12px] leading-relaxed text-dim">Only Rockstar-named places are listed. The visual arrangement is an archive index, not an official map or boundary layout.</p>
           </div>
         </aside>
       </section>

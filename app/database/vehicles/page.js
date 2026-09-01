@@ -180,6 +180,7 @@ function App() {
             <StatusBadge status={selected.status} />
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{selected.evidenceStatus}</span>
           </div>
+          {selected.association && <p className="mt-3 border-l-2 border-mint/70 pl-3 font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper">{selected.association}</p>}
 
           {/* Sem números publicados não se desenham barras — dizê-lo é a
               informação honesta, e é mais útil do que um gráfico inventado. */}

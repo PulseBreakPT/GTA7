@@ -71,6 +71,12 @@ function App() {
               <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
             </div>
             <h1 data-ghost="GARAGE" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[46px] sm:text-[56px] mt-2">{v.name}</h1>
+            {v.association && (
+              <div className="mt-4 border-l-2 border-mint/70 pl-3">
+                <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Association / content</p>
+                <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.association}</p>
+              </div>
+            )}
 
             {v.unpublished ? (
               <div className="mt-5 border border-line rounded-sm p-4">
@@ -105,6 +111,12 @@ function App() {
               </a>
               <span className="font-mono text-[10px] text-dim uppercase">UPDATED {v.updatedAt}</span>
             </div>
+            {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {v.confirmedDetails?.length > 0 && <section className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm"><h2 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h2><ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">{v.confirmedDetails.map((detail) => <li key={detail}>• {detail}</li>)}</ul></section>}
+                {v.notPublished?.length > 0 && <section className="border border-line bg-surface2/40 p-3 rounded-sm"><h2 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Not officially specified</h2><ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">{v.notPublished.map((detail) => <li key={detail}>• {detail}</li>)}</ul></section>}
+              </div>
+            )}
           </div>
         </div>
 
