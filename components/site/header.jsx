@@ -14,6 +14,7 @@ const NAV = [
   { label: 'CATEGORIES', href: '/categories', match: (p) => p.startsWith('/categories') },
   { label: 'MAP', href: '/map', match: (p) => p.startsWith('/map') || p.startsWith('/easter-eggs') },
   { label: 'DATABASE', href: '/database/weapons', match: (p) => p.startsWith('/database') },
+  { label: 'EDITIONS', href: '/editions', match: (p) => p.startsWith('/editions') },
 ]
 
 function countersFor(p) {

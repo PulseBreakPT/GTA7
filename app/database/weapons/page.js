@@ -32,7 +32,7 @@ function App() {
   const router = useRouter()
   const [type, setType] = useState('handgun')
   const [query, setQuery] = useState('')
-  const [selectedSlug, setSelectedSlug] = useState('compact-pistol')
+  const [selectedSlug, setSelectedSlug] = useState('morgan-revolvers')
 
   const ofType = useMemo(() => weapons.filter((w) => w.type === type), [type])
   const list = useMemo(() => {
