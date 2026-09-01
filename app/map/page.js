@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { Search, Plus, Minus, RotateCcw, Route, Triangle, X, SlidersHorizontal, Compass, Check, BadgeCheck, Eye } from 'lucide-react'
 import { regions, mapFilters, locations, easterEggs } from '@/lib/content'
@@ -109,6 +110,11 @@ function MapSurface({ view, setView, dragging, setDragging, markers, selected, o
           <text x="165" y="330" fontSize="17">GRASSRIVERS</text>
           <text x="686" y="96" fontSize="17">VICE CITY</text>
           <text x="760" y="525" fontSize="15">LEONIDA KEYS</text>
+          {/* Sem estes dois rótulos, as regiões apareciam na lista lateral e
+              o botão voava para um ponto vazio do mapa. Kalaga fica a norte e
+              Ambrosia no centro, que é o que a Rockstar diz de cada uma. */}
+          <text x="352" y="92" fontSize="17">MOUNT KALAGA</text>
+          <text x="382" y="262" fontSize="17">AMBROSIA</text>
         </g>
         {/* route to selection */}
         {showRoute && sel && (
@@ -216,10 +222,30 @@ function MapPage() {
         <div className="mt-2 flex flex-col gap-1.5">
           {regions.map((r2) => (
             <button key={r2.id} type="button" onClick={() => pickRegion(r2.id)} aria-pressed={region === r2.id}
-              className={cx('flex items-center justify-between px-3 h-11 border rounded-sm font-cond font-semibold uppercase tracking-[0.12em] text-[14px] transition-all duration-150',
-                region === r2.id ? 'card-active bg-surface2 text-paper border-transparent' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
-              {r2.label}
-              <Compass size={13} className="opacity-60" aria-hidden="true" />
+              className={cx('border rounded-sm overflow-hidden text-left transition-all duration-150',
+                region === r2.id ? 'card-active bg-surface2 border-transparent' : 'border-line hover:border-white/30 group')}>
+              <span className="flex items-center justify-between px-3 h-11 font-cond font-semibold uppercase tracking-[0.12em] text-[14px]">
+                <span className={region === r2.id ? 'text-paper' : 'text-dim group-hover:text-paper'}>{r2.label}</span>
+                <Compass size={13} className="opacity-60" aria-hidden="true" />
+              </span>
+              {/* A região seleccionada mostra o postal oficial e o que dela se
+                  sabe; `sourced` distingue descrição oficial de leitura da
+                  própria imagem, para não passarem por confirmação igual. */}
+              {region === r2.id && r2.blurb && (
+                <span className="block border-t border-line/60">
+                  {r2.image && (
+                    <span className="block relative aspect-[16/7] overflow-hidden">
+                      <Image src={r2.image} alt={`Official artwork for ${r2.label}`} fill sizes="320px" className="object-cover" />
+                    </span>
+                  )}
+                  <span className="block px-3 py-2.5">
+                    <span className="block font-sans text-[12px] leading-snug text-dim normal-case tracking-normal">{r2.blurb}</span>
+                    <span className="block mt-1.5 font-cond uppercase tracking-[0.14em] text-[10px] text-dim/70">
+                      {r2.sourced ? 'Official description' : 'Read from official imagery'}
+                    </span>
+                  </span>
+                </span>
+              )}
             </button>
           ))}
         </div>
