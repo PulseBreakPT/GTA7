@@ -124,7 +124,7 @@ function App() {
 
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.5fr)_minmax(280px,1fr)] gap-5 items-start">
         {/* SIDEBAR */}
-        <aside id="vehicle-filters" className="min-w-0">
+        <aside id="vehicle-filters" className="min-w-0 order-2 lg:order-none">
           <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vehicle…" aria-label="Search vehicle" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
@@ -165,7 +165,7 @@ function App() {
         </aside>
 
         {/* CENTER IMAGE */}
-        <div className="min-w-0">
+        <div className="min-w-0 order-1 lg:order-none">
           <div className="ghost-type" data-ghost="GARAGE"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[60px] sm:text-[78px]">GARAGE</h1></div>
           <div className="corner-brackets tech-mask card-active relative mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
             <VehicleVisual v={displaySelected} className="absolute inset-0" sizes="(max-width:1280px) 100vw, 45vw" priority />

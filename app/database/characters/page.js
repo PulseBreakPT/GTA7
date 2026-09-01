@@ -84,7 +84,7 @@ function App() {
 
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[300px_1fr] xl:grid-cols-[300px_minmax(0,1.35fr)_minmax(300px,0.95fr)] gap-5 items-start">
         {/* LEFT: list */}
-        <aside className="min-w-0">
+        <aside className="min-w-0 order-2 lg:order-none">
           <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
@@ -128,7 +128,7 @@ function App() {
         </aside>
 
         {/* CENTER: profile */}
-        <section className="panel rounded-sm overflow-hidden grid grid-cols-1 sm:grid-cols-[44%_56%] min-h-[440px] xl:min-h-[560px] relative scanlines" aria-label="Selected character">
+        <section className="panel rounded-sm overflow-hidden grid grid-cols-1 sm:grid-cols-[44%_56%] min-h-[440px] xl:min-h-[560px] relative scanlines order-1 lg:order-none" aria-label="Selected character">
           <span className="relative block min-h-[300px] sm:min-h-full">
             <Portrait c={displaySelected} className="absolute inset-0" sizes="(max-width:1024px) 100vw, 30vw" priority />
             {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous character image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next character image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}

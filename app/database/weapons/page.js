@@ -84,7 +84,7 @@ function App() {
       <p className="mx-4 sm:mx-6 lg:mx-8 max-w-[1280px] mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">PUBLIC VIEW: OFFICIAL — NAMED · OFFICIAL — DEPICTED · OFFICIAL — CATEGORY CONFIRMED</p>
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_372px] gap-6 flex-1">
         {/* LEFT */}
-        <aside className="min-w-0">
+        <aside className="min-w-0 order-2 lg:order-none">
           <div className="ghost-type" data-ghost="ARSENAL"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARSENAL</h1></div>
           <div className="flex items-stretch mt-3">
             {weaponCounters.map(([n, label], i) => (
@@ -142,7 +142,7 @@ function App() {
         </aside>
 
         {/* CENTER: circular inventory */}
-        <div className="min-w-0 flex flex-col">
+        <div className="min-w-0 flex flex-col order-1 lg:order-none">
           <div className="relative mx-auto w-full max-w-[560px] aspect-square">
             <span className="absolute inset-[11%] rounded-full border border-line/70" aria-hidden="true" />
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
