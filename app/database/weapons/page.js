@@ -101,6 +101,16 @@ function App() {
             })}
           </div>
 
+          {/* Rockstar não publicou estatísticas de arma nenhuma. Onde não as
+              há, dizemo-lo em vez de desenhar barras que seriam inventadas. */}
+          {selected.unpublished ? (
+            <div className="mt-6 border border-line rounded-sm p-4">
+              <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Stats not published</p>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-dim">
+                This weapon is documented in official imagery, but Rockstar has released no performance figures for it. No numbers are shown here rather than invented ones.
+              </p>
+            </div>
+          ) : (
           <div className="mt-6 flex flex-col gap-3" aria-label="Selected weapon core stats">
             {barStats.map((b) => (
               <div key={b.label} className="flex items-center gap-3">
@@ -113,6 +123,7 @@ function App() {
               </div>
             ))}
           </div>
+          )}
         </aside>
 
         {/* CENTER: circular inventory */}
@@ -148,7 +159,7 @@ function App() {
                       style={{ left: `${cxp}%`, top: `${cyp}%`, transform: 'translate(-50%,-50%)' }}
                     >
                       <WeaponVisual w={w} className="flex-1 w-full rounded-[2px]" sizes="110px" />
-                      <span className="font-mono text-[11px] text-paper/90 tabular-nums text-center pt-1">{pad(w.ammo)} / {w.mag}</span>
+                      <span className="font-mono text-[11px] text-paper/90 tabular-nums text-center pt-1">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>
                     </button>
                   ) : (
                     <div
@@ -174,7 +185,7 @@ function App() {
                   className={cx('shrink-0 w-[164px] panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                   <WeaponVisual w={w} className="h-[84px] w-full rounded-[2px]" sizes="164px" />
                   <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper mt-2 truncate text-center">{w.name}</span>
-                  <span className="font-mono text-[11px] text-dim tabular-nums text-center">{pad(w.ammo)} / {w.mag}</span>
+                  <span className="font-mono text-[11px] text-dim tabular-nums text-center">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>
                 </button>
               )
             })}
@@ -211,7 +222,7 @@ function App() {
             <WeaponVisual w={selected} className="mt-4 h-[200px] w-full rounded-sm border border-line scanlines" sizes="370px" />
 
             <div className="mt-4 grid grid-cols-3 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
-              {[['RANGE', selected.stats[3]], ['CAPACITY', selected.stats[4]], ['WEIGHT', `${selected.stats[5]} KG`]].map(([label, val]) => (
+              {[['RANGE', selected.unpublished ? '—' : selected.stats[3]], ['CAPACITY', selected.unpublished ? '—' : selected.stats[4]], ['WEIGHT', selected.unpublished ? '—' : `${selected.stats[5]} KG`]].map(([label, val]) => (
                 <div key={label} className="py-3 text-center">
                   <span className="block font-cond text-[10px] text-dim uppercase tracking-[0.18em]">{label}</span>
                   <span className="block font-cond font-bold text-[24px] text-paper tabular-nums mt-0.5">{val}</span>
