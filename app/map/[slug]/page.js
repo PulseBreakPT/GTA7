@@ -43,6 +43,12 @@ export default function RegionPage() {
             <p className="mt-1 font-cond font-semibold text-[16px] text-paper">{region.knownPlaces.join(' · ')}</p>
           </div>
         </div>
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="panel2 rounded-sm p-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Official type</p><p className="mt-1 font-cond font-semibold text-[14px] text-paper">{region.officialType}</p></div>
+          <div className="panel2 rounded-sm p-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Environment</p><p className="mt-1 font-cond font-semibold text-[14px] text-paper">{region.environment}</p></div>
+          <div className="panel2 rounded-sm p-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Official theme</p><p className="mt-1 font-cond font-semibold text-[14px] text-paper">{region.theme}</p></div>
+        </div>
+        <div className="mt-3 border border-mint/25 bg-mint/[0.03] rounded-sm p-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Confirmed associations</p><p className="mt-1 text-[12px] text-dim">{region.activities.join(' · ')}</p></div>
       </header>
 
       <div className="data-rail mt-8">REGION DOSSIER · NAMED PLACES · ARCHIVE VISUALS</div>
