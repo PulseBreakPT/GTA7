@@ -270,6 +270,9 @@ main [class*="overflow-x-auto"] > * { scroll-snap-align: start; }
   main [class*="mt-6"] { margin-top: 1.25rem; }
   main [class*="mt-5"] { margin-top: 1rem; }
   main [class*="p-5"] { padding: 1rem; }
+  main [class*="p-4"] { padding: 0.875rem; }
+  main [class*="gap-3"] { gap: 0.625rem; }
+  main [class*="text-[15px]"] { font-size: 0.9375rem; line-height: 1.55; }
   main { overflow-wrap: anywhere; }
   main h1 { font-size: clamp(2.5rem, 13vw, 4.5rem); }
   main h2 { font-size: clamp(1.25rem, 6vw, 2rem); }
