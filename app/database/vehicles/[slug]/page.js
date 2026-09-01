@@ -68,6 +68,7 @@ function App() {
             <div className="flex items-center gap-2">
               <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(vehicleClasses.find((c) => c.id === v.cls) || {}).label || v.cls}</span>
               <StatusBadge status={v.status} />
+              <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
             </div>
             <h1 data-ghost="GARAGE" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[46px] sm:text-[56px] mt-2">{v.name}</h1>
 

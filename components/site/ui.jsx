@@ -7,6 +7,7 @@ export const cx = (...a) => a.filter(Boolean).join(' ')
 export const STATUS_META = {
   confirmed: { label: 'CONFIRMED', color: '#65DCCB', Icon: Check },
   verified: { label: 'VERIFIED', color: '#65DCCB', Icon: BadgeCheck },
+  category: { label: 'CATEGORY CONFIRMED', color: '#E6D658', Icon: BadgeCheck },
   analysis: { label: 'ANALYSIS', color: '#65DCCB', Icon: Activity },
   rumour: { label: 'RUMOUR', color: '#9B83F4', Icon: HelpCircle },
   official: { label: 'OFFICIAL', color: '#F1A3C3', Icon: Check },

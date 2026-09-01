@@ -11,7 +11,7 @@ import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatal
 
 // Um id sem ícone aqui devolve `undefined` e parte a renderização da página
 // inteira, por isso o fallback é obrigatório, não uma cortesia.
-const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat, offroad: Car }
+const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat, aircraft: CarFront, offroad: Car }
 const classIcon = (id) => CLASS_ICONS[id] || Car
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
@@ -116,6 +116,7 @@ function App() {
           <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
         </div>
       </section>
+      <p className="mx-4 sm:mx-6 lg:mx-8 max-w-[1280px] mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">PUBLIC VIEW: OFFICIAL — NAMED · OFFICIAL — DEPICTED · OFFICIAL — CATEGORY CONFIRMED</p>
 
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.5fr)_minmax(280px,1fr)] gap-5 items-start">
         {/* SIDEBAR */}
@@ -177,6 +178,7 @@ function App() {
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(vehicleClasses.find((c) => c.id === selected.cls) || {}).label || selected.cls}</span>
             <StatusBadge status={selected.status} />
+            <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{selected.evidenceStatus}</span>
           </div>
 
           {/* Sem números publicados não se desenham barras — dizê-lo é a
