@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check } from 'lucide-react'
+import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
@@ -59,6 +59,7 @@ function App() {
   const [comparePair, setComparePair] = useState([])
   const [compareOpen, setCompareOpen] = useState(false)
   const [zoomed, setZoomed] = useState(false)
+  const [gallerySlide, setGallerySlide] = useState(0)
 
   useEffect(() => {
     try {
@@ -66,6 +67,7 @@ function App() {
       setComparePair(JSON.parse(localStorage.getItem('la:compare') || '[]'))
     } catch { /* noop */ }
   }, [])
+  useEffect(() => { setGallerySlide(0) }, [selectedSlug])
 
   const saveFavs = (next) => { setFavs(next); localStorage.setItem('la:favs', JSON.stringify(next)) }
   const saveCompare = (next) => { setComparePair(next); localStorage.setItem('la:compare', JSON.stringify(next)) }
@@ -79,6 +81,8 @@ function App() {
   }, [cls, query, sortMode])
 
   const selected = list.find((v) => v.slug === selectedSlug) || list[0] || vehicles[0]
+  const selectedGallery = selected.gallery?.length ? selected.gallery : [selected.image]
+  const displaySelected = { ...selected, image: selectedGallery[gallerySlide] || selected.image }
   const selIndex = Math.max(0, list.findIndex((v) => v.slug === selected.slug))
   const clsMeta = vehicleClasses.find((c) => c.id === (selected ? selected.cls : 'muscle'))
   const isFav = favs.includes(selected.slug)
@@ -164,7 +168,8 @@ function App() {
         <div className="min-w-0">
           <div className="ghost-type" data-ghost="GARAGE"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[60px] sm:text-[78px]">GARAGE</h1></div>
           <div className="corner-brackets tech-mask card-active relative mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
-            <VehicleVisual v={selected} className="absolute inset-0" sizes="(max-width:1280px) 100vw, 45vw" priority />
+            <VehicleVisual v={displaySelected} className="absolute inset-0" sizes="(max-width:1280px) 100vw, 45vw" priority />
+            {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous vehicle image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next vehicle image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
             <span className="absolute top-3 right-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[12px] text-paper tabular-nums">{String(selIndex + 1).padStart(2, '0')} / {clsMeta ? clsMeta.count : list.length}</span>
             <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-3 left-3 w-10 h-10 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40">
               <Maximize2 size={15} />
