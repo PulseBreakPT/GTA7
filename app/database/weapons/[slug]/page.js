@@ -65,6 +65,12 @@ function App() {
             </div>
             <h1 data-ghost="ARSENAL" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[48px] sm:text-[58px] mt-2">{w.name}</h1>
             <p className="text-dim text-[14px] leading-relaxed mt-3">{w.desc}</p>
+            {w.association && (
+              <div className="mt-4 border-l-2 border-mint/70 pl-3">
+                <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Associated character / content</p>
+                <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{w.association}</p>
+              </div>
+            )}
 
             {w.unpublished ? (
               <div className="mt-5 border border-line rounded-sm p-4">

@@ -244,6 +244,12 @@ function App() {
             </div>
 
             <p className="text-[13px] text-dim mt-3">{selected.desc}</p>
+            {selected.association && (
+              <div className="mt-3 border-l-2 border-mint/70 pl-3">
+                <span className="block font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Associated character / content</span>
+                <span className="block font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{selected.association}</span>
+              </div>
+            )}
 
             <Link href={`/database/weapons/${selected.slug}`} className="mt-4 w-full inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[15px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
               OPEN PROFILE
