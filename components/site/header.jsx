@@ -47,9 +47,9 @@ export default function Header() {
 
   return (
     <header className="archive-header sticky top-0 z-[70] bg-ink/88 backdrop-blur-md border-b hairline">
-      <div className="px-3 sm:px-6 lg:px-8 h-[72px] flex items-center gap-3 sm:gap-5 lg:gap-8">
+      <div className="px-3 sm:px-6 lg:px-8 h-[56px] flex items-center gap-2 sm:gap-4 lg:gap-6">
         <Link href="/" className="group shrink-0 flex flex-col justify-center">
-          <span className="chromatic-title font-cond font-bold text-[21px] sm:text-[26px] tracking-wide text-paper whitespace-nowrap leading-none">LEONIDA ARCHIVE</span>
+          <span className="chromatic-title font-cond font-bold text-[18px] sm:text-[22px] tracking-wide text-paper whitespace-nowrap leading-none">LEONIDA ARCHIVE</span>
           <span className="hidden sm:block font-mono text-[8px] tracking-[0.28em] text-dim mt-1 group-hover:text-mint transition-colors">OFFICIAL EVIDENCE INDEX</span>
         </Link>
 
@@ -62,7 +62,7 @@ export default function Header() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cx(
-                  'relative font-cond font-semibold uppercase tracking-[0.12em] text-[13px] px-3 py-2.5 transition-all duration-200 rounded-sm active:scale-95',
+                  'relative font-cond font-semibold uppercase tracking-[0.1em] text-[11px] px-2.5 py-2 transition-all duration-200 rounded-sm active:scale-95',
                   active ? 'bg-paper text-ink shadow-[0_0_18px_-8px_rgba(255,255,255,0.8)] after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:bg-gradient-to-r after:from-mint after:via-pink after:to-violet' : 'text-dim hover:text-paper hover:bg-white/5 hover:-translate-y-px'
                 )}
               >
@@ -77,7 +77,7 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setSearchOpen(true)}
-          className="glass-panel tech-mask-sm hidden md:flex items-center gap-2 w-[240px] xl:w-[300px] h-10 px-3 text-left hover:border-white/30 transition-colors"
+          className="glass-panel tech-mask-sm hidden md:flex items-center gap-2 w-[200px] xl:w-[260px] h-9 px-3 text-left hover:border-white/30 transition-colors"
           aria-label="Search the archive"
         >
           <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
@@ -103,7 +103,7 @@ export default function Header() {
                 key={item.label}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={cx('flex items-center min-h-[48px] px-6 font-cond font-semibold uppercase tracking-[0.12em] text-[16px] border-b hairline transition-all duration-200 active:scale-[0.98]', active ? 'bg-paper text-ink border-l-2 border-l-pink' : 'text-dim hover:text-paper hover:bg-white/5 hover:pl-8')}
+                className={cx('flex items-center min-h-[42px] px-5 font-cond font-semibold uppercase tracking-[0.1em] text-[13px] border-b hairline transition-all duration-200 active:scale-[0.98]', active ? 'bg-paper text-ink border-l-2 border-l-pink' : 'text-dim hover:text-paper hover:bg-white/5 hover:pl-7')}
               >
                 {item.label}
               </Link>
