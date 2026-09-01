@@ -46,12 +46,13 @@ export default function Header() {
 
   return (
     <header className="archive-header sticky top-0 z-[70] bg-ink/88 backdrop-blur-md border-b hairline">
-      <div className="px-3 sm:px-6 lg:px-8 h-16 flex items-center gap-2 sm:gap-4 lg:gap-6">
-        <Link href="/" className="chromatic-title font-cond font-bold text-[21px] sm:text-[26px] tracking-wide text-paper whitespace-nowrap leading-none shrink-0">
-          LEONIDA ARCHIVE
+      <div className="px-3 sm:px-6 lg:px-8 h-[72px] flex items-center gap-3 sm:gap-5 lg:gap-8">
+        <Link href="/" className="group shrink-0 flex flex-col justify-center">
+          <span className="chromatic-title font-cond font-bold text-[21px] sm:text-[26px] tracking-wide text-paper whitespace-nowrap leading-none">LEONIDA ARCHIVE</span>
+          <span className="hidden sm:block font-mono text-[8px] tracking-[0.28em] text-dim mt-1 group-hover:text-mint transition-colors">OFFICIAL EVIDENCE INDEX</span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1 ml-2" aria-label="Primary">
+        <nav className="hidden lg:flex items-center gap-0.5 ml-1 p-1 border border-line/70 bg-surface2/40 rounded-sm" aria-label="Primary">
           {NAV.map((item) => {
             const active = item.match(pathname)
             return (
@@ -60,8 +61,8 @@ export default function Header() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cx(
-                  'font-cond font-semibold uppercase tracking-[0.12em] text-[14px] px-3 py-2 transition-colors duration-150',
-                  active ? 'bg-paper text-ink' : 'text-dim hover:text-paper'
+                  'font-cond font-semibold uppercase tracking-[0.12em] text-[13px] px-3 py-2.5 transition-all duration-150 rounded-sm',
+                  active ? 'bg-paper text-ink shadow-[0_0_18px_-8px_rgba(255,255,255,0.8)]' : 'text-dim hover:text-paper hover:bg-white/5'
                 )}
               >
                 {item.label}
