@@ -71,7 +71,12 @@ function App() {
             </div>
             <h1 data-ghost="GARAGE" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[46px] sm:text-[56px] mt-2">{v.name}</h1>
 
-            <div className="mt-5 flex flex-col gap-3">
+            {v.unpublished ? (
+              <div className="mt-5 border border-line rounded-sm p-4">
+                <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Performance not published</p>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-dim">Rockstar has named this vehicle but has not released speed, acceleration, braking or handling figures.</p>
+              </div>
+            ) : <div className="mt-5 flex flex-col gap-3">
               {stats.map((s) => (
                 <div key={s.label} className="flex items-center gap-3">
                   <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: s.color }} aria-hidden="true"><s.icon size={14} /></span>
@@ -82,7 +87,7 @@ function App() {
                   <span className="font-mono text-[12px] text-dim tabular-nums w-8 text-right">{s.value}</span>
                 </div>
               ))}
-            </div>
+            </div>}
 
             <div className="mt-5 flex flex-wrap gap-2">
               {v.specs.map((s, i) => <span key={i} className="panel2 rounded-sm px-2.5 py-1.5 font-cond uppercase text-[12px] tracking-[0.1em] text-paper">{s}</span>)}

@@ -52,7 +52,7 @@ function App() {
   const router = useRouter()
   const [cls, setCls] = useState('muscle')
   const [query, setQuery] = useState('')
-  const [selectedSlug, setSelectedSlug] = useState('vapid-ganado-retro')
+  const [selectedSlug, setSelectedSlug] = useState('vapid-ganado')
   const [favs, setFavs] = useState([])
   const [sortMode, setSortMode] = useState(0) // 0 number, 1 name, 2 speed
   const [compareMode, setCompareMode] = useState(false)

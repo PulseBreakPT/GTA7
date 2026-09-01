@@ -65,7 +65,12 @@ function App() {
             <h1 data-ghost="ARSENAL" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[48px] sm:text-[58px] mt-2">{w.name}</h1>
             <p className="text-dim text-[14px] leading-relaxed mt-3">{w.desc}</p>
 
-            <div className="mt-5 flex flex-col gap-3">
+            {w.unpublished ? (
+              <div className="mt-5 border border-line rounded-sm p-4">
+                <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Performance not published</p>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-dim">Rockstar has confirmed this item but has not released damage, fire-rate, accuracy or range figures.</p>
+              </div>
+            ) : <div className="mt-5 flex flex-col gap-3">
               {bars.map((b) => (
                 <div key={b.label} className="flex items-center gap-3">
                   <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: b.color }} aria-hidden="true"><b.icon size={14} /></span>
@@ -76,7 +81,7 @@ function App() {
                   <span className="font-mono text-[12px] text-dim tabular-nums w-8 text-right">{b.value}</span>
                 </div>
               ))}
-            </div>
+            </div>}
 
             <div className="mt-5 grid grid-cols-3 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
               {[['CAPACITY', w.stats[4], Layers], ['RESERVE', w.mag, Layers], ['WEIGHT', `${w.stats[5]} KG`, Weight]].map(([label, val]) => (
