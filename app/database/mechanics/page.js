@@ -63,7 +63,7 @@ function MechanicsPage() {
             ))}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 mt-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-5">
             {list.map((m) => {
               const Icon = MECH_ICONS[m.icon] || Repeat2
               const active = m.slug === selected.slug
