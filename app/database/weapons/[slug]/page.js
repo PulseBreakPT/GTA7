@@ -71,6 +71,10 @@ function App() {
                 <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{w.association}</p>
               </div>
             )}
+            <div className="mt-3 border-l-2 border-violet/70 pl-3">
+              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Manufacturer / brand</p>
+              <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{w.manufacturer}</p>
+            </div>
 
             {w.unpublished ? (
               <div className="mt-5 border border-line rounded-sm p-4">
