@@ -82,6 +82,7 @@ function App() {
               <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.manufacturer}</p>
             </div>
             {v.character && <div className="mt-3 border-l-2 border-pink/70 pl-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Character</p><p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.character}</p></div>}
+            {v.content && <div className="mt-3 border-l-2 border-mint/70 pl-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Content</p><p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.content}</p></div>}
 
             {v.unpublished ? (
               <div className="mt-5 border border-line rounded-sm p-4">
