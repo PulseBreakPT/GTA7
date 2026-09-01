@@ -42,6 +42,12 @@ function App() {
   const [sortAZ, setSortAZ] = useState(false)
   const [gallerySlide, setGallerySlide] = useState(0)
 
+  // Start each character on their primary image when switching profiles.
+  const selectCharacter = (slug) => {
+    setSelectedSlug(slug)
+    setGallerySlide(0)
+  }
+
   const list = useMemo(() => {
     const q = query.trim().toLowerCase()
     let arr = characters.filter((c) => (filter === 'all' || c.group === filter) && (!q || c.name.toLowerCase().includes(q)))
@@ -101,7 +107,7 @@ function App() {
             {list.map((c) => {
               const active = c.slug === selected.slug
               return (
-                <button key={c.slug} type="button" role="option" aria-selected={active} onClick={() => setSelectedSlug(c.slug)}
+                <button key={c.slug} type="button" role="option" aria-selected={active} onClick={() => selectCharacter(c.slug)}
                   className={cx('panel rounded-sm p-2.5 flex items-center gap-3 text-left transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                   <Portrait c={c} className="w-[62px] h-[62px] rounded-sm border border-line shrink-0 text-[18px]" sizes="62px" />
                   <span className="flex-1 min-w-0">
@@ -126,6 +132,7 @@ function App() {
           <span className="relative block min-h-[300px] sm:min-h-full">
             <Portrait c={displaySelected} className="absolute inset-0" sizes="(max-width:1024px) 100vw, 30vw" priority />
             {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous character image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next character image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
+            {selectedGallery.length > 1 && <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5" aria-label="Character image thumbnails">{selectedGallery.map((src, i) => <button key={src} type="button" onClick={() => setGallerySlide(i)} aria-label={`Show character image ${i + 1}`} className={cx('w-2 h-2 rounded-full border border-white/70', i === gallerySlide ? 'bg-pink' : 'bg-ink/60')} />)}</div>}
             <span className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
             <span className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-raised to-transparent pointer-events-none" aria-hidden="true" />
           </span>
