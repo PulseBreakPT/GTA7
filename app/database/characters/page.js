@@ -226,7 +226,7 @@ function App() {
       {/* ASSOCIATED MECHANICS */}
       <section className="px-4 sm:px-6 lg:px-8 pb-6" aria-label="Associated mechanics">
         <h2 className="font-cond font-semibold uppercase tracking-[0.22em] text-[13px] text-pink">ASSOCIATED MECHANICS</h2>
-        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-3">
           {mechList.map((m) => {
             const Icon = MECH_ICONS[m.icon] || Repeat2
             const active = m.slug === selMech.slug

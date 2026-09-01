@@ -42,7 +42,7 @@ function MechanicsPage() {
         <div className="min-w-0">
           <div className="ghost-type" data-ghost="SYSTEMS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MECHANICS</h1></div>
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3">
             <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
               <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially documented delivery details</p>
               <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.mechanics.join(' ')}</p>
@@ -63,7 +63,7 @@ function MechanicsPage() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 mt-5">
             {list.map((m) => {
               const Icon = MECH_ICONS[m.icon] || Repeat2
               const active = m.slug === selected.slug
