@@ -73,6 +73,7 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="characters" />
+      <div className="px-4 sm:px-6 lg:px-8 pt-6 max-w-[1280px]"><div className="ghost-type" data-ghost="CHARACTERS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">CHARACTERS</h1></div></div>
 
       <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] border border-line bg-surface2/40 p-4 sm:p-5 order-10">
         <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Story context · community reference</p>

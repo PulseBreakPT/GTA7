@@ -71,6 +71,7 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="weapons" />
+      <div className="px-4 sm:px-6 lg:px-8 pt-6 max-w-[1280px]"><div className="ghost-type" data-ghost="ARSENAL"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARSENAL</h1></div></div>
       <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3 order-10">
         <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
           <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
@@ -84,7 +85,6 @@ function App() {
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_372px] gap-6 flex-1">
         {/* LEFT */}
         <aside className="min-w-0 order-2 lg:order-none">
-          <div className="ghost-type" data-ghost="ARSENAL"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARSENAL</h1></div>
           <div className="flex items-stretch mt-3">
             {weaponCounters.map(([n, label], i) => (
               <div key={label} className={cx('pr-5 flex flex-col leading-none', i > 0 && 'pl-5 border-l hairline')}>
