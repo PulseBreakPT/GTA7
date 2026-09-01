@@ -25,6 +25,7 @@ body {
     radial-gradient(circle at 48% 90%, rgba(101, 220, 203, 0.07), transparent 34rem);
   color: #F2F4F7;
   -webkit-font-smoothing: antialiased;
+  line-height: 1.45;
 }
 
 /* Film grain overlay */
@@ -199,6 +200,8 @@ main::before {
    turns into a narrow, single-column reading flow. */
 main h1, main h2, main h3 { text-wrap: balance; }
 main p { text-wrap: pretty; }
+main p + p { margin-top: 0.6em; }
+main h1, main h2, main h3 { letter-spacing: -0.015em; }
 main img { max-width: 100%; }
 main [class*="grid"] > *, main [class*="flex"] > * { min-width: 0; }
 
