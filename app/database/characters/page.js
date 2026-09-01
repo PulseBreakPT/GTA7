@@ -4,10 +4,10 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack } from 'lucide-react'
+import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack, ArrowLeft, ArrowRight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
-import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief } from '@/lib/content'
+import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief, IMG } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
 const REL_BARS = [
@@ -40,6 +40,7 @@ function App() {
   const [selectedSlug, setSelectedSlug] = useState('lucia-caminos')
   const [mechSlug, setMechSlug] = useState('character-switching')
   const [sortAZ, setSortAZ] = useState(false)
+  const [gallerySlide, setGallerySlide] = useState(0)
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -49,6 +50,8 @@ function App() {
   }, [filter, query, sortAZ])
 
   const selected = characterBySlug(selectedSlug) || list[0] || characters[0]
+  const selectedGallery = selected.slug === 'lucia-caminos' ? [selected.image, IMG.keyArtBeach, IMG.keyArtMotel] : selected.slug === 'jason-duval' ? [selected.image, IMG.keyArt, IMG.keyArtPier] : [selected.image].filter(Boolean)
+  const displaySelected = { ...selected, image: selectedGallery[gallerySlide] || selected.image }
   const rels = relationships.filter((r) => r.a === selected.slug || r.b === selected.slug)
   const primary = rels.find((r) => r.primary) || rels[0]
   const partner = primary ? characterBySlug(primary.a === selected.slug ? primary.b : primary.a) : null
@@ -116,7 +119,8 @@ function App() {
         {/* CENTER: profile */}
         <section className="panel rounded-sm overflow-hidden grid grid-cols-1 sm:grid-cols-[44%_56%] min-h-[440px] xl:min-h-[560px] relative scanlines" aria-label="Selected character">
           <span className="relative block min-h-[300px] sm:min-h-full">
-            <Portrait c={selected} className="absolute inset-0" sizes="(max-width:1024px) 100vw, 30vw" priority />
+            <Portrait c={displaySelected} className="absolute inset-0" sizes="(max-width:1024px) 100vw, 30vw" priority />
+            {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous character image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next character image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
             <span className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
             <span className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-raised to-transparent pointer-events-none" aria-hidden="true" />
           </span>

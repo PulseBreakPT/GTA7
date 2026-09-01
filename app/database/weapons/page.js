@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, Crosshair, Pill, BatteryFull } from 'lucide-react'
+import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, Crosshair, Pill, BatteryFull, ArrowLeft, ArrowRight } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
 import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
@@ -33,6 +33,7 @@ function App() {
   const [type, setType] = useState('handgun')
   const [query, setQuery] = useState('')
   const [selectedSlug, setSelectedSlug] = useState('morgan-revolvers')
+  const [gallerySlide, setGallerySlide] = useState(0)
   const availableTypes = useMemo(() => weaponTypes.filter((t) => weapons.some((w) => w.type === t.id)), [])
 
   const ofType = useMemo(() => weapons.filter((w) => w.type === type), [type])
@@ -42,6 +43,8 @@ function App() {
   }, [ofType, query])
 
   const selected = list.find((w) => w.slug === selectedSlug) || list[0] || ofType[0]
+  const selectedGallery = selected?.gallery?.length ? selected.gallery : [selected?.image]
+  const displaySelected = selected ? { ...selected, image: selectedGallery[gallerySlide] || selected.image } : selected
   const selIndex = Math.max(0, list.findIndex((w) => w.slug === (selected && selected.slug)))
   const typeMeta = weaponTypes.find((t) => t.id === type)
 
@@ -232,7 +235,7 @@ function App() {
               </div>
             </div>
 
-            <WeaponVisual w={selected} className="mt-4 h-[200px] w-full rounded-sm border border-line scanlines" sizes="370px" />
+                <div className="relative mt-4"><WeaponVisual w={displaySelected} className="h-[200px] w-full rounded-sm border border-line scanlines" sizes="370px" />{selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous weapon image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next weapon image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}</div>
 
             <div className="mt-4 grid grid-cols-3 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
               {[['RANGE', selected.unpublished ? '—' : selected.stats[3]], ['CAPACITY', selected.unpublished ? '—' : selected.stats[4]], ['WEIGHT', selected.unpublished ? '—' : `${selected.stats[5]} KG`]].map(([label, val]) => (
