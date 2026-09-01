@@ -106,6 +106,27 @@ function App() {
               <span className="font-mono text-[10px] text-dim uppercase">UPDATED {w.updatedAt}</span>
             </div>
 
+            {(w.confirmedDetails?.length > 0 || w.notPublished?.length > 0) && (
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {w.confirmedDetails?.length > 0 && (
+                  <section className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm">
+                    <h2 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h2>
+                    <ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">
+                      {w.confirmedDetails.map((detail) => <li key={detail}>• {detail}</li>)}
+                    </ul>
+                  </section>
+                )}
+                {w.notPublished?.length > 0 && (
+                  <section className="border border-line bg-surface2/40 p-3 rounded-sm">
+                    <h2 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Not officially specified</h2>
+                    <ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">
+                      {w.notPublished.map((detail) => <li key={detail}>• {detail}</li>)}
+                    </ul>
+                  </section>
+                )}
+              </div>
+            )}
+
             {/* O «APPEARS IN» dava bairros onde cada arma aparecia, e o default
                 punha Little Haiti e Vice Point em tudo o que não trouxesse
                 lista. Ninguém sabe onde aparece uma arma num jogo por sair. */}
