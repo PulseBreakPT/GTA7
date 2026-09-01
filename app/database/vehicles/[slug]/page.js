@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, Heart, Zap, Eye, CircleDot, ExternalLink } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses } from '@/lib/content'
@@ -14,6 +14,7 @@ function App() {
   const { slug } = useParams()
   const v = vehicles.find((x) => x.slug === slug)
   const [favs, setFavs] = useState([])
+  const [slide, setSlide] = useState(0)
 
   useEffect(() => {
     try { setFavs(JSON.parse(localStorage.getItem('la:favs') || '[]')) } catch { /* noop */ }
@@ -42,6 +43,7 @@ function App() {
     { icon: CircleDot, label: 'HANDLING', value: v.stats[3], color: '#F5F4F0' },
   ]
   const related = vehicles.filter((x) => x.cls === v.cls && x.slug !== v.slug).slice(0, 4)
+  const gallery = v.gallery?.length ? v.gallery : [v.image]
 
   return (
     <div className="flex-1 flex flex-col">
@@ -54,15 +56,17 @@ function App() {
         <div className="data-rail mt-2">GARAGE INDEX · REFERENCE RECORD · UNIT {v.num}</div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6 mt-5">
           <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden aspect-[16/10]">
-            {v.image ? (
-              <Image src={v.image} alt={v.name} fill priority sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
+            {gallery[slide] ? (
+              <Image src={gallery[slide]} alt={`${v.name} image ${slide + 1}`} fill priority sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
             ) : (
               <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
                 <Car size={40} aria-hidden="true" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.24em]">AWAITING VISUAL</span>
               </span>
             )}
+            {gallery.length > 1 && <><button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous vehicle image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next vehicle image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
           </div>
+          {gallery.length > 1 && <div className="mt-2 flex gap-2 overflow-x-auto">{gallery.map((src, i) => <button key={src} type="button" onClick={() => setSlide(i)} className={cx('relative w-20 h-12 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}><Image src={src} alt="" fill sizes="80px" className="object-cover" /></button>)}</div>}
 
           <div>
             <div className="flex items-center gap-2">

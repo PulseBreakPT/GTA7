@@ -1,8 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ExternalLink, Heart, Zap, Eye, Target, Layers, Weight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ExternalLink, Heart, Zap, Eye, Target, Layers, Weight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge } from '@/components/site/ui'
 import { weapons, weaponTypes } from '@/lib/content'
@@ -12,6 +13,7 @@ import { Crosshair } from 'lucide-react'
 function App() {
   const { slug } = useParams()
   const w = weapons.find((x) => x.slug === slug)
+  const [slide, setSlide] = useState(0)
 
   if (!w) {
     return (
@@ -32,6 +34,7 @@ function App() {
     { icon: Target, label: 'RANGE', value: w.stats[3], color: '#F5F4F0' },
   ]
   const related = weapons.filter((x) => x.type === w.type && x.slug !== w.slug).slice(0, 4)
+  const gallery = w.gallery?.length ? w.gallery : [w.image]
 
   return (
     <div className="flex-1 flex flex-col">
@@ -44,9 +47,9 @@ function App() {
         <div className="data-rail mt-2">ARSENAL FILE · DOCUMENTED REFERENCE · ID {w.slug.toUpperCase()}</div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-6 mt-5">
           <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden min-h-[320px]">
-            {w.image ? (
+            {gallery[slide] ? (
               <>
-                <Image src={w.image} alt={w.name} fill sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
+                <Image src={gallery[slide]} alt={`${w.name} image ${slide + 1}`} fill sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
                 <span className="absolute inset-0 bg-ink/30" />
               </>
             ) : (
@@ -55,7 +58,9 @@ function App() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.24em]">CLASSIFIED — VISUAL PENDING</span>
               </span>
             )}
+            {gallery.length > 1 && <><button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous weapon image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next weapon image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
           </div>
+          {gallery.length > 1 && <div className="mt-2 flex gap-2 overflow-x-auto">{gallery.map((src, i) => <button key={src} type="button" onClick={() => setSlide(i)} className={cx('relative w-20 h-12 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}><Image src={src} alt="" fill sizes="80px" className="object-cover" /></button>)}</div>}
 
           <div>
             <div className="flex items-center gap-2">
