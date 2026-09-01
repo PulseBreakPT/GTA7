@@ -46,7 +46,7 @@ export default function Header() {
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
   return (
-    <header className="archive-header sticky top-0 z-[70] bg-ink/88 backdrop-blur-md border-b hairline">
+    <header className="archive-header sticky top-0 z-[70] bg-ink/92 backdrop-blur-xl border-b hairline shadow-[0_8px_30px_-20px_rgba(101,220,203,0.7)] relative before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-mint/70 before:to-transparent">
       <div className="px-3 sm:px-6 lg:px-8 h-[56px] flex items-center gap-2 sm:gap-4 lg:gap-6">
         <Link href="/" className="group shrink-0 flex flex-col justify-center">
           <span className="chromatic-title font-cond font-bold text-[18px] sm:text-[22px] tracking-wide text-paper whitespace-nowrap leading-none">LEONIDA ARCHIVE</span>

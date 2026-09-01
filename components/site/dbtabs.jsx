@@ -12,7 +12,7 @@ const TABS = [
 
 export default function DbTabs({ active, counters }) {
   return (
-    <div className="border-b hairline bg-ink/70 backdrop-blur-md">
+    <div className="border-b hairline bg-ink/80 backdrop-blur-xl shadow-[0_6px_20px_-18px_rgba(241,163,195,0.8)]">
       <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 overflow-x-auto">
         <nav className="flex items-center" aria-label="Database sections">
           {TABS.map((t) => {
@@ -23,12 +23,12 @@ export default function DbTabs({ active, counters }) {
                 href={t.href}
                 aria-current={isActive ? 'page' : undefined}
                 className={cx(
-                  'relative font-cond font-semibold uppercase tracking-[0.14em] text-[14px] px-4 sm:px-5 h-12 flex items-center whitespace-nowrap transition-colors duration-150',
-                  isActive ? 'text-paper' : 'text-dim hover:text-paper'
+                  'relative font-cond font-semibold uppercase tracking-[0.12em] text-[12px] px-3 sm:px-4 h-11 flex items-center whitespace-nowrap transition-all duration-200 active:scale-95',
+                  isActive ? 'text-paper bg-white/[0.04]' : 'text-dim hover:text-paper hover:bg-white/[0.03]'
                 )}
               >
                 {t.label}
-                {isActive && <span className="absolute bottom-0 left-3 right-3 h-[3px] bg-gradient-to-r from-mint via-pink to-violet" aria-hidden="true" />}
+                {isActive && <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-gradient-to-r from-mint via-pink to-violet shadow-[0_0_10px_rgba(241,163,195,0.7)]" aria-hidden="true" />}
               </Link>
             )
           })}
