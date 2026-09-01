@@ -62,8 +62,8 @@ export default function Header() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cx(
-                  'font-cond font-semibold uppercase tracking-[0.12em] text-[13px] px-3 py-2.5 transition-all duration-150 rounded-sm',
-                  active ? 'bg-paper text-ink shadow-[0_0_18px_-8px_rgba(255,255,255,0.8)]' : 'text-dim hover:text-paper hover:bg-white/5'
+                  'relative font-cond font-semibold uppercase tracking-[0.12em] text-[13px] px-3 py-2.5 transition-all duration-200 rounded-sm active:scale-95',
+                  active ? 'bg-paper text-ink shadow-[0_0_18px_-8px_rgba(255,255,255,0.8)] after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:bg-gradient-to-r after:from-mint after:via-pink after:to-violet' : 'text-dim hover:text-paper hover:bg-white/5 hover:-translate-y-px'
                 )}
               >
                 {item.label}
@@ -103,7 +103,7 @@ export default function Header() {
                 key={item.label}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={cx('flex items-center min-h-[48px] px-6 font-cond font-semibold uppercase tracking-[0.12em] text-[16px] border-b hairline', active ? 'bg-paper text-ink' : 'text-dim')}
+                className={cx('flex items-center min-h-[48px] px-6 font-cond font-semibold uppercase tracking-[0.12em] text-[16px] border-b hairline transition-all duration-200 active:scale-[0.98]', active ? 'bg-paper text-ink border-l-2 border-l-pink' : 'text-dim hover:text-paper hover:bg-white/5 hover:pl-8')}
               >
                 {item.label}
               </Link>
