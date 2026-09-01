@@ -9,6 +9,7 @@
 }
 
 html, body { max-width: 100vw; overflow-x: hidden; }
+html { scroll-behavior: smooth; scroll-padding-top: 104px; }
 
 body {
   background-color: #0B0F16;
@@ -174,6 +175,7 @@ main::before {
 @media (hover: hover) and (pointer: fine) { .chromatic-title:hover { text-shadow: 2px 0 rgba(241,163,195,.38), -2px 0 rgba(101,220,203,.28), 0 18px 34px rgba(0,0,0,.5); } }
 
 .archive-header { position: relative; }
+.archive-header { padding-top: env(safe-area-inset-top); }
 .archive-header::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 22%; height: 1px; background: linear-gradient(90deg, transparent, #65DCCB, #F1A3C3, transparent); opacity: .7; }
 .magnetic-button { transition: transform 220ms cubic-bezier(.2,.9,.25,1), box-shadow 220ms ease, background-color 220ms ease, color 220ms ease; }
 @media (hover: hover) and (pointer: fine) { .magnetic-button:hover { transform: translate(2px,-2px); box-shadow: 0 16px 32px -19px rgba(241,163,195,.85); } }
