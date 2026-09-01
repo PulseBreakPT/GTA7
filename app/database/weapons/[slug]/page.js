@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ExternalLink, MapPin, Heart, Zap, Eye, Target, Layers, Weight } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Heart, Zap, Eye, Target, Layers, Weight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge } from '@/components/site/ui'
 import { weapons, weaponTypes } from '@/lib/content'
@@ -94,15 +94,9 @@ function App() {
               <span className="font-mono text-[10px] text-dim uppercase">UPDATED {w.updatedAt}</span>
             </div>
 
-            <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim mt-5">APPEARS IN</h2>
-            <div className="mt-2 flex flex-col gap-2">
-              {w.locations.map((loc) => (
-                <Link key={loc} href="/map" className="flex items-center gap-3 border border-line rounded-sm px-3 h-11 hover:border-white/40 transition-colors">
-                  <MapPin size={14} className="text-pink" aria-hidden="true" />
-                  <span className="text-[13px] text-paper">{loc}</span>
-                </Link>
-              ))}
-            </div>
+            {/* O «APPEARS IN» dava bairros onde cada arma aparecia, e o default
+                punha Little Haiti e Vice Point em tudo o que não trouxesse
+                lista. Ninguém sabe onde aparece uma arma num jogo por sair. */}
           </div>
         </div>
 

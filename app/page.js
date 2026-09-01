@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Triangle, ChevronRight, Play } from 'lucide-react'
-import MiniMap from '@/components/site/minimap'
 import { StatusBadge } from '@/components/site/ui'
 import { encyclopediaCategories, IMG, extendedLookBrief } from '@/lib/content'
 
@@ -49,10 +48,11 @@ function App() {
             </div>
           </div>
 
-          <div className="tech-mask glass-panel relative lg:absolute lg:right-8 lg:bottom-8 mt-10 lg:mt-0 self-start p-2 sm:p-3">
-            <span className="absolute -top-3 right-4 z-10 bg-ink px-2 font-mono text-[9px] tracking-[0.15em] text-mint">SECTOR VC-01</span>
-            <MiniMap className="w-[320px] sm:w-[380px] h-[180px] sm:h-[200px]" label="VICE CITY · 1.86 MI" />
-          </div>
+          {/* Havia aqui um minimapa «SECTOR VC-01 · VICE CITY · 1.86 MI». A
+              distância era inventada e o traçado estava escrito à mão no
+              componente: decoração a fingir-se de leitura de mapa, na
+              primeira coisa que se vê do arquivo. Sai pela mesma razão que
+              saiu o «where to find» dos veículos. */}
         </div>
       </section>
 

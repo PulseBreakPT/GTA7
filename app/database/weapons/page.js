@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, MapPin, ChevronRight, Crosshair, Pill, BatteryFull } from 'lucide-react'
+import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, Crosshair, Pill, BatteryFull } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
 import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
@@ -259,16 +259,9 @@ function App() {
               </div>
             </div>
 
-            <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim mt-5">APPEARS IN</h3>
-            <div className="mt-2 flex flex-col gap-2">
-              {selected.locations.map((loc) => (
-                <Link key={loc} href="/map" className="flex items-center gap-3 border border-line rounded-sm px-3 h-11 group hover:border-white/40 transition-colors">
-                  <MapPin size={14} className="text-pink shrink-0" aria-hidden="true" />
-                  <span className="flex-1 text-[13px] text-paper truncate">{loc}</span>
-                  <ChevronRight size={14} className="text-dim group-hover:text-paper" aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
+            {/* Sai o «APPEARS IN» pela mesma razão que sai na página de cada
+                arma: os bairros eram invenção, e o default repetia-os por
+                todo o arsenal. */}
           </aside>
         )}
       </div>
