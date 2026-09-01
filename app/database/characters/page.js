@@ -254,13 +254,6 @@ function App() {
         </div>
       </section>
 
-      {/* BOTTOM HINTS */}
-      <div className="px-4 sm:px-6 lg:px-8 py-3 border-t hairline flex flex-wrap items-center gap-x-6 gap-y-2">
-        <GlyphHint shape="cross" label="SELECT" onClick={() => { const i = list.findIndex((c) => c.slug === selected.slug); if (list.length) setSelectedSlug(list[(i + 1) % list.length].slug) }} />
-        <GlyphHint shape="circle" label="BACK" onClick={() => router.back()} />
-        <GlyphHint shape="triangle" label="FILTERS" onClick={() => setFilter(characterFilters[(characterFilters.findIndex((f) => f.id === filter) + 1) % characterFilters.length].id)} />
-        <GlyphHint shape="square" label={sortAZ ? 'SORT: A–Z' : 'SORT: DEFAULT'} onClick={() => setSortAZ((v) => !v)} />
-      </div>
     </div>
   )
 }

@@ -212,10 +212,6 @@ function App() {
             )}
           </div>
 
-          <div className="mt-auto pt-3 flex items-center gap-6">
-            <GlyphHint shape="cross" label="SELECT" onClick={cycle} />
-            <GlyphHint shape="circle" label="BACK" onClick={() => router.back()} />
-          </div>
         </div>
 
         {/* RIGHT inspector */}

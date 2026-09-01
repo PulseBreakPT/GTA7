@@ -269,12 +269,7 @@ function App() {
         </div>
       </div>
 
-      {/* BOTTOM BAR */}
       <div className="px-4 sm:px-6 lg:px-8 py-3 mt-1 border-t hairline flex flex-wrap items-center gap-x-6 gap-y-2">
-        <GlyphHint shape="circle" label="BACK" onClick={() => router.back()} />
-        <GlyphHint shape="cross" label="SELECT" onClick={() => list.length && setSelectedSlug(list[(selIndex + 1) % list.length].slug)} />
-        <GlyphHint shape="square" label="FILTERS" onClick={() => document.getElementById('vehicle-filters').scrollIntoView({ behavior: 'smooth' })} />
-        <GlyphHint shape="triangle" label={sortMode === 0 ? 'SORT: NUMBER' : sortMode === 1 ? 'SORT: NAME' : 'SORT: SPEED'} onClick={() => setSortMode((m) => (m + 1) % 3)} />
         <div className="flex-1" />
         <button type="button" onClick={() => { setCompareMode((v) => !v); if (compareMode) { setCompareOpen(false) } }} aria-pressed={compareMode}
           className={cx('inline-flex items-center gap-3 border h-12 px-5 font-cond font-semibold uppercase tracking-[0.14em] text-[14px] transition-colors duration-200', compareMode ? 'bg-paper text-ink border-paper' : 'border-line text-paper hover:border-white/50')}>
