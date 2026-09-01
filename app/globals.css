@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Responsive foundation shared by every route. */
+*, *::before, *::after { box-sizing: border-box; }
+img, svg, video, canvas { max-width: 100%; }
+button, a, input, select, textarea { touch-action: manipulation; }
+button, a { -webkit-tap-highlight-color: rgba(241,163,195,0.18); }
+
 :root {
   --background: 220 33% 4%;
   --foreground: 48 20% 95%;
@@ -73,6 +79,7 @@ main .panel > .relative[class*="aspect-"], main .card-active > .relative[class*=
 /* Shared visual system: coloured cues make source status and dense archive
    content easier to scan on every route. */
 main { position: relative; isolation: isolate; }
+main { min-width: 0; padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
 main::before {
   content: '';
   position: absolute;
@@ -252,6 +259,11 @@ main [class*="overflow-x-auto"] > * { scroll-snap-align: start; }
 }
 
 @media (max-width: 640px) {
+  body { min-width: 320px; }
+  main { overflow-wrap: anywhere; }
+  main h1 { font-size: clamp(2.5rem, 13vw, 4.5rem); }
+  main h2 { font-size: clamp(1.25rem, 6vw, 2rem); }
+  main p { max-width: 68ch; }
   body {
     background-image:
       radial-gradient(circle at 10% 8%, rgba(155, 131, 244, 0.08), transparent 16rem),
