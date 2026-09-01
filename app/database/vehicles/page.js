@@ -120,7 +120,6 @@ function App() {
           <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
         </div>
       </section>
-      <p className="mx-4 sm:mx-6 lg:mx-8 max-w-[1280px] mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">PUBLIC VIEW: OFFICIAL — NAMED · OFFICIAL — DEPICTED · OFFICIAL — CATEGORY CONFIRMED</p>
 
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.5fr)_minmax(280px,1fr)] gap-5 items-start">
         {/* SIDEBAR */}

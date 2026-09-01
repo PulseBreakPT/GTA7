@@ -81,7 +81,6 @@ function App() {
           <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
         </div>
       </section>
-      <p className="mx-4 sm:mx-6 lg:mx-8 max-w-[1280px] mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">PUBLIC VIEW: OFFICIAL — NAMED · OFFICIAL — DEPICTED · OFFICIAL — CATEGORY CONFIRMED</p>
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_372px] gap-6 flex-1">
         {/* LEFT */}
         <aside className="min-w-0 order-2 lg:order-none">
