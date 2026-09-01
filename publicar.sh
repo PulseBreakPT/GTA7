@@ -23,9 +23,12 @@ cp -r .next/static .next/standalone/.next/static
 
 sudo mkdir -p "$DESTINO"
 sudo rsync -a --delete .next/standalone/ "$DESTINO/"
-sudo cp .env "$DESTINO/.env"
 sudo chown -R ubuntu:ubuntu "$DESTINO"
-sudo chmod 600 "$DESTINO/.env"
+
+# `install -m 600` cria já com as permissões certas. Com `cp` seguido de
+# `chmod` o .env — que tem a ligação à base de dados — fica legível por
+# qualquer utilizador local durante a janela entre os dois comandos.
+sudo install -o ubuntu -g ubuntu -m 600 .env "$DESTINO/.env"
 
 sudo systemctl restart leonida.service
 sleep 3

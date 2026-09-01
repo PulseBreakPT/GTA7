@@ -6,11 +6,10 @@ const nextConfig = {
   // Fixá-la aqui faz o bundle sair igual venha o build de onde vier.
   outputFileTracingRoot: __dirname,
   images: {
+    // Todas as imagens são agora ficheiros locais em public/media, já
+    // redimensionados e em WebP por scripts/gerar-media.js. Não há origens
+    // remotas para autorizar, e o optimizador não teria nada a acrescentar.
     unoptimized: true,
-    remotePatterns: [
-      { protocol: 'https', hostname: 'avatars.githubusercontent.com', pathname: '/**' },
-      { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
-    ],
   },
   // Renamed from experimental.serverComponentsExternalPackages in Next 15
   serverExternalPackages: ['mongodb'],

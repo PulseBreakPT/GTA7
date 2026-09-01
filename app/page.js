@@ -35,7 +35,7 @@ function App() {
       {/* ===== HERO ===== */}
       <section className="relative min-h-[560px] lg:min-h-[calc(100vh-8rem-220px)] xl:min-h-[620px] overflow-hidden scanlines vignette">
         <div className="absolute inset-0">
-          <Image src={IMG.skyline} alt="Leonida-inspired coastal city skyline at dusk with palm trees and ocean" fill priority sizes="100vw" className="object-cover object-center brightness-[1.12] saturate-[1.15]" />
+          <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center brightness-[1.12] saturate-[1.15]" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/35" />
         </div>
@@ -92,7 +92,7 @@ function App() {
               </p>
             </div>
             <div className="relative w-full sm:w-[46%] shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[150px] overflow-hidden rounded-sm border border-line">
-              <Image src={IMG.ferris} alt="Ferris wheel on a beach boardwalk at sunset" fill sizes="(max-width: 1024px) 100vw, 30vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+              <Image src={IMG.ambrosiaParty} alt="Revellers covered in mud at an off-road party in the Ambrosia backcountry" fill sizes="(max-width: 1024px) 100vw, 30vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
               <span className="absolute inset-0 bg-ink/20" />
               <span className="absolute bottom-3 right-3 w-11 h-11 rounded-full bg-ink/70 border border-white/60 flex items-center justify-center text-paper" aria-hidden="true">
                 <Play size={16} fill="currentColor" />
@@ -113,7 +113,7 @@ function App() {
               </p>
             </div>
             <div className="relative w-[104px] h-[104px] shrink-0 self-center overflow-hidden rounded-sm border border-line">
-              <Image src={IMG.skyline2} alt="City skyline with palm trees at dusk" fill sizes="104px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
+              <Image src={IMG.swampSkyline} alt="The Vice City skyline seen across the Grassrivers wetlands" fill sizes="104px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
             </div>
           </Link>
 
@@ -130,7 +130,7 @@ function App() {
               </p>
             </div>
             <div className="relative w-[104px] h-[104px] shrink-0 self-center overflow-hidden rounded-sm border border-line">
-              <Image src={IMG.carBlack} alt="Black muscle car tail lights in a dark garage" fill sizes="104px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
+              <Image src={IMG.stanierNight} alt="A Vapid Stanier in Vintage Vice City livery, lit by neon at night" fill sizes="104px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
             </div>
           </Link>
         </div>

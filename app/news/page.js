@@ -87,7 +87,10 @@ function App() {
             {/* LEAD */}
             <Link href={`/news/${lead.slug}`} className="card-active panel rounded-sm mt-5 block group">
               <div className="relative aspect-[2.9/1] overflow-hidden scanlines">
-                <Image src={lead.image} alt="Beach boardwalk with ferris wheel at dusk, neon-lit" fill priority sizes="(max-width:1280px) 100vw, 60vw" className="object-cover object-[center_62%] group-hover:scale-[1.02] transition-transform duration-300" />
+                {/* A imagem é a do artigo em destaque, por isso o alt tem de o
+                    acompanhar — estava fixo e passou a descrever outra coisa
+                    assim que a imagem mudou. */}
+                <Image src={lead.image} alt={`Lead image for “${lead.title}”`} fill priority sizes="(max-width:1280px) 100vw, 60vw" className="object-cover object-[center_62%] group-hover:scale-[1.02] transition-transform duration-300" />
                 <span className="absolute inset-0 bg-gradient-to-t from-raised via-ink/20 to-transparent" />
                 <span className="absolute top-4 left-4"><StatusBadge status="featured" label="FEATURED" /></span>
               </div>
