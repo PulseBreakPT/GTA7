@@ -50,7 +50,12 @@ function App() {
   }, [filter, query, sortAZ])
 
   const selected = characterBySlug(selectedSlug) || list[0] || characters[0]
-  const selectedGallery = selected.slug === 'lucia-caminos' ? [selected.image, IMG.keyArtBeach, IMG.keyArtMotel] : selected.slug === 'jason-duval' ? [selected.image, IMG.keyArt, IMG.keyArtPier] : [selected.image].filter(Boolean)
+  const selectedGallery = ({
+    'lucia-caminos': [selected.image, IMG.keyArtBeach, IMG.keyArtMotel], 'jason-duval': [selected.image, IMG.keyArt, IMG.keyArtPier],
+    'cal-hampton': [selected.image, IMG.calHamptonPortrait, IMG.calHamptonPhone], 'boobie-ike': [selected.image, IMG.boobieIkePortrait, IMG.boobieIkePhone],
+    'drequan-priest': [selected.image, IMG.drequanPriestPortrait, IMG.drequanPriestPhone], 'raul-bautista': [selected.image, IMG.raulBautistaPortrait, IMG.raulBautistaPhone],
+    'brian-heder': [selected.image, IMG.brianHederPortrait, IMG.brianHederPhone], 'real-dimez': [selected.image, IMG.realDimezPortrait, IMG.realDimezPhone],
+  }[selected.slug] || [selected.image]).filter(Boolean)
   const displaySelected = { ...selected, image: selectedGallery[gallerySlide] || selected.image }
   const rels = relationships.filter((r) => r.a === selected.slug || r.b === selected.slug)
   const primary = rels.find((r) => r.primary) || rels[0]

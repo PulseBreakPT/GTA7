@@ -60,11 +60,23 @@ const MAPA = [
 
   // --- Personagens (landscape: as outras variantes cortam as cabeças) ----
   [`${A}/Cal_Hampton/Cal_Hampton_landscape.jpg`, 'characters/cal-hampton.webp', 1400],
+  [`${A}/Cal_Hampton/Cal_Hampton_portrait.jpg`, 'characters/cal-hampton-portrait.webp', 1000],
+  [`${A}/Cal_Hampton/Cal_Hampton_phone.jpg`, 'characters/cal-hampton-phone.webp', 900],
   [`${A}/Boobie_Ike/Boobie_Ike_landscape.jpg`, 'characters/boobie-ike.webp', 1400],
+  [`${A}/Boobie_Ike/Boobie_Ike_portrait.jpg`, 'characters/boobie-ike-portrait.webp', 1000],
+  [`${A}/Boobie_Ike/Boobie_Ike_phone.jpg`, 'characters/boobie-ike-phone.webp', 900],
   [`${A}/DreQuan_Priest/DreQuan_Priest_landscape.jpg`, 'characters/drequan-priest.webp', 1400],
+  [`${A}/DreQuan_Priest/DreQuan_Priest_portrait.jpg`, 'characters/drequan-priest-portrait.webp', 1000],
+  [`${A}/DreQuan_Priest/DreQuan_Priest_phone.jpg`, 'characters/drequan-priest-phone.webp', 900],
   [`${A}/Raul_Bautista/Raul_Bautista_landscape.jpg`, 'characters/raul-bautista.webp', 1400],
+  [`${A}/Raul_Bautista/Raul_Bautista_portrait.jpg`, 'characters/raul-bautista-portrait.webp', 1000],
+  [`${A}/Raul_Bautista/Raul_Bautista_phone.jpg`, 'characters/raul-bautista-phone.webp', 900],
   [`${A}/Brian_Heder/Brian_Heder_landscape.jpg`, 'characters/brian-heder.webp', 1400],
+  [`${A}/Brian_Heder/Brian_Heder_portrait.jpg`, 'characters/brian-heder-portrait.webp', 1000],
+  [`${A}/Brian_Heder/Brian_Heder_phone.jpg`, 'characters/brian-heder-phone.webp', 900],
   [`${A}/Real_Dimez/Real_Dimez_landscape.jpg`, 'characters/real-dimez.webp', 1400],
+  [`${A}/Real_Dimez/Real_Dimez_portrait.jpg`, 'characters/real-dimez-portrait.webp', 1000],
+  [`${A}/Real_Dimez/Real_Dimez_phone.jpg`, 'characters/real-dimez-phone.webp', 900],
   // Não há arte oficial de cada protagonista sozinho; estes grandes planos
   // vêm do Vintage Vice City Pack, que veste os protagonistas.
   [`${V}/VINTAGE_VICE_CITY_PACK_EXCLUSIVE_LOOKS_02.jpg`, 'characters/lucia-caminos.webp', 1400],
