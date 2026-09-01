@@ -12,7 +12,7 @@ const TABS = [
 
 export default function DbTabs({ active, counters }) {
   return (
-    <div className="border-b hairline bg-ink/80 backdrop-blur-xl shadow-[0_6px_20px_-18px_rgba(241,163,195,0.8)]">
+    <div className="sticky top-[56px] z-[60] border-b hairline bg-ink/90 backdrop-blur-xl shadow-[0_6px_20px_-18px_rgba(241,163,195,0.8)]">
       <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 overflow-x-auto">
         <nav className="flex items-center" aria-label="Database sections">
           {TABS.map((t) => {
