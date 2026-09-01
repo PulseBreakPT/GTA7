@@ -166,7 +166,6 @@ function App() {
 
         {/* CENTER IMAGE */}
         <div className="min-w-0 order-1 lg:order-none">
-          <div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[60px] sm:text-[78px]">VEHICLES</h1></div>
           <div className="corner-brackets tech-mask card-active relative mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
             <VehicleVisual v={displaySelected} className="absolute inset-0" sizes="(max-width:1280px) 100vw, 45vw" priority />
             {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous vehicle image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next vehicle image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
