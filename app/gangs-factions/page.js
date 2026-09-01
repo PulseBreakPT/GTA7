@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Shield, MapPin, ExternalLink } from 'lucide-react'
 import { factions } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
@@ -13,6 +14,7 @@ export default function GangsFactionsPage() {
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         {factions.map((faction) => (
           <article key={faction.slug} className="panel rounded-sm p-5 border border-line">
+            {faction.image && <div className="relative mb-5 aspect-[16/8] overflow-hidden rounded-sm border border-line"><Image src={faction.image} alt={`${faction.name} official media`} fill sizes="(max-width: 768px) 100vw, 520px" className="object-cover" /></div>}
             <div className="flex items-start justify-between gap-3">
               <div><p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">{faction.kind}</p><h2 className="mt-2 font-cond font-bold uppercase tracking-tight text-[30px] text-paper">{faction.name}</h2></div>
               <Shield className="text-mint shrink-0" size={24} />
