@@ -178,7 +178,7 @@ function App() {
         </div>
 
         {/* SPECS */}
-        <div className="min-w-0">
+        <div className="min-w-0 order-3 lg:order-none">
           <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[34px]">{selected.name}</h2>
           <div className="flex items-center gap-2 mt-2">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(vehicleClasses.find((c) => c.id === selected.cls) || {}).label || selected.cls}</span>

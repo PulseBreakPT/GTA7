@@ -220,7 +220,7 @@ function App() {
 
         {/* RIGHT inspector */}
         {selected && (
-          <aside className="panel rounded-md p-5 self-start w-full">
+          <aside className="panel rounded-md p-5 self-start w-full order-3 lg:order-none">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[28px]">{selected.name}</h2>

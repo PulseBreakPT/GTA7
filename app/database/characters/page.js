@@ -156,7 +156,7 @@ function App() {
         </section>
 
         {/* RIGHT: relationships */}
-        <aside className="min-w-0">
+        <aside className="min-w-0 order-3 lg:order-none">
           <div className="panel rounded-sm p-4">
             <h2 className="font-cond font-semibold uppercase tracking-[0.18em] text-[12px] text-pink">PRIMARY RELATIONSHIP</h2>
             {primary && partner ? (
