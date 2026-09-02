@@ -51,7 +51,7 @@ function StatRow({ icon: Icon, label, value, color }) {
 
 function App() {
   const router = useRouter()
-  const [cls, setCls] = useState('muscle')
+  const [cls, setCls] = useState('all')
   const [query, setQuery] = useState('')
   const [selectedSlug, setSelectedSlug] = useState('vapid-ganado')
   const [favs, setFavs] = useState([])
@@ -107,17 +107,6 @@ function App() {
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">VEHICLES</h1></div>
-
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
-              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition vehicles</p>
-              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.vehicles.join(' · ')}</p>
-            </div>
-            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
-              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
-              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
-            </div>
-          </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40 flex-1 min-w-[200px]">
@@ -255,6 +244,17 @@ function App() {
             {isFav ? 'REMOVE FROM FAVOURITES' : 'ADD TO FAVOURITES'}
           </button>
         </aside>
+      </div>
+
+      <div className="px-4 sm:px-6 lg:px-8 pb-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition vehicles</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.vehicles.join(' · ')}</p>
+        </div>
+        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+        </div>
       </div>
 
       {/* IMAGE ZOOM */}

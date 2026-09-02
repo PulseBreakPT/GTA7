@@ -30,7 +30,7 @@ function WeaponVisual({ w, className, sizes = '160px' }) {
 
 function App() {
   const router = useRouter()
-  const [type, setType] = useState('handgun')
+  const [type, setType] = useState('all')
   const [query, setQuery] = useState('')
   const [selectedSlug, setSelectedSlug] = useState('morgan-revolvers')
   const [gallerySlide, setGallerySlide] = useState(0)
@@ -59,23 +59,18 @@ function App() {
         <div className="min-w-0 flex flex-col">
           <div className="ghost-type" data-ghost="WEAPONS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">WEAPONS</h1></div>
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
-              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
-              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.weapons.join(' · ')}</p>
-            </div>
-            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
-              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
-              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
-            </div>
-          </div>
-
           <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>
 
           <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Weapon types">
+            <button type="button" role="tab" aria-selected={type === 'all'} onClick={() => { setType('all'); setQuery('') }}
+              className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                type === 'all' ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+              <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">ALL</span>
+              <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(weapons.length)}</span>
+            </button>
             {availableTypes.map((t) => {
               const active = t.id === type
               const count = weapons.filter((w) => w.type === t.id).length
@@ -173,6 +168,17 @@ function App() {
             </Link>
           </aside>
         )}
+      </div>
+
+      <div className="px-4 sm:px-6 lg:px-8 pb-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.weapons.join(' · ')}</p>
+        </div>
+        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+        </div>
       </div>
     </div>
   )

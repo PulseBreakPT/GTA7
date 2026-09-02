@@ -60,14 +60,6 @@ function App() {
         <div className="min-w-0 flex flex-col">
           <div className="ghost-type" data-ghost="CHARACTERS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">CHARACTERS</h1></div>
 
-          <div className="mt-4 border border-line bg-surface2/40 p-4 sm:p-5">
-            <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Story context · community reference</p>
-            <div className="mt-2 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-              <p className="max-w-3xl text-[14px] leading-relaxed text-paper/85">{extendedLookBrief.synopsis}</p>
-              <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-dim shrink-0">{extendedLookBrief.protagonists.join(' · ')}</span>
-            </div>
-          </div>
-
           <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
@@ -213,6 +205,16 @@ function App() {
             </div>
           )}
         </aside>
+      </div>
+
+      <div className="px-4 sm:px-6 lg:px-8 pb-8">
+        <div className="border border-line bg-surface2/40 p-4 sm:p-5">
+          <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Story context · community reference</p>
+          <div className="mt-2 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+            <p className="max-w-3xl text-[14px] leading-relaxed text-paper/85">{extendedLookBrief.synopsis}</p>
+            <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-dim shrink-0">{extendedLookBrief.protagonists.join(' · ')}</span>
+          </div>
+        </div>
       </div>
     </div>
   )
