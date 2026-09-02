@@ -53,14 +53,17 @@ function MechanicsPage() {
             </div>
           </div>
 
-          <div className="mt-4 inline-flex border border-line rounded-sm overflow-hidden flex-wrap" role="tablist" aria-label="Mechanic status filters">
-            {FILTERS.map((f) => (
-              <button key={f} type="button" role="tab" aria-selected={filter === f} onClick={() => setFilter(f)}
-                className={cx('font-cond font-semibold uppercase tracking-[0.12em] text-[13px] px-4 h-11 border-r hairline last:border-r-0 transition-colors duration-150',
-                  filter === f ? 'bg-paper text-ink' : 'text-dim hover:text-paper')}>
-                {f.toUpperCase()}
-              </button>
-            ))}
+          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Mechanic status filters">
+            {FILTERS.map((f) => {
+              const active = filter === f
+              return (
+                <button key={f} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f)}
+                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.toUpperCase()}</span>
+                </button>
+              )
+            })}
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-5">
