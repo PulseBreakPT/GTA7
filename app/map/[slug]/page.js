@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Check, Image as ImageIcon } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon } from 'lucide-react'
 import { regions, locations } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
 
@@ -73,14 +73,13 @@ export default function RegionPage() {
         <aside className="tech-mask glass-panel panel p-5 self-start">
           <h2 className="font-cond font-bold uppercase tracking-[0.14em] text-[18px] text-paper">What is documented</h2>
           <p className="mt-2 text-[13px] leading-relaxed text-dim">Only information present in the archive is shown here. Unannounced geography and exact positions are not treated as official.</p>
-          <div className="mt-5 flex flex-col gap-4">
+          <div className="mt-5 grid grid-cols-1 gap-2">
             {entries.map((entry) => (
-              <p key={entry.slug} className="text-[13px] leading-relaxed text-dim">
-                <span className="font-cond font-semibold uppercase tracking-[0.05em] text-paper">{entry.name}</span>
-                {entry.status === 'confirmed' && <Check size={12} className="inline text-mint mx-1 -mt-0.5" aria-label="confirmed" />}
-                {' — '}{entry.desc}{' '}
-                <span className="font-mono text-[10px] uppercase text-dim/60">({entry.status} · {entry.sourceName})</span>
-              </p>
+              <Link key={entry.slug} href={`/map/location/${entry.slug}`}
+                className="panel rounded-sm px-3 h-11 flex items-center justify-between gap-2 hover:border-white/30 transition-colors">
+                <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[13px] text-paper truncate">{entry.name}</span>
+                <ChevronRight size={13} className="text-dim shrink-0" aria-hidden="true" />
+              </Link>
             ))}
           </div>
           <div className="mt-5 border-t border-line pt-4">
