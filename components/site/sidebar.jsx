@@ -119,20 +119,21 @@ export default function Sidebar() {
           tudo em ecrãs estreitos. */}
       <aside
         className={cx(
-          // Em ecrãs estreitos a lateral é uma gaveta por cima da página:
-          // fica transparente com blur, e quem lhe dá corpo é o escurecido
-          // que já está por trás. Acima de lg é uma coluna fixa ao lado do
-          // conteúdo — aí não há nada por trás para deixar ver, e o fundo
+          // Em ecrãs estreitos não há painel nenhum: só os links por cima da
+          // página escurecida. Sem fundo, sem blur e sem borda — qualquer um
+          // dos três desenharia o rectângulo da gaveta. Quem garante a
+          // leitura é o escurecido por trás. Acima de lg isto não é uma
+          // gaveta mas uma coluna fixa ao lado do conteúdo, e aí o fundo
           // sólido é o que mantém a leitura estável.
-          'bg-ink/25 backdrop-blur-xl border-r border-white/10 flex flex-col shrink-0 w-[248px]',
-          'lg:bg-raised lg:backdrop-blur-none lg:border-white/[0.16]',
+          'bg-transparent border-r border-transparent flex flex-col shrink-0 w-[248px]',
+          'lg:bg-raised lg:border-white/[0.16]',
           'fixed inset-y-0 left-0 z-[90] transition-transform duration-300 ease-out',
           'lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:z-0',
           open ? 'translate-x-0' : '-translate-x-full'
         )}
         aria-label="Site navigation"
       >
-        <div className="h-[56px] flex items-center justify-between px-4 border-b hairline shrink-0">
+        <div className="h-[56px] flex items-center justify-between px-4 border-b border-transparent lg:border-white/[0.16] shrink-0">
           <Link href="/" className="group flex flex-col justify-center min-w-0" onClick={() => setOpen(false)}>
             <span className="chromatic-title font-cond font-bold text-[16px] tracking-wide text-paper whitespace-nowrap leading-none truncate">LEONIDA ARCHIVE</span>
           </Link>
@@ -145,7 +146,7 @@ export default function Sidebar() {
           <NavLinks pathname={pathname} onNavigate={() => setOpen(false)} />
         </div>
 
-        <div className="shrink-0 border-t hairline px-4 py-3.5 grid grid-cols-3 gap-2">
+        <div className="shrink-0 border-t border-transparent lg:border-white/[0.16] px-4 py-3.5 grid grid-cols-3 gap-2">
           {counters.map(([n, label]) => (
             <div key={label} className="flex flex-col leading-none">
               <span className="font-cond font-bold text-[16px] text-paper tabular-nums">{n}</span>
@@ -155,12 +156,16 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Fundo por trás da gaveta em ecrãs estreitos. */}
+      {/* Fundo por trás da gaveta em ecrãs estreitos. Com a gaveta sem painel
+          próprio, este escurecido é o único que segura a leitura dos links:
+          a 70% o texto claro sobre conteúdo branco ficava em ~4:1, abaixo do
+          mínimo acessível; a 80% fica em ~6:1. O blur é do ecrã todo, por
+          isso não denuncia a caixa da gaveta. */}
       {open && (
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="lg:hidden fixed inset-0 z-[85] bg-black/70 backdrop-blur-[2px]"
+          className="lg:hidden fixed inset-0 z-[85] bg-black/80 backdrop-blur-[4px]"
           aria-label="Close navigation"
         />
       )}
