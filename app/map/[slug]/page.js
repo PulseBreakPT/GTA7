@@ -73,16 +73,14 @@ export default function RegionPage() {
         <aside className="tech-mask glass-panel panel p-5 self-start">
           <h2 className="font-cond font-bold uppercase tracking-[0.14em] text-[18px] text-paper">What is documented</h2>
           <p className="mt-2 text-[13px] leading-relaxed text-dim">Only information present in the archive is shown here. Unannounced geography and exact positions are not treated as official.</p>
-          <div className="mt-5 space-y-2">
+          <div className="mt-5 flex flex-col gap-4">
             {entries.map((entry) => (
-              <div key={entry.slug} className="border border-line rounded-sm p-3">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-cond font-semibold uppercase tracking-[0.1em] text-[14px] text-paper">{entry.name}</h3>
-                  {entry.status === 'confirmed' && <Check size={14} className="text-mint shrink-0" />}
-                </div>
-                <p className="mt-1.5 text-[12px] leading-relaxed text-dim">{entry.desc}</p>
-                <p className="mt-2 font-mono text-[10px] uppercase text-dim/70">{entry.status} · {entry.sourceName}</p>
-              </div>
+              <p key={entry.slug} className="text-[13px] leading-relaxed text-dim">
+                <span className="font-cond font-semibold uppercase tracking-[0.05em] text-paper">{entry.name}</span>
+                {entry.status === 'confirmed' && <Check size={12} className="inline text-mint mx-1 -mt-0.5" aria-label="confirmed" />}
+                {' — '}{entry.desc}{' '}
+                <span className="font-mono text-[10px] uppercase text-dim/60">({entry.status} · {entry.sourceName})</span>
+              </p>
             ))}
           </div>
           <div className="mt-5 border-t border-line pt-4">
