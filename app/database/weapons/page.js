@@ -166,9 +166,9 @@ function App() {
                   {w ? (
                     <button
                       type="button"
-                      onClick={() => setSelectedSlug(w.slug)}
+                      onClick={() => router.push(`/database/weapons/${w.slug}`)}
                       aria-pressed={active}
-                      aria-label={`Select ${w.name}, slot ${i + 1}`}
+                      aria-label={`Open ${w.name}, slot ${i + 1}`}
                       className={cx('absolute w-[19%] min-w-[76px] aspect-square panel2 rounded-sm p-1.5 flex flex-col transition-all duration-200', active && 'card-active scale-[1.04]')}
                       style={{ left: `${cxp}%`, top: `${cyp}%`, transform: 'translate(-50%,-50%)' }}
                     >
@@ -195,7 +195,7 @@ function App() {
             {list.map((w) => {
               const active = selected && w.slug === selected.slug
               return (
-                <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => setSelectedSlug(w.slug)}
+                <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/weapons/${w.slug}`)}
                   className={cx('w-full panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                   <WeaponVisual w={w} className="h-[84px] w-full rounded-[2px]" sizes="164px" />
                   <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper mt-2 truncate text-center">{w.name}</span>

@@ -42,10 +42,9 @@ function App() {
   const [sortAZ, setSortAZ] = useState(false)
   const [gallerySlide, setGallerySlide] = useState(0)
 
-  // Start each character on their primary image when switching profiles.
+  // Clicking a character opens their profile page directly.
   const selectCharacter = (slug) => {
-    setSelectedSlug(slug)
-    setGallerySlide(0)
+    router.push(`/database/characters/${slug}`)
   }
 
   const list = useMemo(() => {
@@ -195,9 +194,9 @@ function App() {
               const other = characterBySlug(r.a === selected.slug ? r.b : r.a)
               if (!other) return null
               return (
-                <button key={other.slug} type="button" onClick={() => setSelectedSlug(other.slug)}
+                <button key={other.slug} type="button" onClick={() => router.push(`/database/characters/${other.slug}`)}
                   className="panel rounded-sm p-3 flex items-center gap-3 text-left hover:border-white/30 transition-colors"
-                  aria-label={`Select ${other.name}`}>
+                  aria-label={`Open ${other.name}`}>
                   <Portrait c={other} className="w-[46px] h-[46px] rounded-sm border border-line shrink-0 text-[14px]" sizes="46px" />
                   <span className="min-w-0 w-[88px] shrink-0">
                     <span className="block font-cond font-bold uppercase text-[14px] text-paper leading-tight truncate">{other.name}</span>

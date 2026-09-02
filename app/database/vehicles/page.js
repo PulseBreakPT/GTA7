@@ -244,7 +244,7 @@ function App() {
             const inCmp = comparePair.includes(v.slug)
             return (
               <div key={v.slug} className={cx('relative panel rounded-sm transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
-                <button type="button" role="option" aria-selected={active} onClick={() => setSelectedSlug(v.slug)} aria-label={`Select ${v.name}`} className="w-full text-left">
+                <button type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/vehicles/${v.slug}`)} aria-label={`Open ${v.name}`} className="w-full text-left">
                   <span className="flex items-center justify-between px-3 pt-2.5">
                     <span className="font-mono text-[12px] text-paper tabular-nums">{v.num}</span>
                   </span>
