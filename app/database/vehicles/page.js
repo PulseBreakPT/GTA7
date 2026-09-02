@@ -141,11 +141,6 @@ function App() {
             })}
           </div>
 
-          <div className="mt-4 border border-violet/35 bg-violet/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div><p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-violet">Extended research index</p><p className="text-[12px] text-dim mt-1">Community and returning-vehicle identifications are kept separate from Rockstar-confirmed entries.</p></div>
-            <a href="https://gta.wiki/w/Vehicles_in_GTA_VI" target="_blank" rel="noreferrer" className="shrink-0 border border-violet/50 px-3 py-2 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-violet hover:bg-violet/10">Open full index ↗</a>
-          </div>
-
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4 pb-2" role="listbox" aria-label="Vehicle grid">
             {list.map((v) => {
               const active = v.slug === selected.slug
