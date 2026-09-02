@@ -4,9 +4,9 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, Triangle, ExternalLink, Crosshair, Pill, BatteryFull, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Search, Heart, Zap, Eye, Triangle, ExternalLink, Crosshair, ArrowLeft, ArrowRight } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
-import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
+import { StatusBadge, cx } from '@/components/site/ui'
 import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 const pad = (n) => String(n).padStart(2, '0')
@@ -36,23 +36,15 @@ function App() {
   const [gallerySlide, setGallerySlide] = useState(0)
   const availableTypes = useMemo(() => weaponTypes.filter((t) => weapons.some((w) => w.type === t.id)), [])
 
-  const ofType = useMemo(() => weapons.filter((w) => w.type === type), [type])
   const list = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return q ? ofType.filter((w) => w.name.toLowerCase().includes(q)) : ofType
-  }, [ofType, query])
+    const arr = weapons.filter((w) => type === 'all' || w.type === type)
+    return q ? arr.filter((w) => w.name.toLowerCase().includes(q)) : arr
+  }, [type, query])
 
-  const selected = list.find((w) => w.slug === selectedSlug) || list[0] || ofType[0]
+  const selected = list.find((w) => w.slug === selectedSlug) || list[0] || weapons[0]
   const selectedGallery = selected?.gallery?.length ? selected.gallery : [selected?.image]
   const displaySelected = selected ? { ...selected, image: selectedGallery[gallerySlide] || selected.image } : selected
-  const typeMeta = weaponTypes.find((t) => t.id === type)
-
-  const pickType = (id) => {
-    setType(id)
-    setQuery('')
-    const first = weapons.find((w) => w.type === id)
-    if (first) setSelectedSlug(first.slug)
-  }
 
   const barStats = selected ? [
     { icon: Heart, label: 'DAMAGE', value: selected.stats[0], color: '#F1A3C3' },
@@ -62,88 +54,48 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="weapons" />
-      <div className="px-4 sm:px-6 lg:px-8 pt-6 max-w-[1280px]"><div className="ghost-type" data-ghost="WEAPONS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">WEAPONS</h1></div></div>
-      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3 order-10">
-        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
-          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
-          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.weapons.join(' · ')}</p>
-        </div>
-        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
-          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
-          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
-        </div>
-      </section>
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_372px] gap-6 flex-1">
-        {/* LEFT */}
-        <aside className="min-w-0 order-2 lg:order-none">
-          <div className="flex items-stretch mt-3">
-            {weaponCounters.map(([n, label], i) => (
-              <div key={label} className={cx('pr-5 flex flex-col leading-none', i > 0 && 'pl-5 border-l hairline')}>
-                <span className="font-cond font-bold text-[30px] text-paper tabular-nums">{n}</span>
-                <span className="font-cond text-[10px] text-dim uppercase tracking-[0.18em] mt-1">{label}</span>
-              </div>
-            ))}
+      <DbTabs active="weapons" counters={weaponCounters} />
+      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+        <div className="min-w-0 flex flex-col">
+          <div className="ghost-type" data-ghost="WEAPONS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">WEAPONS</h1></div>
+
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition items</p>
+              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.weapons.join(' · ')}</p>
+            </div>
+            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
+            </div>
           </div>
 
-          <label className="tech-mask-sm glass-panel mt-5 flex items-center gap-2 h-11 px-3 focus-within:border-white/40">
+          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>
 
-          <div className="mt-4 flex flex-col gap-1.5" role="tablist" aria-label="Weapon types">
+          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Weapon types">
             {availableTypes.map((t) => {
               const active = t.id === type
               const count = weapons.filter((w) => w.type === t.id).length
               return (
-                <button key={t.id} type="button" role="tab" aria-selected={active} onClick={() => pickType(t.id)}
-                  className={cx('flex items-center gap-2 px-2.5 h-9 border rounded-sm transition-all duration-150',
+                <button key={t.id} type="button" role="tab" aria-selected={active} onClick={() => { setType(t.id); setQuery('') }}
+                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
                     active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
-                  <WeaponGlyph type={t.id} size={19} className={active ? 'text-pink' : 'text-dim'} />
-                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] flex-1 text-left">{t.label}</span>
-                  <span className="font-mono text-[10px] tabular-nums">{pad(count)}</span>
+                  <WeaponGlyph type={t.id} size={15} className={active ? 'text-pink' : 'text-dim'} />
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{t.label}</span>
+                  <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(count)}</span>
                 </button>
               )
             })}
           </div>
 
-          {/* Rockstar não publicou estatísticas de arma nenhuma. Onde não as
-              há, dizemo-lo em vez de desenhar barras que seriam inventadas. */}
-          {selected.unpublished ? (
-            <div className="mt-6 border border-line rounded-sm p-4">
-              <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Stats not published</p>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-dim">
-                This weapon is documented in official imagery, but Rockstar has released no performance figures for it. No numbers are shown here rather than invented ones.
-              </p>
-            </div>
-          ) : (
-          <div className="mt-6 flex flex-col gap-3" aria-label="Selected weapon core stats">
-            {barStats.map((b) => (
-              <div key={b.label} className="flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: b.color }} aria-hidden="true"><b.icon size={14} /></span>
-                <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-paper w-[74px] shrink-0">{b.label}</span>
-                <span className="relative flex-1 h-[7px] bg-white/10" role="img" aria-label={`${b.label}: ${b.value} of 100`}>
-                  <span className="absolute inset-y-0 left-0 transition-all duration-300" style={{ width: `${b.value}%`, backgroundColor: b.color }} />
-                  <span className="absolute inset-y-0 w-[2px] bg-ink" style={{ left: `${b.value - 4}%` }} />
-                </span>
-              </div>
-            ))}
-          </div>
-          )}
-        </aside>
-
-        {/* CENTER: grid */}
-        <div className="min-w-0 flex flex-col order-1 lg:order-none">
-          <div className="flex items-baseline justify-between">
-            <span className="font-cond font-bold uppercase tracking-[0.1em] text-[22px] text-paper">{typeMeta.label}</span>
-            <span className="font-mono text-[13px] text-dim tabular-nums">{list.length} {list.length === 1 ? 'ITEM' : 'ITEMS'}</span>
-          </div>
-
-          <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pb-2" role="listbox" aria-label="Weapon grid">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4 pb-2" role="listbox" aria-label="Weapon grid">
             {list.map((w) => {
               const active = selected && w.slug === selected.slug
               return (
-                <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/weapons/${w.slug}`)}
+                <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/weapons/${w.slug}`)} onMouseEnter={() => setSelectedSlug(w.slug)}
                   className={cx('w-full panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
                   <WeaponVisual w={w} className="h-[84px] w-full rounded-[2px]" sizes="164px" />
                   <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper mt-2 truncate text-center">{w.name}</span>
@@ -152,39 +104,51 @@ function App() {
               )
             })}
             {list.length === 0 && (
-              <div className="panel rounded-sm p-6 w-full text-center">
+              <div className="panel rounded-sm p-6 w-full text-center col-span-full">
                 <p className="font-cond uppercase tracking-[0.14em] text-paper">No weapons match “{query}”</p>
-                <p className="text-dim text-xs mt-1">Clear the search to see the full {typeMeta.label.toLowerCase()} rack.</p>
+                <p className="text-dim text-xs mt-1">Try another type or clear the search.</p>
               </div>
             )}
           </div>
-
         </div>
 
-        {/* RIGHT inspector */}
+        {/* ASIDE: selected weapon */}
         {selected && (
-          <aside className="panel rounded-md p-5 self-start w-full order-3 lg:order-none">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[28px]">{selected.name}</h2>
-                <p className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-pink mt-1">{selected.type === 'handgun' ? 'SIDEARM' : typeMeta.label}</p>
-              </div>
-              <div className="flex flex-col items-end gap-2 shrink-0">
-                <StatusBadge status={selected.status} />
-                <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{selected.evidenceStatus}</span>
-                <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2 py-1 font-cond uppercase tracking-[0.1em] text-[10px] text-dim hover:text-paper hover:border-white/40">
-                  {selected.sourceName.toUpperCase()} <ExternalLink size={10} />
-                </a>
-              </div>
-            </div>
+          <aside className="tech-mask glass-panel p-5 self-start">
+            <div className="relative"><WeaponVisual w={displaySelected} className="h-[200px] w-full rounded-sm border border-line scanlines" sizes="380px" />{selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous weapon image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next weapon image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}</div>
 
-                <div className="relative mt-4"><WeaponVisual w={displaySelected} className="h-[200px] w-full rounded-sm border border-line scanlines" sizes="370px" />{selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous weapon image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next weapon image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}</div>
+            <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[26px] mt-4">{selected.name}</h2>
+            <div className="flex items-center gap-2 mt-2 flex-wrap">
+              <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(weaponTypes.find((t) => t.id === selected.type) || {}).label || selected.type}</span>
+              <StatusBadge status={selected.status} />
+            </div>
+            <span className="block font-mono text-[9px] uppercase tracking-[0.1em] text-mint mt-1.5">{selected.evidenceStatus}</span>
+
+            {selected.unpublished ? (
+              <div className="mt-4 border border-line rounded-sm p-4">
+                <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Stats not published</p>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-dim">Documented in official material, but Rockstar has released no performance figures for it.</p>
+              </div>
+            ) : (
+              <div className="mt-4 flex flex-col gap-3">
+                {barStats.map((b) => (
+                  <div key={b.label} className="flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: b.color }} aria-hidden="true"><b.icon size={14} /></span>
+                    <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-paper w-[74px] shrink-0">{b.label}</span>
+                    <span className="relative flex-1 h-[7px] bg-white/10" role="img" aria-label={`${b.label}: ${b.value} of 100`}>
+                      <span className="absolute inset-y-0 left-0 transition-all duration-300" style={{ width: `${b.value}%`, backgroundColor: b.color }} />
+                      <span className="absolute inset-y-0 w-[2px] bg-ink" style={{ left: `${b.value - 4}%` }} />
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="mt-4 grid grid-cols-3 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
               {[['RANGE', selected.unpublished ? '—' : selected.stats[3]], ['CAPACITY', selected.unpublished ? '—' : selected.stats[4]], ['WEIGHT', selected.unpublished ? '—' : `${selected.stats[5]} KG`]].map(([label, val]) => (
                 <div key={label} className="py-3 text-center">
-                  <span className="block font-cond text-[10px] text-dim uppercase tracking-[0.18em]">{label}</span>
-                  <span className="block font-cond font-bold text-[24px] text-paper tabular-nums mt-0.5">{val}</span>
+                  <span className="block font-cond text-[9px] text-dim uppercase tracking-[0.14em]">{label}</span>
+                  <span className="block font-cond font-bold text-[18px] text-paper tabular-nums mt-0.5">{val}</span>
                 </div>
               ))}
             </div>
@@ -192,31 +156,21 @@ function App() {
             <p className="text-[13px] text-dim mt-3">{selected.desc}</p>
             {selected.association && (
               <div className="mt-3 border-l-2 border-mint/70 pl-3">
-                <span className="block font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Associated character / content</span>
+                <span className="block font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Source context</span>
                 <span className="block font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{selected.association}</span>
               </div>
             )}
+
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+                SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
+              </a>
+            </div>
 
             <Link href={`/database/weapons/${selected.slug}`} className="mt-4 w-full inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[15px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
               OPEN PROFILE
               <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
             </Link>
-
-            <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim mt-5">AMMO & ITEMS</h3>
-            <div className="mt-2 grid grid-cols-2 gap-3">
-              <div className="panel2 rounded-sm h-[88px] flex flex-col items-center justify-center gap-1.5">
-                <Pill size={24} className="text-danger" aria-hidden="true" />
-                <span className="flex items-center gap-1.5 font-mono text-[13px] text-paper tabular-nums">2 <Heart size={11} className="text-pink" fill="#F1A3C3" aria-hidden="true" /></span>
-              </div>
-              <div className="panel2 rounded-sm h-[88px] flex flex-col items-center justify-center gap-1.5">
-                <BatteryFull size={24} className="text-warn" aria-hidden="true" />
-                <span className="flex items-center gap-1.5 font-mono text-[13px] text-paper tabular-nums">2 <Zap size={11} className="text-warn" fill="#E6D658" aria-hidden="true" /></span>
-              </div>
-            </div>
-
-            {/* Sai o «APPEARS IN» pela mesma razão que sai na página de cada
-                arma: os bairros eram invenção, e o default repetia-os por
-                todo o arsenal. */}
           </aside>
         )}
       </div>

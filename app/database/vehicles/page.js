@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check, Truck, Bus, Train, Siren, Construction, Wrench } from 'lucide-react'
+import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check, Truck, Bus, Train, Siren, Construction, Wrench, ExternalLink } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
+import { StatusBadge, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 // Um id sem ícone aqui devolve `undefined` e parte a renderização da página
@@ -55,7 +55,6 @@ function App() {
   const [query, setQuery] = useState('')
   const [selectedSlug, setSelectedSlug] = useState('vapid-ganado')
   const [favs, setFavs] = useState([])
-  const [sortMode, setSortMode] = useState(0) // 0 number, 1 name, 2 speed
   const [compareMode, setCompareMode] = useState(false)
   const [comparePair, setComparePair] = useState([])
   const [compareOpen, setCompareOpen] = useState(false)
@@ -75,17 +74,12 @@ function App() {
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase()
-    let arr = vehicles.filter((v) => (cls === 'all' || v.cls === cls) && (!q || v.name.toLowerCase().includes(q)))
-    if (sortMode === 1) arr = [...arr].sort((a, b) => a.name.localeCompare(b.name))
-    else if (sortMode === 2) arr = [...arr].sort((a, b) => b.stats[0] - a.stats[0])
-    return arr
-  }, [cls, query, sortMode])
+    return vehicles.filter((v) => (cls === 'all' || v.cls === cls) && (!q || v.name.toLowerCase().includes(q)))
+  }, [cls, query])
 
   const selected = list.find((v) => v.slug === selectedSlug) || list[0] || vehicles[0]
   const selectedGallery = selected.gallery?.length ? selected.gallery : [selected.image]
   const displaySelected = { ...selected, image: selectedGallery[gallerySlide] || selected.image }
-  const selIndex = Math.max(0, list.findIndex((v) => v.slug === selected.slug))
-  const clsMeta = vehicleClasses.find((c) => c.id === (selected ? selected.cls : 'muscle'))
   const isFav = favs.includes(selected.slug)
 
   const toggleFav = (slug) => saveFavs(favs.includes(slug) ? favs.filter((s) => s !== slug) : [...favs, slug])
@@ -110,113 +104,149 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="vehicles" counters={vehicleCounters} />
-      <div className="px-4 sm:px-6 lg:px-8 pt-6 max-w-[1280px]"><div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">VEHICLES</h1></div></div>
+      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+        <div className="min-w-0 flex flex-col">
+          <div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">VEHICLES</h1></div>
 
-      <section className="mx-4 sm:mx-6 lg:mx-8 mt-6 max-w-[1280px] grid grid-cols-1 md:grid-cols-2 gap-3 order-10">
-        <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
-          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition vehicles</p>
-          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.vehicles.join(' · ')}</p>
-        </div>
-        <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
-          <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
-          <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
-        </div>
-      </section>
-
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[248px_1fr] xl:grid-cols-[248px_minmax(0,1.5fr)_minmax(280px,1fr)] gap-5 items-start">
-        {/* SIDEBAR */}
-        <aside id="vehicle-filters" className="min-w-0 order-2 lg:order-none">
-          <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
-            <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vehicle…" aria-label="Search vehicle" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
-          </label>
-
-          <div className="panel rounded-sm p-3 mt-3">
-            <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim px-1">CLASSES</h2>
-            <div className="mt-2 flex flex-col gap-1" role="tablist" aria-label="Vehicle classes">
-              {vehicleClasses.map((c) => {
-                const Icon = classIcon(c.id)
-                const active = c.id === cls
-                return (
-                  <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
-                    className={cx('flex items-center gap-2 px-2 h-9 border rounded-sm transition-all duration-150',
-                      active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-transparent text-dim hover:text-paper hover:border-line')}>
-                    <Icon size={16} aria-hidden="true" />
-                    <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] flex-1 text-left">{c.label}</span>
-                    <span className="font-mono text-[10px] tabular-nums">{c.count}</span>
-                  </button>
-                )
-              })}
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
+              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially named edition vehicles</p>
+              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.vehicles.join(' · ')}</p>
+            </div>
+            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
+              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
+              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
             </div>
           </div>
 
-          <div className="panel rounded-sm p-4 mt-3">
-            <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">COLLECTION</h2>
-            <button type="button" onClick={() => toggleFav(selected.slug)} aria-pressed={isFav} className="mt-3 flex items-center gap-3 group w-full text-left">
-              <span className={cx('w-11 h-11 rounded-full border flex items-center justify-center transition-colors', isFav ? 'border-pink text-pink bg-pink/10' : 'border-line text-dim group-hover:text-pink group-hover:border-pink/60')} aria-hidden="true">
-                <Heart size={17} fill={isFav ? '#F1A3C3' : 'transparent'} />
-              </span>
-              <span>
-                <span className="block font-cond font-semibold uppercase tracking-[0.12em] text-[14px] text-paper">FAVOURITE</span>
-                <span className="block text-[11px] text-dim">{isFav ? 'In your collection' : 'Add to collection'}</span>
-              </span>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40 flex-1 min-w-[200px]">
+              <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
+              <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vehicle…" aria-label="Search vehicle" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
+            </label>
+            <button type="button" onClick={() => { setCompareMode((v) => !v); if (compareMode) setCompareOpen(false) }} aria-pressed={compareMode}
+              className={cx('inline-flex items-center gap-2 border h-11 px-4 font-cond font-semibold uppercase tracking-[0.12em] text-[12px] transition-colors duration-200 shrink-0', compareMode ? 'bg-paper text-ink border-paper' : 'border-line text-paper hover:border-white/50')}>
+              <GitCompareArrows size={14} />
+              {compareMode ? `PICK (${comparePair.length}/2)` : 'COMPARE'}
             </button>
-            <p className="font-mono text-[10px] text-dim mt-3 tabular-nums">{favs.length} SAVED · STORED LOCALLY</p>
+            {comparePair.length === 2 && (
+              <button type="button" onClick={() => setCompareOpen(true)} className="inline-flex items-center gap-2 border border-pink text-pink h-11 px-4 font-cond font-semibold uppercase tracking-[0.12em] text-[12px] hover:bg-pink hover:text-ink transition-colors shrink-0">
+                OPEN COMPARISON
+              </button>
+            )}
           </div>
-        </aside>
 
-        {/* CENTER IMAGE */}
-        <div className="min-w-0 order-1 lg:order-none">
-          <div className="corner-brackets tech-mask card-active relative mt-3 overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
-            <VehicleVisual v={displaySelected} className="absolute inset-0" sizes="(max-width:1280px) 100vw, 45vw" priority />
-            {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous vehicle image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next vehicle image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
-            <span className="absolute top-3 right-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[12px] text-paper tabular-nums">{String(selIndex + 1).padStart(2, '0')} / {clsMeta ? clsMeta.count : list.length}</span>
-            <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-3 left-3 w-10 h-10 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40">
-              <Maximize2 size={15} />
-            </button>
+          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Vehicle classes">
+            {vehicleClasses.map((c) => {
+              const Icon = classIcon(c.id)
+              const active = c.id === cls
+              return (
+                <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
+                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+                  <Icon size={14} aria-hidden="true" />
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{c.label}</span>
+                  <span className="font-mono text-[10px] tabular-nums opacity-70">{c.count}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="mt-4 border border-violet/35 bg-violet/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div><p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-violet">Extended research index</p><p className="text-[12px] text-dim mt-1">Community and returning-vehicle identifications are kept separate from Rockstar-confirmed entries.</p></div>
+            <a href="https://gta.wiki/w/Vehicles_in_GTA_VI" target="_blank" rel="noreferrer" className="shrink-0 border border-violet/50 px-3 py-2 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-violet hover:bg-violet/10">Open full index ↗</a>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4 pb-2" role="listbox" aria-label="Vehicle grid">
+            {list.map((v) => {
+              const active = v.slug === selected.slug
+              const fav = favs.includes(v.slug)
+              const inCmp = comparePair.includes(v.slug)
+              return (
+                <div key={v.slug} className={cx('relative panel rounded-sm transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                  <button type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/vehicles/${v.slug}`)} onMouseEnter={() => setSelectedSlug(v.slug)} aria-label={`Open ${v.name}`} className="w-full text-left">
+                    <span className="flex items-center justify-between px-3 pt-2.5">
+                      <span className="font-mono text-[12px] text-paper tabular-nums">{v.num}</span>
+                    </span>
+                    <VehicleVisual v={v} className="h-[104px] mx-2.5 mt-1.5 rounded-[2px]" sizes="210px" />
+                    <span className="block font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-dim px-3 py-2 truncate">{v.name}</span>
+                  </button>
+                  <button type="button" onClick={() => toggleFav(v.slug)} aria-label={fav ? `Remove ${v.name} from favourites` : `Add ${v.name} to favourites`} aria-pressed={fav}
+                    className="absolute top-1.5 right-1.5 w-9 h-9 flex items-center justify-center text-dim hover:text-pink transition-colors">
+                    <Heart size={16} fill={fav ? '#F1A3C3' : 'transparent'} className={fav ? 'text-pink' : ''} />
+                  </button>
+                  {compareMode && (
+                    <button type="button" onClick={() => toggleCompare(v.slug)} aria-pressed={inCmp}
+                      className={cx('absolute bottom-2 right-2 px-2 h-8 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[10px] flex items-center gap-1 transition-colors', inCmp ? 'bg-pink text-ink border-pink' : 'panel2 text-dim hover:text-paper')}>
+                      {inCmp ? <Check size={11} /> : <GitCompareArrows size={11} />}{inCmp ? 'ADDED' : 'COMPARE'}
+                    </button>
+                  )}
+                </div>
+              )
+            })}
+            {list.length === 0 && (
+              <div className="panel rounded-sm p-6 w-full text-center col-span-full">
+                <p className="font-cond uppercase tracking-[0.14em] text-paper">No vehicles match “{query}”</p>
+                <p className="text-dim text-xs mt-1">Try another class or clear the search.</p>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* SPECS */}
-        <div className="min-w-0 order-3 lg:order-none">
-          <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[34px]">{selected.name}</h2>
-          <div className="flex items-center gap-2 mt-2">
+        {/* ASIDE: selected vehicle */}
+        <aside className="tech-mask glass-panel p-5 self-start">
+          <div className="corner-brackets tech-mask card-active relative overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
+            <VehicleVisual v={displaySelected} className="absolute inset-0" sizes="380px" />
+            {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous vehicle image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next vehicle image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}
+            <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-2 left-2 w-9 h-9 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40">
+              <Maximize2 size={14} />
+            </button>
+          </div>
+
+          <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[26px] mt-4">{selected.name}</h2>
+          <div className="flex items-center gap-2 mt-2 flex-wrap">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(vehicleClasses.find((c) => c.id === selected.cls) || {}).label || selected.cls}</span>
             <StatusBadge status={selected.status} />
-            <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{selected.evidenceStatus}</span>
           </div>
+          <span className="block font-mono text-[9px] uppercase tracking-[0.1em] text-mint mt-1.5">{selected.evidenceStatus}</span>
           {selected.association && <p className="mt-3 border-l-2 border-mint/70 pl-3 font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper">{selected.association}</p>}
 
           {/* Sem números publicados não se desenham barras — dizê-lo é a
               informação honesta, e é mais útil do que um gráfico inventado. */}
           {selected.unpublished ? (
-            <div className="mt-5 border border-line rounded-sm p-4">
+            <div className="mt-4 border border-line rounded-sm p-4">
               <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Stats not published</p>
               <p className="mt-1.5 text-[12px] leading-relaxed text-dim">
                 This vehicle is documented in official material, but no performance figures have been released for it.
               </p>
             </div>
           ) : (
-            <div className="mt-5 flex flex-col gap-3.5">
+            <div className="mt-4 flex flex-col gap-3">
               {stats.map((s) => <StatRow key={s.label} {...s} />)}
             </div>
           )}
 
-          <div className="mt-5 grid grid-cols-4 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
+          <div className="mt-4 grid grid-cols-4 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
             {selected.specs.map((spec, i) => {
               const Icon = SPEC_ICONS[i]
               const [big, ...rest] = spec.split(' ')
               return (
                 <div key={i} className="py-3 flex flex-col items-center gap-1">
                   <Icon size={16} className="text-dim" aria-hidden="true" />
-                  <span className="font-cond font-bold text-[17px] text-paper leading-none">{big}</span>
-                  <span className="font-cond text-[9px] text-dim uppercase tracking-[0.16em]">{rest.join(' ') || SPEC_LABELS[i]}</span>
+                  <span className="font-cond font-bold text-[15px] text-paper leading-none">{big}</span>
+                  <span className="font-cond text-[8px] text-dim uppercase tracking-[0.14em] text-center">{rest.join(' ') || SPEC_LABELS[i]}</span>
                 </div>
               )
             })}
           </div>
 
-          <Link href={`/database/vehicles/${selected.slug}`} className="mt-5 w-full inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[15px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+              SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
+            </a>
+          </div>
+
+          <Link href={`/database/vehicles/${selected.slug}`} className="mt-4 w-full inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[15px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
             OPEN PROFILE
             <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
           </Link>
@@ -224,67 +254,7 @@ function App() {
             <Heart size={14} fill={isFav ? '#F1A3C3' : 'transparent'} className={isFav ? 'text-pink' : ''} />
             {isFav ? 'REMOVE FROM FAVOURITES' : 'ADD TO FAVOURITES'}
           </button>
-        </div>
-
-        {/* Aqui ficava o «WHERE TO FIND»: o mesmo traçado literal para todos os
-            veículos, e locais de spawn de um jogo por sair. Sai a coluna
-            inteira — a grelha acima passou de quatro colunas para três. */}
-      </div>
-
-      {/* CAROUSEL */}
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="mb-5 border border-violet/35 bg-violet/5 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div><p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-violet">Extended research index</p><p className="text-[12px] text-dim mt-1">Community and returning-vehicle identifications are kept separate from Rockstar-confirmed entries.</p></div>
-          <a href="https://gta.wiki/w/Vehicles_in_GTA_VI" target="_blank" rel="noreferrer" className="shrink-0 border border-violet/50 px-3 py-2 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-violet hover:bg-violet/10">Open full index ↗</a>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pb-2" role="listbox" aria-label="Vehicle grid">
-          {list.map((v) => {
-            const active = v.slug === selected.slug
-            const fav = favs.includes(v.slug)
-            const inCmp = comparePair.includes(v.slug)
-            return (
-              <div key={v.slug} className={cx('relative panel rounded-sm transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
-                <button type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/vehicles/${v.slug}`)} aria-label={`Open ${v.name}`} className="w-full text-left">
-                  <span className="flex items-center justify-between px-3 pt-2.5">
-                    <span className="font-mono text-[12px] text-paper tabular-nums">{v.num}</span>
-                  </span>
-                  <VehicleVisual v={v} className="h-[104px] mx-2.5 mt-1.5 rounded-[2px]" sizes="210px" />
-                  <span className="block font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-dim px-3 py-2 truncate">{v.name}</span>
-                </button>
-                <button type="button" onClick={() => toggleFav(v.slug)} aria-label={fav ? `Remove ${v.name} from favourites` : `Add ${v.name} to favourites`} aria-pressed={fav}
-                  className="absolute top-1.5 right-1.5 w-9 h-9 flex items-center justify-center text-dim hover:text-pink transition-colors">
-                  <Heart size={16} fill={fav ? '#F1A3C3' : 'transparent'} className={fav ? 'text-pink' : ''} />
-                </button>
-                {compareMode && (
-                  <button type="button" onClick={() => toggleCompare(v.slug)} aria-pressed={inCmp}
-                    className={cx('absolute bottom-2 right-2 px-2 h-8 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[10px] flex items-center gap-1 transition-colors', inCmp ? 'bg-pink text-ink border-pink' : 'panel2 text-dim hover:text-paper')}>
-                    {inCmp ? <Check size={11} /> : <GitCompareArrows size={11} />}{inCmp ? 'ADDED' : 'COMPARE'}
-                  </button>
-                )}
-              </div>
-            )
-          })}
-          {list.length === 0 && (
-            <div className="panel rounded-sm p-6 w-full text-center">
-              <p className="font-cond uppercase tracking-[0.14em] text-paper">No vehicles match “{query}”</p>
-              <p className="text-dim text-xs mt-1">Try another class or clear the search.</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="px-4 sm:px-6 lg:px-8 py-3 mt-1 border-t hairline flex flex-wrap items-center gap-x-6 gap-y-2">
-        <div className="flex-1" />
-        <button type="button" onClick={() => { setCompareMode((v) => !v); if (compareMode) { setCompareOpen(false) } }} aria-pressed={compareMode}
-          className={cx('inline-flex items-center gap-3 border h-12 px-5 font-cond font-semibold uppercase tracking-[0.14em] text-[14px] transition-colors duration-200', compareMode ? 'bg-paper text-ink border-paper' : 'border-line text-paper hover:border-white/50')}>
-          <GitCompareArrows size={16} />
-          {compareMode ? `PICK VEHICLES (${comparePair.length}/2)` : 'COMPARE 2 VEHICLES'}
-        </button>
-        {comparePair.length === 2 && (
-          <button type="button" onClick={() => setCompareOpen(true)} className="inline-flex items-center gap-2 border border-pink text-pink h-12 px-4 font-cond font-semibold uppercase tracking-[0.14em] text-[14px] hover:bg-pink hover:text-ink transition-colors">
-            OPEN COMPARISON
-          </button>
-        )}
+        </aside>
       </div>
 
       {/* IMAGE ZOOM */}
