@@ -36,7 +36,7 @@ function App() {
 
         <div className="data-rail">EDITIONS · OFFICIAL RECORD · UPDATED {editions.updatedAt}</div>
         <div className="ghost-type mt-3" data-ghost="EDITIONS">
-          <h1 className="chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[48px] sm:text-[68px] lg:text-[78px] max-w-[900px]">
+          <h1 className="chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.82] text-[48px] sm:text-[68px] lg:text-[78px] max-w-[900px]">
             WHAT’S IN<br />EACH EDITION
           </h1>
         </div>

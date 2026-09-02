@@ -27,7 +27,7 @@ export default function LocationPage() {
 
       <header className="mt-6">
         <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">Named location</p>
-        <h1 className="mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[42px] sm:text-[56px] text-paper">{loc.name}</h1>
+        <h1 data-ghost="MAP" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[64px] text-paper">{loc.name}</h1>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <StatusBadge status={loc.status} />
           <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{categoryLabel}</span>

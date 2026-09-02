@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex-1 w-full max-w-[1280px] mx-auto">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[56px] sm:text-[72px]">GUIDES</h1>
+        <div className="ghost-type" data-ghost="GUIDES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">GUIDES</h1></div>
         <div className="flex items-stretch">
           {[['04', 'PUBLISHED'], ['02', 'CONFIRMED+'], ['36', 'MIN TOTAL']].map(([n, label], i) => (
             <div key={label} className={`px-5 flex flex-col justify-center leading-none ${i > 0 ? 'border-l hairline' : ''}`}>

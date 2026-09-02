@@ -13,7 +13,7 @@ export default function CategoriesPage() {
       <p className="font-cond uppercase tracking-[0.2em] text-[11px] text-mint">Leonida Archive · browse</p>
       <div className="ghost-type mt-2 flex flex-wrap items-end justify-between gap-4 border-b hairline pb-6" data-ghost="ARCHIVE">
         <div>
-          <h1 className="chromatic-title font-cond font-bold uppercase tracking-tight leading-[0.9] text-[54px] sm:text-[76px] text-paper">Categories</h1>
+          <h1 className="chromatic-title font-cond font-bold uppercase tracking-tight leading-[0.82] text-[64px] sm:text-[78px] text-paper">Categories</h1>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-dim">Browse the archive as a reference work. Each category groups articles by subject, while source badges remain attached to the individual record.</p>
         </div>
         <span className="inline-flex items-center gap-2 panel2 px-3 py-2 font-cond uppercase tracking-[0.14em] text-[12px] text-paper"><FolderTree size={15} className="text-pink" /> {encyclopediaCategories.length} TOP-LEVEL CATEGORIES</span>

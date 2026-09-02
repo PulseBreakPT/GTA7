@@ -337,7 +337,7 @@ function MapPage() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col">
       <div className="ghost-type flex flex-wrap items-end justify-between gap-4" data-ghost="FIELD GUIDE">
-        <div><div className="data-rail max-w-[360px] !text-mint">ARCHIVE ATLAS · REGION INTELLIGENCE</div><h1 className="chromatic-title mt-4 font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[56px] sm:text-[78px]">MAP</h1></div>
+        <div><div className="data-rail max-w-[360px] !text-mint">ARCHIVE ATLAS · REGION INTELLIGENCE</div><h1 className="chromatic-title mt-4 font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MAP</h1></div>
         <label className="tech-mask-sm glass-panel flex items-center gap-2 w-full sm:w-[340px] h-11 px-3 focus-within:border-white/40">
           <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
           <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a Leonida region…" aria-label="Search Leonida regions" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />

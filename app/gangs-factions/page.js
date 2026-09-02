@@ -8,7 +8,7 @@ export default function GangsFactionsPage() {
   return (
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-8 max-w-[1180px] w-full mx-auto">
       <p className="data-rail text-mint">LEONIDA ARCHIVE · ORGANIZED GROUPS INDEX</p>
-      <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title mt-3 font-cond font-bold uppercase leading-[0.86] tracking-tight text-[54px] sm:text-[76px] text-paper">GANGS &amp; FACTIONS</h1>
+      <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title mt-3 font-cond font-bold uppercase leading-[0.82] tracking-tight text-[64px] sm:text-[78px] text-paper">GANGS &amp; FACTIONS</h1>
       <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-dim">Official Rockstar information only. Named groups are kept separate from groups Rockstar describes but has not formally named; trailer identifications, leaks and rumours are excluded.</p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">

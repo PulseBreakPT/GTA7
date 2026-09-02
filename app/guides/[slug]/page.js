@@ -34,7 +34,7 @@ function App() {
         <span className="absolute top-4 left-4"><StatusBadge status={g.status} /></span>
       </div>
 
-      <h1 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.92] text-[42px] sm:text-[58px] mt-6">{g.title}</h1>
+      <h1 data-ghost="GUIDES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-6">{g.title}</h1>
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>
         <a href={g.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[12px] text-paper border border-line rounded-sm px-2.5 py-1.5 hover:border-white/40">

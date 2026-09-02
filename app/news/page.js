@@ -69,7 +69,7 @@ function App() {
       {/* LEFT */}
       <div className="min-w-0">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div><p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Leonida reference archive</p><h1 className="mt-1 font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[56px] sm:text-[72px]">ARTICLES</h1></div>
+          <div><p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Leonida reference archive</p><div className="ghost-type" data-ghost="ARTICLES"><h1 className="chromatic-title mt-1 font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARTICLES</h1></div></div>
           <Link href="/categories" className="inline-flex min-h-[44px] items-center gap-2 border border-line px-4 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-pink">{encyclopediaCategories.length} categories <ChevronRight size={14} /></Link>
         </div>
 
