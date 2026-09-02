@@ -73,12 +73,23 @@ export default function RegionPage() {
         <aside className="tech-mask glass-panel panel p-5 self-start">
           <h2 className="font-cond font-bold uppercase tracking-[0.14em] text-[18px] text-paper">What is documented</h2>
           <p className="mt-2 text-[13px] leading-relaxed text-dim">Only information present in the archive is shown here. Unannounced geography and exact positions are not treated as official.</p>
-          <div className="mt-5 grid grid-cols-1 gap-2">
+          <div className="mt-5 grid grid-cols-2 gap-2">
             {entries.map((entry) => (
               <Link key={entry.slug} href={`/map/location/${entry.slug}`}
-                className="panel rounded-sm px-3 h-11 flex items-center justify-between gap-2 hover:border-white/30 transition-colors">
-                <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[13px] text-paper truncate">{entry.name}</span>
-                <ChevronRight size={13} className="text-dim shrink-0" aria-hidden="true" />
+                className="panel rounded-sm p-2 flex flex-col hover:border-white/30 transition-colors">
+                {entry.image ? (
+                  <span className="relative block h-[72px] w-full rounded-[2px] overflow-hidden">
+                    <Image src={entry.image} alt={entry.name} fill sizes="180px" className="object-cover" />
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center h-[72px] w-full rounded-[2px] bg-surface2/60 text-dim">
+                    <ImageIcon size={18} aria-hidden="true" />
+                  </span>
+                )}
+                <span className="flex items-center justify-between gap-1 mt-1.5">
+                  <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[11px] text-paper truncate">{entry.name}</span>
+                  <ChevronRight size={11} className="text-dim shrink-0" aria-hidden="true" />
+                </span>
               </Link>
             ))}
           </div>

@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ExternalLink, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ExternalLink, ChevronRight, MapPin } from 'lucide-react'
 import { locations, regions, mapFilters } from '@/lib/content'
 import { StatusBadge } from '@/components/site/ui'
 
@@ -34,6 +35,17 @@ export default function LocationPage() {
         </div>
       </header>
 
+      <div className="corner-brackets tech-mask relative mt-6 overflow-hidden aspect-[16/9] bg-raised scanlines vignette">
+        {loc.image ? (
+          <Image src={loc.image} alt={loc.name} fill priority sizes="900px" className="object-cover" />
+        ) : (
+          <span className="flex flex-col items-center justify-center gap-2 w-full h-full bg-surface2/60 text-dim" role="img" aria-label={`${loc.name}: visual pending`}>
+            <MapPin size={30} aria-hidden="true" />
+            <span className="font-mono text-[9px] uppercase tracking-[0.22em]">AWAITING VISUAL</span>
+          </span>
+        )}
+      </div>
+
       <section className="mt-8">
         <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[13px] text-mint border-b border-line pb-2">OVERVIEW</h2>
         <p className="mt-4 text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]">{loc.desc}</p>
@@ -52,12 +64,23 @@ export default function LocationPage() {
       {related.length > 0 && region && (
         <section className="mt-10">
           <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[13px] text-dim border-b border-line pb-2">ALSO IN {region.label}</h2>
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
             {related.map((item) => (
               <Link key={item.slug} href={`/map/location/${item.slug}`}
-                className="panel rounded-sm px-3 h-11 flex items-center justify-between gap-2 hover:border-white/30 transition-colors">
-                <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[13px] text-paper truncate">{item.name}</span>
-                <ChevronRight size={13} className="text-dim shrink-0" aria-hidden="true" />
+                className="panel rounded-sm p-2 flex flex-col hover:border-white/30 transition-colors">
+                {item.image ? (
+                  <span className="relative block h-[84px] w-full rounded-[2px] overflow-hidden">
+                    <Image src={item.image} alt={item.name} fill sizes="200px" className="object-cover" />
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center h-[84px] w-full rounded-[2px] bg-surface2/60 text-dim">
+                    <MapPin size={20} aria-hidden="true" />
+                  </span>
+                )}
+                <span className="flex items-center justify-between gap-1 mt-2">
+                  <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-paper truncate">{item.name}</span>
+                  <ChevronRight size={12} className="text-dim shrink-0" aria-hidden="true" />
+                </span>
               </Link>
             ))}
           </div>
