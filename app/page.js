@@ -10,14 +10,19 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[560px] lg:min-h-[680px] overflow-hidden scanlines vignette">
+      {/* -mt-14 sobe a hero para debaixo da navbar (56px, a mesma altura do
+          header) — é essa sobreposição que dá corpo ao fundo transparente:
+          sem imagem por trás, a navbar transparente não mostrava nada. O
+          mt-14 no conteúdo interior cancela o deslocamento, para o texto
+          cair exactamente onde caía antes. */}
+      <section className="relative -mt-14 min-h-[560px] lg:min-h-[680px] overflow-hidden scanlines vignette">
         <div className="absolute inset-0">
           <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center brightness-[1.12] saturate-[1.15]" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/35" />
         </div>
 
-        <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-8 lg:pt-10 flex flex-col h-full">
+        <div className="relative z-10 mt-14 px-4 sm:px-6 lg:px-8 pt-8 lg:pt-10 flex flex-col h-full">
           <div className="data-rail max-w-[520px] !text-mint">INDEPENDENT FAN REFERENCE · SOURCE-LABELLED</div>
 
           <div className="ghost-type mt-10 lg:mt-20 max-w-[720px]" data-ghost="LEONIDA">

@@ -4,9 +4,22 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Search } from 'lucide-react'
 import SearchModal from './search'
+import { cx } from './ui'
 
 export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false)
+  // Transparente no topo, para deixar ver o que está atrás (a hero da
+  // home, por exemplo) — mas sempre com blur, para o texto nunca ficar
+  // ilegível em cima de imagem. Ganha fundo sólido assim que a página
+  // desce, porque a partir daí já não há nada por trás a valer a pena ver.
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     const onKey = (e) => {
@@ -20,9 +33,16 @@ export default function Header() {
   }, [])
 
   return (
-    <header className="archive-header sticky top-0 z-[70] bg-ink/92 backdrop-blur-xl border-b hairline shadow-[0_8px_30px_-20px_rgba(101,220,203,0.7)] relative before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-mint/70 before:to-transparent">
+    <header
+      className={cx(
+        'archive-header sticky top-0 z-[70] relative backdrop-blur-xl transition-colors duration-300 ease-out before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-mint/70 before:to-transparent',
+        scrolled
+          ? 'bg-ink/92 border-b hairline shadow-[0_8px_30px_-20px_rgba(101,220,203,0.7)]'
+          : 'bg-ink/20 border-b border-transparent shadow-none'
+      )}
+    >
       <div className="pl-14 pr-3 sm:pr-6 lg:pl-8 lg:pr-8 h-[56px] flex items-center gap-2 sm:gap-4 lg:gap-6">
-        <span className="hidden lg:block font-mono text-[9px] tracking-[0.28em] text-dim shrink-0">OFFICIAL EVIDENCE INDEX</span>
+        <span className="hidden lg:block font-mono text-[9px] tracking-[0.28em] text-paper/95 shrink-0 drop-shadow-[0_1px_5px_rgba(7,9,14,0.95)]">OFFICIAL EVIDENCE INDEX</span>
 
         <div className="flex-1 min-w-0" />
 
@@ -37,7 +57,7 @@ export default function Header() {
           <kbd className="px-1.5 py-0.5 border border-line rounded-sm font-mono text-[10px] text-dim">/</kbd>
         </button>
 
-        <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-dim hover:text-paper" aria-label="Search the archive">
+        <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-paper/95 drop-shadow-[0_1px_5px_rgba(7,9,14,0.95)] hover:text-paper" aria-label="Search the archive">
           <Search size={19} />
         </button>
       </div>
