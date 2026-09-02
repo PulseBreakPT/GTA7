@@ -119,7 +119,13 @@ export default function Sidebar() {
           tudo em ecrãs estreitos. */}
       <aside
         className={cx(
-          'bg-raised border-r hairline flex flex-col shrink-0 w-[248px]',
+          // Em ecrãs estreitos a lateral é uma gaveta por cima da página:
+          // fica transparente com blur, e quem lhe dá corpo é o escurecido
+          // que já está por trás. Acima de lg é uma coluna fixa ao lado do
+          // conteúdo — aí não há nada por trás para deixar ver, e o fundo
+          // sólido é o que mantém a leitura estável.
+          'bg-ink/25 backdrop-blur-xl border-r border-white/10 flex flex-col shrink-0 w-[248px]',
+          'lg:bg-raised lg:backdrop-blur-none lg:border-white/[0.16]',
           'fixed inset-y-0 left-0 z-[90] transition-transform duration-300 ease-out',
           'lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:z-0',
           open ? 'translate-x-0' : '-translate-x-full'
