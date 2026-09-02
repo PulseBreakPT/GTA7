@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check, Truck, Bus, Train, Siren, Construction, Wrench, ExternalLink } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, cx } from '@/components/site/ui'
+import { StatusBadge, StatBar, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 // Um id sem ícone aqui devolve `undefined` e parte a renderização da página
@@ -33,19 +33,6 @@ function VehicleVisual({ v, className, sizes = '220px', priority = false }) {
       <Icon size={30} aria-hidden="true" />
       <span className="font-mono text-[9px] uppercase tracking-[0.22em]">AWAITING VISUAL</span>
     </span>
-  )
-}
-
-function StatRow({ icon: Icon, label, value, color }) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color }} aria-hidden="true"><Icon size={14} /></span>
-      <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[13px] text-paper w-[104px] shrink-0">{label}</span>
-      <span className="relative flex-1 h-[7px] bg-white/10" role="img" aria-label={`${label}: ${value} of 100`}>
-        <span className="absolute inset-y-0 left-0 transition-all duration-300" style={{ width: `${value}%`, backgroundColor: color }} />
-        <span className="absolute inset-y-0 w-[2px] bg-ink" style={{ left: `${value - 4}%` }} />
-      </span>
-    </div>
   )
 }
 
@@ -206,7 +193,7 @@ function App() {
             </div>
           ) : (
             <div className="mt-4 flex flex-col gap-3">
-              {stats.map((s) => <StatRow key={s.label} {...s} />)}
+              {stats.map((s) => <StatBar key={s.label} {...s} />)}
             </div>
           )}
 
@@ -292,11 +279,11 @@ function App() {
                     <span className={cx('font-mono text-[12px] tabular-nums', cmp[1].stats[i] >= cmp[0].stats[i] ? 'text-mint' : 'text-dim')}>{cmp[1].stats[i]}</span>
                   </div>
                   <div className="flex gap-2 mt-1">
-                    <span className="relative flex-1 h-[6px] bg-white/10 overflow-hidden" style={{ transform: 'scaleX(-1)' }}>
-                      <span className="absolute inset-y-0 left-0" style={{ width: `${cmp[0].stats[i]}%`, backgroundColor: '#F1A3C3' }} />
+                    <span className="relative flex-1 h-[7px] rounded-full bg-white/10 overflow-hidden" style={{ transform: 'scaleX(-1)' }}>
+                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${cmp[0].stats[i]}%`, backgroundColor: '#F1A3C3' }} />
                     </span>
-                    <span className="relative flex-1 h-[6px] bg-white/10 overflow-hidden">
-                      <span className="absolute inset-y-0 left-0" style={{ width: `${cmp[1].stats[i]}%`, backgroundColor: '#65DCCB' }} />
+                    <span className="relative flex-1 h-[7px] rounded-full bg-white/10 overflow-hidden">
+                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${cmp[1].stats[i]}%`, backgroundColor: '#65DCCB' }} />
                     </span>
                   </div>
                 </div>

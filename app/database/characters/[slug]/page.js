@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, Heart, Zap, Eye, ExternalLink, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Heart, ExternalLink, ChevronRight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, cx } from '@/components/site/ui'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
@@ -24,6 +24,29 @@ function Portrait({ c, className, sizes = '120px' }) {
   }
   const initials = c.name.split(' ').map((p) => p[0]).join('').slice(0, 2)
   return <span className={cx('flex items-center justify-center bg-surface2 text-dim font-cond font-bold', className)} role="img" aria-label={`${c.name}: portrait pending`}>{initials}</span>
+}
+
+// A relação principal ganha o cartão em destaque — duas fotos lado a lado
+// com um coração entre elas, como o HUD de relação do jogo. As restantes
+// ligações continuam na lista compacta com as barras de confiança/tensão.
+function RelationshipDuo({ c, other, rel }) {
+  return (
+    <Link href={`/database/characters/${other.slug}`} className="group panel rounded-sm p-3 flex items-center gap-3 hover:border-pink/50 transition-colors">
+      <span className="shrink-0 min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[10px] text-dim group-hover:border-white/40">R1</span>
+      <span className="flex items-center shrink-0">
+        <Portrait c={c} className="w-[54px] h-[54px] border border-white/70" sizes="54px" />
+        <span className="relative z-[1] -mx-2.5 w-8 h-8 rounded-full bg-ink border border-pink/50 flex items-center justify-center" aria-hidden="true">
+          <Heart size={14} fill="#F1A3C3" stroke="#F1A3C3" strokeWidth={1} />
+        </span>
+        <Portrait c={other} className="w-[54px] h-[54px] border border-line" sizes="54px" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block font-cond font-bold uppercase text-[15px] text-paper truncate">{other.name}</span>
+        <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5">{other.role} · PRIMARY BOND</span>
+      </span>
+      <ChevronRight size={14} className="text-dim shrink-0" aria-hidden="true" />
+    </Link>
+  )
 }
 
 function App() {
@@ -71,7 +94,12 @@ function App() {
             <h2 className="font-cond font-semibold uppercase tracking-[0.18em] text-[12px] text-pink mt-7">RELATIONSHIPS</h2>
             <div className="mt-2 flex flex-col gap-2">
               {rels.length === 0 && <p className="text-dim text-[13px]">No documented relationships yet.</p>}
-              {rels.map((r) => {
+              {rels.filter((r) => r.primary).map((r) => {
+                const other = characterBySlug(r.a === c.slug ? r.b : r.a)
+                if (!other) return null
+                return <RelationshipDuo key={other.slug} c={c} other={other} rel={r} />
+              })}
+              {rels.filter((r) => !r.primary).map((r) => {
                 const other = characterBySlug(r.a === c.slug ? r.b : r.a)
                 if (!other) return null
                 return (
@@ -79,13 +107,13 @@ function App() {
                     <Portrait c={other} className="w-[46px] h-[46px] rounded-sm border border-line shrink-0 text-[14px]" sizes="46px" />
                     <span className="min-w-0 flex-1 sm:flex-none sm:w-[110px]">
                       <span className="block font-cond font-bold uppercase text-[14px] text-paper truncate">{other.name}</span>
-                      <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5">{other.role}{r.primary ? ' · PRIMARY' : ''}</span>
+                      <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5">{other.role}</span>
                     </span>
                     <span className="basis-full sm:basis-auto flex-1 flex flex-col gap-1">
                       {REL_BARS.map((b) => (
                         <span key={b.key} className="flex items-center gap-1.5">
                           <span className="font-cond uppercase text-[7px] tracking-[0.14em] text-dim w-10">{b.label}</span>
-                          <span className="relative flex-1 h-[4px] bg-white/10"><span className="absolute inset-y-0 left-0" style={{ width: `${r[b.key]}%`, backgroundColor: b.color }} /></span>
+                          <span className="relative flex-1 h-[4px] rounded-full bg-white/10 overflow-hidden"><span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${r[b.key]}%`, backgroundColor: b.color }} /></span>
                         </span>
                       ))}
                     </span>

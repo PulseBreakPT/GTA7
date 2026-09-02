@@ -45,34 +45,48 @@ export function GhostBadge({ status, label, className }) {
   )
 }
 
+// HUD-style meter: a filled icon sitting in a dark disc, overlapping a
+// rounded pill track — the same shape as the health/stamina/eagle-eye bars
+// in the game's own HUD. One shared implementation so the vehicle stat
+// rows, comparison panel and relationship meters can't drift apart.
 export function StatBar({ icon: Icon, label, value, color, right, size = 'md', barClass }) {
+  const sm = size === 'sm'
   return (
     <div className="flex items-center gap-3 min-w-0">
       {Icon && (
-        <span className="shrink-0 w-7 h-7 rounded-full border border-line flex items-center justify-center" style={{ color }} aria-hidden="true">
-          <Icon size={13} strokeWidth={2.4} />
+        <span
+          className={cx('relative z-[1] shrink-0 rounded-full bg-ink flex items-center justify-center', sm ? 'w-6 h-6 -mr-1' : 'w-8 h-8 -mr-1.5')}
+          style={{ color, boxShadow: `0 0 0 1px ${color}4D` }}
+          aria-hidden="true"
+        >
+          <Icon size={sm ? 11 : 14} fill={color} stroke={color} strokeWidth={1} />
         </span>
       )}
       {label && (
-        <span className={cx('font-cond font-semibold uppercase tracking-[0.14em] text-paper shrink-0', size === 'sm' ? 'text-[11px] w-16' : 'text-[13px] w-20')}>
+        <span className={cx('font-cond font-semibold uppercase tracking-[0.1em] text-paper shrink-0', sm ? 'text-[11px] w-16' : 'text-[13px] w-[104px]')}>
           {label}
         </span>
       )}
-      <span className={cx('relative flex-1 min-w-0 h-[5px] bg-white/10 overflow-hidden', barClass)} role="img" aria-label={`${label || 'value'}: ${value} of 100`}>
-        <span className="absolute inset-y-0 left-0 transition-all duration-300" style={{ width: `${value}%`, backgroundColor: color }} />
-        <span className="absolute inset-y-0 w-[2px] bg-ink/70" style={{ left: `calc(${value}% - 4px)` }} />
+      <span className={cx('relative flex-1 min-w-0 rounded-full bg-white/10 overflow-hidden', sm ? 'h-[6px]' : 'h-[9px]', barClass)} role="img" aria-label={`${label || 'value'}: ${value} of 100`}>
+        <span className="absolute inset-y-0 left-0 rounded-full transition-all duration-300" style={{ width: `${value}%`, backgroundColor: color }} />
+        {value > 6 && value < 100 && <span className="absolute inset-y-0 w-px bg-ink/80" style={{ left: `calc(${value}% - 2px)` }} />}
       </span>
       {right != null && <span className="font-mono text-[11px] text-dim shrink-0 tabular-nums">{right}</span>}
     </div>
-  )}
+  )
+}
 
 const GLYPH_ICONS = { cross: X, circle: Circle, triangle: Triangle, square: Square }
 
 export function PadGlyph({ shape, className, size = 18 }) {
   const Icon = GLYPH_ICONS[shape] || Circle
   return (
-    <span className={cx('inline-flex items-center justify-center rounded-full border border-white/40 text-paper/80', className)} style={{ width: size + 8, height: size + 8 }} aria-hidden="true">
-      <Icon size={size - 6} strokeWidth={2.4} />
+    <span
+      className={cx('inline-flex items-center justify-center rounded-full bg-ink/85 border border-white/50 text-paper shadow-[0_1px_6px_rgba(0,0,0,0.55)]', className)}
+      style={{ width: size + 8, height: size + 8 }}
+      aria-hidden="true"
+    >
+      <Icon size={size - 6} strokeWidth={2.6} />
     </span>
   )
 }

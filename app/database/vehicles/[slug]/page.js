@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, cx } from '@/components/site/ui'
+import { StatusBadge, StatBar, cx } from '@/components/site/ui'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
 import { Car } from 'lucide-react'
@@ -94,16 +94,7 @@ function App() {
                 <p className="mt-1.5 text-[12px] leading-relaxed text-dim">Rockstar has named this vehicle but has not released speed, acceleration, braking or handling figures.</p>
               </div>
             ) : <div className="mt-5 flex flex-col gap-3">
-              {stats.map((s) => (
-                <div key={s.label} className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: s.color }} aria-hidden="true"><s.icon size={14} /></span>
-                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px] sm:text-[13px] text-paper w-[82px] sm:w-[110px] shrink-0">{s.label}</span>
-                  <span className="relative flex-1 h-[7px] bg-white/10" role="img" aria-label={`${s.label}: ${s.value} of 100`}>
-                    <span className="absolute inset-y-0 left-0" style={{ width: `${s.value}%`, backgroundColor: s.color }} />
-                  </span>
-                  <span className="font-mono text-[12px] text-dim tabular-nums w-8 text-right">{s.value}</span>
-                </div>
-              ))}
+              {stats.map((s) => <StatBar key={s.label} {...s} right={s.value} />)}
             </div>}
 
             <div className="mt-5 flex flex-wrap gap-2">
