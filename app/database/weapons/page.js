@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, Plus, Triangle, ExternalLink, Crosshair, Pill, BatteryFull, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Search, Heart, Zap, Eye, Triangle, ExternalLink, Crosshair, Pill, BatteryFull, ArrowLeft, ArrowRight } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
 import { StatusBadge, GlyphHint, cx } from '@/components/site/ui'
 import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
@@ -45,7 +45,6 @@ function App() {
   const selected = list.find((w) => w.slug === selectedSlug) || list[0] || ofType[0]
   const selectedGallery = selected?.gallery?.length ? selected.gallery : [selected?.image]
   const displaySelected = selected ? { ...selected, image: selectedGallery[gallerySlide] || selected.image } : selected
-  const selIndex = Math.max(0, list.findIndex((w) => w.slug === (selected && selected.slug)))
   const typeMeta = weaponTypes.find((t) => t.id === type)
 
   const pickType = (id) => {
@@ -54,19 +53,12 @@ function App() {
     const first = weapons.find((w) => w.type === id)
     if (first) setSelectedSlug(first.slug)
   }
-  const cycle = () => {
-    if (!list.length) return
-    setSelectedSlug(list[(selIndex + 1) % list.length].slug)
-  }
 
   const barStats = selected ? [
     { icon: Heart, label: 'DAMAGE', value: selected.stats[0], color: '#F1A3C3' },
     { icon: Zap, label: 'FIRE RATE', value: selected.stats[1], color: '#65DCCB' },
     { icon: Eye, label: 'ACCURACY', value: selected.stats[2], color: '#9B83F4' },
   ] : []
-
-  // circular slots: 8 positions starting at top, clockwise
-  const slots = [...Array(8)].map((_, i) => list[i] || null)
 
   return (
     <div className="flex-1 flex flex-col">
@@ -140,58 +132,14 @@ function App() {
           )}
         </aside>
 
-        {/* CENTER: circular inventory */}
+        {/* CENTER: grid */}
         <div className="min-w-0 flex flex-col order-1 lg:order-none">
-          <div className="relative mx-auto w-full max-w-[560px] aspect-square">
-            <span className="absolute inset-[11%] rounded-full border border-line/70" aria-hidden="true" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-              <span className="font-cond font-bold uppercase tracking-[0.1em] text-[30px] text-paper">{typeMeta.label}</span>
-              <span className="font-mono text-[15px] text-pink tabular-nums mt-1">{list.length ? selIndex + 1 : 0} / {list.length || 0}</span>
-            </div>
-            {slots.map((w, i) => {
-              const angle = (-90 + i * 45) * (Math.PI / 180)
-              const cxp = 50 + 39 * Math.cos(angle)
-              const cyp = 50 + 39 * Math.sin(angle)
-              const nxp = 50 + 51 * Math.cos(angle)
-              const nyp = 50 + 51 * Math.sin(angle)
-              const active = w && selected && w.slug === selected.slug
-              return (
-                <div key={i}>
-                  <span
-                    className={cx('absolute z-10 w-6 h-6 rounded-full flex items-center justify-center font-cond font-bold text-[12px] transition-colors duration-150',
-                      active ? 'bg-pink text-ink' : 'bg-ink border border-line text-dim')}
-                    style={{ left: `${nxp}%`, top: `${nyp}%`, transform: 'translate(-50%,-50%)' }}
-                    aria-hidden="true"
-                  >{i + 1}</span>
-                  {w ? (
-                    <button
-                      type="button"
-                      onClick={() => router.push(`/database/weapons/${w.slug}`)}
-                      aria-pressed={active}
-                      aria-label={`Open ${w.name}, slot ${i + 1}`}
-                      className={cx('absolute w-[19%] min-w-[76px] aspect-square panel2 rounded-sm p-1.5 flex flex-col transition-all duration-200', active && 'card-active scale-[1.04]')}
-                      style={{ left: `${cxp}%`, top: `${cyp}%`, transform: 'translate(-50%,-50%)' }}
-                    >
-                      <WeaponVisual w={w} className="flex-1 w-full rounded-[2px]" sizes="110px" />
-                      <span className="font-mono text-[11px] text-paper/90 tabular-nums text-center pt-1">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>
-                    </button>
-                  ) : (
-                    <div
-                      className="absolute w-[19%] min-w-[76px] aspect-square panel2 rounded-sm flex items-center justify-center text-dim/50"
-                      style={{ left: `${cxp}%`, top: `${cyp}%`, transform: 'translate(-50%,-50%)' }}
-                      role="img"
-                      aria-label={`Slot ${i + 1}: empty`}
-                    >
-                      <Plus size={20} aria-hidden="true" />
-                    </div>
-                  )}
-                </div>
-              )
-            })}
+          <div className="flex items-baseline justify-between">
+            <span className="font-cond font-bold uppercase tracking-[0.1em] text-[22px] text-paper">{typeMeta.label}</span>
+            <span className="font-mono text-[13px] text-dim tabular-nums">{list.length} {list.length === 1 ? 'ITEM' : 'ITEMS'}</span>
           </div>
 
-          {/* carousel */}
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pb-2" role="listbox" aria-label="Weapon grid">
+          <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 pb-2" role="listbox" aria-label="Weapon grid">
             {list.map((w) => {
               const active = selected && w.slug === selected.slug
               return (
