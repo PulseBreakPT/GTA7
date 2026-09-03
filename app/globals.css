@@ -6,7 +6,11 @@
 *, *::before, *::after { box-sizing: border-box; }
 img, svg, video, canvas { max-width: 100%; }
 button, a, input, select, textarea { touch-action: manipulation; }
-button, a { -webkit-tap-highlight-color: rgba(194,24,91,0.14); }
+/* O destaque nativo de toque pintava um rectângulo rosa por cima do
+   elemento inteiro, sem seguir os cantos arredondados, e aparecia por
+   cima dos estados que o site desenha. Com estados próprios, o nativo só
+   atrapalha. */
+button, a { -webkit-tap-highlight-color: transparent; }
 
 :root {
   --background: 0 0% 100%;
@@ -238,7 +242,7 @@ main [class*="grid"] > *, main [class*="flex"] > * { min-width: 0; }
 /* Wide editorial layouts preserve a deliberate reading measure. On small
    screens the type scales down before cards become crowded or horizontal
    labels start competing with their data. */
-main a, main button, main input { -webkit-tap-highlight-color: rgba(194,24,91,0.16); }
+main a, main button, main input { -webkit-tap-highlight-color: transparent; }
 main [class*="overflow-x-auto"] { scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
 main [class*="overflow-x-auto"] > * { scroll-snap-align: start; }
 
