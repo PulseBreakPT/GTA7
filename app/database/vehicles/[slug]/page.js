@@ -3,12 +3,33 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink, FileText, Gauge, ListChecks, Car } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, StatBar, cx } from '@/components/site/ui'
+import { TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
-import { Car } from 'lucide-react'
+
+// A ordem é a das fichas de veículo das wikis grandes: identificação e
+// imagem primeiro, depois o que a fonte diz, depois desempenho, depois
+// ficha técnica, e por fim o que se lhe parece. O índice à esquerda e a
+// caixa de dados à direita são os mesmos das outras fichas do arquivo.
+const SECTIONS = [
+  { id: 'overview', label: 'Overview', icon: FileText },
+  { id: 'performance', label: 'Performance', icon: Gauge },
+  { id: 'specifications', label: 'Specifications', icon: ListChecks },
+  { id: 'related', label: 'Related Vehicles', icon: Car },
+]
+
+function Attribution({ label, value, accent }) {
+  if (!value) return null
+  return (
+    <div className={cx('border-l-2 pl-3', accent)}>
+      <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">{label}</p>
+      <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{value}</p>
+    </div>
+  )
+}
 
 function App() {
   const { slug } = useParams()
@@ -44,103 +65,166 @@ function App() {
   ]
   const related = vehicles.filter((x) => x.cls === v.cls && x.slug !== v.slug).slice(0, 4)
   const gallery = v.gallery?.length ? v.gallery : [v.image]
+  const classLabel = (vehicleClasses.find((c) => c.id === v.cls) || {}).label || v.cls
 
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="vehicles" />
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto">
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Link href="/database/vehicles" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
           <ArrowLeft size={15} /> GARAGE
         </Link>
 
         <div className="data-rail mt-2">GARAGE INDEX · REFERENCE RECORD · UNIT {v.num}</div>
-        <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6 mt-5">
-          <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden aspect-[16/10]">
-            {gallery[slide] ? (
-              <Image src={gallery[slide]} alt={`${v.name} image ${slide + 1}`} fill priority sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
-            ) : (
-              <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
-                <Car size={40} aria-hidden="true" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.24em]">AWAITING VISUAL</span>
-              </span>
-            )}
-            {gallery.length > 1 && <><button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous vehicle image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowLeft size={15} /></button><button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next vehicle image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-10 h-10 flex items-center justify-center text-paper"><ArrowRight size={15} /></button></>}
+
+        {/* Cabeçalho fora da grelha: nas fichas de wiki o nome vem sempre
+            antes da caixa de dados, mesmo em ecrã estreito. */}
+        <header className="mt-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{classLabel}</span>
+            <StatusBadge status={v.status} />
+            <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
           </div>
-          {gallery.length > 1 && <div className="mt-2 flex gap-2 overflow-x-auto">{gallery.map((src, i) => <button key={src} type="button" onClick={() => setSlide(i)} className={cx('relative w-20 h-12 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}><Image src={src} alt="" fill sizes="80px" className="object-cover" /></button>)}</div>}
+          <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{v.name}</h1>
+        </header>
 
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(vehicleClasses.find((c) => c.id === v.cls) || {}).label || v.cls}</span>
-              <StatusBadge status={v.status} />
-              <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
-            </div>
-            <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{v.name}</h1>
-            {v.association && (
-              <div className="mt-4 border-l-2 border-mint/70 pl-3">
-                <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Association / content</p>
-                <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.association}</p>
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+          {/* Corpo do artigo */}
+          <div className="min-w-0 order-2 lg:order-1">
+            <WikiSection id="overview" title="Overview">
+              <div className="flex flex-col gap-3">
+                <Attribution label="Association / content" value={v.association} accent="border-mint/70" />
+                <Attribution label="Manufacturer / brand" value={v.manufacturer} accent="border-violet/70" />
+                <Attribution label="Character" value={v.character} accent="border-pink/70" />
+                <Attribution label="Content" value={v.content} accent="border-mint/70" />
               </div>
-            )}
-            <div className="mt-3 border-l-2 border-violet/70 pl-3">
-              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Manufacturer / brand</p>
-              <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.manufacturer}</p>
-            </div>
-            {v.character && <div className="mt-3 border-l-2 border-pink/70 pl-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Character</p><p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.character}</p></div>}
-            {v.content && <div className="mt-3 border-l-2 border-mint/70 pl-3"><p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Content</p><p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{v.content}</p></div>}
 
-            {v.unpublished ? (
-              <div className="mt-5 border border-line rounded-sm p-4">
-                <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Performance not published</p>
-                <p className="mt-1.5 text-[12px] leading-relaxed text-dim">Rockstar has named this vehicle but has not released speed, acceleration, braking or handling figures.</p>
+              {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {v.confirmedDetails?.length > 0 && (
+                    <div className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm">
+                      <h3 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h3>
+                      <ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">{v.confirmedDetails.map((detail) => <li key={detail}>• {detail}</li>)}</ul>
+                    </div>
+                  )}
+                  {v.notPublished?.length > 0 && (
+                    <div className="border border-line bg-surface2/40 p-3 rounded-sm">
+                      <h3 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Not officially specified</h3>
+                      <ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">{v.notPublished.map((detail) => <li key={detail}>• {detail}</li>)}</ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </WikiSection>
+
+            <WikiSection id="performance" title="Performance">
+              {v.unpublished ? (
+                <div className="border border-line rounded-sm p-4">
+                  <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Performance not published</p>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-dim">Rockstar has named this vehicle but has not released speed, acceleration, braking or handling figures.</p>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {stats.map((s) => <StatBar key={s.label} {...s} right={s.value} />)}
+                </div>
+              )}
+            </WikiSection>
+
+            <WikiSection id="specifications" title="Specifications">
+              <div className="flex flex-wrap gap-2">
+                {v.specs.map((s, i) => <span key={i} className="panel2 rounded-sm px-2.5 py-1.5 font-cond uppercase text-[12px] tracking-[0.1em] text-paper">{s}</span>)}
               </div>
-            ) : <div className="mt-5 flex flex-col gap-3">
-              {stats.map((s) => <StatBar key={s.label} {...s} right={s.value} />)}
-            </div>}
+            </WikiSection>
 
-            <div className="mt-5 flex flex-wrap gap-2">
-              {v.specs.map((s, i) => <span key={i} className="panel2 rounded-sm px-2.5 py-1.5 font-cond uppercase text-[12px] tracking-[0.1em] text-paper">{s}</span>)}
-            </div>
-
-            <button type="button" onClick={toggleFav} aria-pressed={isFav} className={cx('mt-5 inline-flex items-center gap-2 border h-12 px-5 font-cond font-semibold uppercase tracking-[0.14em] text-[14px] transition-colors', isFav ? 'border-pink text-pink' : 'border-line text-paper hover:border-white/50')}>
-              <Heart size={15} fill={isFav ? '#F1A3C3' : 'transparent'} />
-              {isFav ? 'IN YOUR COLLECTION' : 'ADD TO FAVOURITES'}
-            </button>
-
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <a href={v.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
-                SOURCE: {v.sourceName.toUpperCase()} <ExternalLink size={11} />
-              </a>
-              <span className="font-mono text-[10px] text-dim uppercase">UPDATED {v.updatedAt}</span>
-            </div>
-            {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {v.confirmedDetails?.length > 0 && <section className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm"><h2 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h2><ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">{v.confirmedDetails.map((detail) => <li key={detail}>• {detail}</li>)}</ul></section>}
-                {v.notPublished?.length > 0 && <section className="border border-line bg-surface2/40 p-3 rounded-sm"><h2 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Not officially specified</h2><ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">{v.notPublished.map((detail) => <li key={detail}>• {detail}</li>)}</ul></section>}
-              </div>
-            )}
+            <WikiSection id="related" title="Related Vehicles" className="mb-0">
+              {related.length === 0 ? (
+                <p className="text-dim text-[13px]">No other vehicles recorded in this class.</p>
+              ) : (
+                <>
+                  <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME CLASS</h3>
+                  <div className="mt-3 grid grid-cols-2 gap-3">
+                    {related.map((r) => (
+                      <Link key={r.slug} href={`/database/vehicles/${r.slug}`} className="panel rounded-sm p-3 hover:border-white/30 transition-colors">
+                        <span className="font-mono text-[11px] text-dim tabular-nums">{r.num}</span>
+                        <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-1 truncate">{r.name}</span>
+                        <StatusBadge status={r.status} className="mt-2" />
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+            </WikiSection>
           </div>
-        </div>
 
-        {/* Havia aqui um «WHERE TO FIND» com minimapa. O traçado era literal e
-            igual para todos os veículos, e o texto dava sítios de spawn e
-            distâncias de um jogo que ainda não saiu. Era invenção apresentada
-            como levantamento de campo, e sai. */}
-        <div className="data-rail mt-12">FIELD REFERENCE · RELATED UNITS</div>
-        <div className="grid grid-cols-1 gap-6 mt-5">
-          {related.length > 0 && (
-            <div>
-              <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME CLASS</h2>
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                {related.map((r) => (
-                  <Link key={r.slug} href={`/database/vehicles/${r.slug}`} className="panel rounded-sm p-3 hover:border-white/30 transition-colors">
-                    <span className="font-mono text-[11px] text-dim tabular-nums">{r.num}</span>
-                    <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-1 truncate">{r.name}</span>
-                    <StatusBadge status={r.status} className="mt-2" />
-                  </Link>
-                ))}
+          {/* Índice */}
+          <div className="hidden lg:block order-3 lg:order-2">
+            <TableOfContents sections={SECTIONS} />
+          </div>
+
+          {/* Caixa de dados */}
+          <div className="order-1 lg:order-3">
+            <InfoboxShell>
+              <div>
+                <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden aspect-[16/10]">
+                  {gallery[slide] ? (
+                    <Image src={gallery[slide]} alt={`${v.name} image ${slide + 1}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
+                  ) : (
+                    <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
+                      <Car size={32} aria-hidden="true" />
+                      <span className="font-mono text-[10px] uppercase tracking-[0.24em]">AWAITING VISUAL</span>
+                    </span>
+                  )}
+                  {gallery.length > 1 && (
+                    <>
+                      <button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous vehicle image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button>
+                      <button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next vehicle image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button>
+                    </>
+                  )}
+                </div>
+                {gallery.length > 1 && (
+                  <div className="mt-2 flex gap-2 overflow-x-auto">
+                    {gallery.map((src, i) => (
+                      <button key={src} type="button" onClick={() => setSlide(i)} aria-label={`Show image ${i + 1}`} className={cx('relative w-16 h-10 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}>
+                        <Image src={src} alt="" fill sizes="64px" className="object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          )}
+
+              <div className="space-y-3 border-t border-white/10 pt-4">
+                <InfoRow label="Vehicle class" value={classLabel} />
+                <InfoRow label="Manufacturer" value={v.manufacturer} />
+                <InfoRow label="Unit" value={v.num} />
+                <InfoRow label="Association" value={v.association} />
+                <InfoRow label="Character" value={v.character} />
+                <InfoRow label="Status">
+                  <StatusBadge status={v.status} />
+                </InfoRow>
+                <InfoRow label="Evidence">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
+                </InfoRow>
+              </div>
+
+              <div className="border-t border-white/10 pt-4">
+                <button type="button" onClick={toggleFav} aria-pressed={isFav} className={cx('w-full inline-flex items-center justify-center gap-2 border h-11 px-4 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] transition-colors', isFav ? 'border-pink text-pink' : 'border-line text-paper hover:border-white/50')}>
+                  <Heart size={14} fill={isFav ? '#F1A3C3' : 'transparent'} />
+                  {isFav ? 'IN YOUR COLLECTION' : 'ADD TO FAVOURITES'}
+                </button>
+              </div>
+
+              <div className="border-t border-white/10 pt-4">
+                {v.sourceUrl ? (
+                  <a href={v.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+                    SOURCE: {v.sourceName.toUpperCase()} <ExternalLink size={11} />
+                  </a>
+                ) : (
+                  <span className="font-cond uppercase tracking-[0.12em] text-[11px] text-dim">SOURCE: {v.sourceName.toUpperCase()}</span>
+                )}
+                <p className="font-mono text-[9px] text-dim mt-2">Updated {v.updatedAt}</p>
+              </div>
+            </InfoboxShell>
+          </div>
         </div>
       </div>
     </div>

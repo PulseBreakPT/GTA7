@@ -7,8 +7,9 @@ import { useSearchParams } from 'next/navigation'
 import { Search, Plus, Minus, RotateCcw, Route, Triangle, X, SlidersHorizontal, Compass, Check, BadgeCheck, Eye } from 'lucide-react'
 import { regions, mapFilters, locations, easterEggs, featureBriefs } from '@/lib/content'
 import { GhostBadge, StatusBadge, cx } from '@/components/site/ui'
+import MapTerrain, { MAP_VBW, MAP_VBH } from '@/components/site/map-terrain'
 
-const VBW = 1000, VBH = 620
+const VBW = MAP_VBW, VBH = MAP_VBH
 const CATEGORY_COLOR = Object.fromEntries(mapFilters.map((f) => [f.id, f.color]))
 const PROGRESS = [
   { icon: Check, label: 'DISCOVERED', value: 64, color: '#F1A3C3' },
@@ -63,59 +64,7 @@ function MapSurface({ view, setView, dragging, setDragging, markers, selected, o
     >
       <rect width={VBW} height={VBH} fill="#081018" />
       <g style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.k})`, transformOrigin: '0 0', transition: dragging ? 'none' : 'transform 300ms ease' }}>
-        {/* water texture */}
-        <g stroke="#0D1622" strokeWidth="1.5">
-          {[...Array(12)].map((_, i) => <line key={i} x1={520 + i * 6} y1={40 + i * 46} x2={560 + i * 6} y2={40 + i * 46} />)}
-        </g>
-        {/* mainland */}
-        <path d="M40,20 L560,20 L595,80 L615,150 L608,290 L565,375 L480,465 L350,515 L150,555 L55,515 L40,20 Z" fill="#131B27" stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" />
-        {/* port gellhorn basin cut */}
-        <path d="M120,58 L292,58 L292,92 L206,92 L206,126 L120,126 Z" fill="#081018" stroke="rgba(255,255,255,0.14)" strokeWidth="1" />
-        {/* docks */}
-        <g fill="#1E2938">
-          <rect x="140" y="94" width="46" height="10" />
-          <rect x="150" y="110" width="58" height="8" />
-          <rect x="216" y="96" width="12" height="34" />
-          <rect x="238" y="96" width="12" height="44" />
-        </g>
-        {/* grassrivers wetland texture */}
-        <g stroke="#1C2836" strokeWidth="2.5" fill="none">
-          {[[130,360],[190,405],[150,455],[230,470],[280,430],[210,350],[300,505],[120,505]].map(([x, y], i) => (
-            <path key={i} d={`M${x},${y} q10,-8 20,0 q10,8 20,0`} />
-          ))}
-        </g>
-        {/* vice city barrier island */}
-        <path d="M655,115 C695,92 762,102 772,155 L788,295 C795,360 765,425 722,436 C688,443 660,412 656,358 L648,170 C647,148 648,122 655,115 Z" fill="#16202E" stroke="rgba(255,255,255,0.24)" strokeWidth="1.5" />
-        {/* beach edge */}
-        <path d="M772,155 L788,295 C793,352 770,415 726,431" fill="none" stroke="#33405A" strokeWidth="5" />
-        {/* keys */}
-        <g fill="#16202E" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5">
-          <ellipse cx="655" cy="505" rx="30" ry="14" />
-          <ellipse cx="712" cy="532" rx="26" ry="12" />
-          <ellipse cx="768" cy="556" rx="24" ry="11" />
-          <ellipse cx="822" cy="572" rx="20" ry="10" />
-          <ellipse cx="874" cy="586" rx="18" ry="9" />
-        </g>
-        {/* roads */}
-        <g stroke="#222D3D" strokeWidth="4" fill="none" strokeLinecap="round">
-          <path d="M200,120 L420,130 L590,150 L660,190" />
-          <path d="M180,380 L340,360 L520,330 L640,320" />
-          <path d="M700,140 L700,420" />
-          <path d="M672,200 L760,208 M668,260 L775,268 M664,320 L780,330 M668,380 L764,388" strokeWidth="2.5" />
-          <path d="M712,436 L695,470 L655,505 L712,532 L768,556 L822,572 L874,586" strokeDasharray="7 5" strokeWidth="3" />
-        </g>
-        {/* region labels */}
-        <g fontFamily="var(--font-cond)" fontWeight="600" fill="#969BA5" letterSpacing="3">
-          <text x="150" y="180" fontSize="17">PORT GELLHORN</text>
-          <text x="165" y="330" fontSize="17">GRASSRIVERS</text>
-          <text x="686" y="96" fontSize="17">VICE CITY</text>
-          <text x="760" y="525" fontSize="15">LEONIDA KEYS</text>
-          {/* Sem estes dois rótulos, as regiões apareciam na lista lateral e
-              o botão voava para um ponto vazio do mapa. Kalaga fica a norte e
-              Ambrosia no centro, que é o que a Rockstar diz de cada uma. */}
-          <text x="352" y="92" fontSize="17">MOUNT KALAGA</text>
-          <text x="382" y="262" fontSize="17">AMBROSIA</text>
-        </g>
+        <MapTerrain />
         {/* route to selection */}
         {showRoute && sel && (
           <g>
