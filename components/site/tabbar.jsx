@@ -30,11 +30,11 @@ const TABS = [
 // Escritas por extenso: o Tailwind lê as classes no código-fonte, e
 // montadas por concatenação nunca chegariam a entrar no CSS.
 const TINT = {
-  pink: { pill: 'bg-pink', text: 'text-pink', ring: 'bg-pink/12', dot: 'bg-pink', wash: 'bg-pink/[0.10]', hoverRing: 'hover:bg-pink/[0.07]' },
-  violet: { pill: 'bg-violet', text: 'text-violet', ring: 'bg-violet/12', dot: 'bg-violet', wash: 'bg-violet/[0.10]', hoverRing: 'hover:bg-violet/[0.07]' },
-  mint: { pill: 'bg-mint', text: 'text-mint', ring: 'bg-mint/12', dot: 'bg-mint', wash: 'bg-mint/[0.10]', hoverRing: 'hover:bg-mint/[0.07]' },
-  warn: { pill: 'bg-warn', text: 'text-warn', ring: 'bg-warn/12', dot: 'bg-warn', wash: 'bg-warn/[0.10]', hoverRing: 'hover:bg-warn/[0.07]' },
-  paper: { pill: 'bg-paper', text: 'text-paper', ring: 'bg-black/[0.06]', dot: 'bg-paper', wash: 'bg-black/[0.06]', hoverRing: 'hover:bg-black/[0.04]' },
+  pink: { pill: 'bg-pink', text: 'text-pink', ring: 'bg-pink/12', dot: 'bg-pink', wash: 'bg-pink/[0.10]', hoverRing: 'hover:bg-pink/[0.07]', ringLine: 'ring-pink/20', glow: 'shadow-[0_2px_10px_-2px_rgba(194,24,91,0.55)]', cast: '0 10px 30px -14px rgba(194,24,91,0.45)' },
+  violet: { pill: 'bg-violet', text: 'text-violet', ring: 'bg-violet/12', dot: 'bg-violet', wash: 'bg-violet/[0.10]', hoverRing: 'hover:bg-violet/[0.07]', ringLine: 'ring-violet/20', glow: 'shadow-[0_2px_10px_-2px_rgba(91,63,214,0.55)]', cast: '0 10px 30px -14px rgba(91,63,214,0.45)' },
+  mint: { pill: 'bg-mint', text: 'text-mint', ring: 'bg-mint/12', dot: 'bg-mint', wash: 'bg-mint/[0.10]', hoverRing: 'hover:bg-mint/[0.07]', ringLine: 'ring-mint/20', glow: 'shadow-[0_2px_10px_-2px_rgba(14,124,107,0.55)]', cast: '0 10px 30px -14px rgba(14,124,107,0.45)' },
+  warn: { pill: 'bg-warn', text: 'text-warn', ring: 'bg-warn/12', dot: 'bg-warn', wash: 'bg-warn/[0.10]', hoverRing: 'hover:bg-warn/[0.07]', ringLine: 'ring-warn/20', glow: 'shadow-[0_2px_10px_-2px_rgba(138,106,0,0.55)]', cast: '0 10px 30px -14px rgba(138,106,0,0.45)' },
+  paper: { pill: 'bg-paper', text: 'text-paper', ring: 'bg-black/[0.06]', dot: 'bg-paper', wash: 'bg-black/[0.06]', hoverRing: 'hover:bg-black/[0.04]', ringLine: 'ring-black/10', glow: 'shadow-[0_2px_10px_-2px_rgba(11,15,22,0.45)]', cast: '0 10px 30px -14px rgba(11,15,22,0.35)' },
 }
 
 const SHEET_GROUPS = [
@@ -186,7 +186,7 @@ export default function TabBar() {
   const easing = reduced ? 'none' : 'transform 420ms cubic-bezier(0.32, 0.72, 0, 1), width 420ms cubic-bezier(0.32, 0.72, 0, 1), background-color 320ms ease'
 
   const itemClasses = cx(
-    'group relative z-[1] flex flex-col items-center justify-center rounded-full select-none',
+    'group relative z-[1] flex flex-col items-center justify-center rounded-[18px] select-none',
     'min-w-[60px] sm:min-w-[70px] transition-[height,padding] duration-300 ease-out',
     'active:scale-[0.94] motion-reduce:active:scale-100',
   )
@@ -202,22 +202,42 @@ export default function TabBar() {
           aria-label="Primary"
           onPointerLeave={() => setHoverKey(null)}
           className={cx(
-            'pointer-events-auto relative flex items-center gap-1 rounded-full bg-ink',
-            // Três camadas de sombra: uma linha de contacto, uma sombra
-            // curta que a levanta do papel e uma longa e difusa que a põe
-            // a flutuar. Uma só sombra dá sempre um cartão colado.
-            'shadow-[0_0_0_1px_rgba(11,15,22,0.07),0_2px_6px_-1px_rgba(11,15,22,0.10),0_16px_44px_-14px_rgba(11,15,22,0.34)]',
-            'transition-[padding] duration-300 ease-out',
-            compact ? 'px-1.5 py-1.5' : 'px-2 py-2'
+            'pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink',
+            'transition-[padding,box-shadow] duration-500 ease-out',
+            compact ? 'px-7 py-1.5' : 'px-7 py-2'
           )}
+          style={{
+            // Cinco camadas, de dentro para fora: a aresta de luz no topo
+            // (o sol na platibanda de um hotel branco), o contorno fino
+            // que a recorta do papel, a sombra de contacto, a de elevação
+            // e, por baixo de tudo, a sombra tingida da cor do ramo — o
+            // néon a pintar o passeio. Uma sombra só dá sempre um cartão
+            // colado ao fundo.
+            boxShadow: [
+              'inset 0 1px 0 rgba(255,255,255,0.9)',
+              '0 0 0 1px rgba(11,15,22,0.07)',
+              '0 2px 6px -1px rgba(11,15,22,0.10)',
+              '0 16px 44px -14px rgba(11,15,22,0.30)',
+              activeTint.cast,
+            ].join(', '),
+          }}
         >
-          {/* O filete das três cores do arquivo, a assinar a barra. */}
+          {/* Linhas de velocidade, a assinatura do Streamline Moderne:
+              três traços horizontais de cada lado, o do meio mais longo,
+              como nas fachadas e nos letreiros de Ocean Drive. */}
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-[3px]" aria-hidden="true">
+            <span className="block h-px w-2.5 rounded-full bg-pink/45" />
+            <span className="block h-px w-4 rounded-full bg-pink/70" />
+            <span className="block h-px w-2.5 rounded-full bg-pink/45" />
+          </span>
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex flex-col items-end gap-[3px]" aria-hidden="true">
+            <span className="block h-px w-2.5 rounded-full bg-mint/45" />
+            <span className="block h-px w-4 rounded-full bg-mint/70" />
+            <span className="block h-px w-2.5 rounded-full bg-mint/45" />
+          </span>
+          {/* O filete das três cores, agora encostado à curva. */}
           <span
-            className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-pink to-transparent"
-            aria-hidden="true"
-          />
-          <span
-            className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-mint via-transparent to-violet opacity-70"
+            className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-violet to-transparent opacity-60"
             aria-hidden="true"
           />
 
@@ -226,7 +246,7 @@ export default function TabBar() {
           {hoverPill && hoverKey !== activeKey && (
             <span
               aria-hidden="true"
-              className={cx('absolute z-0 rounded-full', (TINT[(TABS.find((t) => t.key === hoverKey) || {}).tint] || TINT.paper).wash)}
+              className={cx('absolute z-0 rounded-[18px] ring-1 ring-inset', (TINT[(TABS.find((t) => t.key === hoverKey) || {}).tint] || TINT.paper).wash, (TINT[(TABS.find((t) => t.key === hoverKey) || {}).tint] || TINT.paper).ringLine)}
               style={{
                 transform: `translateX(${hoverPill.left}px)`,
                 width: hoverPill.width,
@@ -242,7 +262,7 @@ export default function TabBar() {
           {pill && (
             <span
               aria-hidden="true"
-              className={cx('absolute z-0 rounded-full', activeTint.pill)}
+              className={cx('absolute z-0 rounded-[18px]', activeTint.pill, activeTint.glow)}
               style={{
                 transform: `translateX(${pill.left}px)`,
                 width: pill.width,
@@ -332,7 +352,7 @@ export default function TabBar() {
             className="fixed inset-x-0 bottom-0 z-[79] mx-auto w-full max-w-[720px] px-3 animate-in slide-in-from-bottom-6 fade-in duration-300 ease-out motion-reduce:animate-none"
             style={{ paddingBottom: 'calc(max(0.75rem, env(safe-area-inset-bottom)) + 78px)' }}
           >
-            <div className="rounded-[30px] bg-ink shadow-[0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.34)] overflow-hidden">
+            <div className="rounded-[28px] bg-ink overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.30)]">
               {/* Pega, como nas folhas do iOS: diz que isto veio de baixo
                   e que se fecha para baixo. */}
               <div className="flex justify-center pt-2.5 pb-1">
@@ -371,13 +391,13 @@ export default function TabBar() {
                               onClick={() => setSheetOpen(false)}
                               aria-current={active ? 'page' : undefined}
                               className={cx(
-                                'flex items-center gap-2.5 h-12 pl-2 pr-3 rounded-2xl transition-colors active:scale-[0.97] motion-reduce:active:scale-100',
+                                'flex items-center gap-2.5 h-12 pl-2 pr-3 rounded-[18px] transition-colors active:scale-[0.97] motion-reduce:active:scale-100',
                                 active ? cx(tint.pill, 'text-ink') : cx('text-paper', tint.hoverRing)
                               )}
                             >
                               <span
                                 className={cx(
-                                  'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors',
+                                  'w-8 h-8 rounded-[12px] flex items-center justify-center shrink-0 transition-colors',
                                   active ? 'bg-black/15' : tint.ring
                                 )}
                                 aria-hidden="true"

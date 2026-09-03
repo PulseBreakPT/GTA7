@@ -61,25 +61,28 @@ export default function SearchFab() {
           aria-label="Search the archive"
           aria-keyshortcuts="/"
           className={cx(
-            'group pointer-events-auto relative flex items-center justify-center rounded-full bg-ink',
-            // As mesmas três camadas de sombra da barra de baixo: linha
-            // de contacto, sombra curta que levanta e sombra longa que
-            // faz flutuar.
-            'shadow-[0_0_0_1px_rgba(11,15,22,0.07),0_2px_6px_-1px_rgba(11,15,22,0.10),0_16px_44px_-14px_rgba(11,15,22,0.34)]',
+            'group pointer-events-auto relative flex items-center justify-center rounded-[32%] bg-ink',
+            // A mesma gramática de luz da barra de baixo: aresta no topo,
+            // contorno, contacto, elevação e a sombra tingida — aqui em
+            // turquesa, que é a cor da pesquisa em todo o sítio.
+            'shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_2px_6px_-1px_rgba(11,15,22,0.10),0_16px_44px_-14px_rgba(11,15,22,0.30),0_10px_30px_-14px_rgba(14,124,107,0.45)]',
+            'hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(14,124,107,0.35),0_2px_6px_-1px_rgba(11,15,22,0.10),0_16px_44px_-14px_rgba(11,15,22,0.30),0_12px_34px_-12px_rgba(14,124,107,0.6)]',
             'transition-all duration-300 ease-out overflow-hidden',
             'hover:bg-mint/[0.06] active:scale-[0.94] motion-reduce:active:scale-100',
             compact ? 'w-11 h-11' : 'w-[52px] h-[52px]'
           )}
         >
           {/* O filete das cores do arquivo, como nas outras peças fixas. */}
-          <span
-            className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-mint to-transparent opacity-70"
-            aria-hidden="true"
-          />
+          {/* As mesmas linhas de velocidade da barra de baixo, aqui em
+              três traços curtos por baixo do ícone. */}
+          <span className="pointer-events-none absolute inset-x-0 bottom-[7px] flex flex-col items-center gap-[2px]" aria-hidden="true">
+            <span className="block h-px w-4 rounded-full bg-mint/70" />
+            <span className="block h-px w-2.5 rounded-full bg-mint/45" />
+          </span>
           <Search
             size={compact ? 18 : 19}
             strokeWidth={2}
-            className="text-paper group-hover:text-mint transition-colors duration-200"
+            className="text-paper group-hover:text-mint transition-colors duration-200 -mt-1"
             aria-hidden="true"
           />
         </button>
