@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Users, ExternalLink, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin } from 'lucide-react'
+import { Users, ExternalLink, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { StatusBadge, GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
 
 export default function FactionPage() {
@@ -28,6 +28,7 @@ export default function FactionPage() {
     ...(f.confirmed?.length > 0 ? [{ id: 'confirmed', label: 'Confirmed', icon: BadgeCheck }] : []),
     ...(f.unknown?.length > 0 ? [{ id: 'unknown', label: 'Not Published', icon: HelpCircle }] : []),
     { id: 'related', label: 'Other Factions', icon: Users },
+    { id: 'references', label: 'References', icon: BookMarked },
   ]
 
   return (
@@ -43,13 +44,14 @@ export default function FactionPage() {
           <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{f.evidenceStatus}</span>
         </div>
         <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{f.name}</h1>
-        <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]">{f.desc}</p>
+        <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
+        <StubNotice kind="factions" slug={f.slug} />
       </header>
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         <div className="min-w-0 order-2 lg:order-1">
           <WikiSection id="overview" title="Overview">
-            <p className="text-dim text-[14px] leading-[1.8]">{f.desc}</p>
+            <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
           </WikiSection>
 
           {f.confirmed?.length > 0 && (
@@ -86,6 +88,8 @@ export default function FactionPage() {
               ))}
             </div>
           </WikiSection>
+          <References items={[{ name: f.sourceName, url: f.sourceUrl }]} />
+          <CategoryFooter kind="factions" slug={f.slug} />
         </div>
 
         <div className="hidden lg:block order-3 lg:order-2">
@@ -126,6 +130,7 @@ export default function FactionPage() {
                 SOURCE: {f.sourceName.toUpperCase()} <ExternalLink size={11} />
               </a>
             </div>
+            <WhatLinksHere kind="factions" slug={f.slug} />
           </InfoboxShell>
         </div>
       </div>

@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ExternalLink, ChevronRight, MapPin, FileText, Images, Compass } from 'lucide-react'
+import { ExternalLink, ChevronRight, MapPin, FileText, Images, Compass, BookMarked } from 'lucide-react'
 import { locations, regions, mapFilters } from '@/lib/content'
 import { StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 
 export default function LocationPage() {
   const { slug } = useParams()
@@ -26,6 +26,7 @@ export default function LocationPage() {
     { id: 'overview', label: 'Overview', icon: FileText },
     { id: 'visual', label: 'Visual Record', icon: Images },
     ...(related.length > 0 && region ? [{ id: 'nearby', label: 'Nearby', icon: Compass }] : []),
+    { id: 'references', label: 'References', icon: BookMarked },
   ]
 
   return (
@@ -40,13 +41,14 @@ export default function LocationPage() {
           <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{categoryLabel}</span>
           {region && <span className="font-cond uppercase tracking-[0.1em] text-[12px] text-dim">{region.label}</span>}
         </div>
+        <StubNotice kind="locations" slug={loc.slug} />
       </header>
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         {/* Corpo do artigo */}
         <div className="min-w-0 order-2 lg:order-1">
           <WikiSection id="overview" title="Overview">
-            <p className="text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]">{loc.desc}</p>
+            <p className="text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]"><WikiText exclude={`/map/location/${loc.slug}`}>{loc.desc}</WikiText></p>
           </WikiSection>
 
           <WikiSection id="visual" title="Visual Record">
@@ -86,6 +88,8 @@ export default function LocationPage() {
               </div>
             </WikiSection>
           )}
+          <References items={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
+          <CategoryFooter kind="locations" slug={loc.slug} />
         </div>
 
         {/* Índice */}
@@ -119,6 +123,7 @@ export default function LocationPage() {
               </a>
               <p className="font-mono text-[9px] text-dim mt-2">Updated {loc.updatedAt}</p>
             </div>
+            <WhatLinksHere kind="locations" slug={loc.slug} />
           </InfoboxShell>
         </div>
       </div>

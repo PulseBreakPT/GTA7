@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { Radio as RadioIcon, ExternalLink, ChevronRight, FileText, Music, ListMusic } from 'lucide-react'
+import { Radio as RadioIcon, ExternalLink, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
 
 export default function RadioStationPage() {
@@ -28,6 +28,7 @@ export default function RadioStationPage() {
     { id: 'overview', label: 'Overview', icon: FileText },
     ...(s.tracks?.length > 0 ? [{ id: 'tracklist', label: 'Confirmed Tracks', icon: Music }] : []),
     { id: 'related', label: 'Other Stations', icon: ListMusic },
+    { id: 'references', label: 'References', icon: BookMarked },
   ]
 
   return (
@@ -45,13 +46,14 @@ export default function RadioStationPage() {
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
           </div>
           <h1 data-ghost="RADIO" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{s.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]">{s.desc}</p>
+          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
+          <StubNotice kind="radio" slug={s.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           <div className="min-w-0 order-2 lg:order-1">
             <WikiSection id="overview" title="Overview">
-              <p className="text-dim text-[14px] leading-[1.8]">{s.desc}</p>
+              <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
               <div className="mt-4 border-l-2 border-mint/70 pl-3">
                 <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">How it is documented</p>
                 <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{s.association}</p>
@@ -91,6 +93,8 @@ export default function RadioStationPage() {
                 ))}
               </div>
             </WikiSection>
+            <References items={[{ name: s.sourceName, url: s.sourceUrl, retrieved: s.updatedAt }]} />
+            <CategoryFooter kind="radio" slug={s.slug} />
           </div>
 
           <div className="hidden lg:block order-3 lg:order-2">
@@ -126,6 +130,7 @@ export default function RadioStationPage() {
                 </a>
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {s.updatedAt}</p>
               </div>
+              <WhatLinksHere kind="radio" slug={s.slug} />
             </InfoboxShell>
           </div>
         </div>

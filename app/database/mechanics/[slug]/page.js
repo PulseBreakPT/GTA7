@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ExternalLink, ChevronRight, FileText, Layers, Users } from 'lucide-react'
+import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ExternalLink, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { mechanics, characters } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
@@ -15,6 +15,7 @@ const SECTIONS = [
   { id: 'detail', label: 'What is documented', icon: Layers },
   { id: 'related', label: 'Related Mechanics', icon: Repeat2 },
   { id: 'characters', label: 'Linked Characters', icon: Users },
+  { id: 'references', label: 'References', icon: BookMarked },
 ]
 
 export default function MechanicPage() {
@@ -48,17 +49,18 @@ export default function MechanicPage() {
             <span className="min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim">{m.glyph}</span>
           </div>
           <h1 data-ghost="MECHANICS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{m.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]">{m.desc}</p>
+          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
+          <StubNotice kind="mechanics" slug={m.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           <div className="min-w-0 order-2 lg:order-1">
             <WikiSection id="overview" title="Overview">
-              <p className="text-dim text-[14px] leading-[1.8]">{m.desc}</p>
+              <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
             </WikiSection>
 
             <WikiSection id="detail" title="What is documented">
-              <p className="text-dim text-[14px] leading-[1.8]">{m.long}</p>
+              <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.long}</WikiText></p>
             </WikiSection>
 
             <WikiSection id="related" title="Related Mechanics">
@@ -93,6 +95,8 @@ export default function MechanicPage() {
                 ))}
               </div>
             </WikiSection>
+            <References items={[{ name: m.sourceName, url: m.sourceUrl, retrieved: m.updatedAt }]} />
+            <CategoryFooter kind="mechanics" slug={m.slug} />
           </div>
 
           <div className="hidden lg:block order-3 lg:order-2">
@@ -128,6 +132,7 @@ export default function MechanicPage() {
                 </a>
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {m.updatedAt}</p>
               </div>
+              <WhatLinksHere kind="mechanics" slug={m.slug} />
             </InfoboxShell>
           </div>
         </div>

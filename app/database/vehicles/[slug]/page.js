@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink, FileText, Gauge, ListChecks, Car } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, StatBar, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText } from '@/components/site/wiki'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
 
@@ -19,14 +19,15 @@ const SECTIONS = [
   { id: 'performance', label: 'Performance', icon: Gauge },
   { id: 'specifications', label: 'Specifications', icon: ListChecks },
   { id: 'related', label: 'Related Vehicles', icon: Car },
+  { id: 'references', label: 'References', icon: BookMarked },
 ]
 
-function Attribution({ label, value, accent }) {
+function Attribution({ label, value, accent, exclude }) {
   if (!value) return null
   return (
     <div className={cx('border-l-2 pl-3', accent)}>
       <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">{label}</p>
-      <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{value}</p>
+      <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1"><WikiText exclude={exclude}>{value}</WikiText></p>
     </div>
   )
 }
@@ -84,6 +85,7 @@ function App() {
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
           </div>
           <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{v.name}</h1>
+          <StubNotice kind="vehicles" slug={v.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -91,10 +93,10 @@ function App() {
           <div className="min-w-0 order-2 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <div className="flex flex-col gap-3">
-                <Attribution label="Association / content" value={v.association} accent="border-mint/70" />
-                <Attribution label="Manufacturer / brand" value={v.manufacturer} accent="border-violet/70" />
-                <Attribution label="Character" value={v.character} accent="border-pink/70" />
-                <Attribution label="Content" value={v.content} accent="border-mint/70" />
+                <Attribution label="Association / content" value={v.association} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
+                <Attribution label="Manufacturer / brand" value={v.manufacturer} accent="border-violet/70" exclude={`/database/vehicles/${v.slug}`} />
+                <Attribution label="Character" value={v.character} accent="border-pink/70" exclude={`/database/vehicles/${v.slug}`} />
+                <Attribution label="Content" value={v.content} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
               </div>
 
               {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
@@ -152,6 +154,8 @@ function App() {
                 </>
               )}
             </WikiSection>
+            <References items={[{ name: v.sourceName, url: v.sourceUrl, retrieved: v.updatedAt }]} />
+            <CategoryFooter kind="vehicles" slug={v.slug} />
           </div>
 
           {/* Índice */}
@@ -221,6 +225,7 @@ function App() {
                 )}
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {v.updatedAt}</p>
               </div>
+              <WhatLinksHere kind="vehicles" slug={v.slug} />
             </InfoboxShell>
           </div>
         </div>

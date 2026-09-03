@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { House, Map, Newspaper, Users, BookOpen, FolderTree, Layers, Crosshair, Car, Repeat2, Radio as RadioIcon, Menu, X, Library, MapPin, ChevronDown, Images } from 'lucide-react'
+import { House, Map, Newspaper, Users, BookOpen, FolderTree, Layers, Crosshair, Car, Repeat2, Radio as RadioIcon, Menu, X, Library, MapPin, ChevronDown, Images, Sparkles } from 'lucide-react'
 import { SITE_COUNTERS } from '@/lib/content'
 import { cx } from './ui'
 
@@ -22,10 +22,11 @@ const WIKI_SUB = [
   { label: 'RADIO', href: '/database/radio', icon: RadioIcon },
   { label: 'MECHANICS', href: '/database/mechanics', icon: Repeat2 },
   { label: 'EDITIONS', href: '/editions', icon: Layers },
-  { label: 'CATEGORIES', href: '/categories', icon: FolderTree },
+  { label: 'CATEGORIES', href: '/wiki/categories', icon: FolderTree },
+  { label: 'SPECIAL PAGES', href: '/wiki/special', icon: Sparkles },
 ]
 
-const WIKI_ROUTES = ['/wiki', '/database', '/gangs-factions', '/editions', '/categories', '/easter-eggs']
+const WIKI_ROUTES = ['/wiki', '/sources', '/database', '/gangs-factions', '/editions', '/categories', '/easter-eggs']
 const inWiki = (p) => WIKI_ROUTES.some((r) => p.startsWith(r)) || p.startsWith('/map/')
 
 const NAV = [

@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
 import { regions, locations } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 
 export default function RegionPage() {
   const { slug } = useParams()
@@ -39,11 +39,12 @@ export default function RegionPage() {
       <header className="mt-5">
         <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">Region dossier</p>
         <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[76px] text-paper">{region.label}</h1>
-        <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]">{region.blurb}</p>
+        <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]"><WikiText exclude={`/map/${region.id}`}>{region.blurb}</WikiText></p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <GhostBadge status={region.sourced ? 'confirmed' : 'analysis'} label={region.sourced ? 'Officially named' : 'Image-based archive note'} />
           <span className="font-mono text-[11px] text-dim">{entries.length} DOCUMENTED ENTRIES</span>
         </div>
+        <StubNotice kind="regions" slug={region.id} />
       </header>
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -128,6 +129,7 @@ export default function RegionPage() {
               </div>
             </WikiSection>
           )}
+          <CategoryFooter kind="regions" slug={region.id} />
         </div>
 
         {/* Índice */}
@@ -155,6 +157,7 @@ export default function RegionPage() {
               <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Source note</p>
               <p className="mt-1.5 text-[11px] leading-relaxed text-dim">Only Rockstar-named places are listed. The visual arrangement is an archive index, not an official map or boundary layout.</p>
             </div>
+            <WhatLinksHere kind="regions" slug={region.id} />
           </InfoboxShell>
         </div>
       </div>

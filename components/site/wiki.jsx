@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, FolderTree, Link2, FileWarning } from 'lucide-react'
+import { categoriesFor, backlinksFor, entryFor, entryByName, LINK_PATTERN } from '@/lib/wiki-graph'
 import MapTerrain, { MAP_VBW, MAP_VBH } from './map-terrain'
 import { cx } from './ui'
 
@@ -165,4 +166,152 @@ export function LocationLocator({ x, y, name }) {
       </svg>
     </span>
   )
+}
+
+// ---------------------------------------------------------------------
+// As peças que fazem um verbete comportar-se como verbete de wiki:
+// as categorias a que pertence, o que lhe aponta, de onde veio, e o aviso
+// de que ainda está por escrever.
+
+// Rodapé de categorias. Nas wikis é a última linha de qualquer artigo, e
+// é por ali que se anda de um assunto para o vizinho sem passar pela
+// pesquisa.
+export function CategoryFooter({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  const cats = categoriesFor(entry)
+  if (cats.length === 0) return null
+
+  return (
+    <footer className="mt-10 border-t border-white/10 pt-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.14em] text-[10px] text-dim shrink-0">
+          <FolderTree size={12} aria-hidden="true" /> Categories
+        </span>
+        {cats.map((c) => (
+          <Link
+            key={c.slug}
+            href={`/wiki/category/${c.slug}`}
+            className="inline-flex items-center border border-line rounded-sm px-2 py-1 font-cond uppercase tracking-[0.08em] text-[11px] text-paper hover:border-mint hover:text-mint transition-colors"
+          >
+            {c.label}
+          </Link>
+        ))}
+      </div>
+    </footer>
+  )
+}
+
+// O que liga para aqui. Só entram ligações que o arquivo declara num
+// campo — nunca nomes apanhados por semelhança no texto, que dariam
+// ligações falsas com ar de facto.
+export function WhatLinksHere({ kind, slug }) {
+  const links = backlinksFor(kind, slug)
+  if (links.length === 0) return null
+
+  return (
+    <div className="border-t border-white/10 pt-4">
+      <p className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.14em] text-[9px] text-dim">
+        <Link2 size={11} aria-hidden="true" /> What links here
+      </p>
+      <ul className="mt-2.5 space-y-1.5">
+        {links.slice(0, 8).map((l) => (
+          <li key={l.href}>
+            <Link href={l.href} className="group flex items-start gap-2">
+              <span className="w-1 h-1 rounded-full bg-mint/70 mt-[7px] shrink-0" aria-hidden="true" />
+              <span className="min-w-0">
+                <span className="block font-cond font-semibold uppercase text-[12px] text-paper group-hover:text-mint transition-colors leading-tight">{l.name}</span>
+                <span className="block font-cond uppercase tracking-[0.14em] text-[8px] text-dim mt-0.5">{l.relation}</span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {links.length > 8 && (
+        <p className="mt-2 font-mono text-[10px] text-dim">+{links.length - 8} more</p>
+      )}
+    </div>
+  )
+}
+
+// Secção de referências, numerada. É o que separa um arquivo de um blogue:
+// cada afirmação tem de poder ser seguida até à origem.
+export function References({ items }) {
+  const list = (items || []).filter((r) => r && r.name)
+  if (list.length === 0) return null
+
+  return (
+    <section data-section id="references" className="mb-12 scroll-mt-24">
+      <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper border-b border-white/10 pb-3 mb-4">References</h2>
+      <ol className="space-y-2.5">
+        {list.map((r, i) => (
+          <li key={`${r.name}-${i}`} className="flex gap-3 text-[13px] leading-relaxed">
+            <span className="font-mono text-[11px] text-mint tabular-nums shrink-0 pt-[2px]">[{i + 1}]</span>
+            <span className="min-w-0 text-dim">
+              {r.url ? (
+                <a href={r.url} target="_blank" rel="noreferrer" className="text-paper hover:text-mint transition-colors break-words">{r.name}</a>
+              ) : (
+                <span className="text-paper">{r.name}</span>
+              )}
+              {r.note && <span className="block text-[12px] text-dim mt-0.5">{r.note}</span>}
+              {r.retrieved && <span className="block font-mono text-[10px] text-dim mt-0.5">Retrieved {r.retrieved}</span>}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}
+
+// Aviso de esboço: diz de frente que a entrada está incompleta, em vez de
+// a deixar passar por acabada.
+export function StubNotice({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  if (!entry || !entry.stub) return null
+
+  return (
+    <div className="mt-4 flex items-start gap-2.5 border-l-2 border-warn/70 bg-warn/[0.04] px-3 py-2.5">
+      <FileWarning size={14} className="text-warn shrink-0 mt-[2px]" aria-hidden="true" />
+      <p className="text-[12px] leading-relaxed text-dim">
+        <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px] text-warn">Stub. </span>
+        This entry holds only what the source states. It grows when the source does — not before.
+      </p>
+    </div>
+  )
+}
+
+// Ligações internas automáticas: percorre o texto com o padrão dos nomes
+// reais dos verbetes e transforma cada acerto em ligação. É a marca de
+// água de uma wiki — o texto de um artigo leva a outro artigo — e aqui só
+// liga nomes que existem mesmo no arquivo, nunca por semelhança.
+export function WikiText({ children, exclude }) {
+  const text = typeof children === 'string' ? children : ''
+  if (!text || !LINK_PATTERN) return children || null
+
+  const out = []
+  let last = 0
+  let key = 0
+  const re = new RegExp(LINK_PATTERN.source, 'gi')
+  let match = re.exec(text)
+
+  while (match) {
+    const hit = entryByName(match[0])
+    if (hit && hit.href !== exclude) {
+      if (match.index > last) out.push(text.slice(last, match.index))
+      out.push(
+        <Link
+          key={`wl-${key++}`}
+          href={hit.href}
+          className="text-paper underline decoration-mint/40 underline-offset-2 hover:text-mint hover:decoration-mint transition-colors"
+        >
+          {match[0]}
+        </Link>
+      )
+      last = match.index + match[0].length
+    }
+    match = re.exec(text)
+  }
+
+  if (last === 0) return text
+  if (last < text.length) out.push(text.slice(last))
+  return <>{out}</>
 }

@@ -4,10 +4,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, ExternalLink, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ExternalLink, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge, StatBar, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { weapons, weaponTypes } from '@/lib/content'
 
 const SECTIONS = [
@@ -15,6 +15,7 @@ const SECTIONS = [
   { id: 'performance', label: 'Performance', icon: Gauge },
   { id: 'specifications', label: 'Specifications', icon: ListChecks },
   { id: 'related', label: 'Related Weapons', icon: Crosshair },
+  { id: 'references', label: 'References', icon: BookMarked },
 ]
 
 function Attribution({ label, value, accent }) {
@@ -70,7 +71,8 @@ function App() {
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span>
           </div>
           <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{w.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]">{w.desc}</p>
+          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/weapons/${w.slug}`}>{w.desc}</WikiText></p>
+          <StubNotice kind="weapons" slug={w.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -148,6 +150,8 @@ function App() {
                 </>
               )}
             </WikiSection>
+            <References items={[{ name: w.sourceName, url: w.sourceUrl, retrieved: w.updatedAt }]} />
+            <CategoryFooter kind="weapons" slug={w.slug} />
           </div>
 
           {/* Índice */}
@@ -212,6 +216,7 @@ function App() {
                 )}
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {w.updatedAt}</p>
               </div>
+              <WhatLinksHere kind="weapons" slug={w.slug} />
             </InfoboxShell>
           </div>
         </div>

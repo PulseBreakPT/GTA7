@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Heart, ExternalLink, ChevronRight, FileText, Users, Zap } from 'lucide-react'
+import { Heart, ExternalLink, ChevronRight, FileText, Users, Zap, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
 const REL_BARS = [
@@ -19,6 +19,7 @@ const SECTIONS = [
   { id: 'background', label: 'Background', icon: FileText },
   { id: 'relationships', label: 'Relationships', icon: Users },
   { id: 'mechanics', label: 'Associated Mechanics', icon: Zap },
+  { id: 'references', label: 'References', icon: BookMarked },
 ]
 
 function Portrait({ c, className, sizes = '120px' }) {
@@ -90,14 +91,15 @@ function App() {
             <StatusBadge status={c.status} />
           </div>
           <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px]">{c.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]">{c.bio}</p>
+          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.bio}</WikiText></p>
+          <StubNotice kind="characters" slug={c.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
           <div className="min-w-0 order-2 lg:order-1">
             <WikiSection id="background" title="Background">
-              <p className="text-dim text-[14px] leading-[1.8]">{c.long}</p>
+              <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.long}</WikiText></p>
             </WikiSection>
 
             <WikiSection id="relationships" title="Relationships">
@@ -146,6 +148,8 @@ function App() {
                 ))}
               </div>
             </WikiSection>
+            <References items={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
+            <CategoryFooter kind="characters" slug={c.slug} />
           </div>
 
           {/* Índice */}
@@ -179,6 +183,7 @@ function App() {
                 </a>
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {c.updatedAt}</p>
               </div>
+              <WhatLinksHere kind="characters" slug={c.slug} />
             </InfoboxShell>
           </div>
         </div>
