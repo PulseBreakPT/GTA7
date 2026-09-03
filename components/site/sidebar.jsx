@@ -90,7 +90,6 @@ function NavLinks({ pathname, onNavigate }) {
               <div className="mt-1 mb-1.5 ml-4 flex flex-col gap-0.5 border-l hairline pl-3">
                 {item.group.map((sub) => {
                   const subActive = sub.match ? sub.match(pathname) : pathname.startsWith(sub.href)
-                  const SubIcon = sub.icon
                   return (
                     <Link
                       key={sub.label}
@@ -98,11 +97,17 @@ function NavLinks({ pathname, onNavigate }) {
                       onClick={onNavigate}
                       aria-current={subActive ? 'page' : undefined}
                       className={cx(
-                        'flex items-center gap-2.5 h-9 px-2.5 rounded-sm font-cond font-semibold uppercase tracking-[0.08em] text-[12px] transition-colors duration-150',
-                        subActive ? 'text-pink bg-pink/5' : 'text-dim hover:text-paper hover:bg-white/5'
+                        'group/sub flex items-center gap-2.5 h-9 px-2.5 rounded-sm font-cond font-semibold uppercase tracking-[0.08em] text-[12px] transition-colors duration-150',
+                        subActive ? 'text-pink' : 'text-dim hover:text-paper'
                       )}
                     >
-                      <SubIcon size={13} aria-hidden="true" />
+                      <span
+                        className={cx(
+                          'w-1.5 h-1.5 rounded-full shrink-0 transition-colors',
+                          subActive ? 'bg-pink' : 'bg-mint/60 group-hover/sub:bg-mint'
+                        )}
+                        aria-hidden="true"
+                      />
                       {sub.label}
                     </Link>
                   )
@@ -174,13 +179,22 @@ export default function Sidebar() {
           <NavLinks pathname={pathname} onNavigate={() => setOpen(false)} />
         </div>
 
-        <div className="shrink-0 border-t border-transparent lg:border-white/[0.16] px-4 py-3.5 grid grid-cols-3 gap-2">
-          {counters.map(([n, label]) => (
-            <div key={label} className="flex flex-col leading-none">
-              <span className="font-cond font-bold text-[16px] text-paper tabular-nums">{n}</span>
-              <span className="font-cond text-[8px] text-dim uppercase tracking-[0.16em] mt-0.5 truncate">{label}</span>
-            </div>
-          ))}
+        <div className="shrink-0 px-3 pb-4 pt-3">
+          <div className="border border-transparent lg:border-white/[0.16] rounded-sm grid grid-cols-2">
+            {counters.map(([n, label], i) => (
+              <div
+                key={label}
+                className={cx(
+                  'flex flex-col leading-none px-3 py-3',
+                  i % 2 === 0 && 'lg:border-r lg:border-white/[0.16]',
+                  i < 2 && 'lg:border-b lg:border-white/[0.16]'
+                )}
+              >
+                <span className="font-cond font-bold text-[19px] text-mint tabular-nums">{n}</span>
+                <span className="font-cond text-[8px] text-dim uppercase tracking-[0.16em] mt-1 truncate">{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </aside>
 

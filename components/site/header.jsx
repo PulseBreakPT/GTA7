@@ -46,15 +46,17 @@ export default function Header() {
 
         <div className="flex-1 min-w-0" />
 
+        {/* Cápsula larga, como numa wiki: a pesquisa é a acção principal
+            do cabeçalho e ocupa o espaço que isso merece. */}
         <button
           type="button"
           onClick={() => setSearchOpen(true)}
-          className="glass-panel tech-mask-sm hidden md:flex items-center gap-2 w-[200px] xl:w-[280px] h-9 px-3 text-left hover:border-white/30 transition-colors"
+          className="hidden md:flex items-center gap-2.5 w-[280px] xl:w-[360px] h-10 pl-4 pr-2 text-left rounded-full border border-line bg-ink/60 backdrop-blur-sm hover:border-white/35 transition-colors"
           aria-label="Search the archive"
         >
           <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
           <span className="flex-1 text-[13px] text-dim truncate">Search the archive…</span>
-          <kbd className="px-1.5 py-0.5 border border-line rounded-sm font-mono text-[10px] text-dim">/</kbd>
+          <kbd className="w-6 h-6 flex items-center justify-center border border-line rounded-full font-mono text-[10px] text-dim shrink-0">/</kbd>
         </button>
 
         <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-paper/95 drop-shadow-[0_1px_5px_rgba(7,9,14,0.95)] hover:text-paper" aria-label="Search the archive">

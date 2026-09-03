@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Triangle, ChevronRight, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Images, BookOpen, Newspaper } from 'lucide-react'
+import { ChevronRight, ExternalLink, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Images, BookOpen, Newspaper } from 'lucide-react'
 import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
 import {
   IMG, extendedLookBrief, articles, guides, characters, vehicles, weapons,
@@ -44,15 +44,23 @@ const FAQ = [
 
 const fmt = (iso) => iso
 
+// Título de secção com a régua a atravessar até à ligação, como nos
+// painéis técnicos: a linha diz onde a secção começa sem precisar de uma
+// caixa à volta.
 function Section({ eyebrow, title, href, linkLabel, children, className }) {
   return (
     <section className={cx('px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full', className)}>
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b hairline pb-4">
-        <div>
+      <div className="flex items-center gap-4">
+        <div className="shrink-0">
           {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
-          <h2 className="mt-1 font-cond font-bold uppercase tracking-tight text-[30px] sm:text-[40px] leading-[0.95] text-paper">{title}</h2>
+          <h2 className="mt-1 font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-[0.95] text-paper">{title}</h2>
         </div>
-        {href && <Link href={href} className="font-cond font-bold uppercase tracking-[0.14em] text-[13px] text-pink hover:text-paper">{linkLabel} →</Link>}
+        <span className="flex-1 h-px bg-gradient-to-r from-white/25 to-transparent" aria-hidden="true" />
+        {href && (
+          <Link href={href} className="shrink-0 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-dim hover:text-paper transition-colors">
+            {linkLabel} →
+          </Link>
+        )}
       </div>
       {children}
     </section>
@@ -86,7 +94,7 @@ function App() {
           sem imagem por trás, a navbar transparente não mostrava nada. O
           mt-14 no conteúdo interior cancela o deslocamento, para o texto
           cair exactamente onde caía antes. */}
-      <section className="relative -mt-14 min-h-[560px] lg:min-h-[680px] overflow-hidden scanlines vignette">
+      <section className="corner-brackets relative -mt-14 min-h-[560px] lg:min-h-[680px] overflow-hidden scanlines vignette">
         <div className="absolute inset-0">
           <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center brightness-[1.12] saturate-[1.15]" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
@@ -108,18 +116,16 @@ function App() {
               <span>{extendedLookBrief.platforms.join(' · ')}</span>
               <span>{extendedLookBrief.engine}</span>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-6 sm:gap-10">
-              <Link href="#explore-the-wiki" className="magnetic-button tech-mask-sm btn-hero group inline-flex items-center gap-4 border border-paper/90 bg-ink/50 px-6 h-[54px] font-cond font-semibold uppercase tracking-[0.16em] text-[16px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
+            {/* Os dois caminhos de entrada, lado a lado e com o mesmo peso
+                de caixa: um leva aos verbetes, o outro ao mapa. */}
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link href="#explore-the-wiki" className="magnetic-button tech-mask-sm group inline-flex items-center gap-3 border border-mint/70 bg-ink/55 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-mint hover:bg-mint hover:text-ink transition-colors duration-200">
                 EXPLORE THE WIKI
-                <span className="w-8 h-8 rounded-full border border-current flex items-center justify-center" aria-hidden="true">
-                  <Triangle size={12} strokeWidth={2.4} />
-                </span>
+                <ChevronRight size={15} strokeWidth={2.4} aria-hidden="true" />
               </Link>
-              <Link href="/map" className="group inline-flex items-center gap-3 font-cond font-semibold uppercase tracking-[0.16em] text-[16px] text-paper/90 hover:text-paper min-h-[44px]">
+              <Link href="/map" className="tech-mask-sm group inline-flex items-center gap-3 border border-line bg-ink/55 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper hover:border-white/50 transition-colors duration-200">
                 OPEN INTERACTIVE MAP
-                <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center group-hover:border-white/50 transition-colors" aria-hidden="true">
-                  <ChevronRight size={15} />
-                </span>
+                <MapPin size={15} strokeWidth={2.2} aria-hidden="true" />
               </Link>
             </div>
           </div>
@@ -135,22 +141,28 @@ function App() {
           </div>
           <Link href="/categories" className="font-cond font-bold uppercase tracking-[0.14em] text-[13px] text-pink hover:text-paper">All categories →</Link>
         </div>
+        {/* Cada ramo mostra a contagem por cima da imagem e, por baixo, a
+            faixa que diz que tudo o que lá está traz fonte. É a promessa do
+            arquivo repetida à entrada de cada porta. */}
         <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {BRANCHES.map((branch) => {
             const Icon = branch.icon
             return (
-              <Link key={branch.label} href={branch.href} className="panel rounded-sm overflow-hidden group hover:border-pink/60 transition-colors">
-                <span className="relative block aspect-[16/8]">
+              <Link key={branch.label} href={branch.href} title={branch.blurb} className="panel rounded-sm overflow-hidden group hover:border-mint/60 transition-colors">
+                <span className="relative block aspect-[16/9]">
                   <Image src={branch.image} alt="" fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
-                  <span className="absolute inset-0 bg-gradient-to-t from-ink/90 to-transparent" />
-                  <span className="absolute bottom-3 left-4 flex items-center gap-2">
-                    <Icon size={16} className="text-mint" aria-hidden="true" />
-                    <span className="font-cond font-bold uppercase tracking-tight text-[24px] text-paper leading-none">{branch.label}</span>
+                  <span className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/25 to-transparent" />
+                  <span className="absolute inset-x-4 bottom-3 flex items-end justify-between gap-3">
+                    <span className="flex items-center gap-2 min-w-0">
+                      <Icon size={17} className="text-mint shrink-0" aria-hidden="true" />
+                      <span className="font-cond font-bold uppercase tracking-tight text-[22px] text-paper leading-none truncate">{branch.label}</span>
+                    </span>
+                    <span className="font-cond font-bold text-[22px] text-paper/90 tabular-nums leading-none shrink-0">{branch.count}</span>
                   </span>
-                  <span className="absolute top-3 right-3 font-mono text-[11px] tabular-nums text-paper/85 bg-ink/70 px-1.5 py-0.5 rounded-sm">{branch.count}</span>
                 </span>
-                <span className="block p-4">
-                  <span className="block text-[13px] leading-relaxed text-dim">{branch.blurb}</span>
+                <span className="flex items-center gap-2 px-4 py-2.5 border-t border-white/[0.08]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-mint shrink-0" aria-hidden="true" />
+                  <span className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">Source-labelled</span>
                 </span>
               </Link>
             )
@@ -159,22 +171,43 @@ function App() {
       </section>
 
       {/* ===== 3. LATEST OFFICIAL UPDATE ===== */}
-      <Section eyebrow="Latest official update" title={official.title} href={`/news/${official.slug}`} linkLabel="Read the entry">
-        <div className="mt-5 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 items-start">
-          <Link href={`/news/${official.slug}`} className="group block">
-            <span className="relative block aspect-[16/9] overflow-hidden rounded-sm border border-line">
-              <Image src={official.image} alt={official.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-500" />
-            </span>
-          </Link>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <StatusBadge status={official.status} />
-              <span className="font-mono text-[11px] text-dim tabular-nums">{fmt(official.publishedAt)}</span>
+      {/* Uma faixa só, deitada: capa à esquerda, o que mudou ao centro e a
+          porta de entrada à direita. É o bloco que responde à pergunta
+          «o que há de novo» sem obrigar a percorrer a lista de notícias. */}
+      <Section eyebrow="Latest official update" title="What changed" href="/news" linkLabel="All news">
+        <div className="mt-5 panel rounded-sm relative overflow-hidden">
+          <a
+            href={official.sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="absolute top-3 right-3 z-[2] w-9 h-9 flex items-center justify-center border border-line rounded-sm text-dim hover:text-paper hover:border-white/40 transition-colors bg-ink/70"
+            aria-label={`Open the source: ${official.sourceName}`}
+          >
+            <ExternalLink size={14} />
+          </a>
+          <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr_auto] gap-5 lg:gap-6 items-center p-4">
+            <Link href={`/news/${official.slug}`} className="group block shrink-0">
+              <span className="relative block aspect-[16/9] overflow-hidden rounded-sm border border-line">
+                <Image src={official.image} alt={official.title} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+              </span>
+            </Link>
+
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">{official.sourceName}</span>
+                <span className="font-mono text-[11px] text-dim tabular-nums">{fmt(official.publishedAt)}</span>
+                <StatusBadge status={official.status} />
+              </div>
+              <h3 className="mt-2 font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-[1.02] text-paper">{official.title}</h3>
+              <p className="mt-2 text-[14px] leading-relaxed text-dim max-w-[70ch]">{official.excerpt}</p>
             </div>
-            <p className="mt-3 text-[15px] leading-relaxed text-paper/85">{official.excerpt}</p>
-            <a href={official.sourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
-              Source: {official.sourceName}
-            </a>
+
+            <Link
+              href={`/news/${official.slug}`}
+              className="shrink-0 inline-flex items-center justify-center gap-2 border border-line h-11 px-5 font-cond font-semibold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-mint hover:text-mint transition-colors lg:mr-2"
+            >
+              Read article <ChevronRight size={14} />
+            </Link>
           </div>
         </div>
       </Section>
