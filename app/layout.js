@@ -2,7 +2,7 @@ import './globals.css'
 import { Barlow_Condensed, Inter, JetBrains_Mono } from 'next/font/google'
 import { Providers } from './providers'
 import Header from '@/components/site/header'
-import Sidebar from '@/components/site/sidebar'
+import TabBar from '@/components/site/tabbar'
 import Footer from '@/components/site/footer'
 
 const cond = Barlow_Condensed({ subsets: ['latin'], weight: ['400','500','600','700'], variable: '--font-cond', display: 'swap' })
@@ -42,23 +42,25 @@ export default function RootLayout({ children }) {
       <head>
         <script dangerouslySetInnerHTML={{__html:'window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);'}} />
       </head>
-      <body className={`${cond.variable} ${inter.variable} ${mono.variable} font-sans bg-ink text-paper grain min-h-screen flex`}>
+      <body className={`${cond.variable} ${inter.variable} ${mono.variable} font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
         <Providers>
-          {/* Atalho para saltar a navegação. Fica fora de vista até
-              receber foco pelo teclado: quem navega por tabulação não
-              tem de percorrer a lateral inteira em cada página. */}
+          {/* Atalho para saltar direito ao conteúdo. Fica fora de vista
+              até receber foco pelo teclado. */}
           <a
             href="#main"
             className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-paper focus:text-ink focus:font-cond focus:font-semibold focus:uppercase focus:tracking-[0.14em] focus:text-[13px] focus:rounded-sm"
           >
             Skip to content
           </a>
-          <Sidebar />
           <div className="flex-1 min-w-0 flex flex-col">
             <Header />
             <main id="main" tabIndex={-1} className="archive-grid flex-1 flex flex-col">{children}</main>
+            {/* O espaço que a barra flutuante ocupa. Sem ele, a barra
+                tapava o fim do rodapé em todas as páginas. */}
             <Footer />
+            <div aria-hidden="true" style={{ height: 'calc(76px + max(0.75rem, env(safe-area-inset-bottom)))' }} />
           </div>
+          <TabBar />
         </Providers>
       </body>
     </html>

@@ -41,8 +41,17 @@ export default function Header() {
           : 'bg-ink/35 border-b border-transparent shadow-none'
       )}
     >
-      <div className="pl-14 pr-3 sm:pr-6 lg:pl-8 lg:pr-8 h-[56px] flex items-center gap-2 sm:gap-4 lg:gap-6">
-        <span className="hidden lg:block font-mono text-[9px] tracking-[0.28em] text-paper/95 shrink-0 drop-shadow-[0_1px_5px_rgba(255,255,255,0.95)]">OFFICIAL EVIDENCE INDEX</span>
+      <div className="px-4 sm:px-6 lg:px-8 h-[56px] flex items-center gap-3 sm:gap-4 lg:gap-6">
+        {/* O nome do arquivo vivia na coluna lateral. Com a navegação a
+            passar para a barra de baixo, a identidade tem de estar aqui:
+            é o único sítio fixo que resta no topo, e uma página sem nome
+            visível não se sabe de quem é. Serve também de caminho para
+            casa, que é o que um logótipo faz em qualquer sítio. */}
+        <Link href="/" className="shrink-0 min-w-0 flex items-center" aria-label="LEONIDA ARCHIVE — home">
+          <span className="chromatic-title font-cond font-bold text-[15px] sm:text-[16px] tracking-wide text-paper whitespace-nowrap leading-none">LEONIDA ARCHIVE</span>
+        </Link>
+
+        <span className="hidden xl:block font-mono text-[9px] tracking-[0.28em] text-dim shrink-0">OFFICIAL EVIDENCE INDEX</span>
 
         <div className="flex-1 min-w-0" />
 
@@ -59,7 +68,7 @@ export default function Header() {
           <kbd className="w-6 h-6 flex items-center justify-center border border-line rounded-full font-mono text-[10px] text-dim shrink-0">/</kbd>
         </button>
 
-        <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-paper/95 drop-shadow-[0_1px_5px_rgba(255,255,255,0.95)] hover:text-paper" aria-label="Search the archive">
+        <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-paper hover:text-mint transition-colors" aria-label="Search the archive">
           <Search size={19} />
         </button>
       </div>
