@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -11,29 +11,35 @@ import {
 import { SITE_COUNTERS } from '@/lib/content'
 import { cx } from './ui'
 
-// A barra flutuante inferior, no padrão do iOS: um punhado de destinos
-// sempre à mão e um «More» para o resto. A regra é a mesma que a Apple
-// segue e que existe por uma razão prática — acima de cinco alvos, o
-// polegar deixa de acertar e a barra passa a ser uma lista de ícones
-// pequenos. Este arquivo tem quinze destinos: cinco ficam na barra, os
-// outros dez vivem na folha, organizados.
+// A barra flutuante inferior. Quatro destinos mais um «More»: acima de
+// cinco alvos o polegar deixa de acertar, e este arquivo tem quinze
+// destinos — os outros dez vivem na folha, agrupados por natureza.
 
 const WIKI_ROUTES = ['/wiki', '/sources', '/database', '/gangs-factions', '/editions', '/categories', '/easter-eggs']
 const inWiki = (p) => WIKI_ROUTES.some((r) => p.startsWith(r)) || p.startsWith('/map/')
 
+// Cada destino leva a sua cor, como cada medidor do HUD do jogo leva a
+// dele: reconhece-se o sítio pela cor antes de se ler a palavra.
 const TABS = [
-  { label: 'Home', href: '/', icon: House, match: (p) => p === '/' },
-  { label: 'Wiki', href: '/wiki', icon: Library, match: inWiki },
-  { label: 'Map', href: '/map', icon: Map, match: (p) => p === '/map' },
-  { label: 'News', href: '/news', icon: Newspaper, match: (p) => p.startsWith('/news') },
+  { key: 'home', label: 'Home', href: '/', icon: House, match: (p) => p === '/', tint: 'pink' },
+  { key: 'wiki', label: 'Wiki', href: '/wiki', icon: Library, match: inWiki, tint: 'violet' },
+  { key: 'map', label: 'Map', href: '/map', icon: Map, match: (p) => p === '/map', tint: 'mint' },
+  { key: 'news', label: 'News', href: '/news', icon: Newspaper, match: (p) => p.startsWith('/news'), tint: 'warn' },
 ]
 
-// A folha agrupa por natureza, não por ordem de importância: primeiro os
-// ramos de verbetes, depois o que não é verbete, e por fim as vistas que
-// descrevem o próprio arquivo.
+// Escritas por extenso: o Tailwind lê as classes no código-fonte, e
+// montadas por concatenação nunca chegariam a entrar no CSS.
+const TINT = {
+  pink: { pill: 'bg-pink', text: 'text-pink', ring: 'bg-pink/12', dot: 'bg-pink' },
+  violet: { pill: 'bg-violet', text: 'text-violet', ring: 'bg-violet/12', dot: 'bg-violet' },
+  mint: { pill: 'bg-mint', text: 'text-mint', ring: 'bg-mint/12', dot: 'bg-mint' },
+  warn: { pill: 'bg-warn', text: 'text-warn', ring: 'bg-warn/12', dot: 'bg-warn' },
+  paper: { pill: 'bg-paper', text: 'text-paper', ring: 'bg-black/[0.06]', dot: 'bg-paper' },
+}
+
 const SHEET_GROUPS = [
   {
-    title: 'Wiki',
+    title: 'Wiki', tint: 'violet',
     items: [
       { label: 'All entries', href: '/wiki', icon: Library },
       { label: 'Characters', href: '/database/characters', icon: Users },
@@ -47,7 +53,7 @@ const SHEET_GROUPS = [
     ],
   },
   {
-    title: 'Read',
+    title: 'Read', tint: 'pink',
     items: [
       { label: 'News', href: '/news', icon: Newspaper },
       { label: 'Guides', href: '/guides', icon: BookOpen },
@@ -56,7 +62,7 @@ const SHEET_GROUPS = [
     ],
   },
   {
-    title: 'About the archive',
+    title: 'About the archive', tint: 'mint',
     items: [
       { label: 'Sources', href: '/sources', icon: BookMarked },
       { label: 'Statistics', href: '/wiki/statistics', icon: BarChart3 },
@@ -78,18 +84,56 @@ function countersFor(p) {
 export default function TabBar() {
   const pathname = usePathname() || '/'
   const [sheetOpen, setSheetOpen] = useState(false)
-  // A barra encolhe quando se desce a página e volta ao tamanho normal
-  // quando se sobe — é o comportamento do iOS, e existe para devolver
-  // ecrã a quem está a ler em vez de a navegar.
   const [compact, setCompact] = useState(false)
+  const [reduced, setReduced] = useState(false)
   const lastY = useRef(0)
+
+  const navRef = useRef(null)
+  const itemRefs = useRef({})
+  // A pílula do estado activo é uma só e desliza entre destinos, em vez
+  // de aparecer e desaparecer em cada um. É o que dá continuidade ao
+  // movimento: o olho segue a mesma forma, e percebe que mudou de sítio
+  // em vez de ver duas coisas piscar.
+  const [pill, setPill] = useState(null)
+
+  const isActive = useCallback((item) => item.match(pathname), [pathname])
+  const activeTab = TABS.find(isActive)
+  const sheetActive = !activeTab
+  const activeKey = sheetOpen ? 'more' : activeTab ? activeTab.key : 'more'
+  const activeTint = TINT[(sheetOpen || !activeTab) ? 'paper' : activeTab.tint]
 
   useEffect(() => { setSheetOpen(false) }, [pathname])
 
   useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const apply = () => setReduced(mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
+
+  // Medir onde a pílula tem de estar. `useLayoutEffect` para que a
+  // primeira pintura já a apanhe no sítio, sem um salto visível.
+  useLayoutEffect(() => {
+    const medir = () => {
+      const el = itemRefs.current[activeKey]
+      const nav = navRef.current
+      if (!el || !nav) return setPill(null)
+      const a = el.getBoundingClientRect()
+      const b = nav.getBoundingClientRect()
+      setPill({ left: a.left - b.left, width: a.width, height: a.height, top: a.top - b.top })
+    }
+    medir()
+    const nav = navRef.current
+    if (!nav || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(medir)
+    ro.observe(nav)
+    return () => ro.disconnect()
+  }, [activeKey, compact])
+
+  useEffect(() => {
     lastY.current = window.scrollY
     let ticking = false
-
     const onScroll = () => {
       if (ticking) return
       ticking = true
@@ -105,7 +149,6 @@ export default function TabBar() {
         ticking = false
       })
     }
-
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -114,7 +157,6 @@ export default function TabBar() {
     if (!sheetOpen) return
     const onKey = (e) => { if (e.key === 'Escape') setSheetOpen(false) }
     window.addEventListener('keydown', onKey)
-    // Com a folha aberta, a página por trás não deve deslizar.
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
@@ -123,50 +165,84 @@ export default function TabBar() {
     }
   }, [sheetOpen])
 
-  const isActive = useCallback((item) => item.match(pathname), [pathname])
-  const sheetActive = !sheetOpen && !TABS.some(isActive)
   const counters = countersFor(pathname)
+  // Curva com um travão suave no fim, do género da que o iOS usa: parte
+  // depressa e assenta devagar, em vez de chegar a bater.
+  const easing = reduced ? 'none' : 'transform 420ms cubic-bezier(0.32, 0.72, 0, 1), width 420ms cubic-bezier(0.32, 0.72, 0, 1), background-color 320ms ease'
+
+  const itemClasses = cx(
+    'group relative z-[1] flex flex-col items-center justify-center rounded-full select-none',
+    'min-w-[60px] sm:min-w-[70px] transition-[height,padding] duration-300 ease-out',
+    'active:scale-[0.94] motion-reduce:active:scale-100',
+  )
 
   return (
     <>
-      {/* A barra. `pointer-events-none` no invólucro e `auto` na cápsula
-          deixam clicar no conteúdo de um lado e do outro dela. */}
       <div
         className="fixed inset-x-0 bottom-0 z-[80] flex justify-center px-3 pointer-events-none"
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
         <nav
+          ref={navRef}
           aria-label="Primary"
           className={cx(
-            'pointer-events-auto flex items-center gap-1 rounded-full',
-            'border border-black/[0.07] bg-white/72 shadow-[0_10px_40px_-12px_rgba(11,15,22,0.28),0_2px_8px_-2px_rgba(11,15,22,0.10)]',
-            // O material: desfoque forte mais saturação. Sem a saturação
-            // o que passa por baixo do vidro sai cinzento e a barra
-            // parece um plástico opaco em vez de vidro.
-            'backdrop-blur-2xl backdrop-saturate-[1.8]',
+            'pointer-events-auto relative flex items-center gap-1 rounded-full bg-ink',
+            // Três camadas de sombra: uma linha de contacto, uma sombra
+            // curta que a levanta do papel e uma longa e difusa que a põe
+            // a flutuar. Uma só sombra dá sempre um cartão colado.
+            'shadow-[0_0_0_1px_rgba(11,15,22,0.07),0_2px_6px_-1px_rgba(11,15,22,0.10),0_16px_44px_-14px_rgba(11,15,22,0.34)]',
             'transition-[padding] duration-300 ease-out',
             compact ? 'px-1.5 py-1.5' : 'px-2 py-2'
           )}
         >
+          {/* O filete das três cores do arquivo, a assinar a barra. */}
+          <span
+            className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-pink to-transparent"
+            aria-hidden="true"
+          />
+          <span
+            className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-mint via-transparent to-violet opacity-70"
+            aria-hidden="true"
+          />
+
+          {/* A pílula que desliza. Fica por baixo dos destinos. */}
+          {pill && (
+            <span
+              aria-hidden="true"
+              className={cx('absolute z-0 rounded-full', activeTint.pill)}
+              style={{
+                transform: `translateX(${pill.left}px)`,
+                width: pill.width,
+                height: pill.height,
+                top: pill.top,
+                left: 0,
+                transition: easing,
+              }}
+            />
+          )}
+
           {TABS.map((item) => {
             const Icon = item.icon
-            const active = isActive(item)
+            const active = !sheetOpen && isActive(item)
+            const tint = TINT[item.tint]
             return (
               <Link
-                key={item.label}
+                key={item.key}
+                ref={(el) => { itemRefs.current[item.key] = el }}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={cx(
-                  'group relative flex flex-col items-center justify-center rounded-full transition-all duration-300 ease-out',
-                  'min-w-[58px] sm:min-w-[68px]',
-                  compact ? 'h-11 px-3' : 'h-[52px] px-3',
-                  active ? 'bg-paper text-ink' : 'text-dim hover:text-paper hover:bg-black/[0.05]'
-                )}
+                className={cx(itemClasses, compact ? 'h-11 px-3' : 'h-[54px] px-3')}
               >
-                <Icon size={compact ? 20 : 19} strokeWidth={active ? 2.3 : 2} aria-hidden="true" />
+                <Icon
+                  size={compact ? 20 : 19}
+                  strokeWidth={active ? 2.5 : 2}
+                  className={cx('transition-colors duration-300', active ? 'text-ink' : cx(tint.text, 'opacity-90 group-hover:opacity-100'))}
+                  aria-hidden="true"
+                />
                 <span
                   className={cx(
                     'font-cond font-semibold uppercase tracking-[0.1em] leading-none overflow-hidden transition-all duration-300 ease-out',
+                    active ? 'text-ink' : 'text-dim',
                     compact ? 'max-h-0 opacity-0 mt-0 text-[0px]' : 'max-h-4 opacity-100 mt-1 text-[10px]'
                   )}
                 >
@@ -178,20 +254,21 @@ export default function TabBar() {
 
           <button
             type="button"
+            ref={(el) => { itemRefs.current.more = el }}
             onClick={() => setSheetOpen((v) => !v)}
             aria-expanded={sheetOpen}
             aria-haspopup="dialog"
-            className={cx(
-              'group relative flex flex-col items-center justify-center rounded-full transition-all duration-300 ease-out',
-              'min-w-[58px] sm:min-w-[68px]',
-              compact ? 'h-11 px-3' : 'h-[52px] px-3',
-              sheetOpen || sheetActive ? 'bg-paper text-ink' : 'text-dim hover:text-paper hover:bg-black/[0.05]'
-            )}
+            className={cx(itemClasses, compact ? 'h-11 px-3' : 'h-[54px] px-3')}
           >
-            {sheetOpen ? <X size={compact ? 20 : 19} strokeWidth={2.3} aria-hidden="true" /> : <MoreHorizontal size={compact ? 20 : 19} strokeWidth={2} aria-hidden="true" />}
+            <span className="relative flex items-center justify-center">
+              {sheetOpen
+                ? <X size={compact ? 20 : 19} strokeWidth={2.5} className="text-ink" aria-hidden="true" />
+                : <MoreHorizontal size={compact ? 20 : 19} strokeWidth={2} className={cx('transition-colors duration-300', sheetActive ? 'text-ink' : 'text-paper')} aria-hidden="true" />}
+            </span>
             <span
               className={cx(
                 'font-cond font-semibold uppercase tracking-[0.1em] leading-none overflow-hidden transition-all duration-300 ease-out',
+                sheetOpen || sheetActive ? 'text-ink' : 'text-dim',
                 compact ? 'max-h-0 opacity-0 mt-0 text-[0px]' : 'max-h-4 opacity-100 mt-1 text-[10px]'
               )}
             >
@@ -201,60 +278,81 @@ export default function TabBar() {
         </nav>
       </div>
 
-      {/* A folha. Sobe de baixo, encostada à barra, com o mesmo material. */}
       {sheetOpen && (
         <>
           <button
             type="button"
             onClick={() => setSheetOpen(false)}
             aria-label="Close menu"
-            className="fixed inset-0 z-[78] bg-white/60 backdrop-blur-[3px] animate-in fade-in duration-200"
+            className="fixed inset-0 z-[78] bg-white/70 backdrop-blur-[2px] animate-in fade-in duration-200"
           />
           <div
             role="dialog"
             aria-modal="true"
             aria-label="All sections"
-            className={cx(
-              'fixed inset-x-0 bottom-0 z-[79] mx-auto w-full max-w-[720px] px-3',
-              'animate-in slide-in-from-bottom-4 fade-in duration-300 ease-out'
-            )}
-            style={{ paddingBottom: 'calc(max(0.75rem, env(safe-area-inset-bottom)) + 76px)' }}
+            className="fixed inset-x-0 bottom-0 z-[79] mx-auto w-full max-w-[720px] px-3 animate-in slide-in-from-bottom-6 fade-in duration-300 ease-out motion-reduce:animate-none"
+            style={{ paddingBottom: 'calc(max(0.75rem, env(safe-area-inset-bottom)) + 78px)' }}
           >
-            <div className="rounded-[28px] border border-black/[0.07] bg-white/85 backdrop-blur-2xl backdrop-saturate-[1.8] shadow-[0_20px_60px_-16px_rgba(11,15,22,0.3)] overflow-hidden">
-              <div className="max-h-[min(64vh,540px)] overflow-y-auto overscroll-contain p-4">
-                <div className="flex items-center justify-between mb-4">
+            <div className="rounded-[30px] bg-ink shadow-[0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.34)] overflow-hidden">
+              {/* Pega, como nas folhas do iOS: diz que isto veio de baixo
+                  e que se fecha para baixo. */}
+              <div className="flex justify-center pt-2.5 pb-1">
+                <span className="h-1 w-9 rounded-full bg-black/15" aria-hidden="true" />
+              </div>
+
+              <div className="max-h-[min(64vh,560px)] overflow-y-auto overscroll-contain px-4 pb-4">
+                <div className="flex items-center justify-between gap-4 py-3 mb-1 border-b border-black/[0.07]">
                   <span className="chromatic-title font-cond font-bold text-[15px] tracking-wide text-paper">LEONIDA ARCHIVE</span>
-                  <span className="font-mono text-[10px] text-dim tabular-nums">
-                    {counters.map(([n]) => n).join(' · ')}
+                  <span className="flex items-center gap-3 shrink-0">
+                    {counters.map(([n, label]) => (
+                      <span key={label} className="flex flex-col items-end leading-none">
+                        <span className="font-cond font-bold text-[13px] text-mint tabular-nums">{n}</span>
+                        <span className="font-cond uppercase tracking-[0.14em] text-[7px] text-dim mt-0.5">{label}</span>
+                      </span>
+                    ))}
                   </span>
                 </div>
 
-                {SHEET_GROUPS.map((group) => (
-                  <div key={group.title} className="mb-4 last:mb-0">
-                    <p className="font-cond uppercase tracking-[0.16em] text-[9px] text-dim mb-2">{group.title}</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-                      {group.items.map((item) => {
-                        const Icon = item.icon
-                        const active = pathname === item.href
-                        return (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            onClick={() => setSheetOpen(false)}
-                            aria-current={active ? 'page' : undefined}
-                            className={cx(
-                              'flex items-center gap-2.5 h-11 px-3 rounded-2xl font-cond font-semibold uppercase tracking-[0.08em] text-[12px] transition-colors',
-                              active ? 'bg-paper text-ink' : 'text-paper hover:bg-black/[0.05]'
-                            )}
-                          >
-                            <Icon size={15} className={active ? 'text-ink' : 'text-mint'} aria-hidden="true" />
-                            <span className="truncate">{item.label}</span>
-                          </Link>
-                        )
-                      })}
+                {SHEET_GROUPS.map((group) => {
+                  const tint = TINT[group.tint]
+                  return (
+                    <div key={group.title} className="mt-4 first:mt-3">
+                      <p className="flex items-center gap-2 font-cond uppercase tracking-[0.16em] text-[9px] text-dim mb-2">
+                        <span className={cx('w-1.5 h-1.5 rounded-full', tint.dot)} aria-hidden="true" />
+                        {group.title}
+                      </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                        {group.items.map((item) => {
+                          const Icon = item.icon
+                          const active = pathname === item.href
+                          return (
+                            <Link
+                              key={item.label}
+                              href={item.href}
+                              onClick={() => setSheetOpen(false)}
+                              aria-current={active ? 'page' : undefined}
+                              className={cx(
+                                'flex items-center gap-2.5 h-12 pl-2 pr-3 rounded-2xl transition-colors active:scale-[0.97] motion-reduce:active:scale-100',
+                                active ? cx(tint.pill, 'text-ink') : 'text-paper hover:bg-black/[0.04]'
+                              )}
+                            >
+                              <span
+                                className={cx(
+                                  'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors',
+                                  active ? 'bg-black/15' : tint.ring
+                                )}
+                                aria-hidden="true"
+                              >
+                                <Icon size={15} className={active ? 'text-ink' : tint.text} />
+                              </span>
+                              <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[12px] truncate">{item.label}</span>
+                            </Link>
+                          )
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>
