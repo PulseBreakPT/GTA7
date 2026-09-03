@@ -40,6 +40,8 @@ function App() {
   const router = useRouter()
   const [cls, setCls] = useState('all')
   const [query, setQuery] = useState('')
+  const [maker, setMaker] = useState('all')
+  const [sort, setSort] = useState('unit')
   const [selectedSlug, setSelectedSlug] = useState('vapid-ganado')
   const [favs, setFavs] = useState([])
   const [compareMode, setCompareMode] = useState(false)
@@ -59,10 +61,29 @@ function App() {
   const saveFavs = (next) => { setFavs(next); localStorage.setItem('la:favs', JSON.stringify(next)) }
   const saveCompare = (next) => { setComparePair(next); localStorage.setItem('la:compare', JSON.stringify(next)) }
 
+  // Os fabricantes saem da própria lista, para não haver uma segunda
+  // lista a manter à mão. Os que a Rockstar ainda não nomeou ficam de
+  // fora do filtro: seriam uma opção que devolvia quase toda a garagem.
+  const makers = useMemo(() => {
+    const seen = new Set(vehicles.map((v) => v.manufacturer).filter((m) => m && m !== 'NOT OFFICIALLY SPECIFIED'))
+    return [...seen].sort((a, b) => a.localeCompare(b))
+  }, [])
+
+  const lastUpdated = useMemo(() => vehicles.map((v) => v.updatedAt).filter(Boolean).sort().pop(), [])
+
   const list = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return vehicles.filter((v) => (cls === 'all' || v.cls === cls) && (!q || v.name.toLowerCase().includes(q)))
-  }, [cls, query])
+    const out = vehicles.filter((v) =>
+      (cls === 'all' || v.cls === cls) &&
+      (maker === 'all' || v.manufacturer === maker) &&
+      (!q || v.name.toLowerCase().includes(q))
+    )
+    const byName = (a, b) => a.name.localeCompare(b.name)
+    if (sort === 'name') return [...out].sort(byName)
+    if (sort === 'name-desc') return [...out].sort((a, b) => byName(b, a))
+    if (sort === 'updated') return [...out].sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || '') || byName(a, b))
+    return out
+  }, [cls, query, maker, sort])
 
   const selected = list.find((v) => v.slug === selectedSlug) || list[0] || vehicles[0]
   const selectedGallery = selected.gallery?.length ? selected.gallery : [selected.image]
@@ -110,6 +131,30 @@ function App() {
                 OPEN COMPARISON
               </button>
             )}
+          </div>
+
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <label className="flex items-center gap-2">
+              <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Manufacturer</span>
+              <select value={maker} onChange={(e) => setMaker(e.target.value)} aria-label="Filter by manufacturer"
+                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-white/40 max-w-[190px]">
+                <option value="all">All</option>
+                {makers.map((m) => <option key={m} value={m}>{m}</option>)}
+              </select>
+            </label>
+            <label className="flex items-center gap-2">
+              <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
+              <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort vehicles"
+                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-white/40">
+                <option value="unit">Unit number</option>
+                <option value="name">Name A–Z</option>
+                <option value="name-desc">Name Z–A</option>
+                <option value="updated">Recently updated</option>
+              </select>
+            </label>
+            <p className="font-mono text-[11px] text-dim tabular-nums ml-auto">
+              {list.length} of {vehicles.length} entries{lastUpdated ? ` · updated ${lastUpdated}` : ''}
+            </p>
           </div>
 
           <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Vehicle classes">

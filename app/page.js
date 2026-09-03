@@ -2,14 +2,85 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Triangle, ChevronRight, Play } from 'lucide-react'
-import { StatusBadge } from '@/components/site/ui'
-import { encyclopediaCategories, IMG, extendedLookBrief } from '@/lib/content'
+import { Triangle, ChevronRight, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Images, BookOpen, Newspaper } from 'lucide-react'
+import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
+import {
+  IMG, extendedLookBrief, articles, guides, characters, vehicles, weapons,
+  mechanics, regions, locations, radioStations, factions, easterEggs,
+} from '@/lib/content'
+
+// A home segue a ordem das wikis grandes: primeiro o que o jogo é, depois
+// a porta para os verbetes, depois o que mudou, e só no fim as coisas de
+// contexto — como é que o arquivo classifica o que publica, o que se
+// pergunta mais, e quem o faz. Nenhum bloco inventa números: todos saem
+// das listas do próprio arquivo.
+
+const BRANCHES = [
+  { label: 'Characters', href: '/database/characters', icon: Users, count: characters.length, image: IMG.luciaCaminos, blurb: 'Named cast, roles and documented relationships.' },
+  { label: 'Vehicles', href: '/database/vehicles', icon: Car, count: vehicles.length, image: IMG.grottiCheetah, blurb: 'Every vehicle Rockstar has named, by class and manufacturer.' },
+  { label: 'Weapons', href: '/database/weapons', icon: Crosshair, count: weapons.length, image: IMG.morganRevolvers, blurb: 'Armament shown or named in official material.' },
+  { label: 'Locations', href: '/map', icon: MapPin, count: locations.length, image: IMG.viceCity, blurb: 'Named places across Leonida, plotted on the map.' },
+  { label: 'Radio', href: '/database/radio', icon: RadioIcon, count: radioStations.length, image: IMG.ambrosiaDrive, blurb: 'Stations confirmed for the dial.' },
+  { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2, count: mechanics.length, image: IMG.ambrosiaNight, blurb: 'Systems Rockstar has described or shown.' },
+]
+
+// Os quatro rótulos que o arquivo usa para dizer de onde vem cada facto.
+// Estão aqui na home de propósito: quem chega tem de perceber, antes de
+// ler qualquer ficha, que confirmado e rumor não são a mesma coisa.
+const SOURCE_TIERS = [
+  ['confirmed', 'Rockstar named or described it in official material.'],
+  ['verified', 'Visible in official footage or screenshots, identified frame by frame.'],
+  ['analysis', 'The archive’s own reading of official material, marked as such.'],
+  ['rumour', 'Circulating without official backing. Never stated as fact.'],
+]
+
+const FAQ = [
+  ['When does GTA VI launch?', `${extendedLookBrief.releaseDate}. Physical copies are dated a week earlier than the digital launch, and the box holds a download code rather than a disc.`],
+  ['Which platforms?', extendedLookBrief.platforms.join(', ') + '. No PC date has been announced.'],
+  ['Where is it set?', `${extendedLookBrief.setting}. ${extendedLookBrief.timeline}`],
+  ['Who do you play as?', `${extendedLookBrief.protagonists.join(' and ')} — the archive keeps a file on each, with the relationships Rockstar has shown.`],
+  ['Is this an official Rockstar site?', 'No. This is an independent fan archive. Every entry carries the source it came from, and anything unconfirmed is labelled as such.'],
+]
+
+const fmt = (iso) => iso
+
+function Section({ eyebrow, title, href, linkLabel, children, className }) {
+  return (
+    <section className={cx('px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full', className)}>
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b hairline pb-4">
+        <div>
+          {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
+          <h2 className="mt-1 font-cond font-bold uppercase tracking-tight text-[30px] sm:text-[40px] leading-[0.95] text-paper">{title}</h2>
+        </div>
+        {href && <Link href={href} className="font-cond font-bold uppercase tracking-[0.14em] text-[13px] text-pink hover:text-paper">{linkLabel} →</Link>}
+      </div>
+      {children}
+    </section>
+  )
+}
 
 function App() {
+  const official = articles.find((a) => a.category === 'official') || articles[0]
+  const latestNews = articles.filter((a) => a.slug !== official.slug).slice(0, 3)
+  const featuredCast = characters.filter((c) => c.image).slice(0, 6)
+  const sourcedRegions = regions.filter((r) => r.image).slice(0, 6)
+  const latestGuides = guides.slice(0, 3)
+
+  // «Recentemente actualizado» junta as colecções todas e ordena pela data
+  // que cada entrada traz. É a lista que diz onde o arquivo mexeu, sem
+  // ninguém ter de a escrever à mão.
+  const recentlyUpdated = [
+    ...characters.map((c) => ({ name: c.name, href: `/database/characters/${c.slug}`, kind: 'Character', updatedAt: c.updatedAt, status: c.status })),
+    ...vehicles.map((v) => ({ name: v.name, href: `/database/vehicles/${v.slug}`, kind: 'Vehicle', updatedAt: v.updatedAt, status: v.status })),
+    ...locations.map((l) => ({ name: l.name, href: `/map/location/${l.slug}`, kind: 'Location', updatedAt: l.updatedAt, status: l.status })),
+    ...articles.map((a) => ({ name: a.title, href: `/news/${a.slug}`, kind: 'Article', updatedAt: a.updatedAt, status: a.status })),
+  ].filter((x) => x.updatedAt).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 8)
+
+  const galleryPreview = [IMG.keyArtPier, IMG.viceCity, IMG.ambrosiaSunset, IMG.keysStreet, IMG.grottiCheetah, IMG.swampAirboat]
+
   return (
     <div className="flex-1 flex flex-col">
-      {/* ===== HERO ===== */}
+      {/* ===== 1. HERO ===== */}
       {/* -mt-14 sobe a hero para debaixo da navbar (56px, a mesma altura do
           header) — é essa sobreposição que dá corpo ao fundo transparente:
           sem imagem por trás, a navbar transparente não mostrava nada. O
@@ -38,158 +109,266 @@ function App() {
               <span>{extendedLookBrief.engine}</span>
             </div>
             <div className="mt-8 flex flex-wrap items-center gap-6 sm:gap-10">
-              <Link href="/map" className="magnetic-button tech-mask-sm btn-hero group inline-flex items-center gap-4 border border-paper/90 bg-ink/50 px-6 h-[54px] font-cond font-semibold uppercase tracking-[0.16em] text-[16px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
-                EXPLORE THE MAP
+              <Link href="#explore-the-wiki" className="magnetic-button tech-mask-sm btn-hero group inline-flex items-center gap-4 border border-paper/90 bg-ink/50 px-6 h-[54px] font-cond font-semibold uppercase tracking-[0.16em] text-[16px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
+                EXPLORE THE WIKI
                 <span className="w-8 h-8 rounded-full border border-current flex items-center justify-center" aria-hidden="true">
                   <Triangle size={12} strokeWidth={2.4} />
                 </span>
               </Link>
-              <Link href="/database/weapons" className="group inline-flex items-center gap-3 font-cond font-semibold uppercase tracking-[0.16em] text-[16px] text-paper/90 hover:text-paper min-h-[44px]">
-                OPEN DATABASE
+              <Link href="/map" className="group inline-flex items-center gap-3 font-cond font-semibold uppercase tracking-[0.16em] text-[16px] text-paper/90 hover:text-paper min-h-[44px]">
+                OPEN INTERACTIVE MAP
                 <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center group-hover:border-white/50 transition-colors" aria-hidden="true">
                   <ChevronRight size={15} />
                 </span>
               </Link>
             </div>
           </div>
-
-          {/* Havia aqui um minimapa «SECTOR VC-01 · VICE CITY · 1.86 MI». A
-              distância era inventada e o traçado estava escrito à mão no
-              componente: decoração a fingir-se de leitura de mapa, na
-              primeira coisa que se vê do arquivo. Sai pela mesma razão que
-              saiu o «where to find» dos veículos. */}
         </div>
       </section>
 
-      <section className="px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full" aria-labelledby="start-here">
+      {/* ===== 2. EXPLORE THE WIKI ===== */}
+      <section id="explore-the-wiki" className="px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full scroll-mt-20" aria-labelledby="explore-heading">
         <div className="flex flex-wrap items-end justify-between gap-4 border-b hairline pb-4">
-          <div><p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Start here</p><h2 id="start-here" className="mt-1 font-cond font-bold uppercase tracking-tight text-[36px] sm:text-[46px] text-paper">Browse by subject</h2></div>
+          <div>
+            <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Start here</p>
+            <h2 id="explore-heading" className="mt-1 font-cond font-bold uppercase tracking-tight text-[36px] sm:text-[46px] text-paper">Explore the wiki</h2>
+          </div>
           <Link href="/categories" className="font-cond font-bold uppercase tracking-[0.14em] text-[13px] text-pink hover:text-paper">All categories →</Link>
         </div>
-        <div className="focus-grid mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {encyclopediaCategories.slice(0, 3).map((category) => <Link key={category.slug} href={`/categories/${category.slug}`} className="panel rounded-sm overflow-hidden group hover:border-pink/60"><div className="relative aspect-[16/8]"><Image src={category.cover} alt={category.title} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" /><span className="absolute inset-0 bg-gradient-to-t from-ink/85 to-transparent" /></div><div className="p-4"><h3 className="font-cond font-bold uppercase tracking-tight text-[23px] text-paper">{category.title}</h3><p className="mt-2 text-[13px] leading-relaxed text-dim">{category.description}</p></div></Link>)}
-          {encyclopediaCategories.slice(0, 3).map((category, index) => <Link key={category.slug} href={`/categories/${category.slug}`} className="focus-card spotlight-card tech-mask-sm glass-panel overflow-hidden group hover:border-pink/60"><div className="relative aspect-[16/8] film-frame corner-brackets"><Image src={category.cover} alt={category.title} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.06] transition-transform duration-700" /><span className="absolute inset-0 bg-gradient-to-t from-ink/85 to-transparent" /><span className="absolute right-3 top-3 z-[4] font-mono text-[9px] tracking-[0.14em] text-paper/75">0{index + 1}</span></div><div className="p-4"><h3 className="font-cond font-bold uppercase tracking-tight text-[23px] text-paper">{category.title}</h3><p className="mt-2 text-[13px] leading-relaxed text-dim">{category.description}</p></div></Link>)}
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {BRANCHES.map((branch) => {
+            const Icon = branch.icon
+            return (
+              <Link key={branch.label} href={branch.href} className="panel rounded-sm overflow-hidden group hover:border-pink/60 transition-colors">
+                <span className="relative block aspect-[16/8]">
+                  <Image src={branch.image} alt="" fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+                  <span className="absolute inset-0 bg-gradient-to-t from-ink/90 to-transparent" />
+                  <span className="absolute bottom-3 left-4 flex items-center gap-2">
+                    <Icon size={16} className="text-mint" aria-hidden="true" />
+                    <span className="font-cond font-bold uppercase tracking-tight text-[24px] text-paper leading-none">{branch.label}</span>
+                  </span>
+                  <span className="absolute top-3 right-3 font-mono text-[11px] tabular-nums text-paper/85 bg-ink/70 px-1.5 py-0.5 rounded-sm">{branch.count}</span>
+                </span>
+                <span className="block p-4">
+                  <span className="block text-[13px] leading-relaxed text-dim">{branch.blurb}</span>
+                </span>
+              </Link>
+            )
+          })}
         </div>
       </section>
 
-      {/* ===== EXTENDED LOOK BRIEF ===== */}
-      <section className="hidden" aria-labelledby="extended-look-brief">
-        <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[0.9fr_1.4fr] gap-8 items-start">
+      {/* ===== 3. LATEST OFFICIAL UPDATE ===== */}
+      <Section eyebrow="Latest official update" title={official.title} href={`/news/${official.slug}`} linkLabel="Read the entry">
+        <div className="mt-5 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 items-start">
+          <Link href={`/news/${official.slug}`} className="group block">
+            <span className="relative block aspect-[16/9] overflow-hidden rounded-sm border border-line">
+              <Image src={official.image} alt={official.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+            </span>
+          </Link>
           <div>
-            <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">{extendedLookBrief.sourceName}</p>
-            <h2 id="extended-look-brief" className="mt-2 font-cond font-bold uppercase text-paper leading-[0.9] tracking-tight text-[42px] sm:text-[56px]">Extended Look<br />briefing</h2>
-            <p className="mt-5 text-[15px] leading-relaxed text-dim max-w-lg">{extendedLookBrief.synopsis}</p>
-            <Link href="/news/extended-look-everything-revealed" className="mt-6 inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-paper hover:text-pink">
-              Read the source breakdown <ChevronRight size={15} />
-            </Link>
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusBadge status={official.status} />
+              <span className="font-mono text-[11px] text-dim tabular-nums">{fmt(official.publishedAt)}</span>
+            </div>
+            <p className="mt-3 text-[15px] leading-relaxed text-paper/85">{official.excerpt}</p>
+            <a href={official.sourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+              Source: {official.sourceName}
+            </a>
           </div>
+        </div>
+      </Section>
+
+      {/* ===== 4. FEATURED CAST ===== */}
+      <Section eyebrow="The cast" title="Characters" href="/database/characters" linkLabel="All characters">
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {featuredCast.map((c) => (
+            <Link key={c.slug} href={`/database/characters/${c.slug}`} className="panel rounded-sm overflow-hidden group hover:border-pink/60 transition-colors">
+              <span className="relative block aspect-[3/4] bg-surface2">
+                <Image src={c.image} alt={`Portrait of ${c.name}`} fill sizes="(max-width:640px) 50vw, 16vw" className="object-cover object-top group-hover:scale-[1.04] transition-transform duration-500" />
+              </span>
+              <span className="block p-2.5">
+                <span className="block font-cond font-bold uppercase text-[14px] text-paper truncate">{c.name}</span>
+                <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5 truncate">{c.role}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {/* ===== 5. MAP AND REGIONS ===== */}
+      <Section eyebrow="The state of Leonida" title="Map and regions" href="/map" linkLabel="Open the map">
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {sourcedRegions.map((r) => (
+            <Link key={r.id} href={`/map/${r.id}`} className="panel rounded-sm overflow-hidden group hover:border-mint/60 transition-colors">
+              <span className="relative block aspect-[16/8]">
+                <Image src={r.image} alt={`Official artwork for ${r.label}`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+                <span className="absolute inset-0 bg-gradient-to-t from-ink/90 to-transparent" />
+                <span className="absolute bottom-3 left-4 font-cond font-bold uppercase tracking-tight text-[22px] text-paper leading-none">{r.label}</span>
+              </span>
+              <span className="block p-4">
+                <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-mint">{r.officialType}</span>
+                <span className="block text-[13px] leading-relaxed text-dim mt-1.5 clamp-2">{r.blurb}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {/* ===== 6. THE DATABASE IN NUMBERS ===== */}
+      <Section eyebrow="Everything indexed" title="The database" href="/database/vehicles" linkLabel="Open the database">
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-px border border-line bg-line">
+          {[
+            ['Vehicles', vehicles.length, '/database/vehicles'],
+            ['Weapons', weapons.length, '/database/weapons'],
+            ['Characters', characters.length, '/database/characters'],
+            ['Locations', locations.length, '/map'],
+            ['Mechanics', mechanics.length, '/database/mechanics'],
+            ['Radio', radioStations.length, '/database/radio'],
+            ['Factions', factions.length, '/gangs-factions'],
+          ].map(([label, count, href]) => (
+            <Link key={label} href={href} className="bg-ink p-4 sm:p-5 hover:bg-surface2/60 transition-colors">
+              <p className="font-cond font-bold text-[30px] leading-none text-paper tabular-nums">{count}</p>
+              <p className="mt-2 font-cond uppercase tracking-[0.16em] text-[10px] text-dim">{label}</p>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {/* ===== 7. NEWS AND GUIDES ===== */}
+      <Section eyebrow="From the archive" title="News and guides" href="/news" linkLabel="All news">
+        <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-px border border-line bg-line">
-              {[
-                ['Release', extendedLookBrief.releaseDate],
-                ['Platforms', extendedLookBrief.platforms.join(' · ')],
-                ['Engine', extendedLookBrief.engine],
-                ['Setting', extendedLookBrief.setting],
-                ['Timeline', extendedLookBrief.timeline],
-                ['Leads', extendedLookBrief.protagonists.join(' · ')],
-              ].map(([label, value]) => (
-                <div key={label} className="bg-ink p-4 sm:p-5">
-                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">{label}</p>
-                  <p className="mt-2 font-cond font-semibold text-[16px] leading-tight text-paper">{value}</p>
-                </div>
+            <h3 className="flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">
+              <Newspaper size={13} aria-hidden="true" /> Latest news
+            </h3>
+            <div className="mt-3 flex flex-col gap-3">
+              {latestNews.map((a) => (
+                <Link key={a.slug} href={`/news/${a.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-white/30 transition-colors">
+                  <span className="relative w-[92px] h-[62px] shrink-0 overflow-hidden rounded-sm border border-line">
+                    <Image src={a.image} alt="" fill sizes="92px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-2">
+                      <StatusBadge status={a.status} />
+                      <span className="font-mono text-[10px] text-dim tabular-nums">{fmt(a.publishedAt)}</span>
+                    </span>
+                    <span className="block font-cond font-bold uppercase text-[15px] leading-[1.1] text-paper mt-1.5 clamp-2">{a.title}</span>
+                  </span>
+                </Link>
               ))}
             </div>
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="panel rounded-sm p-4">
-                <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">Release context</p>
-                <p className="mt-2 text-[13px] leading-relaxed text-paper/85">{extendedLookBrief.developer} · {extendedLookBrief.publisher}</p>
-                <p className="mt-2 text-[13px] leading-relaxed text-dim">Editions listed in the supplied summary: {extendedLookBrief.editions.join(' and ')}. Pre-order reference: {extendedLookBrief.preorder}.</p>
-                <p className="mt-2 text-[12px] leading-relaxed text-mint">{extendedLookBrief.editionContext.preorder}</p>
-              </div>
-              <div className="panel rounded-sm p-4">
-                <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">Languages listed</p>
-                <p className="mt-2 text-[13px] leading-relaxed text-dim">{extendedLookBrief.languages.join(' · ')}</p>
-              </div>
-            </div>
-            <p className="mt-4 border-l-2 border-pink pl-3 text-[12px] leading-relaxed text-dim">{extendedLookBrief.scopeNote}</p>
-            <p className="mt-2 text-[11px] leading-relaxed text-dim/80">Retail note: {extendedLookBrief.editionContext.format}</p>
-            <div className="mt-5 border-t border-line pt-4">
-              <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">Release and media timeline</p>
-              <ol className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-3">
-                {extendedLookBrief.releaseHistory.map(([date, detail]) => (
-                  <li key={date} className="border-l border-pink/60 pl-3">
-                    <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[13px] text-paper">{date}</p>
-                    <p className="mt-0.5 text-[12px] leading-relaxed text-dim">{detail}</p>
-                  </li>
-                ))}
-              </ol>
-              <p className="mt-4 text-[12px] leading-relaxed text-dim">{extendedLookBrief.mediaNote}</p>
+          </div>
+          <div>
+            <h3 className="flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">
+              <BookOpen size={13} aria-hidden="true" /> Guides
+            </h3>
+            <div className="mt-3 flex flex-col gap-3">
+              {latestGuides.map((g) => (
+                <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-white/30 transition-colors">
+                  <span className="relative w-[92px] h-[62px] shrink-0 overflow-hidden rounded-sm border border-line">
+                    <Image src={g.image} alt="" fill sizes="92px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-2">
+                      <GhostBadge status={g.status} />
+                      <span className="font-mono text-[10px] text-dim tabular-nums">{g.readTime} min</span>
+                    </span>
+                    <span className="block font-cond font-bold uppercase text-[15px] leading-[1.1] text-paper mt-1.5 clamp-2">{g.title}</span>
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* ===== EDITORIAL STRIP ===== */}
-      <section className="hidden" aria-label="Latest from the archive">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr_1fr] gap-4">
-          {/* Featured */}
-          <Link href="/news/extended-look-everything-revealed" className="card-active panel rounded-sm p-5 flex flex-col sm:flex-row gap-5 group">
-            <div className="flex-1 min-w-0 flex flex-col">
-              <div><StatusBadge status="featured" label="FEATURED" /></div>
-              <h2 className="font-cond font-bold uppercase text-paper text-[26px] leading-[1.02] tracking-tight mt-3">
-                EXTENDED LOOK: WHAT THE SUMMARY ADDS
-              </h2>
-              <p className="text-dim text-[13px] leading-relaxed mt-2 clamp-2">
-                Leonida, its named counties, the protagonists and the source boundaries for the archive.
-              </p>
-              <p className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim mt-auto pt-4">
-                COMMUNITY REFERENCE&nbsp;&nbsp;·&nbsp;&nbsp;AUG 27, 2026
-              </p>
-            </div>
-            <div className="relative w-full sm:w-[46%] shrink-0 aspect-[16/9] sm:aspect-auto sm:min-h-[150px] overflow-hidden rounded-sm border border-line">
-              <Image src={IMG.ambrosiaParty} alt="Revellers covered in mud at an off-road party in the Ambrosia backcountry" fill sizes="(max-width: 1024px) 100vw, 30vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
-              <span className="absolute inset-0 bg-ink/20" />
-              <span className="absolute bottom-3 right-3 w-11 h-11 rounded-full bg-ink/70 border border-white/60 flex items-center justify-center text-paper" aria-hidden="true">
-                <Play size={16} fill="currentColor" />
-              </span>
-            </div>
-          </Link>
-
-          {/* News card */}
-          <Link href="/news/new-vice-city-images-surface-online" className="panel rounded-sm p-5 flex gap-4 group hover:border-white/30 transition-colors">
-            <div className="flex-1 min-w-0 flex flex-col">
-              <div><StatusBadge status="news" label="NEWS" /></div>
-              <p className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim mt-3">3 HOURS AGO</p>
-              <h3 className="font-cond font-bold uppercase text-paper text-[19px] leading-[1.05] tracking-tight mt-1.5">
-                NEW VICE CITY IMAGES SURFACE ONLINE
-              </h3>
-              <p className="text-dim text-[12px] leading-relaxed mt-2 clamp-3">
-                Alleged captures show unseen districts and more traffic.
-              </p>
-            </div>
-            <div className="relative w-[104px] h-[104px] shrink-0 self-center overflow-hidden rounded-sm border border-line">
-              <Image src={IMG.swampSkyline} alt="The Vice City skyline seen across the Grassrivers wetlands" fill sizes="104px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
-            </div>
-          </Link>
-
-          {/* Update card */}
-          <Link href="/database/vehicles" className="panel rounded-sm p-5 flex gap-4 group hover:border-white/30 transition-colors">
-            <div className="flex-1 min-w-0 flex flex-col">
-              <div><StatusBadge status="update" label="UPDATE" /></div>
-              <p className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim mt-3">1 DAY AGO</p>
-              <h3 className="font-cond font-bold uppercase text-paper text-[19px] leading-[1.05] tracking-tight mt-1.5">
-                VEHICLE DATABASE UPDATED
-              </h3>
-              <p className="text-dim text-[12px] leading-relaxed mt-2 clamp-3">
-                12 new vehicles added with detailed information.
-              </p>
-            </div>
-            <div className="relative w-[104px] h-[104px] shrink-0 self-center overflow-hidden rounded-sm border border-line">
-              <Image src={IMG.stanierNight} alt="A Vapid Stanier in Vintage Vice City livery, lit by neon at night" fill sizes="104px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
-            </div>
-          </Link>
+      {/* ===== 8. MEDIA ===== */}
+      <Section eyebrow="Visual record" title="Artwork and captures" href="/media" linkLabel="Open the gallery">
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {galleryPreview.map((src) => (
+            <Link key={src} href="/media" className="relative block aspect-[16/10] overflow-hidden rounded-sm border border-line group">
+              <Image src={src} alt="" fill sizes="(max-width:640px) 50vw, 16vw" className="object-cover group-hover:scale-[1.06] transition-transform duration-500" />
+              <span className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors" />
+            </Link>
+          ))}
         </div>
-      </section>
+        <p className="mt-3 flex items-center gap-1.5 font-cond uppercase tracking-[0.14em] text-[10px] text-dim">
+          <Images size={12} aria-hidden="true" /> Official artwork, Visit Leonida postcards, gameplay captures and edition stills
+        </p>
+      </Section>
+
+      {/* ===== 9. RECENTLY UPDATED ===== */}
+      <Section eyebrow="What moved" title="Recently updated" href="/news" linkLabel="Archive log">
+        <ol className="mt-5 border border-line divide-y divide-white/[0.08]">
+          {recentlyUpdated.map((entry) => (
+            <li key={entry.href}>
+              <Link href={entry.href} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-surface2/50 transition-colors">
+                <span className="font-mono text-[11px] text-dim tabular-nums shrink-0 w-[86px]">{fmt(entry.updatedAt)}</span>
+                <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint shrink-0 w-[70px]">{entry.kind}</span>
+                <span className="font-cond font-semibold uppercase text-[14px] text-paper flex-1 min-w-0 truncate">{entry.name}</span>
+                <StatusBadge status={entry.status} className="shrink-0" />
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      {/* ===== 10. HOW SOURCES ARE LABELLED ===== */}
+      <Section eyebrow="Read this first" title="How this archive labels things">
+        <p className="mt-5 text-[15px] leading-relaxed text-paper/85 max-w-[68ch]">
+          Every entry carries a label saying where it came from. Nothing here is presented as fact
+          because it is widely repeated — if Rockstar has not said it, the entry says so.
+        </p>
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {SOURCE_TIERS.map(([status, explanation]) => (
+            <div key={status} className="panel rounded-sm p-4">
+              <StatusBadge status={status} />
+              <p className="mt-2.5 text-[13px] leading-relaxed text-dim">{explanation}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 border-l-2 border-pink pl-3 text-[12px] leading-relaxed text-dim max-w-[68ch]">{extendedLookBrief.scopeNote}</p>
+      </Section>
+
+      {/* ===== 11. FAQ ===== */}
+      <Section eyebrow="Common questions" title="FAQ">
+        <dl className="mt-5 border border-line divide-y divide-white/[0.08]">
+          {FAQ.map(([question, answer]) => (
+            <div key={question} className="px-4 py-4">
+              <dt className="font-cond font-bold uppercase tracking-[0.06em] text-[16px] text-paper">{question}</dt>
+              <dd className="mt-1.5 text-[13px] leading-relaxed text-dim max-w-[75ch]">{answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {/* ===== 12. COMMUNITY AND LEGAL ===== */}
+      <Section eyebrow="About" title="An independent archive">
+        <div className="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="panel rounded-sm p-5">
+            <h3 className="font-cond font-bold uppercase tracking-[0.1em] text-[14px] text-paper">Not affiliated with Rockstar</h3>
+            <p className="mt-2 text-[13px] leading-relaxed text-dim">
+              {extendedLookBrief.developer} and {extendedLookBrief.publisher} own Grand Theft Auto VI and everything in it.
+              This is a fan reference, and links back to the official material it cites.
+            </p>
+          </div>
+          <div className="panel rounded-sm p-5">
+            <h3 className="font-cond font-bold uppercase tracking-[0.1em] text-[14px] text-paper">Corrections welcome</h3>
+            <p className="mt-2 text-[13px] leading-relaxed text-dim">
+              Every entry shows its source and the date it was last checked. If a source says otherwise,
+              the entry is wrong and gets fixed.
+            </p>
+          </div>
+          <div className="panel rounded-sm p-5">
+            <h3 className="font-cond font-bold uppercase tracking-[0.1em] text-[14px] text-paper">Secrets and oddities</h3>
+            <p className="mt-2 text-[13px] leading-relaxed text-dim">
+              {easterEggs.length} community finds are catalogued separately from the confirmed record,
+              so a theory never sits next to a fact as if it were one.
+            </p>
+          </div>
+        </div>
+      </Section>
     </div>
   )
 }

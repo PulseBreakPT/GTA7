@@ -32,14 +32,22 @@ function App() {
   const router = useRouter()
   const [type, setType] = useState('all')
   const [query, setQuery] = useState('')
+  const [sort, setSort] = useState('default')
   const [selectedSlug, setSelectedSlug] = useState('morgan-revolvers')
   const [gallerySlide, setGallerySlide] = useState(0)
   const availableTypes = useMemo(() => weaponTypes.filter((t) => weapons.some((w) => w.type === t.id)), [])
 
+  const lastUpdated = useMemo(() => weapons.map((w) => w.updatedAt).filter(Boolean).sort().pop(), [])
+
   const list = useMemo(() => {
     const q = query.trim().toLowerCase()
     const arr = weapons.filter((w) => type === 'all' || w.type === type)
-    return q ? arr.filter((w) => w.name.toLowerCase().includes(q)) : arr
+    const out = q ? arr.filter((w) => w.name.toLowerCase().includes(q)) : arr
+    const byName = (a, b) => a.name.localeCompare(b.name)
+    if (sort === 'name') return [...out].sort(byName)
+    if (sort === 'name-desc') return [...out].sort((a, b) => byName(b, a))
+    if (sort === 'updated') return [...out].sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || '') || byName(a, b))
+    return out
   }, [type, query])
 
   const selected = list.find((w) => w.slug === selectedSlug) || list[0] || weapons[0]
@@ -63,6 +71,22 @@ function App() {
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>
+
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <label className="flex items-center gap-2">
+              <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
+              <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort weapons"
+                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-white/40">
+                <option value="default">Catalogue order</option>
+                <option value="name">Name A–Z</option>
+                <option value="name-desc">Name Z–A</option>
+                <option value="updated">Recently updated</option>
+              </select>
+            </label>
+            <p className="font-mono text-[11px] text-dim tabular-nums ml-auto">
+              {list.length} of {weapons.length} entries{lastUpdated ? ` · updated ${lastUpdated}` : ''}
+            </p>
+          </div>
 
           <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Weapon types">
             <button type="button" role="tab" aria-selected={type === 'all'} onClick={() => { setType('all'); setQuery('') }}
