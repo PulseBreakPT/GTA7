@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink, FileText, Gauge, ListChecks, Car } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, StatBar, cx } from '@/components/site/ui'
-import { TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
 
@@ -71,9 +71,7 @@ function App() {
     <div className="flex-1 flex flex-col">
       <DbTabs active="vehicles" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
-        <Link href="/database/vehicles" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
-          <ArrowLeft size={15} /> GARAGE
-        </Link>
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Vehicles', href: '/database/vehicles' }, { label: v.name }]} />
 
         <div className="data-rail mt-2">GARAGE INDEX · REFERENCE RECORD · UNIT {v.num}</div>
 

@@ -3,30 +3,37 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { House, Database, Map, Newspaper, Users, BookOpen, FolderTree, Layers, Crosshair, Car, Repeat2, Radio as RadioIcon, Menu, X } from 'lucide-react'
+import { House, Map, Newspaper, Users, BookOpen, FolderTree, Layers, Crosshair, Car, Repeat2, Radio as RadioIcon, Menu, X, Library, MapPin, ChevronDown, Images } from 'lucide-react'
 import { SITE_COUNTERS } from '@/lib/content'
 import { cx } from './ui'
 
-const NAV = [
-  { label: 'HOME', href: '/', icon: House, match: (p) => p === '/' },
-  { label: 'DATABASE', href: '/database/weapons', icon: Database, match: (p) => p.startsWith('/database') },
-  { label: 'MAP', href: '/map', icon: Map, match: (p) => p.startsWith('/map') || p.startsWith('/easter-eggs') },
-  { label: 'ARTICLES', href: '/news', icon: Newspaper, match: (p) => p.startsWith('/news') },
-  { label: 'FACTIONS', href: '/gangs-factions', icon: Users, match: (p) => p.startsWith('/gangs-factions') },
-  { label: 'GUIDES', href: '/guides', icon: BookOpen, match: (p) => p.startsWith('/guides') },
-  { label: 'CATEGORIES', href: '/categories', icon: FolderTree, match: (p) => p.startsWith('/categories') },
-  { label: 'EDITIONS', href: '/editions', icon: Layers, match: (p) => p.startsWith('/editions') },
+// A navegação segue a divisão que as wikis grandes usam: tudo o que é
+// verbete vive debaixo de WIKI, e ao lado ficam as coisas que não são
+// verbetes — o mapa, os guias, as notícias e a galeria. Sem isto, uma
+// notícia e uma ficha de veículo apareciam ao mesmo nível, e o arquivo
+// deixava de dizer o que é registo e o que é actualidade.
+const WIKI_SUB = [
+  { label: 'CHARACTERS', href: '/database/characters', icon: Users },
+  { label: 'VEHICLES', href: '/database/vehicles', icon: Car },
+  { label: 'WEAPONS', href: '/database/weapons', icon: Crosshair },
+  { label: 'LOCATIONS', href: '/map', icon: MapPin, match: (p) => p.startsWith('/map/') || p.startsWith('/easter-eggs') },
+  { label: 'FACTIONS', href: '/gangs-factions', icon: Users },
+  { label: 'RADIO', href: '/database/radio', icon: RadioIcon },
+  { label: 'MECHANICS', href: '/database/mechanics', icon: Repeat2 },
+  { label: 'EDITIONS', href: '/editions', icon: Layers },
+  { label: 'CATEGORIES', href: '/categories', icon: FolderTree },
 ]
 
-// As cinco sub-secções da base de dados: só aparecem sob DATABASE quando a
-// rota já lá está, em vez de sempre visíveis — assim a lateral não fica
-// sobrecarregada quando o utilizador está noutra parte do site.
-const DB_SUB = [
-  { label: 'WEAPONS', href: '/database/weapons', icon: Crosshair },
-  { label: 'VEHICLES', href: '/database/vehicles', icon: Car },
-  { label: 'CHARACTERS', href: '/database/characters', icon: Users },
-  { label: 'MECHANICS', href: '/database/mechanics', icon: Repeat2 },
-  { label: 'RADIO', href: '/database/radio', icon: RadioIcon },
+const WIKI_ROUTES = ['/database', '/gangs-factions', '/editions', '/categories', '/easter-eggs']
+const inWiki = (p) => WIKI_ROUTES.some((r) => p.startsWith(r)) || p.startsWith('/map/')
+
+const NAV = [
+  { label: 'HOME', href: '/', icon: House, match: (p) => p === '/' },
+  { label: 'WIKI', href: '/database/characters', icon: Library, match: inWiki, group: WIKI_SUB },
+  { label: 'INTERACTIVE MAP', href: '/map', icon: Map, match: (p) => p === '/map' },
+  { label: 'GUIDES', href: '/guides', icon: BookOpen, match: (p) => p.startsWith('/guides') },
+  { label: 'NEWS', href: '/news', icon: Newspaper, match: (p) => p.startsWith('/news') },
+  { label: 'MEDIA', href: '/media', icon: Images, match: (p) => p.startsWith('/media') },
 ]
 
 function countersFor(p) {
@@ -37,35 +44,56 @@ function countersFor(p) {
 }
 
 function NavLinks({ pathname, onNavigate }) {
-  const inDatabase = pathname.startsWith('/database')
+  // O grupo abre sozinho quando já se está lá dentro, e pode abrir-se à
+  // mão a partir de qualquer sítio: quem chega à home tem de conseguir
+  // ver o que a wiki tem sem ter de adivinhar uma rota.
+  const [openGroup, setOpenGroup] = useState(() => inWiki(pathname))
+  useEffect(() => { if (inWiki(pathname)) setOpenGroup(true) }, [pathname])
+
   return (
     <nav className="flex flex-col gap-1" aria-label="Primary">
       {NAV.map((item) => {
         const active = item.match(pathname)
         const Icon = item.icon
+        const expanded = item.group ? openGroup : undefined
+
         return (
           <div key={item.label}>
-            <Link
-              href={item.href}
-              onClick={onNavigate}
-              aria-current={active ? 'page' : undefined}
-              className={cx(
-                'group relative flex items-center gap-3 h-11 px-3 rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[13px] transition-all duration-200',
-                active ? 'bg-paper text-ink' : 'text-dim hover:text-paper hover:bg-white/5'
+            <div className="relative flex items-center">
+              <Link
+                href={item.href}
+                onClick={onNavigate}
+                aria-current={active ? 'page' : undefined}
+                className={cx(
+                  'group relative flex-1 flex items-center gap-3 h-11 px-3 rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[13px] transition-all duration-200',
+                  active ? 'bg-paper text-ink' : 'text-dim hover:text-paper hover:bg-white/5'
+                )}
+              >
+                <Icon size={16} className={active ? 'text-ink' : 'text-dim group-hover:text-mint transition-colors'} aria-hidden="true" />
+                <span className="flex-1">{item.label}</span>
+                {active && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full bg-gradient-to-b from-mint via-pink to-violet" aria-hidden="true" />}
+              </Link>
+              {item.group && (
+                <button
+                  type="button"
+                  onClick={() => setOpenGroup((v) => !v)}
+                  aria-expanded={expanded}
+                  aria-label={expanded ? 'Collapse wiki sections' : 'Expand wiki sections'}
+                  className={cx('absolute right-1 w-9 h-9 flex items-center justify-center rounded-sm transition-colors', active ? 'text-ink hover:bg-black/10' : 'text-dim hover:text-paper')}
+                >
+                  <ChevronDown size={15} className={cx('transition-transform duration-200', expanded && 'rotate-180')} />
+                </button>
               )}
-            >
-              <Icon size={16} className={active ? 'text-ink' : 'text-dim group-hover:text-mint transition-colors'} aria-hidden="true" />
-              <span className="flex-1">{item.label}</span>
-              {active && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full bg-gradient-to-b from-mint via-pink to-violet" aria-hidden="true" />}
-            </Link>
-            {item.label === 'DATABASE' && inDatabase && (
+            </div>
+
+            {item.group && expanded && (
               <div className="mt-1 mb-1.5 ml-4 flex flex-col gap-0.5 border-l hairline pl-3">
-                {DB_SUB.map((sub) => {
-                  const subActive = pathname.startsWith(sub.href)
+                {item.group.map((sub) => {
+                  const subActive = sub.match ? sub.match(pathname) : pathname.startsWith(sub.href)
                   const SubIcon = sub.icon
                   return (
                     <Link
-                      key={sub.href}
+                      key={sub.label}
                       href={sub.href}
                       onClick={onNavigate}
                       aria-current={subActive ? 'page' : undefined}

@@ -1,8 +1,65 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
 import MapTerrain, { MAP_VBW, MAP_VBH } from './map-terrain'
 import { cx } from './ui'
+
+// Migalhas de pão: dizem em que ramo do arquivo se está e deixam subir um
+// nível. O último elemento é a página actual e não é ligação.
+export function Breadcrumb({ trail }) {
+  return (
+    <nav aria-label="Breadcrumb" className="min-w-0">
+      <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 font-cond uppercase tracking-[0.12em] text-[11px] text-dim">
+        {trail.map((step, i) => {
+          const last = i === trail.length - 1
+          return (
+            <li key={`${step.label}-${i}`} className="flex items-center gap-1.5 min-w-0">
+              {i > 0 && <ChevronRight size={11} className="shrink-0 opacity-60" aria-hidden="true" />}
+              {last || !step.href ? (
+                <span className={cx('truncate', last && 'text-paper')} aria-current={last ? 'page' : undefined}>{step.label}</span>
+              ) : (
+                <Link href={step.href} className="truncate hover:text-paper transition-colors">{step.label}</Link>
+              )}
+            </li>
+          )
+        })}
+      </ol>
+    </nav>
+  )
+}
+
+// Cabeçalho de página de categoria: nome, o que a lista contém, quantas
+// entradas tem e de quando é a mais recente. A contagem e a data vêm
+// sempre calculadas dos dados — escritas à mão desactualizam-se e passam
+// a mentir sobre o tamanho do arquivo.
+export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, children }) {
+  return (
+    <header className="border-b hairline pb-4">
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div className="min-w-0">
+          {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
+          <h1 className="mt-1 font-cond font-bold uppercase tracking-tight text-[34px] sm:text-[44px] leading-[0.95] text-paper">{title}</h1>
+          {description && <p className="mt-2 text-[13px] leading-relaxed text-dim max-w-[68ch]">{description}</p>}
+        </div>
+        <dl className="flex items-center gap-5 shrink-0">
+          <div>
+            <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{countLabel}</dt>
+            <dd className="font-cond font-bold text-[22px] text-paper tabular-nums leading-none mt-1">{count}</dd>
+          </div>
+          {updatedAt && (
+            <div>
+              <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Updated</dt>
+              <dd className="font-mono text-[12px] text-paper tabular-nums leading-none mt-1.5">{updatedAt}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+      {children}
+    </header>
+  )
+}
 
 // Os pedaços que qualquer wiki grande tem em comum em todas as fichas: um
 // índice lateral, secções com título sublinhado e uma caixa de dados fixa

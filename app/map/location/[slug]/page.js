@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ExternalLink, ChevronRight, MapPin, FileText, Images, Compass } from 'lucide-react'
+import { ExternalLink, ChevronRight, MapPin, FileText, Images, Compass } from 'lucide-react'
 import { locations, regions, mapFilters } from '@/lib/content'
 import { StatusBadge } from '@/components/site/ui'
-import { TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator } from '@/components/site/wiki'
 
 export default function LocationPage() {
   const { slug } = useParams()
@@ -30,9 +30,7 @@ export default function LocationPage() {
 
   return (
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
-      <Link href={`/map/${loc.region}`} className="inline-flex items-center gap-2 min-h-11 font-cond uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper">
-        <ArrowLeft size={15} /> Back to {region ? region.label : 'region'}
-      </Link>
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
 
       <header className="mt-6">
         <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">Named location</p>

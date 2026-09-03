@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, Heart, ExternalLink, ChevronRight, FileText, Users, Zap } from 'lucide-react'
+import { Heart, ExternalLink, ChevronRight, FileText, Users, Zap } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, cx } from '@/components/site/ui'
-import { TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
 const REL_BARS = [
@@ -78,9 +78,7 @@ function App() {
     <div className="flex-1 flex flex-col">
       <DbTabs active="characters" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
-        <Link href="/database/characters" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
-          <ArrowLeft size={15} /> CHARACTERS
-        </Link>
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Characters', href: '/database/characters' }, { label: c.name }]} />
 
         <div className="data-rail mt-2">CHARACTER FILE · SOURCE-BOUND RECORD · ID {c.slug.toUpperCase()}</div>
 
