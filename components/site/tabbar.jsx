@@ -30,11 +30,11 @@ const TABS = [
 // Escritas por extenso: o Tailwind lê as classes no código-fonte, e
 // montadas por concatenação nunca chegariam a entrar no CSS.
 const TINT = {
-  pink: { pill: 'bg-pink', text: 'text-pink', ring: 'bg-pink/12', dot: 'bg-pink' },
-  violet: { pill: 'bg-violet', text: 'text-violet', ring: 'bg-violet/12', dot: 'bg-violet' },
-  mint: { pill: 'bg-mint', text: 'text-mint', ring: 'bg-mint/12', dot: 'bg-mint' },
-  warn: { pill: 'bg-warn', text: 'text-warn', ring: 'bg-warn/12', dot: 'bg-warn' },
-  paper: { pill: 'bg-paper', text: 'text-paper', ring: 'bg-black/[0.06]', dot: 'bg-paper' },
+  pink: { pill: 'bg-pink', text: 'text-pink', ring: 'bg-pink/12', dot: 'bg-pink', wash: 'bg-pink/[0.10]', hoverRing: 'hover:bg-pink/[0.07]' },
+  violet: { pill: 'bg-violet', text: 'text-violet', ring: 'bg-violet/12', dot: 'bg-violet', wash: 'bg-violet/[0.10]', hoverRing: 'hover:bg-violet/[0.07]' },
+  mint: { pill: 'bg-mint', text: 'text-mint', ring: 'bg-mint/12', dot: 'bg-mint', wash: 'bg-mint/[0.10]', hoverRing: 'hover:bg-mint/[0.07]' },
+  warn: { pill: 'bg-warn', text: 'text-warn', ring: 'bg-warn/12', dot: 'bg-warn', wash: 'bg-warn/[0.10]', hoverRing: 'hover:bg-warn/[0.07]' },
+  paper: { pill: 'bg-paper', text: 'text-paper', ring: 'bg-black/[0.06]', dot: 'bg-paper', wash: 'bg-black/[0.06]', hoverRing: 'hover:bg-black/[0.04]' },
 }
 
 const SHEET_GROUPS = [
@@ -95,6 +95,12 @@ export default function TabBar() {
   // movimento: o olho segue a mesma forma, e percebe que mudou de sítio
   // em vez de ver duas coisas piscar.
   const [pill, setPill] = useState(null)
+  // A passagem do rato segue a mesma lógica do estado activo: em vez de
+  // cada destino acender o seu proprio fundo, ha um so veu que desliza
+  // para o destino sob o cursor. O movimento fica continuo — o mesmo
+  // objecto a mudar de sitio — em vez de dois rectangulos a piscar.
+  const [hoverKey, setHoverKey] = useState(null)
+  const [hoverPill, setHoverPill] = useState(null)
 
   const isActive = useCallback((item) => item.match(pathname), [pathname])
   const activeTab = TABS.find(isActive)
@@ -130,6 +136,15 @@ export default function TabBar() {
     ro.observe(nav)
     return () => ro.disconnect()
   }, [activeKey, compact])
+
+  useLayoutEffect(() => {
+    const el = hoverKey ? itemRefs.current[hoverKey] : null
+    const nav = navRef.current
+    if (!el || !nav) return setHoverPill(null)
+    const a = el.getBoundingClientRect()
+    const b = nav.getBoundingClientRect()
+    setHoverPill({ left: a.left - b.left, width: a.width, height: a.height, top: a.top - b.top })
+  }, [hoverKey, compact])
 
   useEffect(() => {
     lastY.current = window.scrollY
@@ -185,6 +200,7 @@ export default function TabBar() {
         <nav
           ref={navRef}
           aria-label="Primary"
+          onPointerLeave={() => setHoverKey(null)}
           className={cx(
             'pointer-events-auto relative flex items-center gap-1 rounded-full bg-ink',
             // Três camadas de sombra: uma linha de contacto, uma sombra
@@ -204,6 +220,23 @@ export default function TabBar() {
             className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-mint via-transparent to-violet opacity-70"
             aria-hidden="true"
           />
+
+          {/* O veu de passagem. Fica por baixo da pilula activa: sobre o
+              destino ja activo nao se ve nada, que e o correcto. */}
+          {hoverPill && hoverKey !== activeKey && (
+            <span
+              aria-hidden="true"
+              className={cx('absolute z-0 rounded-full', (TINT[(TABS.find((t) => t.key === hoverKey) || {}).tint] || TINT.paper).wash)}
+              style={{
+                transform: `translateX(${hoverPill.left}px)`,
+                width: hoverPill.width,
+                height: hoverPill.height,
+                top: hoverPill.top,
+                left: 0,
+                transition: easing,
+              }}
+            />
+          )}
 
           {/* A pílula que desliza. Fica por baixo dos destinos. */}
           {pill && (
@@ -231,18 +264,21 @@ export default function TabBar() {
                 ref={(el) => { itemRefs.current[item.key] = el }}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
+                onPointerEnter={(e) => { if (e.pointerType === 'mouse') setHoverKey(item.key) }}
+                onFocus={() => setHoverKey(item.key)}
+                onBlur={() => setHoverKey(null)}
                 className={cx(itemClasses, compact ? 'h-11 px-3' : 'h-[54px] px-3')}
               >
                 <Icon
                   size={compact ? 20 : 19}
                   strokeWidth={active ? 2.5 : 2}
-                  className={cx('transition-colors duration-300', active ? 'text-ink' : cx(tint.text, 'opacity-90 group-hover:opacity-100'))}
+                  className={cx('transition-all duration-300', active ? 'text-ink' : cx(tint.text, hoverKey === item.key ? 'opacity-100 scale-110' : 'opacity-85'))}
                   aria-hidden="true"
                 />
                 <span
                   className={cx(
                     'font-cond font-semibold uppercase tracking-[0.1em] leading-none overflow-hidden transition-all duration-300 ease-out',
-                    active ? 'text-ink' : 'text-dim',
+                    active ? 'text-ink' : hoverKey === item.key ? tint.text : 'text-dim',
                     compact ? 'max-h-0 opacity-0 mt-0 text-[0px]' : 'max-h-4 opacity-100 mt-1 text-[10px]'
                   )}
                 >
@@ -256,6 +292,9 @@ export default function TabBar() {
             type="button"
             ref={(el) => { itemRefs.current.more = el }}
             onClick={() => setSheetOpen((v) => !v)}
+            onPointerEnter={(e) => { if (e.pointerType === 'mouse') setHoverKey('more') }}
+            onFocus={() => setHoverKey('more')}
+            onBlur={() => setHoverKey(null)}
             aria-expanded={sheetOpen}
             aria-haspopup="dialog"
             className={cx(itemClasses, compact ? 'h-11 px-3' : 'h-[54px] px-3')}
@@ -333,7 +372,7 @@ export default function TabBar() {
                               aria-current={active ? 'page' : undefined}
                               className={cx(
                                 'flex items-center gap-2.5 h-12 pl-2 pr-3 rounded-2xl transition-colors active:scale-[0.97] motion-reduce:active:scale-100',
-                                active ? cx(tint.pill, 'text-ink') : 'text-paper hover:bg-black/[0.04]'
+                                active ? cx(tint.pill, 'text-ink') : cx('text-paper', tint.hoverRing)
                               )}
                             >
                               <span
