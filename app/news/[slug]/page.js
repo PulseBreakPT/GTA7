@@ -56,10 +56,10 @@ function FormattedArticleBody({ body }) {
         <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-mint mb-3">IN THIS RECORD</p>
         <div className="flex flex-wrap gap-2">{sections.map((section, index) => {
           const theme = SECTION_THEMES[index % SECTION_THEMES.length]
-          return <a key={section} href={`#section-${index + 1}`} className={`inline-flex items-center gap-1.5 border ${theme.border} ${theme.bg} px-2 py-1 font-cond uppercase tracking-[0.1em] text-[10px] ${theme.text} hover:bg-white/10`}><span className={`w-1.5 h-1.5 rounded-full ${theme.dot}`} />{String(index + 1).padStart(2, '0')} · {section}</a>
+          return <a key={section} href={`#section-${index + 1}`} className={`inline-flex items-center gap-1.5 border ${theme.border} ${theme.bg} px-2 py-1 font-cond uppercase tracking-[0.1em] text-[10px] ${theme.text} hover:bg-black/10`}><span className={`w-1.5 h-1.5 rounded-full ${theme.dot}`} />{String(index + 1).padStart(2, '0')} · {section}</a>
         })}</div>
       </nav>}
-      <div className="max-w-[780px] flex flex-col gap-7 sm:gap-9 border-l border-white/10 pl-4 sm:pl-6">
+      <div className="max-w-[780px] flex flex-col gap-7 sm:gap-9 border-l border-black/10 pl-4 sm:pl-6">
         {body.map((paragraph, index) => {
           const section = sectionFor(paragraph, index)
           const sectionIndex = sections.indexOf(section)
@@ -125,11 +125,11 @@ function App() {
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN READ</span>
         <span className="font-mono text-[11px] text-dim tabular-nums">{a.views.toLocaleString('en-US')} READS</span>
-        <a href={a.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[12px] text-paper border border-line rounded-sm px-2.5 py-1.5 hover:border-white/40">
+        <a href={a.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[12px] text-paper border border-line rounded-sm px-2.5 py-1.5 hover:border-black/40">
           {a.sourceName} <ExternalLink size={11} />
         </a>
         <span className="flex items-center gap-0.5" role="img" aria-label={`Source credibility: ${rating} of 5`}>
-          {[1,2,3,4,5].map((n) => <Star key={n} size={13} className={n <= rating ? 'text-pink' : 'text-white/20'} fill={n <= rating ? '#F1A3C3' : 'transparent'} />)}
+          {[1,2,3,4,5].map((n) => <Star key={n} size={13} className={n <= rating ? 'text-pink' : 'text-black/20'} fill={n <= rating ? '#C2185B' : 'transparent'} />)}
         </span>
       </div>
 
@@ -173,7 +173,7 @@ function App() {
             imagem é 16/9 para o cartão não crescer em altura. */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
           {related.map((r) => (
-            <Link key={r.slug} href={`/news/${r.slug}`} className="panel rounded-sm overflow-hidden group hover:border-white/30 transition-colors">
+            <Link key={r.slug} href={`/news/${r.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors">
               <div className="relative aspect-[16/9]">
                 <Image src={r.image} alt={r.title} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
               </div>

@@ -55,7 +55,7 @@ function Section({ eyebrow, title, href, linkLabel, children, className }) {
           {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
           <h2 className="mt-1 font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-[0.95] text-paper">{title}</h2>
         </div>
-        <span className="flex-1 h-px bg-gradient-to-r from-white/25 to-transparent" aria-hidden="true" />
+        <span className="flex-1 h-px bg-gradient-to-r from-black/25 to-transparent" aria-hidden="true" />
         {href && (
           <Link href={href} className="shrink-0 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-dim hover:text-paper transition-colors">
             {linkLabel} →
@@ -123,7 +123,7 @@ function App() {
                 EXPLORE THE WIKI
                 <ChevronRight size={15} strokeWidth={2.4} aria-hidden="true" />
               </Link>
-              <Link href="/map" className="tech-mask-sm group inline-flex items-center gap-3 border border-line bg-ink/55 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper hover:border-white/50 transition-colors duration-200">
+              <Link href="/map" className="tech-mask-sm group inline-flex items-center gap-3 border border-line bg-ink/55 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper hover:border-black/50 transition-colors duration-200">
                 OPEN INTERACTIVE MAP
                 <MapPin size={15} strokeWidth={2.2} aria-hidden="true" />
               </Link>
@@ -160,7 +160,7 @@ function App() {
                     <span className="font-cond font-bold text-[22px] text-paper/90 tabular-nums leading-none shrink-0">{branch.count}</span>
                   </span>
                 </span>
-                <span className="flex items-center gap-2 px-4 py-2.5 border-t border-white/[0.08]">
+                <span className="flex items-center gap-2 px-4 py-2.5 border-t border-black/[0.08]">
                   <span className="w-1.5 h-1.5 rounded-full bg-mint shrink-0" aria-hidden="true" />
                   <span className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">Source-labelled</span>
                 </span>
@@ -180,7 +180,7 @@ function App() {
             href={official.sourceUrl}
             target="_blank"
             rel="noreferrer"
-            className="absolute top-3 right-3 z-[2] w-9 h-9 flex items-center justify-center border border-line rounded-sm text-dim hover:text-paper hover:border-white/40 transition-colors bg-ink/70"
+            className="absolute top-3 right-3 z-[2] w-9 h-9 flex items-center justify-center border border-line rounded-sm text-dim hover:text-paper hover:border-black/40 transition-colors bg-ink/70"
             aria-label={`Open the source: ${official.sourceName}`}
           >
             <ExternalLink size={14} />
@@ -277,7 +277,7 @@ function App() {
             </h3>
             <div className="mt-3 flex flex-col gap-3">
               {latestNews.map((a) => (
-                <Link key={a.slug} href={`/news/${a.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-white/30 transition-colors">
+                <Link key={a.slug} href={`/news/${a.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-black/30 transition-colors">
                   <span className="relative w-[92px] h-[62px] shrink-0 overflow-hidden rounded-sm border border-line">
                     <Image src={a.image} alt="" fill sizes="92px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
                   </span>
@@ -298,7 +298,7 @@ function App() {
             </h3>
             <div className="mt-3 flex flex-col gap-3">
               {latestGuides.map((g) => (
-                <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-white/30 transition-colors">
+                <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-black/30 transition-colors">
                   <span className="relative w-[92px] h-[62px] shrink-0 overflow-hidden rounded-sm border border-line">
                     <Image src={g.image} alt="" fill sizes="92px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
                   </span>
@@ -333,7 +333,7 @@ function App() {
 
       {/* ===== 9. RECENTLY UPDATED ===== */}
       <Section eyebrow="What moved" title="Recently updated" href="/news" linkLabel="Archive log">
-        <ol className="mt-5 border border-line divide-y divide-white/[0.08]">
+        <ol className="mt-5 border border-line divide-y divide-black/[0.08]">
           {recentlyUpdated.map((entry) => (
             <li key={entry.href}>
               <Link href={entry.href} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-surface2/50 transition-colors">
@@ -366,7 +366,7 @@ function App() {
 
       {/* ===== 11. FAQ ===== */}
       <Section eyebrow="Common questions" title="FAQ">
-        <dl className="mt-5 border border-line divide-y divide-white/[0.08]">
+        <dl className="mt-5 border border-line divide-y divide-black/[0.08]">
           {FAQ.map(([question, answer]) => (
             <div key={question} className="px-4 py-4">
               <dt className="font-cond font-bold uppercase tracking-[0.06em] text-[16px] text-paper">{question}</dt>

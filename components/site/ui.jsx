@@ -4,17 +4,32 @@ import { Check, HelpCircle, Activity, BadgeCheck, X, Circle, Triangle, Square } 
 
 export const cx = (...a) => a.filter(Boolean).join(' ')
 
+// Os acentos do tema claro, num sítio só. Os pastéis do tema escuro
+// davam menos de 2:1 sobre branco; estes são as versões escuras das
+// mesmas cores e passam todos os 4.5:1. `ACCENT.neutral` substitui o
+// quase-branco que servia de quarta barra e que, em fundo claro,
+// desaparecia por completo.
+export const ACCENT = {
+  pink: '#C2185B',
+  mint: '#0E7C6B',
+  violet: '#5B3FD6',
+  warn: '#8A6A00',
+  neutral: '#334155',
+  ink: '#0B0F16',
+  onAccent: '#FFFFFF',
+}
+
 export const STATUS_META = {
-  confirmed: { label: 'CONFIRMED', color: '#65DCCB', Icon: Check },
-  verified: { label: 'VERIFIED', color: '#65DCCB', Icon: BadgeCheck },
-  category: { label: 'CATEGORY CONFIRMED', color: '#E6D658', Icon: BadgeCheck },
-  analysis: { label: 'ANALYSIS', color: '#65DCCB', Icon: Activity },
-  rumour: { label: 'RUMOUR', color: '#9B83F4', Icon: HelpCircle },
-  official: { label: 'OFFICIAL', color: '#F1A3C3', Icon: Check },
-  community: { label: 'COMMUNITY', color: '#9B83F4', Icon: HelpCircle },
-  featured: { label: 'FEATURED', color: '#F1A3C3', Icon: Check },
-  update: { label: 'UPDATE', color: '#9B83F4', Icon: Activity },
-  news: { label: 'NEWS', color: '#65DCCB', Icon: Activity },
+  confirmed: { label: 'CONFIRMED', color: ACCENT.mint, Icon: Check },
+  verified: { label: 'VERIFIED', color: ACCENT.mint, Icon: BadgeCheck },
+  category: { label: 'CATEGORY CONFIRMED', color: ACCENT.warn, Icon: BadgeCheck },
+  analysis: { label: 'ANALYSIS', color: ACCENT.mint, Icon: Activity },
+  rumour: { label: 'RUMOUR', color: ACCENT.violet, Icon: HelpCircle },
+  official: { label: 'OFFICIAL', color: ACCENT.pink, Icon: Check },
+  community: { label: 'COMMUNITY', color: ACCENT.violet, Icon: HelpCircle },
+  featured: { label: 'FEATURED', color: ACCENT.pink, Icon: Check },
+  update: { label: 'UPDATE', color: ACCENT.violet, Icon: Activity },
+  news: { label: 'NEWS', color: ACCENT.mint, Icon: Activity },
 }
 
 export function StatusBadge({ status, label, className }) {
@@ -23,7 +38,7 @@ export function StatusBadge({ status, label, className }) {
   return (
     <span
       className={cx('inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm', className)}
-      style={{ color: '#07090E', backgroundColor: m.color }}
+      style={{ color: ACCENT.onAccent, backgroundColor: m.color }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />
       {text}
@@ -37,7 +52,7 @@ export function GhostBadge({ status, label, className }) {
   return (
     <span
       className={cx('inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm border', className)}
-      style={{ color: m.color, borderColor: `${m.color}66`, backgroundColor: `${m.color}14` }}
+      style={{ color: m.color, borderColor: `${m.color}55`, backgroundColor: `${m.color}0F` }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />
       {text}
@@ -67,7 +82,7 @@ export function StatBar({ icon: Icon, label, value, color, right, size = 'md', b
           {label}
         </span>
       )}
-      <span className={cx('relative flex-1 min-w-0 rounded-full bg-white/10 overflow-hidden', sm ? 'h-[6px]' : 'h-[9px]', barClass)} role="img" aria-label={`${label || 'value'}: ${value} of 100`}>
+      <span className={cx('relative flex-1 min-w-0 rounded-full bg-black/10 overflow-hidden', sm ? 'h-[6px]' : 'h-[9px]', barClass)} role="img" aria-label={`${label || 'value'}: ${value} of 100`}>
         <span className="absolute inset-y-0 left-0 rounded-full transition-all duration-300" style={{ width: `${value}%`, backgroundColor: color }} />
         {value > 6 && value < 100 && <span className="absolute inset-y-0 w-px bg-ink/80" style={{ left: `calc(${value}% - 2px)` }} />}
       </span>
@@ -82,7 +97,7 @@ export function PadGlyph({ shape, className, size = 18 }) {
   const Icon = GLYPH_ICONS[shape] || Circle
   return (
     <span
-      className={cx('inline-flex items-center justify-center rounded-full bg-ink/85 border border-white/50 text-paper shadow-[0_1px_6px_rgba(0,0,0,0.55)]', className)}
+      className={cx('inline-flex items-center justify-center rounded-full bg-ink/90 border border-black/45 text-paper shadow-[0_1px_4px_rgba(11,15,22,0.22)]', className)}
       style={{ width: size + 8, height: size + 8 }}
       aria-hidden="true"
     >

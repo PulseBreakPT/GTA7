@@ -77,7 +77,7 @@ export default function FactionPage() {
           <WikiSection id="related" title="Other Factions" className="mb-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {related.map((r) => (
-                <Link key={r.slug} href={`/gangs-factions/${r.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 hover:border-white/30 transition-colors">
+                <Link key={r.slug} href={`/gangs-factions/${r.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 hover:border-black/30 transition-colors">
                   <Users size={20} className="text-dim shrink-0" strokeWidth={1.8} aria-hidden="true" />
                   <span className="min-w-0 flex-1">
                     <span className="block font-cond font-bold uppercase text-[16px] text-paper truncate">{r.name}</span>
@@ -109,7 +109,7 @@ export default function FactionPage() {
               </span>
             )}
 
-            <div className="space-y-3 border-t border-white/10 pt-4">
+            <div className="space-y-3 border-t border-black/10 pt-4">
               <InfoRow label="Type" value={f.kind} />
               <InfoRow label="Region">
                 <span className="inline-flex items-center gap-1.5">
@@ -125,8 +125,8 @@ export default function FactionPage() {
               </InfoRow>
             </div>
 
-            <div className="border-t border-white/10 pt-4">
-              <a href={f.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+            <div className="border-t border-black/10 pt-4">
+              <a href={f.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
                 SOURCE: {f.sourceName.toUpperCase()} <ExternalLink size={11} />
               </a>
             </div>

@@ -19,6 +19,6 @@ export default function MediaCarousel({ items, label = 'Visual reference gallery
         <figcaption className="px-3 py-2.5 bg-raised/85 font-cond uppercase tracking-[0.12em] text-[10px] text-paper">{item.label || `Reference ${String(index + 1).padStart(2, '0')}`}</figcaption>
       </figure>)}
     </div>
-    <div className="mt-2 flex gap-1.5" aria-hidden="true">{items.map((_, index) => <span key={index} className={`h-1 flex-1 ${index === active ? 'bg-pink' : 'bg-white/15'}`} />)}</div>
+    <div className="mt-2 flex gap-1.5" aria-hidden="true">{items.map((_, index) => <span key={index} className={`h-1 flex-1 ${index === active ? 'bg-pink' : 'bg-black/15'}`} />)}</div>
   </div>
 }

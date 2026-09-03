@@ -32,7 +32,7 @@ function App() {
               return (
                 <button key={f} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f)}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.toUpperCase()}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
                 </button>
@@ -45,7 +45,7 @@ function App() {
               const active = r.slug === selected.slug
               return (
                 <button key={r.slug} type="button" onClick={() => setSelectedSlug(r.slug)} aria-pressed={active}
-                  className={cx('spotlight-card tech-mask-sm glass-panel p-4 text-left flex flex-col min-h-[140px] transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                  className={cx('spotlight-card tech-mask-sm glass-panel p-4 text-left flex flex-col min-h-[140px] transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
                   <span className="flex items-start justify-between gap-3">
                     <Radio size={24} className={active ? 'text-pink' : 'text-dim'} strokeWidth={1.8} aria-hidden="true" />
                   </span>
@@ -80,7 +80,7 @@ function App() {
           )}
           <p className="text-dim text-[13px] leading-[1.8] mt-3">{selected.desc}</p>
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
               SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
             </a>
             <span className="font-mono text-[10px] text-dim uppercase">UPDATED {selected.updatedAt}</span>

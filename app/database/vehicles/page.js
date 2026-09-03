@@ -101,10 +101,10 @@ function App() {
   }
 
   const stats = [
-    { icon: Heart, label: 'SPEED', value: selected.stats[0], color: '#F1A3C3' },
-    { icon: Zap, label: 'ACCELERATION', value: selected.stats[1], color: '#65DCCB' },
-    { icon: Eye, label: 'BRAKING', value: selected.stats[2], color: '#9B83F4' },
-    { icon: CircleDot, label: 'HANDLING', value: selected.stats[3], color: '#F5F4F0' },
+    { icon: Heart, label: 'SPEED', value: selected.stats[0], color: '#C2185B' },
+    { icon: Zap, label: 'ACCELERATION', value: selected.stats[1], color: '#0E7C6B' },
+    { icon: Eye, label: 'BRAKING', value: selected.stats[2], color: '#5B3FD6' },
+    { icon: CircleDot, label: 'HANDLING', value: selected.stats[3], color: '#334155' },
   ]
 
   const cmp = comparePair.map((s) => vehicles.find((v) => v.slug === s)).filter(Boolean)
@@ -117,12 +117,12 @@ function App() {
           <div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">VEHICLES</h1></div>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40 flex-1 min-w-[200px]">
+            <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40 flex-1 min-w-[200px]">
               <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
               <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vehicle…" aria-label="Search vehicle" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
             </label>
             <button type="button" onClick={() => { setCompareMode((v) => !v); if (compareMode) setCompareOpen(false) }} aria-pressed={compareMode}
-              className={cx('inline-flex items-center gap-2 border h-11 px-4 font-cond font-semibold uppercase tracking-[0.12em] text-[12px] transition-colors duration-200 shrink-0', compareMode ? 'bg-paper text-ink border-paper' : 'border-line text-paper hover:border-white/50')}>
+              className={cx('inline-flex items-center gap-2 border h-11 px-4 font-cond font-semibold uppercase tracking-[0.12em] text-[12px] transition-colors duration-200 shrink-0', compareMode ? 'bg-paper text-ink border-paper' : 'border-line text-paper hover:border-black/50')}>
               <GitCompareArrows size={14} />
               {compareMode ? `PICK (${comparePair.length}/2)` : 'COMPARE'}
             </button>
@@ -137,7 +137,7 @@ function App() {
             <label className="flex items-center gap-2">
               <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Manufacturer</span>
               <select value={maker} onChange={(e) => setMaker(e.target.value)} aria-label="Filter by manufacturer"
-                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-white/40 max-w-[190px]">
+                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-black/40 max-w-[190px]">
                 <option value="all">All</option>
                 {makers.map((m) => <option key={m} value={m}>{m}</option>)}
               </select>
@@ -145,7 +145,7 @@ function App() {
             <label className="flex items-center gap-2">
               <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
               <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort vehicles"
-                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-white/40">
+                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-black/40">
                 <option value="unit">Unit number</option>
                 <option value="name">Name A–Z</option>
                 <option value="name-desc">Name Z–A</option>
@@ -164,7 +164,7 @@ function App() {
               return (
                 <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <Icon size={14} aria-hidden="true" />
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{c.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{c.count}</span>
@@ -179,7 +179,7 @@ function App() {
               const fav = favs.includes(v.slug)
               const inCmp = comparePair.includes(v.slug)
               return (
-                <div key={v.slug} className={cx('relative panel rounded-sm transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                <div key={v.slug} className={cx('relative panel rounded-sm transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
                   <button type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/vehicles/${v.slug}`)} onMouseEnter={() => setSelectedSlug(v.slug)} aria-label={`Open ${v.name}`} className="w-full text-left">
                     <span className="flex items-center justify-between px-3 pt-2.5">
                       <span className="font-mono text-[12px] text-paper tabular-nums">{v.num}</span>
@@ -189,7 +189,7 @@ function App() {
                   </button>
                   <button type="button" onClick={() => toggleFav(v.slug)} aria-label={fav ? `Remove ${v.name} from favourites` : `Add ${v.name} to favourites`} aria-pressed={fav}
                     className="absolute top-1.5 right-1.5 w-9 h-9 flex items-center justify-center text-dim hover:text-pink transition-colors">
-                    <Heart size={16} fill={fav ? '#F1A3C3' : 'transparent'} className={fav ? 'text-pink' : ''} />
+                    <Heart size={16} fill={fav ? '#C2185B' : 'transparent'} className={fav ? 'text-pink' : ''} />
                   </button>
                   {compareMode && (
                     <button type="button" onClick={() => toggleCompare(v.slug)} aria-pressed={inCmp}
@@ -214,7 +214,7 @@ function App() {
           <div className="corner-brackets tech-mask card-active relative overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
             <VehicleVisual v={displaySelected} className="absolute inset-0" sizes="380px" />
             {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous vehicle image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next vehicle image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}
-            <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-2 left-2 w-9 h-9 panel2 rounded-sm flex items-center justify-center text-paper hover:border-white/40">
+            <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-2 left-2 w-9 h-9 panel2 rounded-sm flex items-center justify-center text-paper hover:border-black/40">
               <Maximize2 size={14} />
             </button>
           </div>
@@ -242,7 +242,7 @@ function App() {
             </div>
           )}
 
-          <div className="mt-4 grid grid-cols-4 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
+          <div className="mt-4 grid grid-cols-4 border-y hairline divide-x divide-[rgba(11,15,22,0.14)]">
             {selected.specs.map((spec, i) => {
               const Icon = SPEC_ICONS[i]
               const [big, ...rest] = spec.split(' ')
@@ -257,7 +257,7 @@ function App() {
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
               SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
             </a>
           </div>
@@ -266,8 +266,8 @@ function App() {
             OPEN PROFILE
             <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
           </Link>
-          <button type="button" onClick={() => toggleFav(selected.slug)} className="mt-2 w-full inline-flex items-center justify-center gap-2 border border-line h-11 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper hover:border-white/40 transition-colors">
-            <Heart size={14} fill={isFav ? '#F1A3C3' : 'transparent'} className={isFav ? 'text-pink' : ''} />
+          <button type="button" onClick={() => toggleFav(selected.slug)} className="mt-2 w-full inline-flex items-center justify-center gap-2 border border-line h-11 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper hover:border-black/40 transition-colors">
+            <Heart size={14} fill={isFav ? '#C2185B' : 'transparent'} className={isFav ? 'text-pink' : ''} />
             {isFav ? 'REMOVE FROM FAVOURITES' : 'ADD TO FAVOURITES'}
           </button>
         </aside>
@@ -324,11 +324,11 @@ function App() {
                     <span className={cx('font-mono text-[12px] tabular-nums', cmp[1].stats[i] >= cmp[0].stats[i] ? 'text-mint' : 'text-dim')}>{cmp[1].stats[i]}</span>
                   </div>
                   <div className="flex gap-2 mt-1">
-                    <span className="relative flex-1 h-[7px] rounded-full bg-white/10 overflow-hidden" style={{ transform: 'scaleX(-1)' }}>
-                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${cmp[0].stats[i]}%`, backgroundColor: '#F1A3C3' }} />
+                    <span className="relative flex-1 h-[7px] rounded-full bg-black/10 overflow-hidden" style={{ transform: 'scaleX(-1)' }}>
+                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${cmp[0].stats[i]}%`, backgroundColor: '#C2185B' }} />
                     </span>
-                    <span className="relative flex-1 h-[7px] rounded-full bg-white/10 overflow-hidden">
-                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${cmp[1].stats[i]}%`, backgroundColor: '#65DCCB' }} />
+                    <span className="relative flex-1 h-[7px] rounded-full bg-black/10 overflow-hidden">
+                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${cmp[1].stats[i]}%`, backgroundColor: '#0E7C6B' }} />
                     </span>
                   </div>
                 </div>

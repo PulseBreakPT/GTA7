@@ -24,7 +24,7 @@ export default function StatisticsPage() {
       </div>
 
       <section className="mt-6">
-        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-white/10 pb-3 mb-4">Entries by branch</h2>
+        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-black/10 pb-3 mb-4">Entries by branch</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px border border-line bg-line">
           {STATS.byKind.filter((k) => k.count > 0).map((k) => (
             <Link key={k.kind} href={KIND_META[k.kind].base} className="bg-ink p-4 hover:bg-surface2/60 transition-colors">
@@ -36,7 +36,7 @@ export default function StatisticsPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-white/10 pb-3 mb-4">Entries by source label</h2>
+        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-black/10 pb-3 mb-4">Entries by source label</h2>
         <div className="flex flex-wrap gap-3">
           {STATS.byStatus.map((s) => (
             <div key={s.status} className="panel rounded-sm px-4 py-3 flex items-center gap-3">
@@ -48,7 +48,7 @@ export default function StatisticsPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-white/10 pb-3 mb-4">The archive at a glance</h2>
+        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-black/10 pb-3 mb-4">The archive at a glance</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-px border border-line bg-line">
           {[
             [FolderTree, STATS.categories, 'Categories', '/wiki/categories'],
@@ -73,12 +73,12 @@ export default function StatisticsPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-white/10 pb-3 mb-4">Shortest entries</h2>
+        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-black/10 pb-3 mb-4">Shortest entries</h2>
         <p className="text-[13px] leading-relaxed text-dim max-w-[68ch] mb-4">
           Entries that hold only what the source states and nothing more. They are marked as stubs rather than
           padded out — an archive that invents body text to look complete is no longer a record.
         </p>
-        <ul className="border border-line divide-y divide-white/[0.08]">
+        <ul className="border border-line divide-y divide-black/[0.08]">
           {STUBS.slice(0, 12).map((e) => (
             <li key={e.href}>
               <Link href={e.href} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 hover:bg-surface2/50 transition-colors">
@@ -94,12 +94,12 @@ export default function StatisticsPage() {
 
       {WANTED.length > 0 && (
         <section className="mt-8">
-          <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-white/10 pb-3 mb-4">Named but not yet an entry</h2>
+          <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-black/10 pb-3 mb-4">Named but not yet an entry</h2>
           <p className="text-[13px] leading-relaxed text-dim max-w-[68ch] mb-4">
             Names that entries cite in a field but that have no page of their own. On a wiki these are the red links —
             the honest list of what is still missing.
           </p>
-          <ul className="border border-line divide-y divide-white/[0.08]">
+          <ul className="border border-line divide-y divide-black/[0.08]">
             {WANTED.slice(0, 12).map((w) => (
               <li key={w.name} className="px-4 py-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
                 <span className="font-cond font-semibold uppercase text-[13px] text-warn flex-1 min-w-0 truncate">{w.name}</span>
@@ -117,8 +117,8 @@ export default function StatisticsPage() {
       )}
 
       <section className="mt-8">
-        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-white/10 pb-3 mb-4">Sources carrying the most entries</h2>
-        <ul className="border border-line divide-y divide-white/[0.08]">
+        <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper border-b border-black/10 pb-3 mb-4">Sources carrying the most entries</h2>
+        <ul className="border border-line divide-y divide-black/[0.08]">
           {SOURCES.slice(0, 8).map((s) => (
             <li key={s.name} className="px-4 py-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
               <span className="font-cond font-semibold uppercase text-[13px] text-paper flex-1 min-w-0 truncate">{s.name}</span>

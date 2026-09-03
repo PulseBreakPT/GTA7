@@ -110,7 +110,7 @@ export function TableOfContents({ sections }) {
 export function WikiSection({ id, title, className, children }) {
   return (
     <section data-section id={id} className={cx('mb-12 scroll-mt-24', className)}>
-      <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper border-b border-white/10 pb-3 mb-4">{title}</h2>
+      <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper border-b border-black/10 pb-3 mb-4">{title}</h2>
       {children}
     </section>
   )
@@ -139,8 +139,8 @@ export function InfoboxShell({ children, className }) {
 
 export function InfoboxSource({ sourceName, sourceUrl, updatedAt }) {
   return (
-    <div className="border-t border-white/10 pt-4">
-      <a href={sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+    <div className="border-t border-black/10 pt-4">
+      <a href={sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
         {sourceName ? sourceName.toUpperCase() : 'SOURCE'}
       </a>
       {updatedAt && <p className="font-mono text-[9px] text-dim mt-2">Updated {updatedAt}</p>}
@@ -153,15 +153,15 @@ export function InfoboxSource({ sourceName, sourceUrl, updatedAt }) {
 // nas wikis grandes aparece sempre no topo da caixa de dados de um sítio.
 export function LocationLocator({ x, y, name }) {
   return (
-    <span className="relative block overflow-hidden rounded-sm border border-line bg-[#081018]">
+    <span className="relative block overflow-hidden rounded-sm border border-line bg-[#DCE6EF]">
       <svg viewBox={`0 0 ${MAP_VBW} ${MAP_VBH}`} className="w-full h-auto" role="img" aria-label={`${name} marked on the map of Leonida`}>
-        <rect width={MAP_VBW} height={MAP_VBH} fill="#081018" />
+        <rect width={MAP_VBW} height={MAP_VBH} fill="#DCE6EF" />
         <MapTerrain />
         <g transform={`translate(${x},${y})`}>
-          <circle r="42" fill="none" stroke="#F1A3C3" strokeWidth="3" opacity="0.5" />
-          <circle r="22" fill="none" stroke="#F5F4F0" strokeWidth="3" />
-          <circle r="11" fill="#07090E" stroke="#F1A3C3" strokeWidth="5" />
-          <circle r="4" fill="#F1A3C3" />
+          <circle r="42" fill="none" stroke="#C2185B" strokeWidth="3" opacity="0.5" />
+          <circle r="22" fill="none" stroke="#FFFFFF" strokeWidth="3" />
+          <circle r="11" fill="#FFFFFF" stroke="#C2185B" strokeWidth="5" />
+          <circle r="4" fill="#C2185B" />
         </g>
       </svg>
     </span>
@@ -182,7 +182,7 @@ export function CategoryFooter({ kind, slug }) {
   if (cats.length === 0) return null
 
   return (
-    <footer className="mt-10 border-t border-white/10 pt-4">
+    <footer className="mt-10 border-t border-black/10 pt-4">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.14em] text-[10px] text-dim shrink-0">
           <FolderTree size={12} aria-hidden="true" /> Categories
@@ -209,7 +209,7 @@ export function WhatLinksHere({ kind, slug }) {
   if (links.length === 0) return null
 
   return (
-    <div className="border-t border-white/10 pt-4">
+    <div className="border-t border-black/10 pt-4">
       <p className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.14em] text-[9px] text-dim">
         <Link2 size={11} aria-hidden="true" /> What links here
       </p>
@@ -241,7 +241,7 @@ export function References({ items }) {
 
   return (
     <section data-section id="references" className="mb-12 scroll-mt-24">
-      <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper border-b border-white/10 pb-3 mb-4">References</h2>
+      <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper border-b border-black/10 pb-3 mb-4">References</h2>
       <ol className="space-y-2.5">
         {list.map((r, i) => (
           <li key={`${r.name}-${i}`} className="flex gap-3 text-[13px] leading-relaxed">

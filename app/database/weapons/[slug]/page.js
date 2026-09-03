@@ -46,10 +46,10 @@ function App() {
   // página inteira. O fallback é obrigatório, não cortesia.
   const typeLabel = weaponTypes.find((t) => t.id === w.type)?.label || w.type.toUpperCase()
   const bars = [
-    { icon: Heart, label: 'DAMAGE', value: w.stats[0], color: '#F1A3C3' },
-    { icon: Zap, label: 'FIRE RATE', value: w.stats[1], color: '#65DCCB' },
-    { icon: Eye, label: 'ACCURACY', value: w.stats[2], color: '#9B83F4' },
-    { icon: Target, label: 'RANGE', value: w.stats[3], color: '#F5F4F0' },
+    { icon: Heart, label: 'DAMAGE', value: w.stats[0], color: '#C2185B' },
+    { icon: Zap, label: 'FIRE RATE', value: w.stats[1], color: '#0E7C6B' },
+    { icon: Eye, label: 'ACCURACY', value: w.stats[2], color: '#5B3FD6' },
+    { icon: Target, label: 'RANGE', value: w.stats[3], color: '#334155' },
   ]
   const related = weapons.filter((x) => x.type === w.type && x.slug !== w.slug).slice(0, 4)
   const gallery = w.gallery?.length ? w.gallery : [w.image]
@@ -122,7 +122,7 @@ function App() {
             </WikiSection>
 
             <WikiSection id="specifications" title="Specifications">
-              <div className="grid grid-cols-3 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
+              <div className="grid grid-cols-3 border-y hairline divide-x divide-[rgba(11,15,22,0.14)]">
                 {[['CAPACITY', w.stats[4]], ['RESERVE', w.mag], ['WEIGHT', `${w.stats[5]} KG`]].map(([label, val]) => (
                   <div key={label} className="py-3 text-center">
                     <span className="block font-cond text-[10px] text-dim uppercase tracking-[0.18em]">{label}</span>
@@ -140,7 +140,7 @@ function App() {
                   <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME RACK</h3>
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     {related.map((r) => (
-                      <Link key={r.slug} href={`/database/weapons/${r.slug}`} className="panel rounded-sm p-3 hover:border-white/30 transition-colors">
+                      <Link key={r.slug} href={`/database/weapons/${r.slug}`} className="panel rounded-sm p-3 hover:border-black/30 transition-colors">
                         <GhostBadge status={r.status} />
                         <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-2 truncate">{r.name}</span>
                         <span className="block font-mono text-[11px] text-dim tabular-nums mt-1">{String(r.ammo).padStart(2, '0')} / {r.mag}</span>
@@ -193,7 +193,7 @@ function App() {
                 )}
               </div>
 
-              <div className="space-y-3 border-t border-white/10 pt-4">
+              <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Weapon type" value={typeLabel} />
                 <InfoRow label="Manufacturer" value={w.manufacturer} />
                 <InfoRow label="Association" value={w.association} />
@@ -206,9 +206,9 @@ function App() {
                 </InfoRow>
               </div>
 
-              <div className="border-t border-white/10 pt-4">
+              <div className="border-t border-black/10 pt-4">
                 {w.sourceUrl ? (
-                  <a href={w.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+                  <a href={w.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
                     SOURCE: {w.sourceName.toUpperCase()} <ExternalLink size={11} />
                   </a>
                 ) : (

@@ -69,7 +69,7 @@ export default function LocationPage() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {related.map((item) => (
                   <Link key={item.slug} href={`/map/location/${item.slug}`}
-                    className="panel rounded-sm p-2 flex flex-col hover:border-white/30 transition-colors">
+                    className="panel rounded-sm p-2 flex flex-col hover:border-black/30 transition-colors">
                     {item.image ? (
                       <span className="relative block h-[84px] w-full rounded-[2px] overflow-hidden">
                         <Image src={item.image} alt={item.name} fill sizes="200px" className="object-cover" />
@@ -102,7 +102,7 @@ export default function LocationPage() {
           <InfoboxShell>
             <LocationLocator x={loc.x} y={loc.y} name={loc.name} />
 
-            <div className="space-y-3 border-t border-white/10 pt-4">
+            <div className="space-y-3 border-t border-black/10 pt-4">
               <InfoRow label="Region">
                 {region ? (
                   <Link href={`/map/${region.id}`} className="text-pink hover:text-paper transition-colors">{region.label}</Link>
@@ -117,8 +117,8 @@ export default function LocationPage() {
               </InfoRow>
             </div>
 
-            <div className="border-t border-white/10 pt-4">
-              <a href={loc.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+            <div className="border-t border-black/10 pt-4">
+              <a href={loc.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
                 {loc.sourceName.toUpperCase()} <ExternalLink size={11} />
               </a>
               <p className="font-mono text-[9px] text-dim mt-2">Updated {loc.updatedAt}</p>

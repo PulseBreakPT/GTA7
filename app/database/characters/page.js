@@ -11,9 +11,9 @@ import { characters, characterFilters, relationships, mechanics, characterBySlug
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
 const REL_BARS = [
-  { key: 'trust', label: 'TRUST', icon: Heart, color: '#F1A3C3' },
-  { key: 'tension', label: 'TENSION', icon: Zap, color: '#65DCCB' },
-  { key: 'risk', label: 'RISK', icon: Eye, color: '#9B83F4' },
+  { key: 'trust', label: 'TRUST', icon: Heart, color: '#C2185B' },
+  { key: 'tension', label: 'TENSION', icon: Zap, color: '#0E7C6B' },
+  { key: 'risk', label: 'RISK', icon: Eye, color: '#5B3FD6' },
 ]
 
 export function Portrait({ c, className, sizes = '120px', priority = false }) {
@@ -68,7 +68,7 @@ function App() {
         <div className="min-w-0 flex flex-col">
           <div className="ghost-type" data-ghost="CHARACTERS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">CHARACTERS</h1></div>
 
-          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
+          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>
@@ -77,7 +77,7 @@ function App() {
             <label className="flex items-center gap-2">
               <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
               <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort characters"
-                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-white/40">
+                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-black/40">
                 <option value="default">Archive order</option>
                 <option value="name">Name A–Z</option>
                 <option value="name-desc">Name Z–A</option>
@@ -96,7 +96,7 @@ function App() {
               return (
                 <button key={f.id} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
                 </button>
@@ -109,7 +109,7 @@ function App() {
               const active = c.slug === selected.slug
               return (
                 <button key={c.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/characters/${c.slug}`)} onMouseEnter={() => setSelectedSlug(c.slug)}
-                  className={cx('panel rounded-sm p-2 text-left transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                  className={cx('panel rounded-sm p-2 text-left transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
                   <Portrait c={c} className="w-full h-[104px] rounded-sm border border-line text-[16px]" sizes="210px" />
                   <span className="block font-cond font-bold uppercase tracking-[0.04em] text-[14px] text-paper leading-none truncate mt-2">{c.name}</span>
                   <span className={cx('block font-cond font-semibold uppercase tracking-[0.1em] text-[9px] mt-1', c.slug === 'lucia-caminos' ? 'text-pink' : c.slug === 'jason-duval' ? 'text-mint' : 'text-dim')}>{c.role}</span>
@@ -133,7 +133,7 @@ function App() {
                 const active = m.slug === selMech.slug
                 return (
                   <button key={m.slug} type="button" onClick={() => setMechSlug(m.slug)} aria-pressed={active}
-                    className={cx('panel rounded-sm p-4 text-left flex flex-col transition-all duration-200 min-h-[132px]', active ? 'card-active' : 'hover:border-white/30')}>
+                    className={cx('panel rounded-sm p-4 text-left flex flex-col transition-all duration-200 min-h-[132px]', active ? 'card-active' : 'hover:border-black/30')}>
                     <span className="flex items-start justify-between gap-3">
                       <span className="flex items-center gap-3 min-w-0">
                         <Icon size={26} className={active ? 'text-pink' : 'text-dim'} strokeWidth={1.8} aria-hidden="true" />
@@ -142,13 +142,13 @@ function App() {
                       <span className="shrink-0 min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim" aria-hidden="true">{m.glyph}</span>
                     </span>
                     <span className="block text-[12px] text-dim leading-relaxed mt-3">{m.desc}</span>
-                    <span className="relative block h-[3px] bg-white/10 mt-auto">{active && <span className="absolute inset-y-0 left-0 w-2/3 bg-pink" />}</span>
+                    <span className="relative block h-[3px] bg-black/10 mt-auto">{active && <span className="absolute inset-y-0 left-0 w-2/3 bg-pink" />}</span>
                   </button>
                 )
               })}
             </div>
             <div className="mt-4 flex justify-center">
-              <Link href="/database/mechanics" className="inline-flex items-center gap-3 border border-line h-11 px-5 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-paper hover:border-white/50 transition-colors">
+              <Link href="/database/mechanics" className="inline-flex items-center gap-3 border border-line h-11 px-5 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-paper hover:border-black/50 transition-colors">
                 VIEW ALL MECHANICS
                 <span className="w-6 h-6 rounded-full border border-line flex items-center justify-center" aria-hidden="true"><ChevronRight size={12} /></span>
               </Link>
@@ -168,7 +168,7 @@ function App() {
           <p className="text-dim text-[13px] leading-relaxed mt-3">{selected.bio}</p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
               SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
             </a>
           </div>
@@ -183,9 +183,9 @@ function App() {
             <>
               <div className="mt-3 flex items-center gap-3">
                 <span className="relative flex items-center" aria-hidden="true">
-                  <Portrait c={selected} className="w-[56px] h-[56px] rounded-sm border border-white/70 text-[16px]" sizes="56px" />
+                  <Portrait c={selected} className="w-[56px] h-[56px] rounded-sm border border-black/70 text-[16px]" sizes="56px" />
                   <span className="relative z-10 -mx-1.5 w-6 h-6 rounded-full bg-ink border border-pink flex items-center justify-center">
-                    <Heart size={10} className="text-pink" fill="#F1A3C3" />
+                    <Heart size={10} className="text-pink" fill="#C2185B" />
                   </span>
                   <Portrait c={partner} className="w-[56px] h-[56px] rounded-sm border border-line text-[16px]" sizes="56px" />
                 </span>
@@ -199,7 +199,7 @@ function App() {
                   <div key={b.key} className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: b.color }} aria-hidden="true"><b.icon size={11} /></span>
                     <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-paper w-14 shrink-0">{b.label}</span>
-                    <span className="relative flex-1 h-[6px] bg-white/10" role="img" aria-label={`${b.label}: ${primary[b.key]} of 100`}>
+                    <span className="relative flex-1 h-[6px] bg-black/10" role="img" aria-label={`${b.label}: ${primary[b.key]} of 100`}>
                       <span className="absolute inset-y-0 left-0 transition-all duration-300" style={{ width: `${primary[b.key]}%`, backgroundColor: b.color }} />
                     </span>
                   </div>
@@ -217,7 +217,7 @@ function App() {
                 if (!other) return null
                 return (
                   <button key={other.slug} type="button" onClick={() => router.push(`/database/characters/${other.slug}`)}
-                    className="panel rounded-sm p-2.5 flex items-center gap-2.5 text-left hover:border-white/30 transition-colors"
+                    className="panel rounded-sm p-2.5 flex items-center gap-2.5 text-left hover:border-black/30 transition-colors"
                     aria-label={`Open ${other.name}`}>
                     <Portrait c={other} className="w-[38px] h-[38px] rounded-sm border border-line shrink-0 text-[12px]" sizes="38px" />
                     <span className="min-w-0 flex-1">

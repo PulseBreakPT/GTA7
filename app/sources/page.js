@@ -47,7 +47,7 @@ export default function SourcesPage() {
               </div>
             </div>
 
-            <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-px border-t border-white/10 pt-3">
+            <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-px border-t border-black/10 pt-3">
               {source.entries.slice(0, 24).map((e) => (
                 <li key={e.href}>
                   <Link href={e.href} className="flex items-center gap-2.5 py-1.5 group">

@@ -16,14 +16,14 @@ const FILTERS = [
 ]
 
 const SUMMARY = [
-  { icon: Heart, label: 'ARTICLES', count: articles.length, value: 100, color: '#F1A3C3' },
-  { icon: BadgeCheck, label: 'CATEGORIES', count: encyclopediaCategories.length, value: 100, color: '#65DCCB' },
-  { icon: Eye, label: 'GUIDES', count: guides.length, value: 100, color: '#9B83F4' },
+  { icon: Heart, label: 'ARTICLES', count: articles.length, value: 100, color: '#C2185B' },
+  { icon: BadgeCheck, label: 'CATEGORIES', count: encyclopediaCategories.length, value: 100, color: '#0E7C6B' },
+  { icon: Eye, label: 'GUIDES', count: guides.length, value: 100, color: '#5B3FD6' },
 ]
 
 function ArticleCard({ a }) {
   return (
-    <Link href={`/news/${a.slug}`} className="panel rounded-sm p-4 flex gap-4 group hover:border-white/30 transition-colors">
+    <Link href={`/news/${a.slug}`} className="panel rounded-sm p-4 flex gap-4 group hover:border-black/30 transition-colors">
       <div className="relative w-[38%] min-w-[120px] shrink-0 overflow-hidden rounded-sm border border-line">
         <Image src={a.image} alt={a.title} fill sizes="(max-width:1024px) 40vw, 18vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
         <span className="absolute inset-0 bg-ink/25" />
@@ -34,7 +34,7 @@ function ArticleCard({ a }) {
         <p className="text-dim text-[12px] leading-relaxed mt-2 clamp-2">{a.excerpt}</p>
         <div className="mt-auto pt-3 flex items-center justify-between">
           <span className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN</span>
-          <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-dim group-hover:text-paper group-hover:border-white/50 transition-colors" aria-hidden="true">
+          <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-dim group-hover:text-paper group-hover:border-black/50 transition-colors" aria-hidden="true">
             <ChevronRight size={14} />
           </span>
         </div>
@@ -175,7 +175,7 @@ function App() {
                   <span className="block font-mono text-[12px] text-dim tabular-nums">{s.count}</span>
                 </span>
               </div>
-              <span className="relative block h-[5px] bg-white/10 mt-2.5" role="img" aria-label={`${s.label}: ${s.count}`}>
+              <span className="relative block h-[5px] bg-black/10 mt-2.5" role="img" aria-label={`${s.label}: ${s.count}`}>
                 <span className="absolute inset-y-0 left-0" style={{ width: `${s.value}%`, backgroundColor: s.color }} />
               </span>
             </div>
@@ -230,7 +230,7 @@ function App() {
                 onClick={() => setSourceIdx(i)}
                 aria-pressed={sourceIdx === i}
                 aria-label={`Select source ${s.name}`}
-                className={cx('w-11 h-11 rounded-full border flex items-center justify-center font-cond font-bold text-[11px] tracking-wide transition-all duration-150', sourceIdx === i ? 'border-pink text-paper ring-1 ring-pink/50' : 'border-line text-dim hover:text-paper hover:border-white/40')}
+                className={cx('w-11 h-11 rounded-full border flex items-center justify-center font-cond font-bold text-[11px] tracking-wide transition-all duration-150', sourceIdx === i ? 'border-pink text-paper ring-1 ring-pink/50' : 'border-line text-dim hover:text-paper hover:border-black/40')}
               >
                 {s.abbr}
               </button>

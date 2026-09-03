@@ -73,8 +73,8 @@ export default function RegionPage() {
                 <Image src={gallery[slide]} alt={`${region.label} — image ${slide + 1}`} fill priority sizes="(max-width: 1024px) 100vw, 800px" className="object-cover" />
                 {gallery.length > 1 && (
                   <>
-                    <button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-11 h-11 flex items-center justify-center text-paper hover:border-white/50"><ArrowLeft size={17} /></button>
-                    <button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-11 h-11 flex items-center justify-center text-paper hover:border-white/50"><ArrowRight size={17} /></button>
+                    <button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous image" className="absolute left-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-11 h-11 flex items-center justify-center text-paper hover:border-black/50"><ArrowLeft size={17} /></button>
+                    <button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next image" className="absolute right-3 top-1/2 -translate-y-1/2 panel2 rounded-full w-11 h-11 flex items-center justify-center text-paper hover:border-black/50"><ArrowRight size={17} /></button>
                   </>
                 )}
                 <span className="absolute bottom-3 right-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[11px] text-dim">{slide + 1} / {gallery.length}</span>
@@ -100,7 +100,7 @@ export default function RegionPage() {
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {entries.map((entry) => (
                   <Link key={entry.slug} href={`/map/location/${entry.slug}`}
-                    className="panel rounded-sm p-2 flex flex-col hover:border-white/30 transition-colors">
+                    className="panel rounded-sm p-2 flex flex-col hover:border-black/30 transition-colors">
                     {entry.image ? (
                       <span className="relative block h-[84px] w-full rounded-[2px] overflow-hidden">
                         <Image src={entry.image} alt={entry.name} fill sizes="200px" className="object-cover" />
@@ -142,7 +142,7 @@ export default function RegionPage() {
           <InfoboxShell>
             <LocationLocator x={region.cx} y={region.cy} name={region.label} />
 
-            <div className="space-y-3 border-t border-white/10 pt-4">
+            <div className="space-y-3 border-t border-black/10 pt-4">
               <InfoRow label="Official type" value={region.officialType} />
               <InfoRow label="Environment" value={region.environment} />
               <InfoRow label="Official theme" value={region.theme} />
@@ -153,7 +153,7 @@ export default function RegionPage() {
               </InfoRow>
             </div>
 
-            <div className="border-t border-white/10 pt-4">
+            <div className="border-t border-black/10 pt-4">
               <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Source note</p>
               <p className="mt-1.5 text-[11px] leading-relaxed text-dim">Only Rockstar-named places are listed. The visual arrangement is an archive index, not an official map or boundary layout.</p>
             </div>

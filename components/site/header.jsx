@@ -37,12 +37,12 @@ export default function Header() {
       className={cx(
         'archive-header sticky top-0 z-[70] relative backdrop-blur-xl transition-colors duration-300 ease-out before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-mint/70 before:to-transparent',
         scrolled
-          ? 'bg-ink/92 border-b hairline shadow-[0_8px_30px_-20px_rgba(101,220,203,0.7)]'
-          : 'bg-ink/20 border-b border-transparent shadow-none'
+          ? 'bg-ink/92 border-b hairline shadow-[0_8px_30px_-22px_rgba(11,15,22,0.45)]'
+          : 'bg-ink/35 border-b border-transparent shadow-none'
       )}
     >
       <div className="pl-14 pr-3 sm:pr-6 lg:pl-8 lg:pr-8 h-[56px] flex items-center gap-2 sm:gap-4 lg:gap-6">
-        <span className="hidden lg:block font-mono text-[9px] tracking-[0.28em] text-paper/95 shrink-0 drop-shadow-[0_1px_5px_rgba(7,9,14,0.95)]">OFFICIAL EVIDENCE INDEX</span>
+        <span className="hidden lg:block font-mono text-[9px] tracking-[0.28em] text-paper/95 shrink-0 drop-shadow-[0_1px_5px_rgba(255,255,255,0.95)]">OFFICIAL EVIDENCE INDEX</span>
 
         <div className="flex-1 min-w-0" />
 
@@ -51,7 +51,7 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setSearchOpen(true)}
-          className="hidden md:flex items-center gap-2.5 w-[280px] xl:w-[360px] h-10 pl-4 pr-2 text-left rounded-full border border-line bg-ink/60 backdrop-blur-sm hover:border-white/35 transition-colors"
+          className="hidden md:flex items-center gap-2.5 w-[280px] xl:w-[360px] h-10 pl-4 pr-2 text-left rounded-full border border-line bg-ink/60 backdrop-blur-sm hover:border-black/35 transition-colors"
           aria-label="Search the archive"
         >
           <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
@@ -59,7 +59,7 @@ export default function Header() {
           <kbd className="w-6 h-6 flex items-center justify-center border border-line rounded-full font-mono text-[10px] text-dim shrink-0">/</kbd>
         </button>
 
-        <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-paper/95 drop-shadow-[0_1px_5px_rgba(7,9,14,0.95)] hover:text-paper" aria-label="Search the archive">
+        <button type="button" onClick={() => setSearchOpen(true)} className="md:hidden w-11 h-11 flex items-center justify-center text-paper/95 drop-shadow-[0_1px_5px_rgba(255,255,255,0.95)] hover:text-paper" aria-label="Search the archive">
           <Search size={19} />
         </button>
       </div>

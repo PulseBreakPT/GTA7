@@ -25,7 +25,7 @@ export default function DbTabs({ active, counters }) {
                 aria-current={isActive ? 'page' : undefined}
                 className={cx(
                   'relative font-cond font-semibold uppercase tracking-[0.12em] text-[12px] px-3 sm:px-4 h-11 flex items-center whitespace-nowrap transition-all duration-200 active:scale-95',
-                  isActive ? 'text-paper bg-white/[0.04]' : 'text-dim hover:text-paper hover:bg-white/[0.03]'
+                  isActive ? 'text-paper bg-black/[0.04]' : 'text-dim hover:text-paper hover:bg-black/[0.03]'
                 )}
               >
                 {t.label}

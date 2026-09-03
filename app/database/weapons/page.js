@@ -55,9 +55,9 @@ function App() {
   const displaySelected = selected ? { ...selected, image: selectedGallery[gallerySlide] || selected.image } : selected
 
   const barStats = selected ? [
-    { icon: Heart, label: 'DAMAGE', value: selected.stats[0], color: '#F1A3C3' },
-    { icon: Zap, label: 'FIRE RATE', value: selected.stats[1], color: '#65DCCB' },
-    { icon: Eye, label: 'ACCURACY', value: selected.stats[2], color: '#9B83F4' },
+    { icon: Heart, label: 'DAMAGE', value: selected.stats[0], color: '#C2185B' },
+    { icon: Zap, label: 'FIRE RATE', value: selected.stats[1], color: '#0E7C6B' },
+    { icon: Eye, label: 'ACCURACY', value: selected.stats[2], color: '#5B3FD6' },
   ] : []
 
   return (
@@ -67,7 +67,7 @@ function App() {
         <div className="min-w-0 flex flex-col">
           <div className="ghost-type" data-ghost="WEAPONS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">WEAPONS</h1></div>
 
-          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-white/40">
+          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>
@@ -76,7 +76,7 @@ function App() {
             <label className="flex items-center gap-2">
               <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
               <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort weapons"
-                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-white/40">
+                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-black/40">
                 <option value="default">Catalogue order</option>
                 <option value="name">Name A–Z</option>
                 <option value="name-desc">Name Z–A</option>
@@ -91,7 +91,7 @@ function App() {
           <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Weapon types">
             <button type="button" role="tab" aria-selected={type === 'all'} onClick={() => { setType('all'); setQuery('') }}
               className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                type === 'all' ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+                type === 'all' ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
               <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">ALL</span>
               <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(weapons.length)}</span>
             </button>
@@ -101,7 +101,7 @@ function App() {
               return (
                 <button key={t.id} type="button" role="tab" aria-selected={active} onClick={() => { setType(t.id); setQuery('') }}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-white/30')}>
+                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <WeaponGlyph type={t.id} size={15} className={active ? 'text-pink' : 'text-dim'} />
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{t.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(count)}</span>
@@ -115,7 +115,7 @@ function App() {
               const active = selected && w.slug === selected.slug
               return (
                 <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/weapons/${w.slug}`)} onMouseEnter={() => setSelectedSlug(w.slug)}
-                  className={cx('w-full panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-white/30')}>
+                  className={cx('w-full panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
                   <WeaponVisual w={w} className="h-[84px] w-full rounded-[2px]" sizes="164px" />
                   <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper mt-2 truncate text-center">{w.name}</span>
                   <span className="font-mono text-[11px] text-dim tabular-nums text-center">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>
@@ -154,7 +154,7 @@ function App() {
                   <div key={b.label} className="flex items-center gap-3">
                     <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: b.color }} aria-hidden="true"><b.icon size={14} /></span>
                     <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-paper w-[74px] shrink-0">{b.label}</span>
-                    <span className="relative flex-1 h-[7px] bg-white/10" role="img" aria-label={`${b.label}: ${b.value} of 100`}>
+                    <span className="relative flex-1 h-[7px] bg-black/10" role="img" aria-label={`${b.label}: ${b.value} of 100`}>
                       <span className="absolute inset-y-0 left-0 transition-all duration-300" style={{ width: `${b.value}%`, backgroundColor: b.color }} />
                       <span className="absolute inset-y-0 w-[2px] bg-ink" style={{ left: `${b.value - 4}%` }} />
                     </span>
@@ -163,7 +163,7 @@ function App() {
               </div>
             )}
 
-            <div className="mt-4 grid grid-cols-3 border-y hairline divide-x divide-[rgba(255,255,255,0.16)]">
+            <div className="mt-4 grid grid-cols-3 border-y hairline divide-x divide-[rgba(11,15,22,0.14)]">
               {[['RANGE', selected.unpublished ? '—' : selected.stats[3]], ['CAPACITY', selected.unpublished ? '—' : selected.stats[4]], ['WEIGHT', selected.unpublished ? '—' : `${selected.stats[5]} KG`]].map(([label, val]) => (
                 <div key={label} className="py-3 text-center">
                   <span className="block font-cond text-[9px] text-dim uppercase tracking-[0.14em]">{label}</span>
@@ -181,7 +181,7 @@ function App() {
             )}
 
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+              <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
                 SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
               </a>
             </div>

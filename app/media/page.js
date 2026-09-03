@@ -84,7 +84,7 @@ export default function MediaPage() {
                   aria-pressed={group === g.id}
                   className={cx(
                     'inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
-                    group === g.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-white/40'
+                    group === g.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40'
                   )}
                 >
                   {g.label}
@@ -108,7 +108,7 @@ export default function MediaPage() {
               key={item.src}
               type="button"
               onClick={() => setZoom(item)}
-              className="panel rounded-sm overflow-hidden text-left group hover:border-white/30 transition-colors"
+              className="panel rounded-sm overflow-hidden text-left group hover:border-black/30 transition-colors"
             >
               <span className="relative block aspect-[16/10] bg-surface2">
                 <Image src={item.src} alt={item.title} fill sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
@@ -134,7 +134,7 @@ export default function MediaPage() {
                 <p className="font-cond font-bold uppercase tracking-[0.06em] text-[16px] text-paper truncate">{zoom.title}</p>
                 <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim mt-0.5">{zoom.group.replace(/-/g, ' ')}</p>
               </div>
-              <button type="button" onClick={() => setZoom(null)} className="shrink-0 w-10 h-10 flex items-center justify-center border border-line text-paper hover:border-white/50 transition-colors" aria-label="Close image">
+              <button type="button" onClick={() => setZoom(null)} className="shrink-0 w-10 h-10 flex items-center justify-center border border-line text-paper hover:border-black/50 transition-colors" aria-label="Close image">
                 <X size={18} />
               </button>
             </div>

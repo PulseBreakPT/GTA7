@@ -10,9 +10,9 @@ import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, Catego
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
 const REL_BARS = [
-  { key: 'trust', label: 'TRUST', color: '#F1A3C3' },
-  { key: 'tension', label: 'TENSION', color: '#65DCCB' },
-  { key: 'risk', label: 'RISK', color: '#9B83F4' },
+  { key: 'trust', label: 'TRUST', color: '#C2185B' },
+  { key: 'tension', label: 'TENSION', color: '#0E7C6B' },
+  { key: 'risk', label: 'RISK', color: '#5B3FD6' },
 ]
 
 const SECTIONS = [
@@ -40,11 +40,11 @@ function Portrait({ c, className, sizes = '120px' }) {
 function RelationshipDuo({ c, other }) {
   return (
     <Link href={`/database/characters/${other.slug}`} className="group panel rounded-sm p-3 flex items-center gap-3 hover:border-pink/50 transition-colors">
-      <span className="shrink-0 min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[10px] text-dim group-hover:border-white/40">R1</span>
+      <span className="shrink-0 min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[10px] text-dim group-hover:border-black/40">R1</span>
       <span className="flex items-center shrink-0">
-        <Portrait c={c} className="w-[54px] h-[54px] border border-white/70" sizes="54px" />
+        <Portrait c={c} className="w-[54px] h-[54px] border border-black/70" sizes="54px" />
         <span className="relative z-[1] -mx-2.5 w-8 h-8 rounded-full bg-ink border border-pink/50 flex items-center justify-center" aria-hidden="true">
-          <Heart size={14} fill="#F1A3C3" stroke="#F1A3C3" strokeWidth={1} />
+          <Heart size={14} fill="#C2185B" stroke="#C2185B" strokeWidth={1} />
         </span>
         <Portrait c={other} className="w-[54px] h-[54px] border border-line" sizes="54px" />
       </span>
@@ -114,7 +114,7 @@ function App() {
                   const other = characterBySlug(r.a === c.slug ? r.b : r.a)
                   if (!other) return null
                   return (
-                    <Link key={other.slug} href={`/database/characters/${other.slug}`} className="panel rounded-sm p-3 flex flex-wrap sm:flex-nowrap items-center gap-3 hover:border-white/30 transition-colors">
+                    <Link key={other.slug} href={`/database/characters/${other.slug}`} className="panel rounded-sm p-3 flex flex-wrap sm:flex-nowrap items-center gap-3 hover:border-black/30 transition-colors">
                       <Portrait c={other} className="w-[46px] h-[46px] rounded-sm border border-line shrink-0 text-[14px]" sizes="46px" />
                       <span className="min-w-0 flex-1 sm:flex-none sm:w-[110px]">
                         <span className="block font-cond font-bold uppercase text-[14px] text-paper truncate">{other.name}</span>
@@ -124,7 +124,7 @@ function App() {
                         {REL_BARS.map((b) => (
                           <span key={b.key} className="flex items-center gap-1.5">
                             <span className="font-cond uppercase text-[7px] tracking-[0.14em] text-dim w-10">{b.label}</span>
-                            <span className="relative flex-1 h-[4px] rounded-full bg-white/10 overflow-hidden"><span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${r[b.key]}%`, backgroundColor: b.color }} /></span>
+                            <span className="relative flex-1 h-[4px] rounded-full bg-black/10 overflow-hidden"><span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${r[b.key]}%`, backgroundColor: b.color }} /></span>
                           </span>
                         ))}
                       </span>
@@ -138,7 +138,7 @@ function App() {
             <WikiSection id="mechanics" title="Associated Mechanics" className="mb-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {mechs.map((m) => (
-                  <Link key={m.slug} href={`/database/mechanics?m=${m.slug}`} className="panel rounded-sm p-4 hover:border-white/30 transition-colors">
+                  <Link key={m.slug} href={`/database/mechanics?m=${m.slug}`} className="panel rounded-sm p-4 hover:border-black/30 transition-colors">
                     <span className="flex items-center justify-between">
                       <span className="font-cond font-bold uppercase text-[16px] text-paper leading-tight">{m.name}</span>
                       <span className="shrink-0 min-w-[24px] h-[20px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[10px] text-dim">{m.glyph}</span>
@@ -162,7 +162,7 @@ function App() {
             <InfoboxShell>
               <Portrait c={c} className="w-full aspect-[3/4] rounded-sm border border-line" sizes="(max-width:1024px) 100vw, 300px" />
 
-              <div className="space-y-3 border-t border-white/10 pt-4">
+              <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Role" value={c.role} />
                 <InfoRow label="Group">
                   <span className="capitalize">{c.group || 'Unspecified'}</span>
@@ -177,8 +177,8 @@ function App() {
                 )}
               </div>
 
-              <div className="border-t border-white/10 pt-4">
-                <a href={c.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+              <div className="border-t border-black/10 pt-4">
+                <a href={c.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
                   {c.sourceName ? c.sourceName.toUpperCase() : 'SOURCE'} <ExternalLink size={10} />
                 </a>
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {c.updatedAt}</p>

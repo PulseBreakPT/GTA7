@@ -62,13 +62,13 @@ export default function CategoriesIndexPage() {
             <section key={letter}>
               <div className="flex items-center gap-4">
                 <h2 className="font-cond font-bold text-[24px] text-mint leading-none shrink-0">{letter}</h2>
-                <span className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true" />
+                <span className="flex-1 h-px bg-gradient-to-r from-black/20 to-transparent" aria-hidden="true" />
                 <span className="font-mono text-[11px] text-dim tabular-nums shrink-0">{list.length}</span>
               </div>
               <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-px">
                 {list.map((c) => (
                   <li key={c.slug}>
-                    <Link href={`/wiki/category/${c.slug}`} className="flex items-center gap-3 py-2 border-b border-white/[0.06] hover:border-white/25 group transition-colors">
+                    <Link href={`/wiki/category/${c.slug}`} className="flex items-center gap-3 py-2 border-b border-black/[0.06] hover:border-black/25 group transition-colors">
                       <span className="flex-1 min-w-0 font-cond font-semibold uppercase text-[13px] text-paper truncate group-hover:text-mint transition-colors">{c.label}</span>
                       <span className="font-mono text-[11px] text-dim tabular-nums shrink-0">{c.members.length}</span>
                     </Link>

@@ -51,7 +51,7 @@ export default function RecentChangesPage() {
               aria-pressed={kind === 'all'}
               className={cx(
                 'inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
-                kind === 'all' ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-white/40'
+                kind === 'all' ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40'
               )}
             >
               All
@@ -65,7 +65,7 @@ export default function RecentChangesPage() {
                 aria-pressed={kind === k.id}
                 className={cx(
                   'inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
-                  kind === k.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-white/40'
+                  kind === k.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40'
                 )}
               >
                 {k.label}
@@ -81,10 +81,10 @@ export default function RecentChangesPage() {
           <section key={day}>
             <div className="flex items-center gap-4">
               <h2 className="font-mono text-[13px] text-mint tabular-nums shrink-0">{day}</h2>
-              <span className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true" />
+              <span className="flex-1 h-px bg-gradient-to-r from-black/20 to-transparent" aria-hidden="true" />
               <span className="font-mono text-[11px] text-dim tabular-nums shrink-0">{items.length}</span>
             </div>
-            <ul className="mt-2 border border-line divide-y divide-white/[0.08]">
+            <ul className="mt-2 border border-line divide-y divide-black/[0.08]">
               {items.slice(0, 40).map((e) => (
                 <li key={e.href}>
                   <Link href={e.href} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 hover:bg-surface2/50 transition-colors">

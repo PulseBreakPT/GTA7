@@ -25,7 +25,7 @@ function App() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         {guides.map((g) => (
-          <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm overflow-hidden group hover:border-white/30 transition-colors flex flex-col">
+          <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors flex flex-col">
             <div className="relative aspect-[16/7] overflow-hidden">
               <Image src={g.image} alt={g.title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
               <span className="absolute inset-0 bg-gradient-to-t from-raised via-ink/20 to-transparent" aria-hidden="true" />
@@ -36,7 +36,7 @@ function App() {
               <p className="text-dim text-[13px] leading-relaxed mt-2">{g.summary}</p>
               <div className="mt-auto pt-4 flex items-center justify-between">
                 <span className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>
-                <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-dim group-hover:text-paper group-hover:border-white/50 transition-colors" aria-hidden="true"><ChevronRight size={14} /></span>
+                <span className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-dim group-hover:text-paper group-hover:border-black/50 transition-colors" aria-hidden="true"><ChevronRight size={14} /></span>
               </div>
             </div>
           </Link>

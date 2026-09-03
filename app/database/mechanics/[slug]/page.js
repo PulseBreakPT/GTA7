@@ -68,7 +68,7 @@ export default function MechanicPage() {
                 {related.map((r) => {
                   const RIcon = MECH_ICONS[r.icon] || Repeat2
                   return (
-                    <Link key={r.slug} href={`/database/mechanics/${r.slug}`} className="panel rounded-sm p-4 hover:border-white/30 transition-colors">
+                    <Link key={r.slug} href={`/database/mechanics/${r.slug}`} className="panel rounded-sm p-4 hover:border-black/30 transition-colors">
                       <span className="flex items-start justify-between gap-3">
                         <span className="flex items-center gap-2.5 min-w-0">
                           <RIcon size={20} className="text-dim shrink-0" strokeWidth={1.8} aria-hidden="true" />
@@ -87,7 +87,7 @@ export default function MechanicPage() {
             <WikiSection id="characters" title="Linked Characters" className="mb-0">
               <div className="flex flex-col gap-2">
                 {linkedChars.map((c) => (
-                  <Link key={c.slug} href={`/database/characters/${c.slug}`} className="flex items-center gap-3 border border-line rounded-sm px-3 h-12 group hover:border-white/40 transition-colors">
+                  <Link key={c.slug} href={`/database/characters/${c.slug}`} className="flex items-center gap-3 border border-line rounded-sm px-3 h-12 group hover:border-black/40 transition-colors">
                     <span className="flex-1 font-cond font-semibold uppercase tracking-[0.08em] text-[14px] text-paper truncate">{c.name}</span>
                     <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim shrink-0">{c.role}</span>
                     <ChevronRight size={14} className="text-dim group-hover:text-paper shrink-0" aria-hidden="true" />
@@ -115,7 +115,7 @@ export default function MechanicPage() {
                 </div>
               </div>
 
-              <div className="space-y-3 border-t border-white/10 pt-4">
+              <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Status">
                   <StatusBadge status={m.status} />
                 </InfoRow>
@@ -126,8 +126,8 @@ export default function MechanicPage() {
                 </InfoRow>
               </div>
 
-              <div className="border-t border-white/10 pt-4">
-                <a href={m.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+              <div className="border-t border-black/10 pt-4">
+                <a href={m.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
                   SOURCE: {m.sourceName.toUpperCase()} <ExternalLink size={11} />
                 </a>
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {m.updatedAt}</p>

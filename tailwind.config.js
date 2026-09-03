@@ -11,30 +11,37 @@ module.exports = {
   theme: {
     container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
     extend: {
+      // Tema claro. Os nomes mantêm-se — `ink` é o fundo e `paper` o
+      // texto, tal como antes — porque são centenas de utilizações no
+      // projecto: trocar o significado de dois tokens vira o site todo
+      // sem tocar numa única classe. O que muda de verdade são os
+      // acentos: os pastéis do tema escuro davam menos de 2:1 sobre
+      // branco, ou seja, texto ilegível. Aqui cada um tem a versão
+      // escura da mesma cor, acima de 4.5:1.
       colors: {
-        ink: '#0B0F16',
-        raised: '#111722',
-        surface2: '#18202D',
-        paper: '#F2F4F7',
-        dim: '#B0B7C3',
-        line: 'rgba(255,255,255,0.22)',
-        pink: '#F1A3C3',
-        mint: '#65DCCB',
-        violet: '#9B83F4',
-        warn: '#E6D658',
-        danger: '#C92A35',
-        border: 'rgba(255,255,255,0.22)',
-        input: 'rgba(255,255,255,0.22)',
-        ring: '#F1A3C3',
-        background: '#0B0F16',
-        foreground: '#F5F4F0',
-        primary: { DEFAULT: '#F2F4F7', foreground: '#0B0F16' },
-        secondary: { DEFAULT: '#18202D', foreground: '#F2F4F7' },
-        destructive: { DEFAULT: '#C92A35', foreground: '#F5F4F0' },
-        muted: { DEFAULT: '#18202D', foreground: '#B0B7C3' },
-        accent: { DEFAULT: '#F1A3C3', foreground: '#0B0F16' },
-        popover: { DEFAULT: '#111722', foreground: '#F2F4F7' },
-        card: { DEFAULT: '#111722', foreground: '#F2F4F7' },
+        ink: '#FFFFFF',
+        raised: '#F7F8FA',
+        surface2: '#EDEFF3',
+        paper: '#0B0F16',
+        dim: '#5A6270',
+        line: 'rgba(11,15,22,0.14)',
+        pink: '#C2185B',
+        mint: '#0E7C6B',
+        violet: '#5B3FD6',
+        warn: '#8A6A00',
+        danger: '#B3202A',
+        border: 'rgba(11,15,22,0.14)',
+        input: 'rgba(11,15,22,0.14)',
+        ring: '#C2185B',
+        background: '#FFFFFF',
+        foreground: '#0B0F16',
+        primary: { DEFAULT: '#0B0F16', foreground: '#FFFFFF' },
+        secondary: { DEFAULT: '#EDEFF3', foreground: '#0B0F16' },
+        destructive: { DEFAULT: '#B3202A', foreground: '#FFFFFF' },
+        muted: { DEFAULT: '#EDEFF3', foreground: '#5A6270' },
+        accent: { DEFAULT: '#C2185B', foreground: '#FFFFFF' },
+        popover: { DEFAULT: '#FFFFFF', foreground: '#0B0F16' },
+        card: { DEFAULT: '#FFFFFF', foreground: '#0B0F16' },
       },
       fontFamily: {
         cond: ['var(--font-cond)', 'Arial Narrow', 'sans-serif'],

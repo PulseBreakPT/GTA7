@@ -12,7 +12,7 @@ import { Breadcrumb } from '@/components/site/wiki'
 // por isso tem o mesmo peso visual que o `Check`.
 function IncludeRow({ label, included }) {
   return (
-    <li className="flex items-start gap-2.5 py-2 border-b border-white/[0.07] last:border-0">
+    <li className="flex items-start gap-2.5 py-2 border-b border-black/[0.07] last:border-0">
       <span
         className={cx('mt-[2px] w-4 h-4 shrink-0 flex items-center justify-center rounded-[2px]',
           included ? 'text-mint' : 'text-dim')}
@@ -50,7 +50,7 @@ function App() {
         </p>
 
         {/* Os três factos que enquadram tudo o resto. */}
-        <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-px border hairline bg-[rgba(255,255,255,0.10)]">
+        <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-px border hairline bg-[rgba(11,15,22,0.12)]">
           {[
             [Calendar, 'RELEASE', editions.releaseDate],
             [Download, 'PRE-LOAD', editions.preloadDate],
@@ -197,7 +197,7 @@ function App() {
         </p>
         <ul className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-6">
           {editions.notAnnounced.map((line) => (
-            <li key={line} className="flex items-start gap-2.5 py-2.5 border-b border-white/[0.07] text-[13px] leading-[1.55] text-dim">
+            <li key={line} className="flex items-start gap-2.5 py-2.5 border-b border-black/[0.07] text-[13px] leading-[1.55] text-dim">
               <X size={13} strokeWidth={2.6} className="text-dim mt-[3px] shrink-0" aria-hidden="true" />
               {line}
             </li>
@@ -206,10 +206,10 @@ function App() {
 
         {/* ---- FONTE ---- */}
         <div className="mt-10 flex flex-wrap items-center gap-3 border-t hairline pt-5">
-          <a href={editions.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+          <a href={editions.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
             SOURCE: {editions.sourceName.toUpperCase()} <ExternalLink size={11} />
           </a>
-          <a href={editions.supportUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40">
+          <a href={editions.supportUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
             ROCKSTAR SUPPORT <ExternalLink size={11} />
           </a>
           <span className="font-mono text-[10px] text-dim uppercase">CHECKED {editions.updatedAt}</span>

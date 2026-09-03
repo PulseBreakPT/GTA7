@@ -82,7 +82,7 @@ export default function WikiIndexPage() {
                 aria-pressed={kind === 'all'}
                 className={cx(
                   'inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
-                  kind === 'all' ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-white/40'
+                  kind === 'all' ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40'
                 )}
               >
                 All
@@ -98,7 +98,7 @@ export default function WikiIndexPage() {
                     aria-pressed={kind === k.id}
                     className={cx(
                       'inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
-                      kind === k.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-white/40'
+                      kind === k.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40'
                     )}
                   >
                     <Icon size={12} aria-hidden="true" />
@@ -139,7 +139,7 @@ export default function WikiIndexPage() {
             <section key={letter} id={`letter-${letter === '#' ? 'other' : letter}`} className="scroll-mt-20">
               <div className="flex items-center gap-4">
                 <h2 className="font-cond font-bold text-[26px] text-mint leading-none shrink-0">{letter}</h2>
-                <span className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true" />
+                <span className="flex-1 h-px bg-gradient-to-r from-black/20 to-transparent" aria-hidden="true" />
                 <span className="font-mono text-[11px] text-dim tabular-nums shrink-0">{list.length}</span>
               </div>
               <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-px">
@@ -147,7 +147,7 @@ export default function WikiIndexPage() {
                   const Icon = item.icon
                   return (
                     <li key={`${item.kind}-${item.slug}`}>
-                      <Link href={item.href} className="flex items-center gap-2.5 py-2 border-b border-white/[0.06] hover:border-white/25 group transition-colors">
+                      <Link href={item.href} className="flex items-center gap-2.5 py-2 border-b border-black/[0.06] hover:border-black/25 group transition-colors">
                         <Icon size={13} className="text-dim group-hover:text-mint shrink-0 transition-colors" aria-hidden="true" />
                         <span className="flex-1 min-w-0 font-cond font-semibold uppercase text-[13px] text-paper truncate group-hover:text-mint transition-colors">{item.name}</span>
                         <span className="font-cond uppercase tracking-[0.14em] text-[8px] text-dim shrink-0 hidden sm:block">{item.kindLabel}</span>

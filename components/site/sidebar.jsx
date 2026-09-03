@@ -68,7 +68,7 @@ function NavLinks({ pathname, onNavigate }) {
                 aria-current={active ? 'page' : undefined}
                 className={cx(
                   'group relative flex-1 flex items-center gap-3 h-11 px-3 rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[13px] transition-all duration-200',
-                  active ? 'bg-paper text-ink' : 'text-dim hover:text-paper hover:bg-white/5'
+                  active ? 'bg-paper text-ink' : 'text-dim hover:text-paper hover:bg-black/5'
                 )}
               >
                 <Icon size={16} className={active ? 'text-ink' : 'text-dim group-hover:text-mint transition-colors'} aria-hidden="true" />
@@ -161,14 +161,14 @@ export default function Sidebar() {
           // gaveta mas uma coluna fixa ao lado do conteúdo, e aí o fundo
           // sólido é o que mantém a leitura estável.
           'bg-transparent border-r border-transparent flex flex-col shrink-0 w-[248px]',
-          'lg:bg-raised lg:border-white/[0.16]',
+          'lg:bg-raised lg:border-black/[0.16]',
           'fixed inset-y-0 left-0 z-[90] transition-transform duration-300 ease-out',
           'lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:z-0',
           open ? 'translate-x-0' : '-translate-x-full'
         )}
         aria-label="Site navigation"
       >
-        <div className="h-[56px] flex items-center justify-between px-4 border-b border-transparent lg:border-white/[0.16] shrink-0">
+        <div className="h-[56px] flex items-center justify-between px-4 border-b border-transparent lg:border-black/[0.16] shrink-0">
           <Link href="/" className="group flex flex-col justify-center min-w-0" onClick={() => setOpen(false)}>
             <span className="chromatic-title font-cond font-bold text-[16px] tracking-wide text-paper whitespace-nowrap leading-none truncate">LEONIDA ARCHIVE</span>
           </Link>
@@ -182,14 +182,14 @@ export default function Sidebar() {
         </div>
 
         <div className="shrink-0 px-3 pb-4 pt-3">
-          <div className="border border-transparent lg:border-white/[0.16] rounded-sm grid grid-cols-2">
+          <div className="border border-transparent lg:border-black/[0.16] rounded-sm grid grid-cols-2">
             {counters.map(([n, label], i) => (
               <div
                 key={label}
                 className={cx(
                   'flex flex-col leading-none px-3 py-3',
-                  i % 2 === 0 && 'lg:border-r lg:border-white/[0.16]',
-                  i < 2 && 'lg:border-b lg:border-white/[0.16]'
+                  i % 2 === 0 && 'lg:border-r lg:border-black/[0.16]',
+                  i < 2 && 'lg:border-b lg:border-black/[0.16]'
                 )}
               >
                 <span className="font-cond font-bold text-[19px] text-mint tabular-nums">{n}</span>
@@ -200,16 +200,16 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Fundo por trás da gaveta em ecrãs estreitos. Com a gaveta sem painel
-          próprio, este escurecido é o único que segura a leitura dos links:
-          a 70% o texto claro sobre conteúdo branco ficava em ~4:1, abaixo do
-          mínimo acessível; a 80% fica em ~6:1. O blur é do ecrã todo, por
-          isso não denuncia a caixa da gaveta. */}
+      {/* Véu por trás da gaveta em ecrãs estreitos. Com a gaveta sem painel
+          próprio, é ele que segura a leitura dos links. No tema claro tem de
+          clarear com o resto: os links são escuros, e a 90% de branco ficam
+          em cerca de 17:1 sobre o que estiver por baixo. O blur é do ecrã
+          todo, por isso não denuncia a caixa da gaveta. */}
       {open && (
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="lg:hidden fixed inset-0 z-[85] bg-black/80 backdrop-blur-[4px]"
+          className="lg:hidden fixed inset-0 z-[85] bg-white/90 backdrop-blur-[4px]"
           aria-label="Close navigation"
         />
       )}

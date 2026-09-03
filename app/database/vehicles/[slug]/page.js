@@ -59,10 +59,10 @@ function App() {
   }
 
   const stats = [
-    { icon: Heart, label: 'SPEED', value: v.stats[0], color: '#F1A3C3' },
-    { icon: Zap, label: 'ACCELERATION', value: v.stats[1], color: '#65DCCB' },
-    { icon: Eye, label: 'BRAKING', value: v.stats[2], color: '#9B83F4' },
-    { icon: CircleDot, label: 'HANDLING', value: v.stats[3], color: '#F5F4F0' },
+    { icon: Heart, label: 'SPEED', value: v.stats[0], color: '#C2185B' },
+    { icon: Zap, label: 'ACCELERATION', value: v.stats[1], color: '#0E7C6B' },
+    { icon: Eye, label: 'BRAKING', value: v.stats[2], color: '#5B3FD6' },
+    { icon: CircleDot, label: 'HANDLING', value: v.stats[3], color: '#334155' },
   ]
   const related = vehicles.filter((x) => x.cls === v.cls && x.slug !== v.slug).slice(0, 4)
   const gallery = v.gallery?.length ? v.gallery : [v.image]
@@ -144,7 +144,7 @@ function App() {
                   <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME CLASS</h3>
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     {related.map((r) => (
-                      <Link key={r.slug} href={`/database/vehicles/${r.slug}`} className="panel rounded-sm p-3 hover:border-white/30 transition-colors">
+                      <Link key={r.slug} href={`/database/vehicles/${r.slug}`} className="panel rounded-sm p-3 hover:border-black/30 transition-colors">
                         <span className="font-mono text-[11px] text-dim tabular-nums">{r.num}</span>
                         <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-1 truncate">{r.name}</span>
                         <StatusBadge status={r.status} className="mt-2" />
@@ -194,7 +194,7 @@ function App() {
                 )}
               </div>
 
-              <div className="space-y-3 border-t border-white/10 pt-4">
+              <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Vehicle class" value={classLabel} />
                 <InfoRow label="Manufacturer" value={v.manufacturer} />
                 <InfoRow label="Unit" value={v.num} />
@@ -208,16 +208,16 @@ function App() {
                 </InfoRow>
               </div>
 
-              <div className="border-t border-white/10 pt-4">
-                <button type="button" onClick={toggleFav} aria-pressed={isFav} className={cx('w-full inline-flex items-center justify-center gap-2 border h-11 px-4 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] transition-colors', isFav ? 'border-pink text-pink' : 'border-line text-paper hover:border-white/50')}>
-                  <Heart size={14} fill={isFav ? '#F1A3C3' : 'transparent'} />
+              <div className="border-t border-black/10 pt-4">
+                <button type="button" onClick={toggleFav} aria-pressed={isFav} className={cx('w-full inline-flex items-center justify-center gap-2 border h-11 px-4 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] transition-colors', isFav ? 'border-pink text-pink' : 'border-line text-paper hover:border-black/50')}>
+                  <Heart size={14} fill={isFav ? '#C2185B' : 'transparent'} />
                   {isFav ? 'IN YOUR COLLECTION' : 'ADD TO FAVOURITES'}
                 </button>
               </div>
 
-              <div className="border-t border-white/10 pt-4">
+              <div className="border-t border-black/10 pt-4">
                 {v.sourceUrl ? (
-                  <a href={v.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+                  <a href={v.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
                     SOURCE: {v.sourceName.toUpperCase()} <ExternalLink size={11} />
                   </a>
                 ) : (

@@ -62,7 +62,7 @@ export default function RadioStationPage() {
 
             {s.tracks?.length > 0 && (
               <WikiSection id="tracklist" title="Confirmed Tracks">
-                <ol className="border border-line divide-y divide-white/[0.08]">
+                <ol className="border border-line divide-y divide-black/[0.08]">
                   {s.tracks.map(([title, artist], i) => (
                     <li key={`${title}-${artist}`} className="flex items-center gap-4 px-4 py-3">
                       <span className="font-mono text-[11px] text-dim tabular-nums shrink-0 w-6">{String(i + 1).padStart(2, '0')}</span>
@@ -82,7 +82,7 @@ export default function RadioStationPage() {
             <WikiSection id="related" title="Other Stations" className="mb-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {fallbackRelated.map((r) => (
-                  <Link key={r.slug} href={`/database/radio/${r.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 hover:border-white/30 transition-colors">
+                  <Link key={r.slug} href={`/database/radio/${r.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 hover:border-black/30 transition-colors">
                     <RadioIcon size={20} className="text-dim shrink-0" strokeWidth={1.8} aria-hidden="true" />
                     <span className="min-w-0 flex-1">
                       <span className="block font-cond font-bold uppercase text-[16px] text-paper truncate">{r.name}</span>
@@ -113,7 +113,7 @@ export default function RadioStationPage() {
                 </div>
               </div>
 
-              <div className="space-y-3 border-t border-white/10 pt-4">
+              <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Genre" value={s.genre} />
                 <InfoRow label="Status">
                   <StatusBadge status={s.status} />
@@ -124,8 +124,8 @@ export default function RadioStationPage() {
                 <InfoRow label="Documented tracks" value={String(s.tracks?.length || 0)} />
               </div>
 
-              <div className="border-t border-white/10 pt-4">
-                <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+              <div className="border-t border-black/10 pt-4">
+                <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
                   SOURCE <ExternalLink size={11} />
                 </a>
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {s.updatedAt}</p>
