@@ -19,7 +19,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 html, body { max-width: 100vw; overflow-x: hidden; }
-html { scroll-behavior: smooth; scroll-padding-top: 104px; }
+html { scroll-behavior: smooth; scroll-padding-top: 68px; }
 
 body {
   background-color: #FFFFFF;
@@ -216,9 +216,6 @@ main::before {
   .chromatic-title { background-image: none; -webkit-text-fill-color: currentColor; }
 }
 
-.archive-header { position: relative; }
-.archive-header { padding-top: env(safe-area-inset-top); }
-.archive-header::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 22%; height: 1px; background: linear-gradient(90deg, transparent, #0E7C6B, #C2185B, transparent); opacity: .55; }
 .magnetic-button { transition: transform 220ms cubic-bezier(.2,.9,.25,1), box-shadow 220ms ease, background-color 220ms ease, color 220ms ease; }
 @media (hover: hover) and (pointer: fine) { .magnetic-button:hover { transform: translate(2px,-2px); box-shadow: 0 16px 32px -22px rgba(194,24,91,.6); } }
 .magnetic-button:active { transform: translate(0,1px) scale(.985); }
@@ -298,7 +295,6 @@ main [class*="overflow-x-auto"] > * { scroll-snap-align: start; }
 @media (max-width: 640px) {
   body { min-width: 320px; }
   input, select, textarea { font-size: 16px; }
-  .archive-header nav[aria-label="Mobile"] { max-height: calc(100dvh - 56px); overflow-y: auto; overscroll-behavior: contain; padding-bottom: env(safe-area-inset-bottom); }
   /* Keep mobile gutters consistent even where desktop utility spacing is reused. */
   main [class*="px-8"], main [class*="px-6"] { padding-left: 1rem; padding-right: 1rem; }
   main [class*="py-6"] { padding-top: 1.25rem; padding-bottom: 1.25rem; }

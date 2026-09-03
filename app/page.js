@@ -89,12 +89,10 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       {/* ===== 1. HERO ===== */}
-      {/* -mt-14 sobe a hero para debaixo da navbar (56px, a mesma altura do
-          header) — é essa sobreposição que dá corpo ao fundo transparente:
-          sem imagem por trás, a navbar transparente não mostrava nada. O
-          mt-14 no conteúdo interior cancela o deslocamento, para o texto
-          cair exactamente onde caía antes. */}
-      <section className="corner-brackets relative -mt-14 min-h-[560px] lg:min-h-[680px] overflow-hidden">
+      {/* Sem barra superior, a hero começa no topo do ecrã. O
+          deslocamento que a punha por baixo dela deixou de fazer
+          sentido — puxava-a para fora do ecrã. */}
+      <section className="corner-brackets relative min-h-[560px] lg:min-h-[680px] overflow-hidden">
         <div className="absolute inset-0">
           <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center saturate-[1.05]" />
           {/* Aqui o véu é preciso: o título fica mesmo por cima da imagem.
@@ -105,7 +103,7 @@ function App() {
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink to-transparent" />
         </div>
 
-        <div className="relative z-10 mt-14 px-4 sm:px-6 lg:px-8 pt-8 lg:pt-10 flex flex-col h-full">
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-14 lg:pt-16 flex flex-col h-full">
           <div className="ghost-type mt-10 lg:mt-20 max-w-[720px]" data-ghost="LEONIDA">
             <h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px] drop-shadow-[0_2px_18px_rgba(7,9,14,0.8)]">
               LEONIDA,<br />DOCUMENTED.

@@ -1,7 +1,7 @@
 import './globals.css'
 import { Barlow_Condensed, Inter, JetBrains_Mono } from 'next/font/google'
 import { Providers } from './providers'
-import Header from '@/components/site/header'
+import SearchFab from '@/components/site/searchfab'
 import TabBar from '@/components/site/tabbar'
 import Footer from '@/components/site/footer'
 
@@ -53,13 +53,13 @@ export default function RootLayout({ children }) {
             Skip to content
           </a>
           <div className="flex-1 min-w-0 flex flex-col">
-            <Header />
             <main id="main" tabIndex={-1} className="archive-grid flex-1 flex flex-col">{children}</main>
             {/* O espaço que a barra flutuante ocupa. Sem ele, a barra
                 tapava o fim do rodapé em todas as páginas. */}
             <Footer />
             <div aria-hidden="true" style={{ height: 'calc(76px + max(0.75rem, env(safe-area-inset-bottom)))' }} />
           </div>
+          <SearchFab />
           <TabBar />
         </Providers>
       </body>
