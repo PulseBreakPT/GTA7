@@ -109,7 +109,6 @@ function App() {
 
       <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 panel">
         <Image src={a.image} alt={a.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
-        <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
         <span className="absolute top-4 left-4 flex items-center gap-2">
           <StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} />
           <GhostBadge status={a.status} />

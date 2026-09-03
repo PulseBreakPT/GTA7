@@ -94,11 +94,15 @@ function App() {
           sem imagem por trás, a navbar transparente não mostrava nada. O
           mt-14 no conteúdo interior cancela o deslocamento, para o texto
           cair exactamente onde caía antes. */}
-      <section className="corner-brackets relative -mt-14 min-h-[560px] lg:min-h-[680px] overflow-hidden scanlines vignette">
+      <section className="corner-brackets relative -mt-14 min-h-[560px] lg:min-h-[680px] overflow-hidden">
         <div className="absolute inset-0">
-          <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center brightness-[1.12] saturate-[1.15]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/35" />
+          <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center saturate-[1.05]" />
+          {/* Aqui o véu é preciso: o título fica mesmo por cima da imagem.
+              Mas só onde o texto está — à esquerda, e a acabar antes de
+              meio. O que cobria a imagem toda, topo e base incluídos,
+              lavava-a sem proteger nada. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink from-5% via-ink/55 via-40% to-transparent to-72%" />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink to-transparent" />
         </div>
 
         <div className="relative z-10 mt-14 px-4 sm:px-6 lg:px-8 pt-8 lg:pt-10 flex flex-col h-full">
@@ -144,16 +148,15 @@ function App() {
               <Link key={branch.label} href={branch.href} title={branch.blurb} className="panel rounded-sm overflow-hidden group hover:border-mint/60 transition-colors">
                 <span className="relative block aspect-[16/9]">
                   <Image src={branch.image} alt="" fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
-                  <span className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/25 to-transparent" />
-                  <span className="absolute inset-x-4 bottom-3 flex items-end justify-between gap-3">
-                    <span className="flex items-center gap-2 min-w-0">
-                      <Icon size={17} className="text-mint shrink-0" aria-hidden="true" />
-                      <span className="font-cond font-bold uppercase tracking-tight text-[22px] text-paper leading-none truncate">{branch.label}</span>
-                    </span>
-                    <span className="font-cond font-bold text-[22px] text-paper/90 tabular-nums leading-none shrink-0">{branch.count}</span>
-                  </span>
                 </span>
-                <span className="flex items-center gap-2 px-4 py-2.5 border-t border-black/[0.08]">
+                <span className="flex items-end justify-between gap-3 px-4 pt-3">
+                  <span className="flex items-center gap-2 min-w-0">
+                    <Icon size={17} className="text-mint shrink-0" aria-hidden="true" />
+                    <span className="font-cond font-bold uppercase tracking-tight text-[22px] text-paper leading-none truncate">{branch.label}</span>
+                  </span>
+                  <span className="font-cond font-bold text-[22px] text-paper tabular-nums leading-none shrink-0">{branch.count}</span>
+                </span>
+                <span className="flex items-center gap-2 px-4 pb-3 pt-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-mint shrink-0" aria-hidden="true" />
                   <span className="font-cond uppercase tracking-[0.16em] text-[10px] text-dim">Source-labelled</span>
                 </span>
@@ -229,10 +232,9 @@ function App() {
             <Link key={r.id} href={`/map/${r.id}`} className="panel rounded-sm overflow-hidden group hover:border-mint/60 transition-colors">
               <span className="relative block aspect-[16/8]">
                 <Image src={r.image} alt={`Official artwork for ${r.label}`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
-                <span className="absolute inset-0 bg-gradient-to-t from-ink/90 to-transparent" />
-                <span className="absolute bottom-3 left-4 font-cond font-bold uppercase tracking-tight text-[22px] text-paper leading-none">{r.label}</span>
               </span>
               <span className="block p-4">
+                <span className="block font-cond font-bold uppercase tracking-tight text-[22px] text-paper leading-none mb-2">{r.label}</span>
                 <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-mint">{r.officialType}</span>
                 <span className="block text-[13px] leading-relaxed text-dim mt-1.5 clamp-2">{r.blurb}</span>
               </span>

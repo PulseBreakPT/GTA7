@@ -28,7 +28,6 @@ function App() {
           <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors flex flex-col">
             <div className="relative aspect-[16/7] overflow-hidden">
               <Image src={g.image} alt={g.title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
-              <span className="absolute inset-0 bg-gradient-to-t from-raised via-ink/20 to-transparent" aria-hidden="true" />
               <span className="absolute top-3 left-3"><StatusBadge status={g.status} /></span>
             </div>
             <div className="p-5 flex flex-col flex-1">

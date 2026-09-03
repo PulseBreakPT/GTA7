@@ -180,7 +180,7 @@ main::before {
 @media (hover: hover) and (pointer: fine) { .spotlight-card:hover::before { opacity: 1; } }
 
 .film-frame { position: relative; }
-.film-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(11,15,22,.14), transparent 25%, transparent 70%, rgba(11,15,22,.2)); }
+.film-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(11,15,22,.05), transparent 18%, transparent 82%, rgba(11,15,22,.06)); }
 .film-rail { mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent); }
 
 .ambient-bloom { position: relative; isolation: isolate; }

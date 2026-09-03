@@ -23,7 +23,6 @@ function VehicleVisual({ v, className, sizes = '220px', priority = false }) {
     return (
       <span className={cx(pos, 'block overflow-hidden', className)}>
         <Image src={v.image} alt={v.name} fill priority={priority} sizes={sizes} className="object-cover" />
-        <span className="absolute inset-0 bg-gradient-to-t from-ink/45 via-transparent to-ink/15" aria-hidden="true" />
       </span>
     )
   }
@@ -211,7 +210,7 @@ function App() {
 
         {/* ASIDE: selected vehicle */}
         <aside className="tech-mask glass-panel p-5 self-start">
-          <div className="corner-brackets tech-mask card-active relative overflow-hidden aspect-[16/10] bg-raised scanlines vignette">
+          <div className="corner-brackets tech-mask card-active relative overflow-hidden aspect-[16/10] bg-raised">
             <VehicleVisual v={displaySelected} className="absolute inset-0" sizes="380px" />
             {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous vehicle image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next vehicle image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}
             <button type="button" onClick={() => setZoomed(true)} aria-label="Expand vehicle image" className="absolute bottom-2 left-2 w-9 h-9 panel2 rounded-sm flex items-center justify-center text-paper hover:border-black/40">

@@ -52,7 +52,7 @@ export default function LocationPage() {
           </WikiSection>
 
           <WikiSection id="visual" title="Visual Record">
-            <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/9] bg-raised scanlines vignette">
+            <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/9] bg-raised">
               {loc.image ? (
                 <Image src={loc.image} alt={loc.name} fill priority sizes="(max-width:1024px) 100vw, 700px" className="object-cover" />
               ) : (
