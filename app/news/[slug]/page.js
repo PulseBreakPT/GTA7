@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ChevronUp, ExternalLink, Quote, Star, TriangleAlert } from 'lucide-react'
+import { ChevronUp, ExternalLink, Quote, Star, TriangleAlert } from 'lucide-react'
 import MediaCarousel from '@/components/site/media-carousel'
 import { articles, articleVisuals, categoriesForArticle, relatedArticlesFor, sources } from '@/lib/content'
 import { StatusBadge, GhostBadge, fmtDate } from '@/components/site/ui'
+import { Breadcrumb } from '@/components/site/wiki'
 
 const SECTION_RULES = [
   ['SOURCE & SESSION', /session|demonstration|preview|creator|visit|hands-off/i],
@@ -104,9 +105,7 @@ function App() {
 
   return (
     <article className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
-      <Link href="/news" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
-        <ArrowLeft size={15} /> ALL ARTICLES
-      </Link>
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news' }, { label: a.title }]} />
 
       <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 glass-panel">
         <Image src={a.image} alt={a.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />

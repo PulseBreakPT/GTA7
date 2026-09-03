@@ -3,9 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ExternalLink } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import { guides } from '@/lib/content'
 import { StatusBadge, fmtDate } from '@/components/site/ui'
+import { Breadcrumb } from '@/components/site/wiki'
 
 function App() {
   const { slug } = useParams()
@@ -24,9 +25,7 @@ function App() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1080px] w-full mx-auto flex-1">
-      <Link href="/guides" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
-        <ArrowLeft size={15} /> ALL GUIDES
-      </Link>
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides' }, { label: g.title }]} />
 
       <div className="relative aspect-[21/8] overflow-hidden corner-brackets tech-mask glass-panel border border-line mt-3">
         <Image src={g.image} alt={g.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />

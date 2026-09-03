@@ -5,10 +5,12 @@ import Image from 'next/image'
 import { guides } from '@/lib/content'
 import { StatusBadge, fmtDate } from '@/components/site/ui'
 import { ChevronRight } from 'lucide-react'
+import { Breadcrumb } from '@/components/site/wiki'
 
 function App() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex-1 w-full max-w-[1280px] mx-auto">
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides' }]} />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="ghost-type" data-ghost="GUIDES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">GUIDES</h1></div>
         <div className="flex items-stretch">

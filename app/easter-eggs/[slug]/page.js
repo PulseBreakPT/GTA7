@@ -3,9 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, CircleCheck, Circle, MapPin, ExternalLink, Triangle } from 'lucide-react'
+import { CircleCheck, Circle, MapPin, ExternalLink, Triangle } from 'lucide-react'
 import { easterEggs } from '@/lib/content'
 import { StatusBadge, cx } from '@/components/site/ui'
+import { Breadcrumb } from '@/components/site/wiki'
 
 function App() {
   const { slug } = useParams()
@@ -25,9 +26,7 @@ function App() {
 
   return (
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto flex-1">
-      <Link href="/map" className="inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper min-h-[44px]">
-        <ArrowLeft size={15} /> LEONIDA MAP
-      </Link>
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: 'Secrets' }, { label: egg.name }]} />
 
       <div className="data-rail mt-2">SECRET INDEX · EVIDENCE RECORD · {egg.region}</div>
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5">

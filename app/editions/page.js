@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Check, X, ExternalLink, TriangleAlert, Download, Package, Calendar } from 'lucide-react'
 import { editions, IMG } from '@/lib/content'
 import { cx } from '@/components/site/ui'
+import { Breadcrumb } from '@/components/site/wiki'
 
 // Uma linha da lista de conteúdo de cada edição. O `X` não é decoração: numa
 // página de edições, o que não vem na caixa engana tanto como o que vem, e
@@ -33,6 +34,7 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1180px] w-full mx-auto">
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Editions' }]} />
 
         <div className="data-rail">EDITIONS · OFFICIAL RECORD · UPDATED {editions.updatedAt}</div>
         <div className="ghost-type mt-3" data-ghost="EDITIONS">

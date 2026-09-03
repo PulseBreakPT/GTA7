@@ -7,6 +7,7 @@ import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, Hous
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
 import { mechanics, characters, featureBriefs, officialCatalog } from '@/lib/content'
+import { Breadcrumb } from '@/components/site/wiki'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
 const FILTERS = ['all', 'confirmed', 'verified', 'analysis', 'rumour']
@@ -40,6 +41,7 @@ function MechanicsPage() {
       <DbTabs active="mechanics" counters={counters} />
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Mechanics' }]} />
           <div className="ghost-type" data-ghost="MECHANICS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MECHANICS</h1></div>
 
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3 order-10">

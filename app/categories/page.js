@@ -4,12 +4,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { BookOpen, ChevronRight, FolderTree } from 'lucide-react'
 import { articles, encyclopediaCategories } from '@/lib/content'
+import { Breadcrumb } from '@/components/site/wiki'
 
 const tone = { pink: 'border-pink/35 bg-pink/5 text-pink', mint: 'border-mint/35 bg-mint/5 text-mint', violet: 'border-violet/35 bg-violet/5 text-violet' }
 
 export default function CategoriesPage() {
   return (
     <main className="px-4 sm:px-6 lg:px-8 py-7 lg:py-10 max-w-[1280px] mx-auto w-full">
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Categories' }]} />
       <p className="font-cond uppercase tracking-[0.2em] text-[11px] text-mint">Leonida Archive · browse</p>
       <div className="ghost-type mt-2 flex flex-wrap items-end justify-between gap-4 border-b hairline pb-6" data-ghost="ARCHIVE">
         <div>
