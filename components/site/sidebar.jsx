@@ -13,6 +13,7 @@ import { cx } from './ui'
 // notícia e uma ficha de veículo apareciam ao mesmo nível, e o arquivo
 // deixava de dizer o que é registo e o que é actualidade.
 const WIKI_SUB = [
+  { label: 'ALL ENTRIES', href: '/wiki', icon: Library },
   { label: 'CHARACTERS', href: '/database/characters', icon: Users },
   { label: 'VEHICLES', href: '/database/vehicles', icon: Car },
   { label: 'WEAPONS', href: '/database/weapons', icon: Crosshair },
@@ -24,12 +25,12 @@ const WIKI_SUB = [
   { label: 'CATEGORIES', href: '/categories', icon: FolderTree },
 ]
 
-const WIKI_ROUTES = ['/database', '/gangs-factions', '/editions', '/categories', '/easter-eggs']
+const WIKI_ROUTES = ['/wiki', '/database', '/gangs-factions', '/editions', '/categories', '/easter-eggs']
 const inWiki = (p) => WIKI_ROUTES.some((r) => p.startsWith(r)) || p.startsWith('/map/')
 
 const NAV = [
   { label: 'HOME', href: '/', icon: House, match: (p) => p === '/' },
-  { label: 'WIKI', href: '/database/characters', icon: Library, match: inWiki, group: WIKI_SUB },
+  { label: 'WIKI', href: '/wiki', icon: Library, match: inWiki, group: WIKI_SUB },
   { label: 'INTERACTIVE MAP', href: '/map', icon: Map, match: (p) => p === '/map' },
   { label: 'GUIDES', href: '/guides', icon: BookOpen, match: (p) => p.startsWith('/guides') },
   { label: 'NEWS', href: '/news', icon: Newspaper, match: (p) => p.startsWith('/news') },

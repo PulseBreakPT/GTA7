@@ -1,0 +1,135 @@
+'use client'
+
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import { Radio as RadioIcon, ExternalLink, ChevronRight, FileText, Music, ListMusic } from 'lucide-react'
+import DbTabs from '@/components/site/dbtabs'
+import { StatusBadge, GhostBadge } from '@/components/site/ui'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell } from '@/components/site/wiki'
+import { radioStations } from '@/lib/content'
+
+export default function RadioStationPage() {
+  const { slug } = useParams()
+  const s = radioStations.find((x) => x.slug === slug)
+
+  if (!s) {
+    return (
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
+        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
+        <Link href="/database/radio" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO THE DIAL</Link>
+      </div>
+    )
+  }
+
+  const related = radioStations.filter((x) => x.slug !== s.slug && x.genre === s.genre).slice(0, 4)
+  const fallbackRelated = related.length > 0 ? related : radioStations.filter((x) => x.slug !== s.slug).slice(0, 4)
+
+  const sections = [
+    { id: 'overview', label: 'Overview', icon: FileText },
+    ...(s.tracks?.length > 0 ? [{ id: 'tracklist', label: 'Confirmed Tracks', icon: Music }] : []),
+    { id: 'related', label: 'Other Stations', icon: ListMusic },
+  ]
+
+  return (
+    <div className="flex-1 flex flex-col">
+      <DbTabs active="radio" />
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio', href: '/database/radio' }, { label: s.name }]} />
+
+        <div className="data-rail mt-2">DIAL INDEX · SOURCE-BOUND RECORD · ID {s.slug.toUpperCase()}</div>
+
+        <header className="mt-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge status={s.status} />
+            <GhostBadge status="confirmed" label={s.genre} />
+            <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
+          </div>
+          <h1 data-ghost="RADIO" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{s.name}</h1>
+          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]">{s.desc}</p>
+        </header>
+
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+          <div className="min-w-0 order-2 lg:order-1">
+            <WikiSection id="overview" title="Overview">
+              <p className="text-dim text-[14px] leading-[1.8]">{s.desc}</p>
+              <div className="mt-4 border-l-2 border-mint/70 pl-3">
+                <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">How it is documented</p>
+                <p className="font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper mt-1">{s.association}</p>
+              </div>
+            </WikiSection>
+
+            {s.tracks?.length > 0 && (
+              <WikiSection id="tracklist" title="Confirmed Tracks">
+                <ol className="border border-line divide-y divide-white/[0.08]">
+                  {s.tracks.map(([title, artist], i) => (
+                    <li key={`${title}-${artist}`} className="flex items-center gap-4 px-4 py-3">
+                      <span className="font-mono text-[11px] text-dim tabular-nums shrink-0 w-6">{String(i + 1).padStart(2, '0')}</span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-cond font-semibold uppercase text-[14px] text-paper truncate">{title}</span>
+                        <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5 truncate">{artist}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-3 text-[12px] leading-relaxed text-dim max-w-[68ch]">
+                  Only tracks documented in the source are listed. A station with no entries here has had no music shown or announced.
+                </p>
+              </WikiSection>
+            )}
+
+            <WikiSection id="related" title="Other Stations" className="mb-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {fallbackRelated.map((r) => (
+                  <Link key={r.slug} href={`/database/radio/${r.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 hover:border-white/30 transition-colors">
+                    <RadioIcon size={20} className="text-dim shrink-0" strokeWidth={1.8} aria-hidden="true" />
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-cond font-bold uppercase text-[16px] text-paper truncate">{r.name}</span>
+                      <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5">{r.genre}</span>
+                    </span>
+                    <ChevronRight size={14} className="text-dim shrink-0" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </WikiSection>
+          </div>
+
+          <div className="hidden lg:block order-3 lg:order-2">
+            <TableOfContents sections={sections} />
+          </div>
+
+          <div className="order-1 lg:order-3">
+            <InfoboxShell>
+              <div className="flex items-center gap-3">
+                <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">
+                  <RadioIcon size={28} strokeWidth={1.8} />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-cond font-bold uppercase text-[18px] text-paper leading-none truncate">{s.name}</p>
+                  <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-1.5 truncate">{s.genre}</p>
+                </div>
+              </div>
+
+              <div className="space-y-3 border-t border-white/10 pt-4">
+                <InfoRow label="Genre" value={s.genre} />
+                <InfoRow label="Status">
+                  <StatusBadge status={s.status} />
+                </InfoRow>
+                <InfoRow label="Evidence">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
+                </InfoRow>
+                <InfoRow label="Documented tracks" value={String(s.tracks?.length || 0)} />
+              </div>
+
+              <div className="border-t border-white/10 pt-4">
+                <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-white/40 transition-colors">
+                  SOURCE <ExternalLink size={11} />
+                </a>
+                <p className="font-mono text-[9px] text-dim mt-2">Updated {s.updatedAt}</p>
+              </div>
+            </InfoboxShell>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

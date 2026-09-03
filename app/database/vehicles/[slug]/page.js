@@ -71,7 +71,7 @@ function App() {
     <div className="flex-1 flex flex-col">
       <DbTabs active="vehicles" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
-        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Vehicles', href: '/database/vehicles' }, { label: v.name }]} />
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Vehicles', href: '/database/vehicles' }, { label: v.name }]} />
 
         <div className="data-rail mt-2">GARAGE INDEX · REFERENCE RECORD · UNIT {v.num}</div>
 

@@ -12,16 +12,27 @@ import { Breadcrumb } from '@/components/site/wiki'
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
 const FILTERS = ['all', 'confirmed', 'verified', 'analysis', 'rumour']
 
-function MechanicsPage() {
+// Só este pedaço lê o ?m= da barra de endereço. Está isolado de propósito:
+// `useSearchParams` obriga tudo o que o rodeia a esperar pelo cliente, e
+// com a página inteira lá dentro o servidor devolvia apenas o «LOADING
+// MECHANICS…» — sem título, sem migalhas de pão e sem nada para indexar.
+// Assim, quem fica de fora do render do servidor é uma linha que não
+// desenha nada.
+function SelectedFromQuery({ onFound }) {
   const params = useSearchParams()
-  const [filter, setFilter] = useState('all')
-  const [selectedSlug, setSelectedSlug] = useState('character-switching')
 
   useEffect(() => {
     const m = params.get('m')
-    if (m && mechanics.some((x) => x.slug === m)) setSelectedSlug(m)
+    if (m && mechanics.some((x) => x.slug === m)) onFound(m)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  return null
+}
+
+function MechanicsPage() {
+  const [filter, setFilter] = useState('all')
+  const [selectedSlug, setSelectedSlug] = useState('character-switching')
 
   const list = useMemo(() => mechanics.filter((m) => filter === 'all' || m.status === filter), [filter])
   const selected = mechanics.find((m) => m.slug === selectedSlug) || list[0] || mechanics[0]
@@ -38,10 +49,13 @@ function MechanicsPage() {
 
   return (
     <div className="flex-1 flex flex-col">
+      <Suspense fallback={null}>
+        <SelectedFromQuery onFound={setSelectedSlug} />
+      </Suspense>
       <DbTabs active="mechanics" counters={counters} />
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Mechanics' }]} />
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics' }]} />
           <div className="ghost-type" data-ghost="MECHANICS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MECHANICS</h1></div>
 
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3 order-10">
@@ -113,6 +127,10 @@ function MechanicsPage() {
             </a>
             <span className="font-mono text-[10px] text-dim uppercase">UPDATED {selected.updatedAt}</span>
           </div>
+
+          <Link href={`/database/mechanics/${selected.slug}`} className="mt-4 inline-flex items-center gap-2 border border-line rounded-sm px-3 h-10 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-paper hover:border-mint hover:text-mint transition-colors">
+            Read full entry <ChevronRight size={13} />
+          </Link>
           <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim mt-6">LINKED CHARACTERS</h3>
           <div className="mt-2 flex flex-col gap-2">
             {relatedChars.map((c) => (
@@ -128,12 +146,4 @@ function MechanicsPage() {
   )
 }
 
-function App() {
-  return (
-    <Suspense fallback={<div className="px-8 py-16 font-cond uppercase tracking-[0.2em] text-dim">LOADING MECHANICS…</div>}>
-      <MechanicsPage />
-    </Suspense>
-  )
-}
-
-export default App;
+export default MechanicsPage;

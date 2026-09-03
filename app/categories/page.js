@@ -11,7 +11,7 @@ const tone = { pink: 'border-pink/35 bg-pink/5 text-pink', mint: 'border-mint/35
 export default function CategoriesPage() {
   return (
     <main className="px-4 sm:px-6 lg:px-8 py-7 lg:py-10 max-w-[1280px] mx-auto w-full">
-      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Categories' }]} />
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Categories' }]} />
       <p className="font-cond uppercase tracking-[0.2em] text-[11px] text-mint">Leonida Archive · browse</p>
       <div className="ghost-type mt-2 flex flex-wrap items-end justify-between gap-4 border-b hairline pb-6" data-ghost="ARCHIVE">
         <div>

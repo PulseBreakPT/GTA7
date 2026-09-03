@@ -1,7 +1,8 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Radio, ExternalLink } from 'lucide-react'
+import Link from 'next/link'
+import { Radio, ExternalLink, ChevronRight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
 import { radioStations, radioCounters } from '@/lib/content'
@@ -21,7 +22,7 @@ function App() {
       <DbTabs active="radio" counters={radioCounters} />
       <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Radio' }]} />
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio' }]} />
           <div className="ghost-type" data-ghost="RADIO"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">RADIO STATIONS</h1></div>
 
           <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Station status filters">
@@ -84,6 +85,10 @@ function App() {
             </a>
             <span className="font-mono text-[10px] text-dim uppercase">UPDATED {selected.updatedAt}</span>
           </div>
+
+          <Link href={`/database/radio/${selected.slug}`} className="mt-4 inline-flex items-center gap-2 border border-line rounded-sm px-3 h-10 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-paper hover:border-mint hover:text-mint transition-colors">
+            Read full entry <ChevronRight size={13} />
+          </Link>
 
           {selected.tracks.length > 0 && (
             <>

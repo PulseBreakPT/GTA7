@@ -57,7 +57,7 @@ function App() {
     <div className="flex-1 flex flex-col">
       <DbTabs active="weapons" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
-        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Weapons', href: '/database/weapons' }, { label: w.name }]} />
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Weapons', href: '/database/weapons' }, { label: w.name }]} />
 
         <div className="data-rail mt-2">ARSENAL FILE · DOCUMENTED REFERENCE · ID {w.slug.toUpperCase()}</div>
 

@@ -34,7 +34,7 @@ function App() {
   return (
     <div className="flex-1 flex flex-col">
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1180px] w-full mx-auto">
-        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/database/characters' }, { label: 'Editions' }]} />
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Editions' }]} />
 
         <div className="data-rail">EDITIONS · OFFICIAL RECORD · UPDATED {editions.updatedAt}</div>
         <div className="ghost-type mt-3" data-ghost="EDITIONS">

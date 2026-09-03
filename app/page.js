@@ -139,7 +139,7 @@ function App() {
             <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Start here</p>
             <h2 id="explore-heading" className="mt-1 font-cond font-bold uppercase tracking-tight text-[36px] sm:text-[46px] text-paper">Explore the wiki</h2>
           </div>
-          <Link href="/categories" className="font-cond font-bold uppercase tracking-[0.14em] text-[13px] text-pink hover:text-paper">All categories →</Link>
+          <Link href="/wiki" className="font-cond font-bold uppercase tracking-[0.14em] text-[13px] text-pink hover:text-paper">All entries →</Link>
         </div>
         {/* Cada ramo mostra a contagem por cima da imagem e, por baixo, a
             faixa que diz que tudo o que lá está traz fonte. É a promessa do
