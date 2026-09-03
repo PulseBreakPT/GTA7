@@ -107,7 +107,7 @@ function App() {
     <article className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news' }, { label: a.title }]} />
 
-      <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 glass-panel">
+      <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 panel">
         <Image src={a.image} alt={a.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
         <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
         <span className="absolute top-4 left-4 flex items-center gap-2">
@@ -142,7 +142,7 @@ function App() {
         </div>
       )}
 
-      <aside className="tech-mask-sm glass-panel mt-6 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
+      <aside className="tech-mask-sm panel mt-6 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
         <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-pink">AT A GLANCE</p>
         <p className="mt-2 text-[16px] sm:text-[17px] leading-[1.65] text-paper font-medium">{a.excerpt}</p>
       </aside>

@@ -27,7 +27,7 @@ function App() {
     <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1080px] w-full mx-auto flex-1">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides' }, { label: g.title }]} />
 
-      <div className="relative aspect-[21/8] overflow-hidden corner-brackets tech-mask glass-panel border border-line mt-3">
+      <div className="relative aspect-[21/8] overflow-hidden corner-brackets tech-mask panel border border-line mt-3">
         <Image src={g.image} alt={g.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
         <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" aria-hidden="true" />
         <span className="absolute top-4 left-4"><StatusBadge status={g.status} /></span>

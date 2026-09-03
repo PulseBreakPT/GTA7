@@ -163,11 +163,10 @@ function App() {
           <div className="order-1 lg:order-3">
             <InfoboxShell>
               <div>
-                <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden aspect-[16/10]">
+                <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">
                   {gallery[slide] ? (
                     <>
                       <Image src={gallery[slide]} alt={`${w.name} image ${slide + 1}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
-                      <span className="absolute inset-0 bg-ink/30" />
                     </>
                   ) : (
                     <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">

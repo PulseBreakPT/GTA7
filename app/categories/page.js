@@ -23,7 +23,7 @@ export default function CategoriesPage() {
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {encyclopediaCategories.map((category, index) => {
           const count = category.articles.filter((slug) => articles.some((article) => article.slug === slug)).length
-          return <Link key={category.slug} href={`/categories/${category.slug}`} className={`spotlight-card tech-mask glass-panel overflow-hidden group border ${tone[category.color]}`}>
+          return <Link key={category.slug} href={`/categories/${category.slug}`} className={`spotlight-card tech-mask panel overflow-hidden group border ${tone[category.color]}`}>
             <div className="relative aspect-[16/7] overflow-hidden film-frame corner-brackets"><Image src={category.cover} alt={`${category.title} category cover`} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover group-hover:scale-[1.06] transition-transform duration-700" /><span className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" /><span className="absolute right-4 top-4 z-[4] font-mono text-[10px] tracking-[0.14em] text-paper/80">FILE {String(index + 1).padStart(2, '0')}</span></div>
             <div className="p-5">
             <div className="flex items-start justify-between gap-4">

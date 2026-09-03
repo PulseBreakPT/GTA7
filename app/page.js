@@ -102,8 +102,6 @@ function App() {
         </div>
 
         <div className="relative z-10 mt-14 px-4 sm:px-6 lg:px-8 pt-8 lg:pt-10 flex flex-col h-full">
-          <div className="data-rail max-w-[520px] !text-mint">INDEPENDENT FAN REFERENCE · SOURCE-LABELLED</div>
-
           <div className="ghost-type mt-10 lg:mt-20 max-w-[720px]" data-ghost="LEONIDA">
             <h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px] drop-shadow-[0_2px_18px_rgba(7,9,14,0.8)]">
               LEONIDA,<br />DOCUMENTED.
@@ -111,11 +109,6 @@ function App() {
             <p className="mt-5 text-dim text-[17px] sm:text-[19px] leading-relaxed max-w-[420px]">
               {extendedLookBrief.synopsis}
             </p>
-            <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 font-cond uppercase tracking-[0.14em] text-[12px] text-paper/75">
-              <span>{extendedLookBrief.releaseDate}</span>
-              <span>{extendedLookBrief.platforms.join(' · ')}</span>
-              <span>{extendedLookBrief.engine}</span>
-            </div>
             {/* Os dois caminhos de entrada, lado a lado e com o mesmo peso
                 de caixa: um leva aos verbetes, o outro ao mapa. */}
             <div className="mt-8 flex flex-wrap items-center gap-4">

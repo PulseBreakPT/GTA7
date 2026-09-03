@@ -167,7 +167,7 @@ function App() {
           <div className="order-1 lg:order-3">
             <InfoboxShell>
               <div>
-                <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden aspect-[16/10]">
+                <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">
                   {gallery[slide] ? (
                     <Image src={gallery[slide]} alt={`${v.name} image ${slide + 1}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
                   ) : (

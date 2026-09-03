@@ -26,7 +26,6 @@ function ArticleCard({ a }) {
     <Link href={`/news/${a.slug}`} className="panel rounded-sm p-4 flex gap-4 group hover:border-black/30 transition-colors">
       <div className="relative w-[38%] min-w-[120px] shrink-0 overflow-hidden rounded-sm border border-line">
         <Image src={a.image} alt={a.title} fill sizes="(max-width:1024px) 40vw, 18vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
-        <span className="absolute inset-0 bg-ink/25" />
       </div>
       <div className="flex-1 min-w-0 flex flex-col py-1">
         <div><StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} /></div>

@@ -70,7 +70,7 @@ function App() {
           <p className="font-mono text-[10px] text-dim uppercase mt-3">UPDATED {egg.updatedAt}</p>
         </div>
 
-        <div className="corner-brackets tech-mask glass-panel relative panel overflow-hidden min-h-[320px] lg:min-h-[480px]">
+        <div className="corner-brackets tech-mask relative panel overflow-hidden min-h-[320px] lg:min-h-[480px]">
           <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
           <span className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/30" aria-hidden="true" />
         </div>

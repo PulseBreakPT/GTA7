@@ -68,7 +68,7 @@ export default function RegionPage() {
           </WikiSection>
 
           <WikiSection id="gallery" title="Gallery">
-            <div className="corner-brackets tech-mask glass-panel panel overflow-hidden">
+            <div className="corner-brackets tech-mask panel overflow-hidden">
               <div className="relative aspect-[16/9] bg-surface2">
                 <Image src={gallery[slide]} alt={`${region.label} — image ${slide + 1}`} fill priority sizes="(max-width: 1024px) 100vw, 800px" className="object-cover" />
                 {gallery.length > 1 && (
