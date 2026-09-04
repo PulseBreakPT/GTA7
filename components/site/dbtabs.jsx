@@ -57,8 +57,8 @@ export default function DbTabs({ active, counters }) {
         <nav
           aria-label="Database sections"
           className={cx(
-            'pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink px-3 py-1.5',
-            'max-w-[calc(100vw-1.5rem)] overflow-x-auto',
+            'pointer-events-auto relative flex items-center rounded-[26px] bg-ink px-3 py-1.5',
+            'max-w-[calc(100vw-1.5rem)]',
             'transition-[transform,opacity] duration-300 ease-out',
             hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'
           )}
@@ -80,6 +80,11 @@ export default function DbTabs({ active, counters }) {
             aria-hidden="true"
           />
 
+          {/* Num telemóvel, cinco separadores mais a lupa não cabem na
+              largura do ecrã. Desliza só esta fila: a lupa fica presa à
+              direita, sempre à vista. Uma pílula inteira a deslizar punha
+              fora de alcance justamente o botão que mais se usa. */}
+          <span className="flex items-center gap-1 min-w-0 overflow-x-auto">
           {TABS.map((t) => {
             const isActive = t.id === active
             return (
@@ -98,6 +103,8 @@ export default function DbTabs({ active, counters }) {
               </Link>
             )
           })}
+
+          </span>
 
           {counters && (
             <span className="hidden xl:flex items-stretch shrink-0 border-l hairline ml-1 pl-1">
