@@ -2,38 +2,15 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, Car, CarFront, Bike, Sailboat, GitCompareArrows, Check, Truck, Bus, Train, Siren, Construction, Wrench, ExternalLink } from 'lucide-react'
+import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, GitCompareArrows, Check, ExternalLink } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, StatBar, cx } from '@/components/site/ui'
+import VehicleVisual, { classIcon } from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
-// Um id sem ícone aqui devolve `undefined` e parte a renderização da página
-// inteira, por isso o fallback é obrigatório, não uma cortesia.
-const CLASS_ICONS = { all: Eye, muscle: Car, sports: CarFront, classics: Car, motorcycles: Bike, boats: Sailboat, aircraft: CarFront, offroad: Car,
-  sedans: Car, suvs: CarFront, vans: Bus, trucks: Truck, trains: Train, cycles: Bike, emergency: Siren, industrial: Construction, service: Wrench }
-const classIcon = (id) => CLASS_ICONS[id] || Car
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
-
-function VehicleVisual({ v, className, sizes = '220px', priority = false }) {
-  const pos = className && className.includes('absolute') ? '' : 'relative'
-  if (v.image) {
-    return (
-      <span className={cx(pos, 'block overflow-hidden', className)}>
-        <Image src={v.image} alt={v.name} fill priority={priority} sizes={sizes} className="object-cover" />
-      </span>
-    )
-  }
-  const Icon = CLASS_ICONS[v.cls] || Car
-  return (
-    <span className={cx('flex flex-col items-center justify-center gap-2 bg-surface2/60 text-dim', className)} role="img" aria-label={`${v.name}: visual pending`}>
-      <Icon size={30} aria-hidden="true" />
-      <span className="font-mono text-[9px] uppercase tracking-[0.22em]">AWAITING VISUAL</span>
-    </span>
-  )
-}
 
 function App() {
   const router = useRouter()

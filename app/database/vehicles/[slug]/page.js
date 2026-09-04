@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink, FileTe
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, StatBar, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText } from '@/components/site/wiki'
+import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
 
@@ -161,10 +162,16 @@ function App() {
                   <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME CLASS</h3>
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     {related.map((r) => (
-                      <Link key={r.slug} href={`/database/vehicles/${r.slug}`} className="panel rounded-sm p-3 hover:border-black/30 transition-colors">
-                        <span className="font-mono text-[11px] text-dim tabular-nums">{r.num}</span>
-                        <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-1 truncate">{r.name}</span>
-                        <StatusBadge status={r.status} className="mt-2" />
+                      <Link key={r.slug} href={`/database/vehicles/${r.slug}`} className="panel rounded-sm overflow-hidden hover:border-black/30 transition-colors">
+                        {/* O mesmo visual da garagem, fallback incluído: sem
+                            captura oficial fica o ícone da classe e o aviso,
+                            que é o que a lista já diz destes veículos. */}
+                        <VehicleVisual v={r} className="h-[104px] w-full" sizes="(max-width: 640px) 45vw, 260px" />
+                        <span className="block p-3">
+                          <span className="font-mono text-[11px] text-dim tabular-nums">{r.num}</span>
+                          <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-1 truncate">{r.name}</span>
+                          <StatusBadge status={r.status} className="mt-2" />
+                        </span>
                       </Link>
                     ))}
                   </div>

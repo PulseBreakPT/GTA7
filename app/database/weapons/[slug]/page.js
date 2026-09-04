@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, ExternalLink, Heart, Zap, Eye, Target, Crosshair
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge, StatBar, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
 
 const SECTIONS = [
@@ -150,10 +151,16 @@ function App() {
                   <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper">SAME RACK</h3>
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     {related.map((r) => (
-                      <Link key={r.slug} href={`/database/weapons/${r.slug}`} className="panel rounded-sm p-3 hover:border-black/30 transition-colors">
-                        <GhostBadge status={r.status} />
-                        <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-2 truncate">{r.name}</span>
-                        <span className="block font-mono text-[11px] text-dim tabular-nums mt-1">{r.unpublished ? '— / —' : `${String(r.ammo).padStart(2, '0')} / ${r.mag}`}</span>
+                      <Link key={r.slug} href={`/database/weapons/${r.slug}`} className="panel rounded-sm overflow-hidden hover:border-black/30 transition-colors">
+                        {/* O mesmo visual do arsenal, fallback incluído: sem
+                            captura oficial fica a mira, que é o que a lista
+                            já diz destas armas. */}
+                        <WeaponVisual w={r} className="h-[96px] w-full" sizes="(max-width: 640px) 45vw, 260px" />
+                        <span className="block p-3">
+                          <GhostBadge status={r.status} />
+                          <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-2 truncate">{r.name}</span>
+                          <span className="block font-mono text-[11px] text-dim tabular-nums mt-1">{r.unpublished ? '— / —' : `${String(r.ammo).padStart(2, '0')} / ${r.mag}`}</span>
+                        </span>
                       </Link>
                     ))}
                   </div>

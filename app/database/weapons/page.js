@@ -2,31 +2,14 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, Triangle, ExternalLink, Crosshair, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Search, Heart, Zap, Eye, Triangle, ExternalLink, ArrowLeft, ArrowRight } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
 import { StatusBadge, cx } from '@/components/site/ui'
+import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
 const pad = (n) => String(n).padStart(2, '0')
-
-function WeaponVisual({ w, className, sizes = '160px' }) {
-  if (w.image) {
-    return (
-      <span className={cx('relative block overflow-hidden', className)}>
-        <Image src={w.image} alt={w.name} fill sizes={sizes} className="object-cover" />
-        <span className="absolute inset-0 bg-ink/35" aria-hidden="true" />
-      </span>
-    )
-  }
-  return (
-    <span className={cx('flex flex-col items-center justify-center gap-1.5 bg-surface2/60 text-dim', className)} role="img" aria-label={`${w.name}: visual pending`}>
-      <Crosshair size={22} aria-hidden="true" />
-      <span className="font-mono text-[8px] uppercase tracking-[0.2em]">CLASSIFIED</span>
-    </span>
-  )
-}
 
 function App() {
   const router = useRouter()
