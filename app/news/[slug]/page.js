@@ -93,8 +93,13 @@ function App() {
     )
   }
 
+  // A fonte, quando o arquivo a tem classificada. O que estava aqui era um
+  // `rating` que caía em quatro estrelas por omissão: uma nota de
+  // credibilidade atribuída a fontes que ninguém tinha avaliado, na página
+  // que existe precisamente para dizer de onde vêm as coisas. Fica o que a
+  // lista de fontes diz de facto sobre esta — a sua natureza — e nada
+  // quando não a conhece.
   const src = sources.find((s) => a.sourceName.toLowerCase().includes(s.name.split(' ')[0].toLowerCase()))
-  const rating = src ? src.rating : 4
   const related = relatedArticlesFor(a.slug)
   const categories = categoriesForArticle(a.slug)
   const visuals = articleVisuals(a).map((src, index) => ({
@@ -123,10 +128,10 @@ function App() {
       <div className="data-rail mt-5">FILE {a.slug.slice(0, 8).toUpperCase()} · ARCHIVE RECORD · CONTENT INDEX</div>
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN READ</span>
-        <span className="font-mono text-[11px] text-dim tabular-nums">{a.views.toLocaleString('en-US')} READS</span>
+
         <SourceChip name={a.sourceName} url={a.sourceUrl} prefix={null} className="text-[12px]" />
-        <span className="flex items-center gap-0.5" role="img" aria-label={`Source credibility: ${rating} of 5`}>
-          {[1,2,3,4,5].map((n) => <Star key={n} size={13} className={n <= rating ? 'text-pink' : 'text-black/20'} fill={n <= rating ? '#C2185B' : 'transparent'} />)}
+        <span className="flex items-center gap-0.5">
+          {src && <span className="font-cond uppercase tracking-[0.14em] text-[11px] text-mint">{src.kind}</span>}
         </span>
       </div>
 

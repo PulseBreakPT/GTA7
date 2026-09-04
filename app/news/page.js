@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Heart, BadgeCheck, Eye, ChevronRight, Triangle, Info } from 'lucide-react'
-import { articles, encyclopediaCategories, gtaWikiPageLedger, guides, liveUpdates, sources, mostRead } from '@/lib/content'
+import { articles, encyclopediaCategories, gtaWikiPageLedger, guides, liveUpdates, sources } from '@/lib/content'
 import { StatusBadge, GhostBadge, cx, fmtDate } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'
 
@@ -60,9 +60,14 @@ function App() {
   ].includes(a.slug))
   const filtered = useMemo(() => articles.filter((a) => filter === 'all' || a.category === filter), [filter])
   const updates = allUpdates ? liveUpdates : liveUpdates.slice(0, 4)
-  const ranking = fullRanking
-    ? [...articles].sort((a, b) => b.views - a.views).slice(0, 6).map((a, i) => ({ rank: String(i + 1).padStart(2, '0'), slug: a.slug, title: a.title.charAt(0) + a.title.slice(1).toLowerCase(), date: fmtDate(a.publishedAt) }))
-    : mostRead
+  // Isto era «MOST READ», ordenado por um campo `views` escrito à mão — um
+  // arquivo estático não conta leituras, e o pódio de três estava fixo no
+  // ficheiro de dados. Passa a ser o que se pode medir: os textos mais
+  // longos, pelo tempo de leitura contado do próprio corpo.
+  const ranking = [...articles]
+    .sort((a, b) => b.readTime - a.readTime || a.title.localeCompare(b.title))
+    .slice(0, fullRanking ? 6 : 3)
+    .map((a, i) => ({ rank: String(i + 1).padStart(2, '0'), slug: a.slug, title: a.title.charAt(0) + a.title.slice(1).toLowerCase(), date: `${a.readTime} min` }))
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 xl:grid-cols-[1fr_408px] gap-6">
@@ -244,9 +249,9 @@ function App() {
           <p className="mt-2 text-[12px] leading-relaxed text-dim">Archive labels explain whether a record is official, community-sourced, analysis or rumour. They are not crowd ratings.</p>
         </div>
 
-        {/* Most read */}
+        {/* A lista de leitura, por extensão do texto. */}
         <div className="panel rounded-sm p-4">
-          <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[18px] text-paper">READING LIST</h2>
+          <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[18px] text-paper">LONGEST READS</h2>
           <ol className="mt-3 flex flex-col">
             {ranking.map((m) => (
               <li key={m.rank} className="border-b hairline last:border-b-0">
@@ -259,7 +264,7 @@ function App() {
             ))}
           </ol>
           <button type="button" onClick={() => setFullRanking((v) => !v)} className="mt-2 inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.14em] text-[12px] text-dim hover:text-paper min-h-[44px]">
-            {fullRanking ? 'SHOW TOP THREE' : 'VIEW FULL RANKING'}
+            {fullRanking ? 'SHOW TOP THREE' : 'SHOW SIX'}
             <span className="w-6 h-6 rounded-full border border-line flex items-center justify-center" aria-hidden="true"><ChevronRight size={12} className={cx('transition-transform', fullRanking && 'rotate-90')} /></span>
           </button>
         </div>
