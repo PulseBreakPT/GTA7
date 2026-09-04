@@ -110,7 +110,7 @@ export function TableOfContents({ sections }) {
 export function WikiSection({ id, title, className, children }) {
   return (
     <section data-section id={id} className={cx('mb-12 scroll-mt-24', className)}>
-      <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper border-b border-black/10 pb-3 mb-4">{title}</h2>
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">{title}</h2>
       {children}
     </section>
   )
@@ -241,7 +241,7 @@ export function References({ items }) {
 
   return (
     <section data-section id="references" className="mb-12 scroll-mt-24">
-      <h2 className="font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper border-b border-black/10 pb-3 mb-4">References</h2>
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">References</h2>
       <ol className="space-y-2.5">
         {list.map((r, i) => (
           <li key={`${r.name}-${i}`} className="flex gap-3 text-[13px] leading-relaxed">
