@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, StatBar, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText } from '@/components/site/wiki'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
 
@@ -67,6 +67,25 @@ function App() {
   const related = vehicles.filter((x) => x.cls === v.cls && x.slug !== v.slug).slice(0, 4)
   const gallery = v.gallery?.length ? v.gallery : [v.image]
   const classLabel = (vehicleClasses.find((c) => c.id === v.cls) || {}).label || v.cls
+
+  // A ficha técnica repete os campos de identificação da caixa de dados —
+  // é o que se lê primeiro numa wiki e o que se copia para fora dela — e
+  // acrescenta os quatro campos mecânicos. O travessão da fonte não é um
+  // valor: passa a nulo, e a grelha di-lo por palavras.
+  const spec = (i) => (v.specs?.[i] && v.specs[i] !== '—' ? v.specs[i] : null)
+  const specRows = [
+    { label: 'Vehicle class', value: classLabel },
+    { label: 'Manufacturer', value: v.manufacturer },
+    { label: 'Unit', value: v.num },
+    { label: 'Association', value: v.association },
+    v.character ? { label: 'Character', value: v.character } : null,
+    { label: 'Status', children: <StatusBadge status={v.status} /> },
+    { label: 'Evidence', children: <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span> },
+    { label: 'Doors', value: spec(0) },
+    { label: 'Seats', value: spec(1) },
+    { label: 'Drivetrain', value: spec(2) },
+    { label: 'Engine', value: spec(3) },
+  ]
 
   return (
     <div className="flex-1 flex flex-col">
@@ -131,9 +150,7 @@ function App() {
             </WikiSection>
 
             <WikiSection id="specifications" title="Specifications">
-              <div className="flex flex-wrap gap-2">
-                {v.specs.map((s, i) => <span key={i} className="panel2 rounded-sm px-2.5 py-1.5 font-cond uppercase text-[12px] tracking-[0.1em] text-paper">{s}</span>)}
-              </div>
+              <SpecGrid items={specRows} />
             </WikiSection>
 
             <WikiSection id="related" title="Related Vehicles" className="mb-0">

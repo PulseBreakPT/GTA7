@@ -335,8 +335,13 @@ function App() {
             </div>
             <div className="grid grid-cols-2 gap-4 mt-5 border-t hairline pt-4">
               {cmp.map((v) => (
-                <div key={v.slug} className="flex flex-wrap gap-2">
-                  {v.specs.map((s, i) => <span key={i} className="panel2 rounded-sm px-2 py-1 font-cond uppercase text-[11px] tracking-[0.1em] text-paper">{s}</span>)}
+                <div key={v.slug} className="grid grid-cols-2 gap-2">
+                  {v.specs.map((s, i) => (
+                    <div key={i} className="panel2 rounded-sm px-2 py-1.5 min-w-0">
+                      <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{SPEC_LABELS[i]}</span>
+                      <span className="block font-cond font-semibold uppercase tracking-[0.1em] text-[12px] text-paper truncate">{s}</span>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>

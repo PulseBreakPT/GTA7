@@ -129,6 +129,27 @@ export function InfoRow({ label, value, children }) {
   )
 }
 
+// A ficha técnica de uma wiki é uma grelha de pares rótulo/valor, e não uma
+// fila de valores soltos: «—» sozinho não diz de que campo é. Cada célula
+// leva o rótulo por cima, e o campo sem fonte publicada aparece na mesma,
+// dito por extenso — num arquivo preso à fonte, a ausência é informação.
+export function SpecGrid({ items }) {
+  const rows = items.filter(Boolean)
+  if (rows.length === 0) return null
+  return (
+    <dl className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      {rows.map(({ label, value, children }) => (
+        <div key={label} className="panel2 rounded-sm px-3 py-2.5 min-w-0">
+          <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{label}</dt>
+          <dd className="mt-1 font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper leading-snug break-words">
+            {children || value || <span className="font-normal tracking-[0.1em] text-[11px] text-dim">NOT PUBLISHED</span>}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
 export function InfoboxShell({ children, className }) {
   return (
     <aside className={cx('panel rounded-sm p-5 bg-ink/30 lg:sticky lg:top-24 h-fit', className)}>
