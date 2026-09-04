@@ -168,7 +168,7 @@ function App() {
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="mt-7 w-full max-w-[520px] flex items-center gap-3 h-[56px] px-4 bg-ink/92 border border-line rounded-sm backdrop-blur text-left hover:border-mint/70 transition-colors"
+              className="mt-7 w-full max-w-[520px] flex items-center gap-3 h-[56px] px-4 bg-ink border border-line rounded-sm text-left hover:border-mint/70 transition-colors"
             >
               <Search size={18} className="text-dim shrink-0" aria-hidden="true" />
               <span className="flex-1 min-w-0 truncate text-[15px] text-dim">

@@ -50,6 +50,12 @@ export default function DbTabs({ active, counters }) {
 
   return (
     <>
+      {/* O espaço que o menu flutuante ocupa, como o da barra de baixo em
+          `layout.js`: sem ele, a pílula assentava por cima do título e do
+          topo da coluna da direita — o painel do veículo seleccionado e o
+          da estação de rádio começavam debaixo dela. */}
+      <div aria-hidden="true" className="h-[60px] shrink-0" />
+
       <div
         className="fixed top-0 right-0 z-[80] p-3 pointer-events-none flex justify-end max-w-full"
         style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}
