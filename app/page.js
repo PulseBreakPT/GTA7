@@ -95,20 +95,20 @@ function App() {
       <section className="corner-brackets relative min-h-[560px] lg:min-h-[680px] overflow-hidden">
         <div className="absolute inset-0">
           <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center saturate-[1.05]" />
-          {/* Aqui o véu é preciso: o título fica mesmo por cima da imagem.
-              Mas só onde o texto está — à esquerda, e a acabar antes de
-              meio. O que cobria a imagem toda, topo e base incluídos,
-              lavava-a sem proteger nada. */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ink from-5% via-ink/55 via-40% to-transparent to-72%" />
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink to-transparent" />
+          {/* O véu é preciso — o título fica sobre a imagem — mas quem
+              tem de segurar a leitura é o halo do próprio texto, não uma
+              camada de tinta por cima da arte. Aqui fica só o suficiente
+              para assentar o canto esquerdo, e acaba a meio. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/85 from-0% via-ink/30 via-30% to-transparent to-58%" />
+          <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-ink/90 to-transparent" />
         </div>
 
         <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-14 lg:pt-16 flex flex-col h-full">
           <div className="ghost-type mt-10 lg:mt-20 max-w-[720px]" data-ghost="LEONIDA">
-            <h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px] drop-shadow-[0_2px_18px_rgba(7,9,14,0.8)]">
+            <h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px] [filter:drop-shadow(0_0_18px_rgba(255,255,255,0.95))_drop-shadow(0_0_46px_rgba(255,255,255,0.8))]">
               LEONIDA,<br />DOCUMENTED.
             </h1>
-            <p className="mt-5 text-dim text-[17px] sm:text-[19px] leading-relaxed max-w-[420px]">
+            <p className="mt-5 text-dim text-[17px] sm:text-[19px] leading-relaxed max-w-[420px] [text-shadow:0_0_14px_rgba(255,255,255,0.95)]">
               {extendedLookBrief.synopsis}
             </p>
             {/* Os dois caminhos de entrada, lado a lado e com o mesmo peso
