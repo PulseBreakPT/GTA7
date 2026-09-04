@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
 import { locations, regions, mapFilters } from '@/lib/content'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ArchiveCoordinates, ShortDescription } from '@/components/site/wiki'
 
 export default function LocationPage() {
   const { slug } = useParams()
@@ -41,7 +41,11 @@ export default function LocationPage() {
           <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{categoryLabel}</span>
           {region && <span className="font-cond uppercase tracking-[0.1em] text-[12px] text-dim">{region.label}</span>}
         </div>
-        <StubNotice kind="locations" slug={loc.slug} />
+        <ShortDescription>
+            Named place in {region ? region.label : 'Leonida'}{categoryLabel ? ` · ${categoryLabel}` : ''}
+          </ShortDescription>
+          <StubNotice kind="locations" slug={loc.slug} />
+          <Hatnote kind="locations" slug={loc.slug} />
       </header>
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -85,6 +89,9 @@ export default function LocationPage() {
           )}
           <References items={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
           <CategoryFooter kind="locations" slug={loc.slug} />
+            <CitePage kind="locations" slug={loc.slug} />
+            <PageInformation kind="locations" slug={loc.slug} />
+            <Navbox kind="locations" slug={loc.slug} />
         </div>
 
         {/* Índice */}
@@ -96,6 +103,7 @@ export default function LocationPage() {
         <div className="order-1 lg:order-3">
           <InfoboxShell>
             <LocationLocator x={loc.x} y={loc.y} name={loc.name} />
+              <ArchiveCoordinates x={loc.x} y={loc.y} className="mt-2" />
 
             <div className="space-y-3 border-t border-black/10 pt-4">
               <InfoRow label="Region">
@@ -117,6 +125,7 @@ export default function LocationPage() {
               <p className="font-mono text-[9px] text-dim mt-2">Updated {loc.updatedAt}</p>
             </div>
             <WhatLinksHere kind="locations" slug={loc.slug} />
+              <WhatThisLinks kind="locations" slug={loc.slug} />
           </InfoboxShell>
         </div>
       </div>

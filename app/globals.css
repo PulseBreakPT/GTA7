@@ -424,3 +424,44 @@ main [role="listbox"] > .panel {
   }
   main .panel2 { border-radius: 10px; }
 }
+
+/* ------------------------------------------------------------------
+   Versão para impressão. Numa wiki é uma opção do menu; aqui é o que o
+   browser faz quando se manda imprimir uma entrada, e o que sai tem de
+   ser o verbete: sem barras flutuantes, sem fundos decorativos, e com o
+   endereço de cada ligação impresso a seguir ao texto — em papel, uma
+   ligação sem endereço não é ligação nenhuma.
+   ------------------------------------------------------------------ */
+@media print {
+  nav[aria-label='Primary'],
+  nav[aria-label='Database sections'],
+  nav[aria-label='Sections of this page'],
+  nav[aria-label='Contents'],
+  [aria-label='Search the archive'],
+  .ambient-bloom::before,
+  .grain::after,
+  .ghost-type::before {
+    display: none !important;
+  }
+
+  html, body { background: #FFFFFF !important; }
+
+  main, .panel, .panel2, .glass-panel {
+    box-shadow: none !important;
+    border-color: rgba(11, 15, 22, 0.28) !important;
+    background: #FFFFFF !important;
+  }
+
+  a[href^='http']::after {
+    content: ' <' attr(href) '>';
+    font-size: 10px;
+    color: #444;
+    word-break: break-all;
+  }
+
+  details { display: block !important; }
+  details > summary { display: none !important; }
+
+  section, article, li, tr, img { break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; }
+}

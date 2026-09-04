@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
 
 export default function FactionPage() {
@@ -46,6 +46,7 @@ export default function FactionPage() {
         <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{f.name}</h1>
         <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
         <StubNotice kind="factions" slug={f.slug} />
+          <Hatnote kind="factions" slug={f.slug} />
       </header>
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -90,6 +91,9 @@ export default function FactionPage() {
           </WikiSection>
           <References items={[{ name: f.sourceName, url: f.sourceUrl }]} />
           <CategoryFooter kind="factions" slug={f.slug} />
+            <CitePage kind="factions" slug={f.slug} />
+            <PageInformation kind="factions" slug={f.slug} />
+            <Navbox kind="factions" slug={f.slug} />
         </div>
 
         <div className="hidden lg:block order-3 lg:order-2">
@@ -129,6 +133,7 @@ export default function FactionPage() {
               <SourceChip name={f.sourceName} url={f.sourceUrl} />
             </div>
             <WhatLinksHere kind="factions" slug={f.slug} />
+              <WhatThisLinks kind="factions" slug={f.slug} />
           </InfoboxShell>
         </div>
       </div>

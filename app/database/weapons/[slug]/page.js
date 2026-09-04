@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription } from '@/components/site/wiki'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
 
@@ -90,7 +90,11 @@ function App() {
           </div>
           <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{w.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/weapons/${w.slug}`}>{w.desc}</WikiText></p>
+          <ShortDescription>
+            {typeLabel} in Grand Theft Auto VI{w.manufacturer && w.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${w.manufacturer}` : ''}
+          </ShortDescription>
           <StubNotice kind="weapons" slug={w.slug} />
+          <Hatnote kind="weapons" slug={w.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -169,6 +173,9 @@ function App() {
             </WikiSection>
             <References items={[{ name: w.sourceName, url: w.sourceUrl, retrieved: w.updatedAt }]} />
             <CategoryFooter kind="weapons" slug={w.slug} />
+            <CitePage kind="weapons" slug={w.slug} />
+            <PageInformation kind="weapons" slug={w.slug} />
+            <Navbox kind="weapons" slug={w.slug} />
           </div>
 
           {/* Índice */}
@@ -227,6 +234,7 @@ function App() {
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {w.updatedAt}</p>
               </div>
               <WhatLinksHere kind="weapons" slug={w.slug} />
+              <WhatThisLinks kind="weapons" slug={w.slug} />
             </InfoboxShell>
           </div>
         </div>

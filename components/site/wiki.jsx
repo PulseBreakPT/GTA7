@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ChevronRight, FolderTree, Link2, FileWarning } from 'lucide-react'
-import { categoriesFor, backlinksFor, entryFor, entryByName, LINK_PATTERN } from '@/lib/wiki-graph'
+import { ChevronRight, FolderTree, Link2, FileWarning, Quote, Info, Shuffle, Check, Hash } from 'lucide-react'
+import { categoriesFor, backlinksFor, entryFor, entryByName, otherUses, confusableWith, siblingsFor, outgoingFor, KIND_META, ENTRIES, LINK_PATTERN } from '@/lib/wiki-graph'
 import MapTerrain, { MAP_VBW, MAP_VBH } from './map-terrain'
 import { cx } from './ui'
 
@@ -107,12 +107,178 @@ export function TableOfContents({ sections }) {
   )
 }
 
+// Cada secção passa a ter âncora própria, como qualquer wiki: o «#» ao
+// lado do título é uma ligação para aquele ponto exacto da página, para
+// se poder apontar alguém para a secção e não para a entrada inteira.
 export function WikiSection({ id, title, className, children }) {
   return (
     <section data-section id={id} className={cx('mb-12 scroll-mt-24', className)}>
-      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">{title}</h2>
+      <h2 className="deco-rule group font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4 flex items-baseline gap-2">
+        {title}
+        {id && (
+          <a
+            href={`#${id}`}
+            aria-label={`Link to the ${title} section`}
+            className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity text-dim hover:text-pink"
+          >
+            <Hash size={13} aria-hidden="true" />
+          </a>
+        )}
+      </h2>
       {children}
     </section>
+  )
+}
+
+// A nota de desambiguação do topo de um verbete. Só aparece quando há
+// mesmo outro registo com o mesmo nome — o que, num arquivo em que um
+// lugar e um veículo podem chamar-se o mesmo, acontece.
+export function Hatnote({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  const same = otherUses(entry)
+  const near = same.length > 0 ? [] : confusableWith(entry)
+  const list = same.length > 0 ? same : near
+  if (list.length === 0) return null
+
+  const links = list.map((o, i) => (
+    <span key={o.href}>
+      {i > 0 && (i === list.length - 1 ? ' and ' : ', ')}
+      <Link href={o.href} className="not-italic text-pink hover:text-paper transition-colors">
+        {o.name} ({KIND_META[o.kind].label.toLowerCase()})
+      </Link>
+    </span>
+  ))
+
+  return (
+    <p className="mt-3 border-l-2 border-warn pl-3 text-[12.5px] leading-relaxed text-dim italic">
+      {same.length > 0 ? 'For other records with this name, see ' : 'Not to be confused with '}
+      {links}.
+    </p>
+  )
+}
+
+// A descrição curta por baixo do título: uma linha que diz o que a coisa
+// é antes de o leitor decidir se quer ler o resto.
+export function ShortDescription({ children, className }) {
+  if (!children) return null
+  return (
+    <p className={cx('mt-2 font-cond uppercase tracking-[0.1em] text-[12px] text-dim', className)}>{children}</p>
+  )
+}
+
+// A caixa de citação. Numa wiki é o «Cite this page», e serve para o que
+// se faz com um arquivo: citá-lo noutro sítio, com a data em que foi lido.
+export function CitePage({ kind, slug, title }) {
+  const entry = entryFor(kind, slug)
+  const [copied, setCopied] = useState(false)
+  const [today, setToday] = useState('')
+  const [url, setUrl] = useState('')
+
+  useEffect(() => {
+    setToday(new Date().toISOString().slice(0, 10))
+    setUrl(window.location.origin + window.location.pathname)
+  }, [])
+
+  if (!entry) return null
+
+  const citation = `LEONIDA ARCHIVE. “${title || entry.name}.” Leonida Archive${entry.sourceName ? `, citing ${entry.sourceName}` : ''}${entry.updatedAt ? `, last checked ${entry.updatedAt}` : ''}. ${url}${today ? ` (retrieved ${today})` : ''}.`
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(citation)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch { /* sem área de transferência, o texto continua seleccionável */ }
+  }
+
+  return (
+    <section className="mt-10 panel rounded-sm p-4" aria-labelledby={`cite-${kind}-${slug}`}>
+      <h2 id={`cite-${kind}-${slug}`} className="flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
+        <Quote size={13} className="text-mint" aria-hidden="true" /> Cite this page
+      </h2>
+      <p className="mt-2.5 font-mono text-[11px] leading-[1.7] text-dim break-words select-all">{citation}</p>
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={copy}
+          className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors"
+        >
+          {copied ? <><Check size={12} className="text-mint" aria-hidden="true" /> Copied</> : 'Copy citation'}
+        </button>
+        <span className="font-mono text-[10px] text-dim">
+          Cite the source itself where you can; cite the archive when the arrangement is what you are quoting.
+        </span>
+      </div>
+    </section>
+  )
+}
+
+// A informação da página, como o Special:PageInformation de uma wiki: o
+// que o arquivo sabe sobre o próprio registo, e não sobre o assunto dele.
+export function PageInformation({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  if (!entry) return null
+
+  const incoming = backlinksFor(kind, slug).length
+  const outgoing = outgoingFor(entry).length
+  const rows = [
+    ['Branch', KIND_META[kind].label],
+    ['Page name', entry.name],
+    ['Identifier', slug],
+    ['Source label', entry.status],
+    ['Categories', String(entry.categories.length)],
+    ['Links in', String(incoming)],
+    ['Links out', String(outgoing)],
+    ['Body length', `${entry.bodyLength} characters`],
+    ['Marked as stub', entry.stub ? 'yes' : 'no'],
+    ['Last checked', entry.updatedAt || 'not recorded'],
+    ['Source', entry.sourceName || 'none named'],
+  ]
+
+  return (
+    <details className="mt-4 panel rounded-sm">
+      <summary className="cursor-pointer list-none px-4 py-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
+        <Info size={13} className="text-mint" aria-hidden="true" /> Page information
+        <ChevronRight size={12} className="ml-auto text-dim" aria-hidden="true" />
+      </summary>
+      <dl className="border-t hairline divide-y divide-black/[0.06]">
+        {rows.map(([k, v]) => (
+          <div key={k} className="px-4 py-2 flex items-baseline gap-4">
+            <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim w-[110px] shrink-0">{k}</dt>
+            <dd className="font-mono text-[11px] text-paper break-words min-w-0">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </details>
+  )
+}
+
+// A navbox do rodapé: os vizinhos do mesmo ramo que partilham categoria.
+// Numa wiki é a caixa que fecha o artigo e leva ao artigo seguinte.
+export function Navbox({ kind, slug, title }) {
+  const entry = entryFor(kind, slug)
+  const siblings = siblingsFor(entry)
+  if (!entry || siblings.length === 0) return null
+
+  return (
+    <nav className="mt-8 border hairline rounded-sm overflow-hidden" aria-label={`More ${KIND_META[kind].plural.toLowerCase()}`}>
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2.5 bg-surface2/50 border-b hairline">
+        <span className="font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
+          {title || `More ${KIND_META[kind].plural.toLowerCase()}`}
+        </span>
+        <span className="font-mono text-[10px] text-dim">{entry.categories.slice(1).join(' · ') || KIND_META[kind].plural}</span>
+        <Link href={`/wiki/random?kind=${kind}`} className="ml-auto inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[10px] text-dim hover:text-pink transition-colors">
+          <Shuffle size={11} aria-hidden="true" /> Random {KIND_META[kind].label.toLowerCase()}
+        </Link>
+      </div>
+      <div className="px-4 py-3 flex flex-wrap gap-x-4 gap-y-1.5">
+        {siblings.map((sib) => (
+          <Link key={sib.href} href={sib.href} className="font-cond uppercase tracking-[0.06em] text-[12px] text-dim hover:text-pink transition-colors">
+            {sib.name}
+          </Link>
+        ))}
+      </div>
+    </nav>
   )
 }
 
@@ -233,6 +399,46 @@ export function LocationLocator({ x, y, name }) {
 // As peças que fazem um verbete comportar-se como verbete de wiki:
 // as categorias a que pertence, o que lhe aponta, de onde veio, e o aviso
 // de que ainda está por escrever.
+
+// O reverso do «o que liga para aqui»: o que esta entrada aponta. Nas
+// wikis vive no fim do artigo e é o que permite andar para a frente em vez
+// de só para trás.
+export function WhatThisLinks({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  const out = entry ? outgoingFor(entry) : []
+  if (out.length === 0) return null
+
+  return (
+    <section className="mt-6 panel rounded-sm p-4" aria-labelledby={`out-${kind}-${slug}`}>
+      <h2 id={`out-${kind}-${slug}`} className="flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
+        <Link2 size={13} className="text-mint" aria-hidden="true" /> What this page links to
+        <span className="font-mono text-[10px] text-dim tabular-nums">{out.length}</span>
+      </h2>
+      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+        {out.map((o) => (
+          <li key={o.href}>
+            <Link href={o.href} className="font-cond uppercase tracking-[0.06em] text-[12px] text-dim hover:text-pink transition-colors">
+              {o.name}
+              <span className="ml-1.5 font-mono text-[9px] text-dim/70">{KIND_META[o.kind].label}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+// A posição no mapa do arquivo, para os lugares. Não são coordenadas do
+// jogo — a Rockstar não publicou nenhumas —, são as deste mapa, e é isso
+// que a linha diz.
+export function ArchiveCoordinates({ x, y, className }) {
+  if (x == null || y == null) return null
+  return (
+    <p className={cx('font-mono text-[10px] uppercase tracking-[0.14em] text-dim', className)}>
+      Archive map position {x}, {y} · not official game coordinates
+    </p>
+  )
+}
 
 // Rodapé de categorias. Nas wikis é a última linha de qualquer artigo, e
 // é por ali que se anda de um assunto para o vizinho sem passar pela

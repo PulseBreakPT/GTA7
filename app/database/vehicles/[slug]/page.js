@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription } from '@/components/site/wiki'
 import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
@@ -105,7 +105,11 @@ function App() {
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
           </div>
           <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{v.name}</h1>
+          <ShortDescription>
+            {classLabel} in Grand Theft Auto VI{v.manufacturer && v.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${v.manufacturer}` : ''} · Unit {v.num}
+          </ShortDescription>
           <StubNotice kind="vehicles" slug={v.slug} />
+          <Hatnote kind="vehicles" slug={v.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -180,6 +184,9 @@ function App() {
             </WikiSection>
             <References items={[{ name: v.sourceName, url: v.sourceUrl, retrieved: v.updatedAt }]} />
             <CategoryFooter kind="vehicles" slug={v.slug} />
+            <CitePage kind="vehicles" slug={v.slug} />
+            <PageInformation kind="vehicles" slug={v.slug} />
+            <Navbox kind="vehicles" slug={v.slug} />
           </div>
 
           {/* Índice */}
@@ -244,6 +251,7 @@ function App() {
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {v.updatedAt}</p>
               </div>
               <WhatLinksHere kind="vehicles" slug={v.slug} />
+              <WhatThisLinks kind="vehicles" slug={v.slug} />
             </InfoboxShell>
           </div>
         </div>

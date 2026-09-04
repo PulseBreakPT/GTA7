@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
 
 export default function RadioStationPage() {
@@ -48,6 +48,7 @@ export default function RadioStationPage() {
           <h1 data-ghost="RADIO" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{s.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
           <StubNotice kind="radio" slug={s.slug} />
+          <Hatnote kind="radio" slug={s.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -95,6 +96,9 @@ export default function RadioStationPage() {
             </WikiSection>
             <References items={[{ name: s.sourceName, url: s.sourceUrl, retrieved: s.updatedAt }]} />
             <CategoryFooter kind="radio" slug={s.slug} />
+            <CitePage kind="radio" slug={s.slug} />
+            <PageInformation kind="radio" slug={s.slug} />
+            <Navbox kind="radio" slug={s.slug} />
           </div>
 
           <div className="hidden lg:block order-3 lg:order-2">
@@ -129,6 +133,7 @@ export default function RadioStationPage() {
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {s.updatedAt}</p>
               </div>
               <WhatLinksHere kind="radio" slug={s.slug} />
+              <WhatThisLinks kind="radio" slug={s.slug} />
             </InfoboxShell>
           </div>
         </div>

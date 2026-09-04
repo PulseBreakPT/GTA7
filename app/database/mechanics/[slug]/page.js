@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
 import { mechanics, characters } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
@@ -51,6 +51,7 @@ export default function MechanicPage() {
           <h1 data-ghost="MECHANICS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{m.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
           <StubNotice kind="mechanics" slug={m.slug} />
+          <Hatnote kind="mechanics" slug={m.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -97,6 +98,9 @@ export default function MechanicPage() {
             </WikiSection>
             <References items={[{ name: m.sourceName, url: m.sourceUrl, retrieved: m.updatedAt }]} />
             <CategoryFooter kind="mechanics" slug={m.slug} />
+            <CitePage kind="mechanics" slug={m.slug} />
+            <PageInformation kind="mechanics" slug={m.slug} />
+            <Navbox kind="mechanics" slug={m.slug} />
           </div>
 
           <div className="hidden lg:block order-3 lg:order-2">
@@ -131,6 +135,7 @@ export default function MechanicPage() {
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {m.updatedAt}</p>
               </div>
               <WhatLinksHere kind="mechanics" slug={m.slug} />
+              <WhatThisLinks kind="mechanics" slug={m.slug} />
             </InfoboxShell>
           </div>
         </div>

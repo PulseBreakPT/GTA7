@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
 const REL_BARS = [
@@ -108,7 +108,11 @@ function App() {
           </div>
           <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px]">{c.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.bio}</WikiText></p>
+          <ShortDescription>
+            {c.role} in Grand Theft Auto VI{c.group ? ` · ${c.group}` : ''}
+          </ShortDescription>
           <StubNotice kind="characters" slug={c.slug} />
+          <Hatnote kind="characters" slug={c.slug} />
         </header>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -170,6 +174,9 @@ function App() {
             </WikiSection>
             <References items={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
             <CategoryFooter kind="characters" slug={c.slug} />
+            <CitePage kind="characters" slug={c.slug} />
+            <PageInformation kind="characters" slug={c.slug} />
+            <Navbox kind="characters" slug={c.slug} />
           </div>
 
           {/* Índice */}
@@ -202,6 +209,7 @@ function App() {
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {c.updatedAt}</p>
               </div>
               <WhatLinksHere kind="characters" slug={c.slug} />
+              <WhatThisLinks kind="characters" slug={c.slug} />
             </InfoboxShell>
           </div>
         </div>
