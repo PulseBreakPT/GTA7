@@ -1,8 +1,10 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronRight, ExternalLink, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Images, BookOpen, Newspaper } from 'lucide-react'
+import { ChevronRight, ExternalLink, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Images, BookOpen, Newspaper, Search, Library, ShieldCheck, Tag } from 'lucide-react'
+import SearchModal from '@/components/site/search'
 import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
 import {
   IMG, extendedLookBrief, articles, guides, characters, vehicles, weapons,
@@ -47,9 +49,9 @@ const fmt = (iso) => iso
 // Título de secção com a régua a atravessar até à ligação, como nos
 // painéis técnicos: a linha diz onde a secção começa sem precisar de uma
 // caixa à volta.
-function Section({ eyebrow, title, href, linkLabel, children, className }) {
+function Section({ id, eyebrow, title, href, linkLabel, children, className }) {
   return (
-    <section className={cx('px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full', className)}>
+    <section id={id} className={cx('px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full scroll-mt-20', className)}>
       <div className="flex items-center gap-4">
         <div className="shrink-0">
           {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
@@ -67,7 +69,48 @@ function Section({ eyebrow, title, href, linkLabel, children, className }) {
   )
 }
 
+// Tudo o que o arquivo indexa, contado a partir das próprias listas. É o
+// número que o campo de pesquisa promete, e por isso não pode ser escrito
+// à mão: uma entrada nova tem de o mexer sozinha.
+const TOTAL_ENTRIES = characters.length + vehicles.length + weapons.length + locations.length
+  + mechanics.length + radioStations.length + factions.length + easterEggs.length
+  + articles.length + guides.length
+
+// Quem chega à página não sabia o que fazer com ela: havia doze secções de
+// vitrina e nenhuma acção à entrada. Estas são as quatro coisas a que se
+// vem a um arquivo destes, ditas por palavras e com o destino colado.
+const INTENTS = [
+  { id: 'search', icon: Search, label: 'Look something up', blurb: `Search all ${TOTAL_ENTRIES} entries by name — a car, a gun, a person, a place.` },
+  { id: 'browse', icon: Library, label: 'Browse the database', href: '#explore-the-wiki', blurb: 'Seven collections, each filtered by class, faction or region.' },
+  { id: 'trust', icon: ShieldCheck, label: 'See what is actually confirmed', href: '#how-this-works', blurb: 'Confirmed, verified, analysis or rumour — every entry says which, and why.' },
+  { id: 'editions', icon: Tag, label: 'Decide which edition to buy', href: '/editions', blurb: 'Standard against Ultimate, the 16 extra items, and the four dates.' },
+]
+
 function App() {
+  const [searchOpen, setSearchOpen] = useState(false)
+  // A contagem decrescente depende do dia em que se lê, por isso só se
+  // calcula depois da montagem: no servidor daria um número diferente do
+  // do browser e o React reclamava da hidratação.
+  const [daysToRelease, setDaysToRelease] = useState(null)
+  useEffect(() => {
+    const at = Date.parse(extendedLookBrief.releaseDate)
+    if (!Number.isNaN(at)) setDaysToRelease(Math.ceil((at - Date.now()) / 86400000))
+  }, [])
+
+  // A barra oblíqua abre a pesquisa, como em qualquer wiki grande. Não
+  // rouba a tecla a quem está a escrever num campo.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return
+      const el = document.activeElement
+      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return
+      e.preventDefault()
+      setSearchOpen(true)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const official = articles.find((a) => a.category === 'official') || articles[0]
   const latestNews = articles.filter((a) => a.slug !== official.slug).slice(0, 3)
   const featuredCast = characters.filter((c) => c.image).slice(0, 6)
@@ -118,9 +161,25 @@ function App() {
             <p className="mt-5 text-paper text-[17px] sm:text-[19px] leading-relaxed max-w-[380px] font-medium [text-shadow:0_0_10px_rgba(255,255,255,0.98),0_0_28px_rgba(255,255,255,0.9)]">
               {extendedLookBrief.synopsis}
             </p>
+            {/* A primeira coisa da página passa a ser aquilo a que se vem:
+                procurar um nome. O campo é um botão — a pesquisa a sério
+                vive no modal, com teclado e resultados —, mas tem a forma
+                de campo porque é essa a forma que se reconhece. */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="mt-7 w-full max-w-[520px] flex items-center gap-3 h-[56px] px-4 bg-ink/92 border border-line rounded-sm backdrop-blur text-left hover:border-mint/70 transition-colors"
+            >
+              <Search size={18} className="text-dim shrink-0" aria-hidden="true" />
+              <span className="flex-1 min-w-0 truncate text-[15px] text-dim">
+                Search {TOTAL_ENTRIES} entries — a vehicle, a character, a place…
+              </span>
+              <kbd className="hidden sm:flex items-center justify-center w-6 h-6 shrink-0 border border-line rounded-[3px] font-mono text-[11px] text-dim">/</kbd>
+            </button>
+
             {/* Os dois caminhos de entrada, lado a lado e com o mesmo peso
                 de caixa: um leva aos verbetes, o outro ao mapa. */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-5 flex flex-wrap items-center gap-4">
               <Link href="#explore-the-wiki" className="magnetic-button tech-mask-sm group inline-flex items-center gap-3 border border-mint/70 bg-ink/55 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-mint hover:bg-mint hover:text-ink transition-colors duration-200">
                 EXPLORE THE WIKI
                 <ChevronRight size={15} strokeWidth={2.4} aria-hidden="true" />
@@ -131,6 +190,44 @@ function App() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ===== 1B. O QUE SE PODE FAZER AQUI ===== */}
+      {/* Vem antes de qualquer vitrina: um leitor que não sabe o que fazer
+          com o arquivo não precisa de mais imagens, precisa de quatro
+          frases que digam para onde ir. */}
+      <section className="px-4 sm:px-6 lg:px-8 pt-8 max-w-[1280px] mx-auto w-full" aria-labelledby="start-here">
+        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <h2 id="start-here" className="font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-none text-paper">What are you here for?</h2>
+          {daysToRelease != null && daysToRelease > 0 && (
+            <span className="font-cond uppercase tracking-[0.16em] text-[11px] text-mint">
+              {daysToRelease} days to release · {extendedLookBrief.releaseDate}
+            </span>
+          )}
+        </div>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {INTENTS.map((intent) => {
+            const Icon = intent.icon
+            const body = (
+              <>
+                <span className="flex items-center gap-2">
+                  <Icon size={16} className="text-mint shrink-0" aria-hidden="true" />
+                  <span className="font-cond font-bold uppercase tracking-[0.04em] text-[16px] leading-tight text-paper">{intent.label}</span>
+                </span>
+                <span className="mt-2 block text-[13px] leading-[1.55] text-dim">{intent.blurb}</span>
+                <span className="mt-3 flex items-center gap-1 font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">
+                  {intent.id === 'search' ? 'Open search' : 'Go'} <ChevronRight size={12} aria-hidden="true" />
+                </span>
+              </>
+            )
+            const shell = 'panel rounded-sm p-4 text-left flex flex-col hover:border-mint/60 transition-colors'
+            return intent.href ? (
+              <Link key={intent.id} href={intent.href} className={shell}>{body}</Link>
+            ) : (
+              <button key={intent.id} type="button" onClick={() => setSearchOpen(true)} className={shell}>{body}</button>
+            )
+          })}
         </div>
       </section>
 
@@ -348,7 +445,7 @@ function App() {
       </Section>
 
       {/* ===== 10. HOW SOURCES ARE LABELLED ===== */}
-      <Section eyebrow="Read this first" title="How this archive labels things">
+      <Section id="how-this-works" eyebrow="Read this first" title="How this archive labels things">
         <p className="mt-5 text-[15px] leading-relaxed text-paper/85 max-w-[68ch]">
           Every entry carries a label saying where it came from. Nothing here is presented as fact
           because it is widely repeated — if Rockstar has not said it, the entry says so.
@@ -402,6 +499,8 @@ function App() {
           </div>
         </div>
       </Section>
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   )
 }

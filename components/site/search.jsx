@@ -21,7 +21,10 @@ function buildIndex() {
   return idx
 }
 
-export default function SearchModal({ open, onClose }) {
+// `initialQuery` existe para quem abre a pesquisa já a escrever — o campo
+// da home é um campo a sério, e o que lá foi escrito tem de chegar cá
+// dentro em vez de se perder na abertura do modal.
+export default function SearchModal({ open, onClose, initialQuery = '' }) {
   const router = useRouter()
   const [q, setQ] = useState('')
   const [cursor, setCursor] = useState(0)
@@ -36,10 +39,10 @@ export default function SearchModal({ open, onClose }) {
 
   useEffect(() => {
     if (open) {
-      setQ(''); setCursor(0)
+      setQ(initialQuery); setCursor(0)
       setTimeout(() => inputRef.current && inputRef.current.focus(), 30)
     }
-  }, [open])
+  }, [open, initialQuery])
 
   useEffect(() => { setCursor(0) }, [q])
 
