@@ -4,18 +4,30 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { Search, Plus, Minus, RotateCcw, Route, Triangle, X, SlidersHorizontal, Compass, Check, BadgeCheck, Eye } from 'lucide-react'
+import { Search, Plus, Minus, RotateCcw, Route, Triangle, X, SlidersHorizontal, Compass, Check, MapPin } from 'lucide-react'
 import { regions, mapFilters, locations, easterEggs, featureBriefs } from '@/lib/content'
-import { GhostBadge, StatusBadge, cx } from '@/components/site/ui'
+import { GhostBadge, StatusBadge, STATUS_META, ACCENT, cx } from '@/components/site/ui'
 import MapTerrain, { MAP_VBW, MAP_VBH } from '@/components/site/map-terrain'
 
 const VBW = MAP_VBW, VBH = MAP_VBH
-const CATEGORY_COLOR = Object.fromEntries(mapFilters.map((f) => [f.id, f.color]))
-const PROGRESS = [
-  { icon: Check, label: 'DISCOVERED', value: 64, color: '#F1A3C3' },
-  { icon: BadgeCheck, label: 'VERIFIED', value: 48, color: '#65DCCB' },
-  { icon: Eye, label: 'UNEXPLORED', value: 29, color: '#9B83F4' },
-]
+
+// Os marcadores eram pintados pela categoria, e a categoria trazia as cores
+// do tema escuro: `#F5F4F0`, um quase-branco, em cima de um mapa de papel.
+// Os 61 marcadores do arquivo estavam praticamente invisíveis, e a linha da
+// categoria no painel de detalhe era texto branco sobre branco. Passam a ser
+// pintados pelo estado da fonte, com as cores dos próprios selos — que é a
+// única leitura que interessa a um mapa deste arquivo: o que a Rockstar
+// nomeou, o que só se vê em imagem, e o que anda a circular sem apoio.
+const statusColor = (status) => (STATUS_META[status] || STATUS_META.analysis).color
+
+// Os estados que existem nos lugares, pela ordem em que se lêem, e só os
+// que têm entradas. O filtro anterior era por categoria: as quatro
+// categorias existiam, mas 61 dos 61 lugares estavam na mesma, e as outras
+// três eram interruptores que só serviam para esvaziar o mapa.
+const STATUS_ORDER = ['confirmed', 'verified', 'analysis', 'category', 'rumour']
+const LOCATION_STATUSES = STATUS_ORDER
+  .map((id) => ({ id, label: (STATUS_META[id] || {}).label || id.toUpperCase(), color: statusColor(id), count: locations.filter((l) => l.status === id).length }))
+  .filter((s2) => s2.count > 0)
 
 function MapSurface({ view, setView, dragging, setDragging, markers, selected, onSelect, showRoute }) {
   const svgRef = useRef(null)
@@ -75,7 +87,7 @@ function MapSurface({ view, setView, dragging, setDragging, markers, selected, o
         {/* markers */}
         {markers.map((m) => {
           const active = m.slug === selected
-          const color = CATEGORY_COLOR[m.category]
+          const color = statusColor(m.status)
           return (
             <g
               key={m.slug}
@@ -109,7 +121,7 @@ function MapPage() {
   const params = useSearchParams()
   const [query, setQuery] = useState('')
   const [region, setRegion] = useState(null)
-  const [cats, setCats] = useState(() => new Set(mapFilters.map((f) => f.id)))
+  const [cats, setCats] = useState(() => new Set(LOCATION_STATUSES.map((f) => f.id)))
   const [selected, setSelected] = useState('ocean-beach')
   const [view, setView] = useState({ x: 0, y: 0, k: 1 })
   const [dragging, setDragging] = useState(false)
@@ -129,7 +141,7 @@ function MapPage() {
   const markers = useMemo(() => {
     const q = query.trim().toLowerCase()
     return locations.filter((l) =>
-      cats.has(l.category) &&
+      cats.has(l.status) &&
       (!region || l.region === region) &&
       (!q || l.name.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q) || l.category.includes(q))
     )
@@ -205,34 +217,42 @@ function MapPage() {
         </div>
       </div>
       <div className="mt-5">
-        <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">FILTERS</h2>
+        <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">SOURCE LABEL</h2>
+        <p className="mt-1 text-[11px] leading-snug text-dim">The marker takes the colour of its label. Turn one off to take it off the map.</p>
         <div className="mt-2 flex flex-col gap-1.5">
-          {mapFilters.map((f) => {
+          {LOCATION_STATUSES.map((f) => {
             const on = cats.has(f.id)
-            const count = locations.filter((l) => l.category === f.id).length
             return (
               <button key={f.id} type="button" onClick={() => toggleCat(f.id)} aria-pressed={on}
                 className={cx('flex items-center gap-3 px-3 h-11 border rounded-sm transition-all duration-150', on ? 'border-line bg-surface2/70' : 'border-line/50 opacity-50 hover:opacity-80')}>
                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: f.color }} aria-hidden="true" />
                 <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[14px] text-paper flex-1 text-left">{f.label}</span>
-                <span className="font-mono text-[11px] text-dim tabular-nums">{String(count).padStart(2, '0')}</span>
+                <span className="font-mono text-[11px] text-dim tabular-nums">{String(f.count).padStart(2, '0')}</span>
                 {on && <Check size={13} className="text-mint" aria-hidden="true" />}
               </button>
             )
           })}
         </div>
       </div>
+      {/* Aqui estavam três barras — DISCOVERED 64%, VERIFIED 48%,
+          UNEXPLORED 29% — com os números escritos à mão no código. Não
+          contavam nada: nem somavam, nem correspondiam a coisa nenhuma do
+          arquivo. Ficam as proporções reais dos 61 lugares, contadas das
+          próprias entradas, mais quantos têm imagem oficial. */}
       <div className="mt-5 flex flex-col gap-2.5">
-        {PROGRESS.map((p) => (
+        {LOCATION_STATUSES.map((p) => (
           <div key={p.label} className="flex items-center gap-3">
-            <span className="w-7 h-7 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: p.color }} aria-hidden="true"><p.icon size={13} /></span>
+            <span className="w-7 h-7 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: p.color }} aria-hidden="true"><MapPin size={13} /></span>
             <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[12px] text-paper w-24 shrink-0">{p.label}</span>
-            <span className="relative flex-1 h-[5px] bg-black/10" role="img" aria-label={`${p.label}: ${p.value}%`}>
-              <span className="absolute inset-y-0 left-0" style={{ width: `${p.value}%`, backgroundColor: p.color }} />
+            <span className="relative flex-1 h-[5px] bg-black/10" role="img" aria-label={`${p.label}: ${p.count} of ${locations.length} named places`}>
+              <span className="absolute inset-y-0 left-0" style={{ width: `${Math.round((p.count / locations.length) * 100)}%`, backgroundColor: p.color }} />
             </span>
-            <span className="font-mono text-[10px] text-dim tabular-nums">{p.value}%</span>
+            <span className="font-mono text-[10px] text-dim tabular-nums">{p.count}/{locations.length}</span>
           </div>
         ))}
+        <p className="font-mono text-[10px] text-dim uppercase tracking-[0.14em]">
+          {locations.filter((l) => l.image).length} of {locations.length} carry an official image
+        </p>
       </div>
     </>
   )
@@ -243,8 +263,8 @@ function MapPage() {
         <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[30px]">{sel.name}</h2>
         <StatusBadge status={sel.status} />
       </div>
-      <p className="font-cond uppercase tracking-[0.14em] text-[11px] mt-1" style={{ color: CATEGORY_COLOR[sel.category] }}>
-        {mapFilters.find((f) => f.id === sel.category).label} · {regions.find((r2) => r2.id === sel.region).label}
+      <p className="font-cond uppercase tracking-[0.14em] text-[11px] mt-1" style={{ color: statusColor(sel.status) }}>
+        {(mapFilters.find((f) => f.id === sel.category) || {}).label || sel.category} · {(regions.find((r2) => r2.id === sel.region) || {}).label || sel.region}
       </p>
       <p className="text-dim text-[13px] leading-relaxed mt-3">{sel.desc}</p>
       {sel.clues && (
@@ -366,11 +386,76 @@ function MapPage() {
   )
 }
 
+// O mapa inteiro vivia dentro do Suspense — obrigatório, porque lê a barra
+// de endereço —, e por isso a página servida era a palavra «LOADING MAP…» e
+// mais nada: sem título, sem um único lugar, sem nada para quem chega por um
+// motor de busca ou sem JavaScript. O cabeçalho e o índice ficam fora dele:
+// são os mesmos dados, servidos de imediato, e o mapa interactivo passa a
+// ser o que sempre devia ter sido — a camada por cima.
+function MapHeader() {
+  return (
+    <header className="px-4 sm:px-6 lg:px-8 pt-6">
+      <div className="data-rail">INTERACTIVE MAP · {locations.length} NAMED PLACES · {regions.length} REGIONS</div>
+      <div className="ghost-type mt-3" data-ghost="LEONIDA">
+        <h1 className="chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.85] text-[44px] sm:text-[60px]">
+          THE STATE OF LEONIDA
+        </h1>
+      </div>
+      <p className="mt-3 max-w-[68ch] text-[14px] leading-[1.7] text-dim">
+        Every place Rockstar has named, plotted on the archive’s own map. The arrangement is an
+        index, not an official map: positions are approximate and the coastline is drawn, not
+        surveyed. Each marker takes the colour of its source label.
+      </p>
+    </header>
+  )
+}
+
+// O índice completo, por região. Vale por si — é a lista de tudo o que o
+// mapa tem — e é o que fica de pé quando o mapa interactivo não carrega.
+function PlacesIndex() {
+  return (
+    <section id="places-index" className="px-4 sm:px-6 lg:px-8 py-10 max-w-[1280px] w-full mx-auto scroll-mt-20">
+      <div className="data-rail">INDEX · EVERY NAMED PLACE</div>
+      <h2 className="mt-3 font-cond font-bold uppercase tracking-[0.06em] text-[26px] sm:text-[30px] text-paper">All {locations.length} places, by region</h2>
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {regions.map((r2) => {
+          const list = locations.filter((l) => l.region === r2.id)
+          if (list.length === 0) return null
+          return (
+            <div key={r2.id}>
+              <h3 className="flex items-center gap-3 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-paper">
+                <Link href={`/map/${r2.id}`} className="hover:text-pink transition-colors">{r2.label}</Link>
+                <span className="font-mono text-[10px] text-dim tabular-nums">{String(list.length).padStart(2, '0')}</span>
+                <span className="flex-1 h-px bg-[rgba(11,15,22,0.12)]" aria-hidden="true" />
+              </h3>
+              <ul className="mt-2 flex flex-col">
+                {list.map((l) => (
+                  <li key={l.slug}>
+                    <Link href={`/map/location/${l.slug}`} className="flex items-center gap-2 py-1.5 border-b border-black/[0.06] text-[13px] text-dim hover:text-paper transition-colors">
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: statusColor(l.status) }} aria-hidden="true" />
+                      <span className="flex-1 min-w-0 truncate font-cond uppercase tracking-[0.06em] text-paper">{l.name}</span>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-dim shrink-0">{(STATUS_META[l.status] || {}).label || l.status}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
 function App() {
   return (
-    <Suspense fallback={<div className="px-8 py-16 font-cond uppercase tracking-[0.2em] text-dim">LOADING MAP…</div>}>
-      <MapPage />
-    </Suspense>
+    <div className="flex-1 flex flex-col">
+      <MapHeader />
+      <Suspense fallback={<div className="px-8 py-16 font-cond uppercase tracking-[0.2em] text-dim">LOADING MAP…</div>}>
+        <MapPage />
+      </Suspense>
+      <PlacesIndex />
+    </div>
   )
 }
 
