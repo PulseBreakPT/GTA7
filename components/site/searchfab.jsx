@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { Search } from 'lucide-react'
 import SearchModal from './search'
 import { cx } from './ui'
@@ -12,6 +13,7 @@ import { cx } from './ui'
 // e responde ao toque. Deixa de haver uma faixa a ocupar 56px de altura
 // em todas as páginas para mostrar um campo que quase nunca se usa.
 export default function SearchFab() {
+  const pathname = usePathname() || '/'
   const [open, setOpen] = useState(false)
   const [compact, setCompact] = useState(false)
   const lastY = useRef(0)
@@ -49,8 +51,14 @@ export default function SearchFab() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  // Nas páginas da base de dados a lupa vive dentro do menu flutuante;
+  // aqui fica só o atalho de teclado, que é global. Os efeitos acima
+  // correm na mesma — é só o botão que não se desenha duas vezes.
+  const hosted = pathname.startsWith('/database')
+
   return (
     <>
+      {!hosted && (
       <div
         className="fixed top-0 right-0 z-[80] p-3 pointer-events-none"
         style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}
@@ -87,6 +95,7 @@ export default function SearchFab() {
           />
         </button>
       </div>
+      )}
 
       <SearchModal open={open} onClose={() => setOpen(false)} />
     </>

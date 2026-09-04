@@ -1,6 +1,9 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { Search } from 'lucide-react'
+import SearchModal from './search'
 import { cx } from './ui'
 
 const TABS = [
@@ -11,11 +14,72 @@ const TABS = [
   { id: 'radio', label: 'RADIO', href: '/database/radio' },
 ]
 
+// O menu da base de dados era uma faixa colada ao topo: ocupava 44px em
+// todas as páginas e ficava lá, quer se estivesse a usá-lo quer não.
+// Passa a ter o material e o comportamento da barra de baixo — pílula
+// branca, sombra em cinco camadas, linhas de velocidade — flutuante ao
+// lado da lupa, no topo à direita, e sai de vista ao descer a página.
+// A lupa vem para dentro dele: nas páginas da base é este o menu, e um
+// botão de pesquisa solto ao lado seria a mesma peça duas vezes.
 export default function DbTabs({ active, counters }) {
+  const [hidden, setHidden] = useState(false)
+  const [open, setOpen] = useState(false)
+  const lastY = useRef(0)
+
+  useEffect(() => {
+    lastY.current = window.scrollY
+    let ticking = false
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY
+        const delta = y - lastY.current
+        // A mesma margem de 6px da barra de baixo, pela mesma razão: sem
+        // ela, o menu piscava com o tremor do dedo.
+        if (Math.abs(delta) > 6) {
+          setHidden(delta > 0 && y > 80)
+          lastY.current = y
+        }
+        ticking = false
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <div className="sticky top-0 z-[60] border-b hairline bg-ink/90 backdrop-blur-xl">
-      <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 overflow-x-auto">
-        <nav className="flex items-center" aria-label="Database sections">
+    <>
+      <div
+        className="fixed top-0 right-0 z-[80] p-3 pointer-events-none flex justify-end max-w-full"
+        style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}
+      >
+        <nav
+          aria-label="Database sections"
+          className={cx(
+            'pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink px-3 py-1.5',
+            'max-w-[calc(100vw-1.5rem)] overflow-x-auto',
+            'transition-[transform,opacity] duration-300 ease-out',
+            hidden ? '-translate-y-[150%] opacity-0' : 'translate-y-0 opacity-100'
+          )}
+          style={{
+            // As mesmas cinco camadas da barra de baixo: aresta de luz,
+            // contorno, contacto, elevação e a sombra tingida.
+            boxShadow: [
+              'inset 0 1px 0 rgba(255,255,255,0.9)',
+              '0 0 0 1px rgba(11,15,22,0.07)',
+              '0 2px 6px -1px rgba(11,15,22,0.10)',
+              '0 16px 44px -14px rgba(11,15,22,0.30)',
+              '0 10px 30px -14px rgba(194,24,91,0.40)',
+            ].join(', '),
+          }}
+        >
+          {/* O filete das três cores do arquivo, encostado à curva. */}
+          <span
+            className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-violet to-transparent opacity-60"
+            aria-hidden="true"
+          />
+
           {TABS.map((t) => {
             const isActive = t.id === active
             return (
@@ -24,28 +88,43 @@ export default function DbTabs({ active, counters }) {
                 href={t.href}
                 aria-current={isActive ? 'page' : undefined}
                 className={cx(
-                  'relative font-cond font-semibold uppercase tracking-[0.12em] text-[12px] px-3 sm:px-4 h-11 flex items-center whitespace-nowrap transition-all duration-200 active:scale-95',
-                  isActive ? 'text-paper bg-black/[0.04]' : 'text-dim hover:text-paper hover:bg-black/[0.03]'
+                  'relative z-[1] rounded-[18px] font-cond font-semibold uppercase tracking-[0.12em] text-[12px] px-3 h-9 flex items-center whitespace-nowrap',
+                  'transition-colors duration-200 active:scale-[0.94] motion-reduce:active:scale-100',
+                  isActive ? 'text-paper bg-black/[0.05]' : 'text-dim hover:text-paper hover:bg-black/[0.03]'
                 )}
               >
                 {t.label}
-                {isActive && <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-gradient-to-r from-mint via-pink to-violet shadow-[0_0_10px_rgba(241,163,195,0.7)]" aria-hidden="true" />}
+                {isActive && <span className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-gradient-to-r from-mint via-pink to-violet" aria-hidden="true" />}
               </Link>
             )
           })}
+
+          {counters && (
+            <span className="hidden xl:flex items-stretch shrink-0 border-l hairline ml-1 pl-1">
+              {counters.map(([n, label]) => (
+                <span key={label} className="px-2.5 flex flex-col justify-center leading-none">
+                  <span className="font-cond font-bold text-[15px] text-paper tabular-nums text-center">{n}</span>
+                  <span className="font-cond text-[8px] text-dim uppercase tracking-[0.16em] mt-0.5 text-center">{label}</span>
+                </span>
+              ))}
+            </span>
+          )}
+
+          <span className="w-px self-stretch my-1.5 bg-[rgba(11,15,22,0.12)] mx-1 shrink-0" aria-hidden="true" />
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Search the archive"
+            aria-keyshortcuts="/"
+            className="group relative z-[1] shrink-0 w-9 h-9 rounded-[18px] flex items-center justify-center text-dim hover:text-mint hover:bg-mint/[0.06] transition-colors active:scale-[0.94] motion-reduce:active:scale-100"
+          >
+            <Search size={17} strokeWidth={2} aria-hidden="true" />
+          </button>
         </nav>
-        {counters && (
-          <div className="hidden md:flex items-stretch shrink-0">
-            {counters.map(([n, label], i) => (
-              <div key={label} className={cx('px-4 flex flex-col justify-center leading-none', i > 0 && 'border-l hairline')}>
-                <span className="font-cond font-bold text-[20px] text-paper tabular-nums text-center">{n}</span>
-                <span className="font-cond text-[9px] text-dim uppercase tracking-[0.18em] mt-0.5 text-center">{label}</span>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
-    </div>
+
+      <SearchModal open={open} onClose={() => setOpen(false)} />
+    </>
   )
 }
 
