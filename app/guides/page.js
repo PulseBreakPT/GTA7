@@ -7,14 +7,25 @@ import { StatusBadge, fmtDate } from '@/components/site/ui'
 import { ChevronRight } from 'lucide-react'
 import { Breadcrumb } from '@/components/site/wiki'
 
+const pad = (n) => String(n).padStart(2, '0')
+
 function App() {
+  const counters = [
+    [pad(guides.length), 'PUBLISHED'],
+    [pad(guides.filter((g) => g.status === 'confirmed' || g.status === 'verified').length), 'VERIFIED+'],
+    [pad(guides.reduce((sum, g) => sum + (g.readTime || 0), 0)), 'MIN TOTAL'],
+  ]
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex-1 w-full max-w-[1280px] mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides' }]} />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="ghost-type" data-ghost="GUIDES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">GUIDES</h1></div>
+        {/* Estes três números estavam escritos à mão: diziam quatro guias
+            quando são cinco, e trinta e seis minutos quando são a soma dos
+            tempos de leitura. Contam-se agora das próprias entradas. */}
         <div className="flex items-stretch">
-          {[['04', 'PUBLISHED'], ['02', 'CONFIRMED+'], ['36', 'MIN TOTAL']].map(([n, label], i) => (
+          {counters.map(([n, label], i) => (
             <div key={label} className={`px-5 flex flex-col justify-center leading-none ${i > 0 ? 'border-l hairline' : ''}`}>
               <span className="font-cond font-bold text-[26px] text-paper tabular-nums text-center">{n}</span>
               <span className="font-cond text-[9px] text-dim uppercase tracking-[0.2em] mt-1 text-center">{label}</span>

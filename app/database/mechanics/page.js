@@ -38,10 +38,14 @@ function MechanicsPage() {
   const selected = mechanics.find((m) => m.slug === selectedSlug) || list[0] || mechanics[0]
   const confirmedCount = mechanics.filter((m) => m.status === 'confirmed' || m.status === 'verified').length
 
+  // O terceiro contador dizia «04 SYSTEMS» com o número escrito à mão, e o
+  // arquivo tem doze mecânicas. Passa a contar o que se pode contar: quantas
+  // trazem ligação à fonte, que é a promessa desta base.
+  const sourcedCount = mechanics.filter((m) => m.sourceUrl).length
   const counters = [
     [String(mechanics.length).padStart(2, '0'), 'MECHANICS'],
     [String(confirmedCount).padStart(2, '0'), 'VERIFIED+'],
-    ['04', 'SYSTEMS'],
+    [String(sourcedCount).padStart(2, '0'), 'SOURCED'],
   ]
 
   const SelIcon = MECH_ICONS[selected.icon] || Repeat2

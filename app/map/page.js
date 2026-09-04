@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { Search, Plus, Minus, RotateCcw, Route, Triangle, X, SlidersHorizontal, Compass, Check, MapPin } from 'lucide-react'
+import { Search, Plus, Minus, RotateCcw, Triangle, X, SlidersHorizontal, Compass, Check, MapPin } from 'lucide-react'
 import { regions, mapFilters, locations, easterEggs, featureBriefs } from '@/lib/content'
 import { GhostBadge, StatusBadge, STATUS_META, ACCENT, cx } from '@/components/site/ui'
 import MapTerrain, { MAP_VBW, MAP_VBH } from '@/components/site/map-terrain'
@@ -29,7 +29,7 @@ const LOCATION_STATUSES = STATUS_ORDER
   .map((id) => ({ id, label: (STATUS_META[id] || {}).label || id.toUpperCase(), color: statusColor(id), count: locations.filter((l) => l.status === id).length }))
   .filter((s2) => s2.count > 0)
 
-function MapSurface({ view, setView, dragging, setDragging, markers, selected, onSelect, showRoute }) {
+function MapSurface({ view, setView, dragging, setDragging, markers, selected, onSelect }) {
   const svgRef = useRef(null)
   const drag = useRef(null)
 
@@ -78,12 +78,6 @@ function MapSurface({ view, setView, dragging, setDragging, markers, selected, o
       <g style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.k})`, transformOrigin: '0 0', transition: dragging ? 'none' : 'transform 300ms ease' }}>
         <MapTerrain />
         {/* route to selection */}
-        {showRoute && sel && (
-          <g>
-            <path d={`M700,320 L700,${sel.y > 320 ? sel.y - 6 : sel.y + 6} L${sel.x},${sel.y}`} fill="none" stroke="#C2185B" strokeWidth={r(4)} strokeLinejoin="round" strokeLinecap="round" opacity="0.9" />
-            <circle cx="700" cy="320" r={r(5)} fill="#C2185B" />
-          </g>
-        )}
         {/* markers */}
         {markers.map((m) => {
           const active = m.slug === selected
@@ -125,7 +119,6 @@ function MapPage() {
   const [selected, setSelected] = useState('ocean-beach')
   const [view, setView] = useState({ x: 0, y: 0, k: 1 })
   const [dragging, setDragging] = useState(false)
-  const [showRoute, setShowRoute] = useState(true)
   const [sheet, setSheet] = useState(null) // 'filters' | 'detail' | null (mobile)
 
   useEffect(() => {
@@ -304,20 +297,63 @@ function MapPage() {
   ) : null
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col">
-      <div className="ghost-type flex flex-wrap items-end justify-between gap-4" data-ghost="FIELD GUIDE">
-        <div><div className="data-rail max-w-[360px] !text-mint">ARCHIVE ATLAS · REGION INTELLIGENCE</div><h1 className="chromatic-title mt-4 font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MAP</h1></div>
+    <div className="px-4 sm:px-6 lg:px-8 pt-4 pb-6 flex-1 flex flex-col">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <p className="max-w-[560px] font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
+          Official location index only · Rockstar has not published a complete labelled map, boundaries, coordinates or scale.
+        </p>
         <label className="tech-mask-sm glass-panel flex items-center gap-2 w-full sm:w-[340px] h-11 px-3 focus-within:border-black/40">
           <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a Leonida region…" aria-label="Search Leonida regions" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a place or region…" aria-label="Search places and regions" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
         </label>
       </div>
-      <p className="mt-3 max-w-[900px] font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Official location index only · Rockstar has not published a complete labelled map, boundaries, coordinates or scale.</p>
 
-      <div className="mt-5 grid grid-cols-1 gap-4 min-h-0 max-w-[1240px]">
-        {/* sidebar */}
-        <aside className="hidden">{FiltersPanel}</aside>
+      {/* O mapa esteve aqui desenhado desde o início e deixou de ser
+          renderizado no import do design: o `MapSurface` ficou definido e
+          nunca chamado, e os painéis de filtros e de detalhe passaram para
+          dentro de `div className="hidden"` — a página que a home anuncia
+          como «OPEN INTERACTIVE MAP» não tinha mapa nenhum. Volta, com os
+          dois painéis à vista e as gavetas de baixo no telemóvel. */}
+      <div className="mt-5 grid grid-cols-1 lg:grid-cols-[248px_1fr_320px] gap-4 items-start">
+        <aside className="hidden lg:block panel rounded-sm p-4 max-h-[74vh] overflow-y-auto">{FiltersPanel}</aside>
+
+        <div className="relative panel rounded-sm overflow-hidden aspect-[1000/620] min-h-[380px]">
+          <MapSurface
+            view={view}
+            setView={setView}
+            dragging={dragging}
+            setDragging={setDragging}
+            markers={markers}
+            selected={selected}
+            onSelect={selectMarker}
+          />
+          {/* Comandos de vista. Ficam sobre o mapa, com a mesma pílula das
+              outras peças flutuantes. */}
+          <div className="absolute right-3 top-3 flex flex-col gap-1.5">
+            {[[Plus, 'Zoom in', () => zoom(1)], [Minus, 'Zoom out', () => zoom(-1)], [RotateCcw, 'Reset view', reset]].map(([Icon, label, fn]) => (
+              <button key={label} type="button" onClick={fn} aria-label={label}
+                className="panel2 rounded-full w-10 h-10 flex items-center justify-center text-dim hover:text-paper hover:border-black/40 transition-colors">
+                <Icon size={15} aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+          <span className="absolute left-3 bottom-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-dim">
+            {markers.length} of {locations.length} shown
+          </span>
+          {/* No telemóvel os painéis vivem em gavetas: a lateral não cabe. */}
+          <button type="button" onClick={() => setSheet('filters')}
+            className="lg:hidden absolute right-3 bottom-3 panel2 rounded-full h-10 px-4 inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-paper">
+            <SlidersHorizontal size={14} aria-hidden="true" /> Filters
+          </button>
+        </div>
+
+        <aside className="hidden lg:block panel rounded-sm p-4 max-h-[74vh] overflow-y-auto">
+          {DetailPanel || <p className="text-[13px] text-dim">Pick a marker to read its record.</p>}
+        </aside>
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 min-h-0 max-w-[1240px]">
 
         {/* region information */}
         <section className="tech-mask glass-panel p-4 sm:p-6" aria-labelledby="region-intel-heading">
@@ -364,10 +400,7 @@ function MapPage() {
           </div>
         </section>
 
-        <aside className="hidden">{DetailPanel}</aside>
       </div>
-
-      <div className="hidden">{DetailPanel}</div>
 
       {/* mobile bottom sheets */}
       {sheet && (
