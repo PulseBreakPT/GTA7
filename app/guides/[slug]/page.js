@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import {  } from 'lucide-react'
 import { guides } from '@/lib/content'
 import { SourceChip, StatusBadge, fmtDate } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'

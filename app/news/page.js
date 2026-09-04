@@ -104,12 +104,18 @@ function App() {
                 <span className="absolute top-4 left-4"><StatusBadge status="featured" label="FEATURED" /></span>
               </div>
               <div className="p-5 sm:p-6">
+                {/* O título, a data, os minutos e o rótulo estavam escritos
+                    à mão neste cartão, enquanto a ligação, a imagem e o
+                    resumo vinham do artigo: bastava o destaque mudar para o
+                    cartão passar a anunciar uma coisa e levar a outra. É o
+                    mesmo que já tinha acontecido com o texto alternativo da
+                    imagem, e agora vem tudo do mesmo sítio. */}
                 <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[36px] sm:text-[46px] max-w-[560px]">
-                  EXTENDED LOOK:<br />WHAT THE SUMMARY ADDS
+                  {lead.title}
                 </h2>
                 <p className="text-dim text-[14px] leading-relaxed mt-3 max-w-[520px]">{lead.excerpt}</p>
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-                  <span className="font-cond uppercase tracking-[0.16em] text-[13px] text-dim">AUG 27, 2026&nbsp;&nbsp;·&nbsp;&nbsp;12 MIN&nbsp;&nbsp;·&nbsp;&nbsp;COMMUNITY REFERENCE</span>
+                  <span className="font-cond uppercase tracking-[0.16em] text-[13px] text-dim">{fmtDate(lead.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{lead.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{lead.sourceName.toUpperCase()}</span>
                   <span className="inline-flex items-center gap-3 border border-paper/90 px-5 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper group-hover:bg-paper group-hover:text-ink transition-colors duration-200">
                     READ ANALYSIS
                     <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
