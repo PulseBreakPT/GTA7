@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
 import { regions, locations } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 
 export default function RegionPage() {
   const { slug } = useParams()
@@ -106,9 +106,7 @@ export default function RegionPage() {
                         <Image src={entry.image} alt={entry.name} fill sizes="200px" className="object-cover" />
                       </span>
                     ) : (
-                      <span className="flex items-center justify-center h-[84px] w-full rounded-[2px] bg-surface2/60 text-dim">
-                        <MapPin size={18} aria-hidden="true" />
-                      </span>
+                      <LocationThumb x={entry.x} y={entry.y} name={entry.name} className="h-[84px] w-full rounded-[2px]" />
                     )}
                     <span className="flex items-center justify-between gap-1 mt-2">
                       <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-paper truncate">{entry.name}</span>

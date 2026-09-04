@@ -7,7 +7,10 @@
 export const MAP_VBW = 1000
 export const MAP_VBH = 620
 
-export default function MapTerrain() {
+// `labels` existe para a miniatura de um local: os rótulos de região estão
+// dimensionados para o mapa inteiro e, num recorte aproximado, cobrem o
+// próprio alvo que a miniatura serve para mostrar.
+export default function MapTerrain({ labels = true }) {
   return (
     <>
     {/* water texture */}
@@ -52,6 +55,7 @@ export default function MapTerrain() {
       <path d="M712,436 L695,470 L655,505 L712,532 L768,556 L822,572 L874,586" strokeDasharray="7 5" strokeWidth="3" />
     </g>
     {/* region labels */}
+    {labels && (
     <g fontFamily="var(--font-cond)" fontWeight="600" fill="#55606E" letterSpacing="3">
       <text x="150" y="180" fontSize="17">PORT GELLHORN</text>
       <text x="165" y="330" fontSize="17">GRASSRIVERS</text>
@@ -63,6 +67,7 @@ export default function MapTerrain() {
       <text x="352" y="92" fontSize="17">MOUNT KALAGA</text>
       <text x="382" y="262" fontSize="17">AMBROSIA</text>
     </g>
+    )}
     </>
   )
 }

@@ -77,6 +77,29 @@ function App() {
                   isUltimate ? 'border-pink/45 bg-pink/[0.04]' : 'border-line')}
                 aria-labelledby={`tier-${tier.id}`}
               >
+                {/* A imagem vai a toda a largura do cartão, sangrada até à
+                    borda: é a arte da edição, não um ícone ao lado do texto.
+                    Sem imagem oficial o cartão di-lo, como no catálogo dos
+                    16 itens — o arquivo não preenche o buraco com outra coisa. */}
+                {tier.image && IMG[tier.image] ? (
+                  <div className="relative -mx-5 -mt-5 sm:-mx-6 sm:-mt-6 mb-5 aspect-[16/9] overflow-hidden border-b border-line">
+                    <Image
+                      src={IMG[tier.image]}
+                      alt={`${tier.name} artwork`}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 560px"
+                      className="object-cover"
+                      priority={isUltimate}
+                    />
+                    <span className="absolute left-0 bottom-0 px-2 py-1 bg-ink/85 font-mono text-[9px] uppercase tracking-[0.18em] text-mint">
+                      {tier.imageNote}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="-mx-5 -mt-5 sm:-mx-6 sm:-mt-6 mb-5 aspect-[16/9] bg-surface2/60 border-b border-line flex items-center justify-center">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-dim">NO OFFICIAL IMAGE</span>
+                  </div>
+                )}
                 <div className="flex items-baseline justify-between gap-4 flex-wrap">
                   <h2 id={`tier-${tier.id}`} className={cx('font-cond font-bold uppercase tracking-[0.08em] text-[22px] sm:text-[26px]', isUltimate ? 'text-pink' : 'text-paper')}>
                     {tier.name}

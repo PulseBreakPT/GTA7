@@ -169,6 +169,46 @@ export function InfoboxSource({ sourceName, sourceUrl, updatedAt }) {
   )
 }
 
+// Um lugar sem fotografia oficial ficava com um pino cinzento igual ao dos
+// outros trinta e sete. Passa a levar um recorte do mapa do arquivo centrado
+// nas suas coordenadas: é uma imagem própria de cada sítio, distinta das
+// restantes, e desenhada só com dados que o arquivo tem. Não é uma vista do
+// local — é o mapa —, e por isso vem rotulada como tal em vez de se fazer
+// passar por captura do jogo.
+export function LocationThumb({ x, y, name, label = 'ARCHIVE MAP', className }) {
+  // O recorte é uma janela de 300×170 do mapa de 1000×620, encostada às
+  // bordas quando o ponto está perto delas — sem isto, um sítio no canto
+  // apareceria centrado em água fora do mapa.
+  const W = 300
+  const H = 170
+  const vx = Math.min(Math.max(x, W / 2), MAP_VBW - W / 2)
+  const vy = Math.min(Math.max(y, H / 2), MAP_VBH - H / 2)
+
+  return (
+    <span className={cx('relative block overflow-hidden bg-[#DCE6EF]', className)}>
+      <svg
+        viewBox={`${vx - W / 2} ${vy - H / 2} ${W} ${H}`}
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 w-full h-full"
+        role="img"
+        aria-label={`${name} on the archive map of Leonida — no official image published`}
+      >
+        <rect x={vx - W / 2} y={vy - H / 2} width={W} height={H} fill="#DCE6EF" />
+        <MapTerrain labels={false} />
+        <g transform={`translate(${x},${y})`}>
+          <circle r="26" fill="none" stroke="#C2185B" strokeWidth="2" opacity="0.45" />
+          <circle r="13" fill="none" stroke="#FFFFFF" strokeWidth="2.5" />
+          <circle r="7" fill="#FFFFFF" stroke="#C2185B" strokeWidth="3.5" />
+          <circle r="2.5" fill="#C2185B" />
+        </g>
+      </svg>
+      <span className="absolute left-0 bottom-0 px-1.5 py-[2px] bg-ink/80 font-mono text-[8px] uppercase tracking-[0.16em] text-mint">
+        {label}
+      </span>
+    </span>
+  )
+}
+
 // Mapa de localização da ficha de um local: o mesmo terreno do mapa
 // interactivo, sem interacção nenhuma, com um alvo no ponto. É a peça que
 // nas wikis grandes aparece sempre no topo da caixa de dados de um sítio.

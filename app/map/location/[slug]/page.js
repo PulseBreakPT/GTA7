@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ExternalLink, ChevronRight, MapPin, FileText, Images, Compass, BookMarked } from 'lucide-react'
+import { ExternalLink, ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
 import { locations, regions, mapFilters } from '@/lib/content'
 import { StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 
 export default function LocationPage() {
   const { slug } = useParams()
@@ -56,10 +56,7 @@ export default function LocationPage() {
               {loc.image ? (
                 <Image src={loc.image} alt={loc.name} fill priority sizes="(max-width:1024px) 100vw, 700px" className="object-cover" />
               ) : (
-                <span className="flex flex-col items-center justify-center gap-2 w-full h-full bg-surface2/60 text-dim" role="img" aria-label={`${loc.name}: visual pending`}>
-                  <MapPin size={30} aria-hidden="true" />
-                  <span className="font-mono text-[9px] uppercase tracking-[0.22em]">AWAITING VISUAL</span>
-                </span>
+                <LocationThumb x={loc.x} y={loc.y} name={loc.name} label="NO OFFICIAL IMAGE · ARCHIVE MAP" className="w-full h-full" />
               )}
             </div>
           </WikiSection>
@@ -75,9 +72,7 @@ export default function LocationPage() {
                         <Image src={item.image} alt={item.name} fill sizes="200px" className="object-cover" />
                       </span>
                     ) : (
-                      <span className="flex items-center justify-center h-[84px] w-full rounded-[2px] bg-surface2/60 text-dim">
-                        <MapPin size={20} aria-hidden="true" />
-                      </span>
+                      <LocationThumb x={item.x} y={item.y} name={item.name} className="h-[84px] w-full rounded-[2px]" />
                     )}
                     <span className="flex items-center justify-between gap-1 mt-2">
                       <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-paper truncate">{item.name}</span>

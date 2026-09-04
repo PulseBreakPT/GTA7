@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ExternalLink, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, GhostBadge, StatBar, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { weapons, weaponTypes } from '@/lib/content'
 
 const SECTIONS = [
@@ -53,6 +53,23 @@ function App() {
   ]
   const related = weapons.filter((x) => x.type === w.type && x.slug !== w.slug).slice(0, 4)
   const gallery = w.gallery?.length ? w.gallery : [w.image]
+
+  // A ficha técnica segue a dos veículos: pares rótulo/valor, começando pelos
+  // campos de identificação da caixa de dados. O zero do registo não é uma
+  // medida — nenhuma arma tem capacidade, reserva ou peso publicados —, por
+  // isso não se imprime como número: o campo fica e diz que não há fonte.
+  const num = (n, suffix = '') => (n ? `${n}${suffix}` : null)
+  const specRows = [
+    { label: 'Weapon type', value: typeLabel },
+    { label: 'Manufacturer', value: w.manufacturer },
+    { label: 'Association', value: w.association },
+    w.character ? { label: 'Character', value: w.character } : null,
+    { label: 'Status', children: <StatusBadge status={w.status} /> },
+    { label: 'Evidence', children: <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span> },
+    { label: 'Capacity', value: num(w.stats[4]) },
+    { label: 'Reserve', value: num(w.mag) },
+    { label: 'Weight', value: num(w.stats[5], ' KG') },
+  ]
 
   return (
     <div className="flex-1 flex flex-col">
@@ -122,14 +139,7 @@ function App() {
             </WikiSection>
 
             <WikiSection id="specifications" title="Specifications">
-              <div className="grid grid-cols-3 border-y hairline divide-x divide-[rgba(11,15,22,0.14)]">
-                {[['CAPACITY', w.stats[4]], ['RESERVE', w.mag], ['WEIGHT', `${w.stats[5]} KG`]].map(([label, val]) => (
-                  <div key={label} className="py-3 text-center">
-                    <span className="block font-cond text-[10px] text-dim uppercase tracking-[0.18em]">{label}</span>
-                    <span className="block font-cond font-bold text-[26px] text-paper tabular-nums mt-0.5">{val}</span>
-                  </div>
-                ))}
-              </div>
+              <SpecGrid items={specRows} />
             </WikiSection>
 
             <WikiSection id="related" title="Related Weapons" className="mb-0">
@@ -143,7 +153,7 @@ function App() {
                       <Link key={r.slug} href={`/database/weapons/${r.slug}`} className="panel rounded-sm p-3 hover:border-black/30 transition-colors">
                         <GhostBadge status={r.status} />
                         <span className="block font-cond font-bold uppercase text-[16px] text-paper mt-2 truncate">{r.name}</span>
-                        <span className="block font-mono text-[11px] text-dim tabular-nums mt-1">{String(r.ammo).padStart(2, '0')} / {r.mag}</span>
+                        <span className="block font-mono text-[11px] text-dim tabular-nums mt-1">{r.unpublished ? '— / —' : `${String(r.ammo).padStart(2, '0')} / ${r.mag}`}</span>
                       </Link>
                     ))}
                   </div>

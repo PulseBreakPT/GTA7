@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Heart, ExternalLink, ChevronRight, FileText, Users, Zap, BookMarked } from 'lucide-react'
+import { Heart, ExternalLink, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
 import { StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
 const REL_BARS = [
@@ -17,6 +17,7 @@ const REL_BARS = [
 
 const SECTIONS = [
   { id: 'background', label: 'Background', icon: FileText },
+  { id: 'details', label: 'Details', icon: ListChecks },
   { id: 'relationships', label: 'Relationships', icon: Users },
   { id: 'mechanics', label: 'Associated Mechanics', icon: Zap },
   { id: 'references', label: 'References', icon: BookMarked },
@@ -75,6 +76,21 @@ function App() {
   const primaryRel = rels.find((r) => r.primary)
   const primaryOther = primaryRel ? characterBySlug(primaryRel.a === c.slug ? primaryRel.b : primaryRel.a) : null
 
+  // A mesma grelha de pares rótulo/valor das fichas de veículo e de arma:
+  // o que a caixa de dados diz à direita, dito também no corpo, que é onde
+  // se lê e de onde se copia. Só campos que o registo tem — a uma pessoa
+  // não se inventa uma ficha técnica.
+  const detailRows = [
+    { label: 'Role', value: c.role },
+    { label: 'Group', children: c.group ? <span className="capitalize">{c.group}</span> : null },
+    { label: 'Status', children: <StatusBadge status={c.status} /> },
+    { label: 'Primary bond', children: primaryOther ? <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link> : null },
+    { label: 'Documented relationships', value: String(rels.length) },
+    { label: 'Source', value: c.sourceName },
+    { label: 'First recorded', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.publishedAt}</span> },
+    { label: 'Last updated', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.updatedAt}</span> },
+  ]
+
   return (
     <div className="flex-1 flex flex-col">
       <DbTabs active="characters" />
@@ -100,6 +116,10 @@ function App() {
           <div className="min-w-0 order-2 lg:order-1">
             <WikiSection id="background" title="Background">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.long}</WikiText></p>
+            </WikiSection>
+
+            <WikiSection id="details" title="Details">
+              <SpecGrid items={detailRows} />
             </WikiSection>
 
             <WikiSection id="relationships" title="Relationships">
