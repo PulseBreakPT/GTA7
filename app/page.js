@@ -108,7 +108,14 @@ function App() {
             <h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px] [filter:drop-shadow(0_0_18px_rgba(255,255,255,0.95))_drop-shadow(0_0_46px_rgba(255,255,255,0.8))]">
               LEONIDA,<br />DOCUMENTED.
             </h1>
-            <p className="mt-5 text-dim text-[17px] sm:text-[19px] leading-relaxed max-w-[420px] [text-shadow:0_0_14px_rgba(255,255,255,0.95)]">
+            {/* Sobre fotografia, o cinzento do texto secundário não chega: no
+              papel dá 6:1, mas em cima da arte cai para metade disso. Passa
+              ao preto do texto principal, com o mesmo halo do título a
+              abrir-lhe caminho — duas camadas, uma curta para destacar as
+              hastes das letras e uma larga para assentar o bloco. E a
+              medida encurta, para o parágrafo não avançar para a zona da
+              imagem onde já não há véu nenhum a segurá-lo. */}
+            <p className="mt-5 text-paper text-[17px] sm:text-[19px] leading-relaxed max-w-[380px] font-medium [text-shadow:0_0_10px_rgba(255,255,255,0.98),0_0_28px_rgba(255,255,255,0.9)]">
               {extendedLookBrief.synopsis}
             </p>
             {/* Os dois caminhos de entrada, lado a lado e com o mesmo peso
