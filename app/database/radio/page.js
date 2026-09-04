@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Radio, ExternalLink, ChevronRight } from 'lucide-react'
+import { Radio, ChevronRight } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
+import { GhostBadge, SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { radioStations, radioCounters } from '@/lib/content'
 import { Breadcrumb } from '@/components/site/wiki'
 
@@ -80,9 +80,7 @@ function App() {
           )}
           <p className="text-dim text-[13px] leading-[1.8] mt-3">{selected.desc}</p>
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
-              SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
-            </a>
+            <SourceChip name={selected.sourceName} url={selected.sourceUrl} />
             <span className="font-mono text-[10px] text-dim uppercase">UPDATED {selected.updatedAt}</span>
           </div>
 

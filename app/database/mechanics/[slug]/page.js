@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ExternalLink, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
+import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, GhostBadge } from '@/components/site/ui'
+import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { mechanics, characters } from '@/lib/content'
 
@@ -127,9 +127,7 @@ export default function MechanicPage() {
               </div>
 
               <div className="border-t border-black/10 pt-4">
-                <a href={m.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-                  SOURCE: {m.sourceName.toUpperCase()} <ExternalLink size={11} />
-                </a>
+                <SourceChip name={m.sourceName} url={m.sourceUrl} />
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {m.updatedAt}</p>
               </div>
               <WhatLinksHere kind="mechanics" slug={m.slug} />

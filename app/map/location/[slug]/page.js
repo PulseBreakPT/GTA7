@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ExternalLink, ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
+import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
 import { locations, regions, mapFilters } from '@/lib/content'
-import { StatusBadge } from '@/components/site/ui'
+import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 
 export default function LocationPage() {
@@ -113,9 +113,7 @@ export default function LocationPage() {
             </div>
 
             <div className="border-t border-black/10 pt-4">
-              <a href={loc.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-                {loc.sourceName.toUpperCase()} <ExternalLink size={11} />
-              </a>
+              <SourceChip name={loc.sourceName} url={loc.sourceUrl} prefix={null} />
               <p className="font-mono text-[9px] text-dim mt-2">Updated {loc.updatedAt}</p>
             </div>
             <WhatLinksHere kind="locations" slug={loc.slug} />

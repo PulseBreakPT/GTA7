@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { Radio as RadioIcon, ExternalLink, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
+import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, GhostBadge } from '@/components/site/ui'
+import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
 
@@ -125,9 +125,7 @@ export default function RadioStationPage() {
               </div>
 
               <div className="border-t border-black/10 pt-4">
-                <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-                  SOURCE <ExternalLink size={11} />
-                </a>
+                <SourceChip name={s.sourceName} url={s.sourceUrl} />
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {s.updatedAt}</p>
               </div>
               <WhatLinksHere kind="radio" slug={s.slug} />

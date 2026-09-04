@@ -3,9 +3,9 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, Triangle, ExternalLink, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Search, Heart, Zap, Eye, Triangle, ArrowLeft, ArrowRight } from 'lucide-react'
 import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
-import { StatusBadge, cx } from '@/components/site/ui'
+import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
 
@@ -164,9 +164,7 @@ function App() {
             )}
 
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
-                SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
-              </a>
+              <SourceChip name={selected.sourceName} url={selected.sourceUrl} />
             </div>
 
             <Link href={`/database/weapons/${selected.slug}`} className="mt-4 w-full inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[15px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">

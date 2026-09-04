@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, ExternalLink, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, StatBar, cx } from '@/components/site/ui'
+import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText } from '@/components/site/wiki'
 import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
@@ -240,13 +240,7 @@ function App() {
               </div>
 
               <div className="border-t border-black/10 pt-4">
-                {v.sourceUrl ? (
-                  <a href={v.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-                    SOURCE: {v.sourceName.toUpperCase()} <ExternalLink size={11} />
-                  </a>
-                ) : (
-                  <span className="font-cond uppercase tracking-[0.12em] text-[11px] text-dim">SOURCE: {v.sourceName.toUpperCase()}</span>
-                )}
+                <SourceChip name={v.sourceName} url={v.sourceUrl} />
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {v.updatedAt}</p>
               </div>
               <WhatLinksHere kind="vehicles" slug={v.slug} />

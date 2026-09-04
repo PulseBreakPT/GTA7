@@ -4,9 +4,9 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack, ExternalLink } from 'lucide-react'
+import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, cx } from '@/components/site/ui'
+import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
@@ -168,9 +168,7 @@ function App() {
           <p className="text-dim text-[13px] leading-relaxed mt-3">{selected.bio}</p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <a href={selected.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40">
-              SOURCE: {selected.sourceName.toUpperCase()} <ExternalLink size={11} />
-            </a>
+            <SourceChip name={selected.sourceName} url={selected.sourceUrl} />
           </div>
 
           <Link href={`/database/characters/${selected.slug}`} className="mt-4 w-full inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[15px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">

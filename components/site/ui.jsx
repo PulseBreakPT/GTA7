@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, HelpCircle, Activity, BadgeCheck, X, Circle, Triangle, Square } from 'lucide-react'
+import { Check, HelpCircle, Activity, BadgeCheck, X, Circle, Triangle, Square, ExternalLink } from 'lucide-react'
 
 export const cx = (...a) => a.filter(Boolean).join(' ')
 
@@ -139,4 +139,29 @@ export function fmtDate(iso) {
   const d = new Date(iso + 'T00:00:00')
   const M = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
   return `${M[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+}
+
+// A ligação à fonte de um registo, num sítio só. Sem URL não se desenha
+// ligação nenhuma: um `<a>` sem `href` é um botão morto, e uma ligação a
+// um domínio de exemplo é pior — dá ares de proveniência a quem não a tem.
+// Fica o nome da fonte, dito por extenso e a cinzento, que é exactamente o
+// que o arquivo pode garantir sobre esse registo.
+export function SourceChip({ name, url, prefix = 'SOURCE', className }) {
+  const label = name
+    ? (prefix ? `${prefix}: ${String(name).toUpperCase()}` : String(name).toUpperCase())
+    : (prefix || 'SOURCE')
+  const base = 'inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px]'
+  if (!url) {
+    return (
+      <span className={cx(base, 'text-dim', className)}>
+        {label}
+        <span className="font-mono text-[9px] tracking-[0.1em] text-dim/80">· NO LINK</span>
+      </span>
+    )
+  }
+  return (
+    <a href={url} target="_blank" rel="noreferrer" className={cx(base, 'text-paper hover:border-black/40 transition-colors', className)}>
+      {label} <ExternalLink size={11} aria-hidden="true" />
+    </a>
+  )
 }

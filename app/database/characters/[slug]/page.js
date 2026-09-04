@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Heart, ExternalLink, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
+import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, cx } from '@/components/site/ui'
+import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
@@ -198,9 +198,7 @@ function App() {
               </div>
 
               <div className="border-t border-black/10 pt-4">
-                <a href={c.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-                  {c.sourceName ? c.sourceName.toUpperCase() : 'SOURCE'} <ExternalLink size={10} />
-                </a>
+                <SourceChip name={c.sourceName} url={c.sourceUrl} prefix={null} />
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {c.updatedAt}</p>
               </div>
               <WhatLinksHere kind="characters" slug={c.slug} />

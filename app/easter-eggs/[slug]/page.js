@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { CircleCheck, Circle, MapPin, ExternalLink, Triangle } from 'lucide-react'
+import { CircleCheck, Circle, MapPin, Triangle } from 'lucide-react'
 import { easterEggs } from '@/lib/content'
-import { StatusBadge, cx } from '@/components/site/ui'
+import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'
 
 function App() {
@@ -63,9 +63,7 @@ function App() {
               <MapPin size={15} /> VIEW ON MAP
               <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
             </Link>
-            <a href={egg.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 border border-line h-12 px-4 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper hover:border-black/40 transition-colors">
-              SOURCE: {egg.sourceName.toUpperCase()} <ExternalLink size={12} />
-            </a>
+            <SourceChip name={egg.sourceName} url={egg.sourceUrl} className="h-12 px-4 font-semibold tracking-[0.14em] text-[13px]" />
           </div>
           <p className="font-mono text-[10px] text-dim uppercase mt-3">UPDATED {egg.updatedAt}</p>
         </div>

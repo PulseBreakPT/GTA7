@@ -4,9 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, ExternalLink, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
 import DbTabs from '@/components/site/dbtabs'
-import { StatusBadge, GhostBadge, StatBar, cx } from '@/components/site/ui'
+import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
@@ -223,13 +223,7 @@ function App() {
               </div>
 
               <div className="border-t border-black/10 pt-4">
-                {w.sourceUrl ? (
-                  <a href={w.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-                    SOURCE: {w.sourceName.toUpperCase()} <ExternalLink size={11} />
-                  </a>
-                ) : (
-                  <span className="font-cond uppercase tracking-[0.12em] text-[11px] text-dim">SOURCE: {w.sourceName.toUpperCase()}</span>
-                )}
+                <SourceChip name={w.sourceName} url={w.sourceUrl} />
                 <p className="font-mono text-[9px] text-dim mt-2">Updated {w.updatedAt}</p>
               </div>
               <WhatLinksHere kind="weapons" slug={w.slug} />

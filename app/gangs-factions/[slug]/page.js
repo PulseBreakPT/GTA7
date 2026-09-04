@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Users, ExternalLink, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
-import { StatusBadge, GhostBadge } from '@/components/site/ui'
+import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
+import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
 
@@ -126,9 +126,7 @@ export default function FactionPage() {
             </div>
 
             <div className="border-t border-black/10 pt-4">
-              <a href={f.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-                SOURCE: {f.sourceName.toUpperCase()} <ExternalLink size={11} />
-              </a>
+              <SourceChip name={f.sourceName} url={f.sourceUrl} />
             </div>
             <WhatLinksHere kind="factions" slug={f.slug} />
           </InfoboxShell>

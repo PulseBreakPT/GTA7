@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ChevronUp, ExternalLink, Quote, Star, TriangleAlert } from 'lucide-react'
+import { ChevronUp, Quote, Star, TriangleAlert } from 'lucide-react'
 import MediaCarousel from '@/components/site/media-carousel'
 import { articles, articleVisuals, categoriesForArticle, relatedArticlesFor, sources } from '@/lib/content'
-import { StatusBadge, GhostBadge, fmtDate } from '@/components/site/ui'
+import { GhostBadge, SourceChip, StatusBadge, fmtDate } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'
 
 const SECTION_RULES = [
@@ -124,9 +124,7 @@ function App() {
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN READ</span>
         <span className="font-mono text-[11px] text-dim tabular-nums">{a.views.toLocaleString('en-US')} READS</span>
-        <a href={a.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[12px] text-paper border border-line rounded-sm px-2.5 py-1.5 hover:border-black/40">
-          {a.sourceName} <ExternalLink size={11} />
-        </a>
+        <SourceChip name={a.sourceName} url={a.sourceUrl} prefix={null} className="text-[12px]" />
         <span className="flex items-center gap-0.5" role="img" aria-label={`Source credibility: ${rating} of 5`}>
           {[1,2,3,4,5].map((n) => <Star key={n} size={13} className={n <= rating ? 'text-pink' : 'text-black/20'} fill={n <= rating ? '#C2185B' : 'transparent'} />)}
         </span>

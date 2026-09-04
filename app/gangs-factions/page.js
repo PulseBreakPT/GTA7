@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Shield, MapPin, ExternalLink } from 'lucide-react'
+import { Shield, MapPin } from 'lucide-react'
 import { factions } from '@/lib/content'
-import { GhostBadge } from '@/components/site/ui'
+import { GhostBadge, SourceChip } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'
 
 export default function GangsFactionsPage() {
@@ -30,7 +30,7 @@ export default function GangsFactionsPage() {
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-4">
               <Link href={`/gangs-factions/${faction.slug}`} className="inline-flex items-center gap-1.5 border border-line rounded-sm px-3 h-9 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-paper hover:border-mint hover:text-mint transition-colors">Read full entry →</Link>
-              <a href={faction.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-cond uppercase tracking-[0.12em] text-[11px] text-dim hover:text-paper">{faction.sourceName} <ExternalLink size={12} /></a>
+              <SourceChip name={faction.sourceName} url={faction.sourceUrl} prefix={null} className="border-0 px-0 py-0" />
             </div>
           </article>
         ))}

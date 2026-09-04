@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ExternalLink } from 'lucide-react'
+import {  } from 'lucide-react'
 import { guides } from '@/lib/content'
-import { StatusBadge, fmtDate } from '@/components/site/ui'
+import { SourceChip, StatusBadge, fmtDate } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'
 
 function App() {
@@ -35,9 +35,7 @@ function App() {
       <h1 data-ghost="GUIDES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-6">{g.title}</h1>
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>
-        <a href={g.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[12px] text-paper border border-line rounded-sm px-2.5 py-1.5 hover:border-black/40">
-          {g.sourceName} <ExternalLink size={11} />
-        </a>
+        <SourceChip name={g.sourceName} url={g.sourceUrl} prefix={null} className="text-[12px]" />
       </div>
       <p className="text-paper/85 text-[15px] leading-relaxed mt-5 max-w-[720px]">{g.summary}</p>
 
