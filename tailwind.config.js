@@ -48,7 +48,13 @@ module.exports = {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
-      borderRadius: { lg: '0.75rem', md: '0.375rem', sm: '0.125rem' },
+      // A escala de raios do Streamline Moderne. Os 2px do `sm` eram um
+      // canto recto disfarçado — a 192 utilizações no projecto, era o
+      // que mantinha botões, etiquetas e campos com ar de formulário
+      // enquanto o resto do sítio curvava. Sobem os três, mantendo a
+      // proporção entre eles: uma etiqueta de 20px de altura não pode
+      // levar o mesmo raio de uma carta de 300px.
+      borderRadius: { lg: '1.25rem', md: '0.75rem', sm: '0.375rem' },
       letterSpacing: { wide2: '0.08em', wide3: '0.14em' },
     },
   },
