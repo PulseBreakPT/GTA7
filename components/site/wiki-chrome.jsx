@@ -108,13 +108,13 @@ export default function WikiChrome() {
 
   return (
     <>
-      <header className="wiki-global-header" aria-label="GTA Lore Wiki encyclopedia header">
-        <Link href="/" className="wiki-global-brand" aria-label="GTA Lore Wiki main page">
-          <span>GLW</span>
-          <span><strong>GTA LORE WIKI</strong><small>The GTA VI encyclopedia</small></span>
+      <header className="wiki-global-header" aria-label="GTA Lore encyclopedia header">
+        <Link href="/" className="wiki-global-brand" aria-label="GTA Lore main page">
+          <span>GL</span>
+          <span><strong>GTA LORE</strong><small>The GTA VI encyclopedia</small></span>
         </Link>
 
-        <button type="button" className="wiki-global-search" onClick={() => { setAccountOpen(false); setSearchOpen(true) }} aria-label="Search GTA Lore Wiki" aria-keyshortcuts="/ Control+K">
+        <button type="button" className="wiki-global-search" onClick={() => { setAccountOpen(false); setSearchOpen(true) }} aria-label="Search GTA Lore" aria-keyshortcuts="/ Control+K">
           <Search size={16} aria-hidden="true" />
           <span>Search the encyclopedia</span>
           <kbd>/</kbd>
@@ -170,7 +170,7 @@ export default function WikiChrome() {
               </> : <>
                 <div className="wiki-account-guest">
                   <span className="wiki-account-card-avatar"><UserRound size={21} /></span>
-                  <strong>Your GTA LORE WIKI identity</strong>
+                  <strong>Your GTA LORE identity</strong>
                   <p>Follow pages, build collections, write private notes and contribute to the archive.</p>
                 </div>
                 <div className="wiki-account-guest-actions">

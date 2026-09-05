@@ -121,7 +121,7 @@ function App() {
       </div>
       {a.imageCredit && <p className="mt-2 text-right font-cond uppercase tracking-[0.12em] text-[10px] text-dim">Portrait: <a href={a.imageCreditUrl} target="_blank" rel="noreferrer" className="text-paper/75 hover:text-pink underline underline-offset-2">{a.imageCredit}</a></p>}
 
-      <div className="ghost-type mt-6" data-ghost="GTA LORE WIKI">
+      <div className="ghost-type mt-6" data-ghost="GTA LORE">
         <h1 data-ghost="ARTICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] max-w-[920px]">{a.title}</h1>
       </div>
 

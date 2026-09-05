@@ -60,7 +60,7 @@ function LoginScreen() {
     <div className="auth-shell ambient-bloom px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full max-w-[1180px] mx-auto flex-1 grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,460px)] gap-8 lg:gap-14 items-center">
       <section className="auth-intro max-w-[650px]">
         <div className="data-rail">IDENTITY NETWORK · SECURE ARCHIVE ACCESS</div>
-        <p className="mt-6 font-cond uppercase tracking-[0.2em] text-[11px] text-mint">GTA LORE WIKI membership</p>
+        <p className="mt-6 font-cond uppercase tracking-[0.2em] text-[11px] text-mint">GTA LORE membership</p>
         <h1 className="chromatic-title mt-2 font-cond font-bold uppercase tracking-tight leading-[0.86] text-[54px] sm:text-[76px] text-paper">Your archive identity.</h1>
         <p className="mt-5 max-w-[58ch] text-[15px] sm:text-[17px] leading-relaxed text-dim">One account for saved records, future contribution tools and security controls. Credentials stay server-side; sessions remain individually visible and revocable.</p>
         <ul className="mt-7 grid sm:grid-cols-3 gap-3">
@@ -87,7 +87,7 @@ function LoginScreen() {
 
         <div className="mt-5">
           <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">{mode === 'recover' ? 'Account recovery' : mode === 'register' ? 'New identity' : 'Welcome back'}</p>
-          <h2 id="auth-title" className="mt-1 font-cond font-bold uppercase tracking-tight text-[30px] text-paper">{mode === 'recover' ? 'Reset access' : mode === 'register' ? 'Join the archive' : 'Enter GTA Lore Wiki'}</h2>
+          <h2 id="auth-title" className="mt-1 font-cond font-bold uppercase tracking-tight text-[30px] text-paper">{mode === 'recover' ? 'Reset access' : mode === 'register' ? 'Join the archive' : 'Enter GTA Lore'}</h2>
         </div>
 
         <form onSubmit={submit} className="mt-5 space-y-4">
@@ -138,7 +138,7 @@ function LoginScreen() {
         </form>
 
         {mode === 'recover' && <button type="button" onClick={() => switchMode('login')} className="mt-4 font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim hover:text-paper">← Return to sign in</button>}
-        <p className="mt-5 border-t hairline pt-4 text-[10px] leading-relaxed text-dim">By continuing, you accept secure session and audit records strictly necessary to operate your account. GTA LORE WIKI never stores your password in readable form.</p>
+        <p className="mt-5 border-t hairline pt-4 text-[10px] leading-relaxed text-dim">By continuing, you accept secure session and audit records strictly necessary to operate your account. GTA LORE never stores your password in readable form.</p>
         <Link href="/" className="mt-3 inline-block font-cond uppercase tracking-[0.12em] text-[10px] text-mint hover:text-paper">Continue without an account</Link>
       </section>
     </div>

@@ -10,12 +10,12 @@ export async function generateMetadata({ params }) {
   const description = item.excerpt
 
   return {
-    title: `${name} — GTA LORE WIKI`,
+    title: `${name} — GTA LORE`,
     description,
     alternates: { canonical: `/news/${slug}` },
     openGraph: {
       type: 'article',
-      title: `${name} — GTA LORE WIKI`,
+      title: `${name} — GTA LORE`,
       description,
       url: `/news/${slug}`,
       images: item.image ? [item.image] : undefined,

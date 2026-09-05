@@ -1,4 +1,4 @@
-# GTA LORE WIKI authentication
+# GTA LORE authentication
 
 The account system is implemented in-house on the MongoDB already used by the
 site. It does not depend on a hosted identity provider.
@@ -18,7 +18,7 @@ Optional email delivery through Resend:
 
 ```env
 RESEND_API_KEY=re_...
-AUTH_EMAIL_FROM="GTA LORE WIKI <account@lusorae.pt>"
+AUTH_EMAIL_FROM="GTA LORE <account@lusorae.pt>"
 ```
 
 Without the two email variables, registration, login, profiles, password

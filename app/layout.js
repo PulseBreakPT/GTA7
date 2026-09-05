@@ -21,18 +21,18 @@ const SITE = 'https://lusorae.pt'
 export const metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: 'GTA LORE WIKI — The GTA VI Encyclopedia',
-    template: '%s | GTA LORE WIKI',
+    default: 'GTA LORE — The GTA VI Encyclopedia',
+    template: '%s | GTA LORE',
   },
   description: 'An independent, source-labelled archive for Grand Theft Auto VI: characters, vehicles, weapons, locations, radio and mechanics — every entry carrying the source it came from.',
-  applicationName: 'GTA LORE WIKI',
+  applicationName: 'GTA LORE',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
-    siteName: 'GTA LORE WIKI',
+    siteName: 'GTA LORE',
     locale: 'en_GB',
     url: SITE,
-    title: 'GTA LORE WIKI — The GTA VI Encyclopedia',
+    title: 'GTA LORE — The GTA VI Encyclopedia',
     description: 'Every entry carries the source it came from. An independent fan archive for Grand Theft Auto VI.',
   },
   twitter: { card: 'summary_large_image' },
@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
       <head>
         <script dangerouslySetInnerHTML={{__html:'window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);'}} />
       </head>
-      <body className={`${cond.variable} ${inter.variable} ${mono.variable} gta-lore-wiki-fx-root font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
+      <body className={`${cond.variable} ${inter.variable} ${mono.variable} gta-lore-fx-root font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
         <div className="site-atmosphere" aria-hidden="true">
           <span className="site-aurora site-aurora-a" />
           <span className="site-aurora site-aurora-b" />

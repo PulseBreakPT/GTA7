@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
-const SEEN_KEY = 'gta-lore-wiki-intro-omega-v1'
+const SEEN_KEY = 'gta-lore-intro-omega-v1'
 
 export default function BootSequence() {
   const pathname = usePathname()
@@ -35,17 +35,17 @@ export default function BootSequence() {
   if (phase === 'hidden') return null
 
   return (
-    <div className={`gta-lore-wiki-boot ${phase === 'leaving' ? 'is-leaving' : ''}`} role="status" aria-label="Opening GTA Lore Wiki">
+    <div className={`gta-lore-boot ${phase === 'leaving' ? 'is-leaving' : ''}`} role="status" aria-label="Opening GTA Lore">
       <div className="boot-aurora" aria-hidden="true" />
       <div className="boot-sun" aria-hidden="true"><span /><span /><span /><span /><span /></div>
       <div className="boot-grid" aria-hidden="true" />
       <div className="boot-copy">
-        <div className="boot-monogram">GLW</div>
+        <div className="boot-monogram">GL</div>
         <p>Welcome to</p>
         {/* Não é `h1`: a página por baixo já tem o seu, e dois títulos
             de primeiro nível na mesma página confundem quem navega por
             estrutura. Isto é uma cortina de abertura, não o título. */}
-        <p className="boot-title">GTA LORE WIKI</p>
+        <p className="boot-title">GTA LORE</p>
         <span>The GTA VI knowledge universe</span>
         <div className="boot-loader"><i /></div>
         <small>VICE CITY · LEONIDA · ARCHIVE ONLINE</small>

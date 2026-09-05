@@ -41,7 +41,7 @@ export default function SearchModal({ open, onClose, initialQuery = '' }) {
   useEffect(() => {
     if (!open) return
     setQ(initialQuery); setType('all'); setCursor(0)
-    try { setRecent(JSON.parse(localStorage.getItem('gta-lore-wiki:recent-searches') || '[]').slice(0, 6)) } catch { setRecent([]) }
+    try { setRecent(JSON.parse(localStorage.getItem('gta-lore:recent-searches') || '[]').slice(0, 6)) } catch { setRecent([]) }
     const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 40)
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
@@ -57,7 +57,7 @@ export default function SearchModal({ open, onClose, initialQuery = '' }) {
     if (!value) return
     const next = [value, ...recent.filter((item) => item.toLowerCase() !== value.toLowerCase())].slice(0, 6)
     setRecent(next)
-    try { localStorage.setItem('gta-lore-wiki:recent-searches', JSON.stringify(next)) } catch { /* storage can be unavailable */ }
+    try { localStorage.setItem('gta-lore:recent-searches', JSON.stringify(next)) } catch { /* storage can be unavailable */ }
   }
 
   const go = (href) => { remember(q); onClose(); router.push(href) }
@@ -71,11 +71,11 @@ export default function SearchModal({ open, onClose, initialQuery = '' }) {
   }
 
   return (
-    <div className="gta-lore-wiki-search-layer fixed inset-0 z-[110]" role="dialog" aria-modal="true" aria-label="Search the archive">
+    <div className="gta-lore-search-layer fixed inset-0 z-[110]" role="dialog" aria-modal="true" aria-label="Search the archive">
       <div className="absolute inset-0" onClick={onClose} />
-      <div className="gta-lore-wiki-search-modal absolute left-1/2 top-12 sm:top-20 -translate-x-1/2 w-[calc(100vw-1.5rem)] max-w-[920px] overflow-hidden" onKeyDown={onKey}>
+      <div className="gta-lore-search-modal absolute left-1/2 top-12 sm:top-20 -translate-x-1/2 w-[calc(100vw-1.5rem)] max-w-[920px] overflow-hidden" onKeyDown={onKey}>
         <div className="search-command-head">
-          <span><Sparkles size={12} />GTA LORE WIKI FINDER</span>
+          <span><Sparkles size={12} />GTA LORE FINDER</span>
           <small>{SEARCH_INDEX.length} indexed records · instant local search</small>
           <button type="button" onClick={onClose} aria-label="Close search"><X size={16} /></button>
         </div>

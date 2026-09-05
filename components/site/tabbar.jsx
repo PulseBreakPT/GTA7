@@ -206,7 +206,7 @@ export default function TabBar() {
           aria-label="Primary"
           onPointerLeave={() => setHoverKey(null)}
           className={cx(
-            'gta-lore-wiki-tabbar pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink',
+            'gta-lore-tabbar pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink',
             'transition-[padding,box-shadow] duration-500 ease-out',
             compact ? 'px-7 py-1.5' : 'px-7 py-2'
           )}
@@ -356,7 +356,7 @@ export default function TabBar() {
             className="fixed inset-x-0 bottom-0 z-[79] mx-auto w-full max-w-[720px] px-3 animate-in slide-in-from-bottom-6 fade-in duration-300 ease-out motion-reduce:animate-none"
             style={{ paddingBottom: 'calc(max(0.75rem, env(safe-area-inset-bottom)) + 78px)' }}
           >
-            <div className="gta-lore-wiki-menu-sheet rounded-[28px] bg-ink overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.30)]">
+            <div className="gta-lore-menu-sheet rounded-[28px] bg-ink overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.30)]">
               {/* Pega, como nas folhas do iOS: diz que isto veio de baixo
                   e que se fecha para baixo. */}
               <div className="flex justify-center pt-2.5 pb-1">
@@ -365,7 +365,7 @@ export default function TabBar() {
 
               <div className="max-h-[min(64vh,560px)] overflow-y-auto overscroll-contain px-4 pb-4">
                 <div className="flex items-center justify-between gap-4 py-3 mb-1 border-b border-black/[0.07]">
-                  <span className="chromatic-title font-cond font-bold text-[15px] tracking-wide text-paper">GTA LORE WIKI</span>
+                  <span className="chromatic-title font-cond font-bold text-[15px] tracking-wide text-paper">GTA LORE</span>
                   <span className="flex items-center gap-3 shrink-0">
                     {counters.map(([n, label]) => (
                       <span key={label} className="flex flex-col items-end leading-none">
