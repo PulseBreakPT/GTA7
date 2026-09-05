@@ -70,7 +70,7 @@ function App() {
     .map((a, i) => ({ rank: String(i + 1).padStart(2, '0'), slug: a.slug, title: a.title.charAt(0) + a.title.slice(1).toLowerCase(), date: `${a.readTime} min` }))
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 xl:grid-cols-[1fr_408px] gap-6">
+    <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 xl:grid-cols-[1fr_408px] gap-6">
       {/* LEFT */}
       <div className="min-w-0">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News' }]} />

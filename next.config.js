@@ -41,11 +41,16 @@ const nextConfig = {
           { key: "Content-Security-Policy", value: "frame-ancestors 'self';" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
         ],
       },
       {
-        // O CORS só faz sentido na API; aplicá-lo ao HTML não servia nada.
-        source: "/api/:path*",
+        // Apenas os endpoints públicos do template aceitam CORS. As rotas
+        // de autenticação são deliberadamente same-origin e validam origem,
+        // CSRF e cookies seguros por pedido.
+        source: "/api/:path(root|status)",
         headers: [
           { key: "Access-Control-Allow-Origin", value: process.env.CORS_ORIGINS || "*" },
           { key: "Access-Control-Allow-Methods", value: "GET, POST, PUT, DELETE, OPTIONS" },

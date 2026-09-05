@@ -31,21 +31,25 @@ function App() {
         <span className="absolute top-4 left-4"><StatusBadge status={g.status} /></span>
       </div>
 
-      <h1 data-ghost="GUIDES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-6">{g.title}</h1>
-      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-y hairline py-3">
-        <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>
-        <SourceChip name={g.sourceName} url={g.sourceUrl} prefix={null} className="text-[12px]" />
-      </div>
-      <p className="text-paper/85 text-[15px] leading-relaxed mt-5 max-w-[720px]">{g.summary}</p>
+      <header className="wiki-article-header mt-6">
+        <h1 data-ghost="GUIDES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px]">{g.title}</h1>
+        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-y hairline py-3">
+          <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>
+          <SourceChip name={g.sourceName} url={g.sourceUrl} prefix={null} className="text-[12px]" />
+        </div>
+        <p className="text-paper/85 text-[15px] leading-relaxed mt-5 max-w-[720px]">{g.summary}</p>
+      </header>
 
-      <ol className="mt-6 flex flex-col gap-3 max-w-[760px]">
-        {g.steps.map((s, i) => (
-          <li key={i} className="panel tech-mask-sm p-4 flex gap-4">
-            <span className="font-cond font-bold text-[22px] text-pink tabular-nums w-9 shrink-0">{String(i + 1).padStart(2, '0')}</span>
-            <p className="text-[14px] leading-relaxed text-paper/90 pt-1">{s}</p>
-          </li>
-        ))}
-      </ol>
+      <section className="wiki-article-body mt-6 max-w-[820px]" aria-label="Guide article">
+        <ol className="flex flex-col gap-3 max-w-[760px]">
+          {g.steps.map((s, i) => (
+            <li key={i} className="panel tech-mask-sm p-4 flex gap-4">
+              <span className="font-cond font-bold text-[22px] text-pink tabular-nums w-9 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+              <p className="text-[14px] leading-relaxed text-paper/90 pt-1">{s}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       <section className="mt-12" aria-label="More guides">
         <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[20px] text-paper border-b hairline pb-2">MORE GUIDES</h2>

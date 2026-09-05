@@ -1,17 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ChevronRight, FolderTree, Link2, FileWarning, Quote, Info, Shuffle, Check, Hash } from 'lucide-react'
+import Image from 'next/image'
+import { ChevronRight, FolderTree, Link2, FileWarning, Quote, Info, Shuffle, Check, Hash, Printer, Copy, Clock3, BookOpen, Bookmark, BookmarkCheck, FolderPlus, PenLine, StickyNote, UserRound } from 'lucide-react'
 import { categoriesFor, backlinksFor, entryFor, entryByName, otherUses, confusableWith, siblingsFor, outgoingFor, KIND_META, ENTRIES, LINK_PATTERN } from '@/lib/wiki-graph'
-import MapTerrain, { MAP_VBW, MAP_VBH } from './map-terrain'
 import { cx } from './ui'
+import { useAuth } from './auth-provider'
 
 // Migalhas de pão: dizem em que ramo do arquivo se está e deixam subir um
 // nível. O último elemento é a página actual e não é ligação.
 export function Breadcrumb({ trail }) {
   return (
-    <nav aria-label="Breadcrumb" className="min-w-0">
+    <nav aria-label="Breadcrumb" className="wiki-breadcrumb min-w-0">
       <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 font-cond uppercase tracking-[0.12em] text-[11px] text-dim">
         {trail.map((step, i) => {
           const last = i === trail.length - 1
@@ -37,7 +38,7 @@ export function Breadcrumb({ trail }) {
 // a mentir sobre o tamanho do arquivo.
 export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, children }) {
   return (
-    <header className="border-b hairline pb-4">
+    <header className="wiki-category-header border-b hairline pb-4">
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         <div className="min-w-0">
           {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
@@ -85,7 +86,7 @@ export function TableOfContents({ sections }) {
   }, [])
 
   return (
-    <nav className="sticky top-24 h-fit" aria-label="Contents">
+    <nav className="wiki-toc-panel sticky top-24 h-fit" aria-label="Contents">
       <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mb-3">Contents</p>
       <ul className="space-y-2">
         {sections.map(({ id, label, icon: Icon }) => (
@@ -112,7 +113,7 @@ export function TableOfContents({ sections }) {
 // se poder apontar alguém para a secção e não para a entrada inteira.
 export function WikiSection({ id, title, className, children }) {
   return (
-    <section data-section id={id} className={cx('mb-12 scroll-mt-24', className)}>
+    <section data-section id={id} className={cx('wiki-content-section mb-12 scroll-mt-24', className)}>
       <h2 className="deco-rule group font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4 flex items-baseline gap-2">
         {title}
         {id && (
@@ -166,6 +167,113 @@ export function ShortDescription({ children, className }) {
   )
 }
 
+// Ações relacionadas com a página, separadas da navegação global. MediaWiki
+// chama-lhes page tabs/toolbox: não mudam de assunto, operam sobre o verbete
+// actual. Aqui só aparecem ações reais — leitura, relações, verificação,
+// metadados, citação, impressão e ligação canónica.
+export function PageTools({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  const { user, request } = useAuth()
+  const [copied, setCopied] = useState(false)
+  const [watching, setWatching] = useState(false)
+  const [watchBusy, setWatchBusy] = useState(false)
+  const recordedView = useRef('')
+
+  useEffect(() => {
+    if (!entry || !user) {
+      setWatching(false)
+      return
+    }
+    const key = `${user.id}:${kind}:${slug}`
+    fetch(`/api/auth/wiki-state?kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`, { credentials: 'same-origin', cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => { if (data) setWatching(Boolean(data.watching)) })
+      .catch(() => {})
+    if (recordedView.current !== key) {
+      recordedView.current = key
+      request('page-view', { body: { kind, slug } }).catch(() => {})
+    }
+  }, [entry, user, kind, slug, request])
+
+  if (!entry) return null
+
+  const toggleWatch = async () => {
+    if (!user || watchBusy) return
+    setWatchBusy(true)
+    try {
+      const result = await request('watch', { body: { kind, slug, watching: !watching } })
+      setWatching(Boolean(result.watching))
+    } catch { /* mantém o estado anterior se a rede falhar */ }
+    finally { setWatchBusy(false) }
+  }
+
+  const copyPermanentLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}${entry.href}`)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch { /* o endereço canónico continua disponível na barra do browser */ }
+  }
+
+  const related = encodeURIComponent(`${kind}:${slug}`)
+  const links = [
+    ['Read', '#overview', BookOpen],
+    ['What links here', `/wiki/what-links-here?kind=${kind}&slug=${slug}`, Link2],
+    ['Related changes', `/wiki/changes?related=${related}`, Clock3],
+    ['Page information', '#page-information', Info],
+    ['Cite', '#page-citation', Quote],
+  ]
+
+  return (
+    <div className="wiki-tools-stack mt-3">
+      <nav className="wiki-page-tools flex flex-wrap items-center gap-x-1 gap-y-1 border-y hairline py-1" aria-label="Article tools">
+        {links.map(([label, href, Icon]) => (
+          <Link key={label} href={href} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
+            <Icon size={12} aria-hidden="true" /> {label}
+          </Link>
+        ))}
+        <button type="button" onClick={() => window.print()} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
+          <Printer size={12} aria-hidden="true" /> Print
+        </button>
+        <button type="button" onClick={copyPermanentLink} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
+          {copied ? <Check size={12} className="text-mint" aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}
+          {copied ? 'Link copied' : 'Permanent link'}
+        </button>
+      </nav>
+
+      <nav className="wiki-user-actions" aria-label="Your personal wiki actions">
+        <div className="wiki-user-actions-label">
+          <span><UserRound size={13} aria-hidden="true" /> Your wiki</span>
+          <small>{user ? `Personal tools for @${user.username}` : 'Save and contribute with an account'}</small>
+        </div>
+        <div className="wiki-user-actions-buttons">
+          {user ? (
+            <>
+              <button type="button" onClick={toggleWatch} disabled={watchBusy} aria-pressed={watching} className={cx('wiki-user-action', watching && 'is-active')}>
+                {watching ? <BookmarkCheck size={14} aria-hidden="true" /> : <Bookmark size={14} aria-hidden="true" />}
+                <span>{watching ? 'Watching' : 'Watch page'}</span>
+              </button>
+              <Link href={`/account?section=collections&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+                <FolderPlus size={14} aria-hidden="true" /><span>Add to collection</span>
+              </Link>
+              <Link href={`/account?section=notes&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+                <StickyNote size={14} aria-hidden="true" /><span>Private note</span>
+              </Link>
+              <Link href={`/account?section=contributions&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+                <PenLine size={14} aria-hidden="true" /><span>Suggest edit</span>
+              </Link>
+            </>
+          ) : (
+            <Link href={`/login?next=${encodeURIComponent(entry.href)}`} className="wiki-user-action wiki-user-signin">
+              <UserRound size={14} aria-hidden="true" /><span>Sign in for personal tools</span>
+            </Link>
+          )}
+        </div>
+      </nav>
+    </div>
+  )
+}
+
 // A caixa de citação. Numa wiki é o «Cite this page», e serve para o que
 // se faz com um arquivo: citá-lo noutro sítio, com a data em que foi lido.
 export function CitePage({ kind, slug, title }) {
@@ -192,7 +300,7 @@ export function CitePage({ kind, slug, title }) {
   }
 
   return (
-    <section className="mt-10 panel rounded-sm p-4" aria-labelledby={`cite-${kind}-${slug}`}>
+    <section id="page-citation" className="wiki-support-panel mt-10 panel rounded-sm p-4 scroll-mt-24" aria-labelledby={`cite-${kind}-${slug}`}>
       <h2 id={`cite-${kind}-${slug}`} className="flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
         <Quote size={13} className="text-mint" aria-hidden="true" /> Cite this page
       </h2>
@@ -236,7 +344,7 @@ export function PageInformation({ kind, slug }) {
   ]
 
   return (
-    <details className="mt-4 panel rounded-sm">
+    <details id="page-information" className="wiki-support-panel mt-4 panel rounded-sm scroll-mt-24">
       <summary className="cursor-pointer list-none px-4 py-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
         <Info size={13} className="text-mint" aria-hidden="true" /> Page information
         <ChevronRight size={12} className="ml-auto text-dim" aria-hidden="true" />
@@ -261,7 +369,7 @@ export function Navbox({ kind, slug, title }) {
   if (!entry || siblings.length === 0) return null
 
   return (
-    <nav className="mt-8 border hairline rounded-sm overflow-hidden" aria-label={`More ${KIND_META[kind].plural.toLowerCase()}`}>
+    <nav className="wiki-navbox mt-8 border hairline rounded-sm overflow-hidden" aria-label={`More ${KIND_META[kind].plural.toLowerCase()}`}>
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2.5 bg-surface2/50 border-b hairline">
         <span className="font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
           {title || `More ${KIND_META[kind].plural.toLowerCase()}`}
@@ -303,7 +411,7 @@ export function SpecGrid({ items }) {
   const rows = items.filter(Boolean)
   if (rows.length === 0) return null
   return (
-    <dl className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+    <dl className="wiki-spec-grid grid grid-cols-2 sm:grid-cols-3 gap-2">
       {rows.map(({ label, value, children }) => (
         <div key={label} className="panel2 rounded-sm px-3 py-2.5 min-w-0">
           <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{label}</dt>
@@ -318,7 +426,7 @@ export function SpecGrid({ items }) {
 
 export function InfoboxShell({ children, className }) {
   return (
-    <aside className={cx('panel rounded-sm p-5 bg-ink/30 lg:sticky lg:top-24 h-fit', className)}>
+    <aside className={cx('wiki-infobox panel rounded-sm p-5 bg-ink/30 lg:sticky lg:top-24 h-fit', className)}>
       <div className="space-y-4">{children}</div>
     </aside>
   )
@@ -335,63 +443,41 @@ export function InfoboxSource({ sourceName, sourceUrl, updatedAt }) {
   )
 }
 
-// Um lugar sem fotografia oficial ficava com um pino cinzento igual ao dos
-// outros trinta e sete. Passa a levar um recorte do mapa do arquivo centrado
-// nas suas coordenadas: é uma imagem própria de cada sítio, distinta das
-// restantes, e desenhada só com dados que o arquivo tem. Não é uma vista do
-// local — é o mapa —, e por isso vem rotulada como tal em vez de se fazer
-// passar por captura do jogo.
-export function LocationThumb({ x, y, name, label = 'ARCHIVE MAP', className }) {
-  // O recorte é uma janela de 300×170 do mapa de 1000×620, encostada às
-  // bordas quando o ponto está perto delas — sem isto, um sítio no canto
-  // apareceria centrado em água fora do mapa.
-  const W = 300
-  const H = 170
-  const vx = Math.min(Math.max(x, W / 2), MAP_VBW - W / 2)
-  const vy = Math.min(Math.max(y, H / 2), MAP_VBH - H / 2)
-
+// A visual record is always raster media captured from Rockstar material.
+// When the exact place has no dedicated frame, the region artwork is used as
+// context and labelled explicitly so it cannot be mistaken for proof of the
+// exact building or street.
+export function LocationThumb({ image, fallbackImage, name, label, className, priority = false }) {
+  const src = image || fallbackImage
+  if (!src) return null
+  const contextual = !image
   return (
-    <span className={cx('relative block overflow-hidden bg-[#DCE6EF]', className)}>
-      <svg
-        viewBox={`${vx - W / 2} ${vy - H / 2} ${W} ${H}`}
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 w-full h-full"
-        role="img"
-        aria-label={`${name} on the archive map of Leonida — no official image published`}
-      >
-        <rect x={vx - W / 2} y={vy - H / 2} width={W} height={H} fill="#DCE6EF" />
-        <MapTerrain labels={false} />
-        <g transform={`translate(${x},${y})`}>
-          <circle r="26" fill="none" stroke="#C2185B" strokeWidth="2" opacity="0.45" />
-          <circle r="13" fill="none" stroke="#FFFFFF" strokeWidth="2.5" />
-          <circle r="7" fill="#FFFFFF" stroke="#C2185B" strokeWidth="3.5" />
-          <circle r="2.5" fill="#C2185B" />
-        </g>
-      </svg>
-      <span className="absolute left-0 bottom-0 px-1.5 py-[2px] bg-ink/80 font-mono text-[8px] uppercase tracking-[0.16em] text-mint">
-        {label}
+    <span className={cx('relative block overflow-hidden bg-surface2', className)}>
+      <Image
+        src={src}
+        alt={contextual ? `${name} — official imagery of the surrounding region, not this exact place` : `${name} in published GTA VI media`}
+        fill
+        priority={priority}
+        sizes="(max-width: 768px) 100vw, 420px"
+        className="object-cover"
+      />
+      <span className="absolute inset-x-0 bottom-0 px-2 py-1.5 bg-gradient-to-t from-black/85 to-black/10 font-mono text-[8px] uppercase tracking-[0.13em] text-white">
+        {label || (contextual ? 'OFFICIAL REGION CONTEXT · NOT THIS EXACT PLACE' : 'PUBLISHED GTA VI IMAGE')}
       </span>
     </span>
   )
 }
 
-// Mapa de localização da ficha de um local: o mesmo terreno do mapa
-// interactivo, sem interacção nenhuma, com um alvo no ponto. É a peça que
-// nas wikis grandes aparece sempre no topo da caixa de dados de um sítio.
-export function LocationLocator({ x, y, name }) {
+export function LocationLocator({ image, fallbackImage, name, sourceLabel }) {
   return (
-    <span className="relative block overflow-hidden rounded-sm border border-line bg-[#DCE6EF]">
-      <svg viewBox={`0 0 ${MAP_VBW} ${MAP_VBH}`} className="w-full h-auto" role="img" aria-label={`${name} marked on the map of Leonida`}>
-        <rect width={MAP_VBW} height={MAP_VBH} fill="#DCE6EF" />
-        <MapTerrain />
-        <g transform={`translate(${x},${y})`}>
-          <circle r="42" fill="none" stroke="#C2185B" strokeWidth="3" opacity="0.5" />
-          <circle r="22" fill="none" stroke="#FFFFFF" strokeWidth="3" />
-          <circle r="11" fill="#FFFFFF" stroke="#C2185B" strokeWidth="5" />
-          <circle r="4" fill="#C2185B" />
-        </g>
-      </svg>
-    </span>
+    <LocationThumb
+      image={image}
+      fallbackImage={fallbackImage}
+      name={name}
+      label={sourceLabel}
+      className="aspect-[16/10] w-full rounded-sm border border-line"
+      priority
+    />
   )
 }
 
@@ -425,18 +511,6 @@ export function WhatThisLinks({ kind, slug }) {
         ))}
       </ul>
     </section>
-  )
-}
-
-// A posição no mapa do arquivo, para os lugares. Não são coordenadas do
-// jogo — a Rockstar não publicou nenhumas —, são as deste mapa, e é isso
-// que a linha diz.
-export function ArchiveCoordinates({ x, y, className }) {
-  if (x == null || y == null) return null
-  return (
-    <p className={cx('font-mono text-[10px] uppercase tracking-[0.14em] text-dim', className)}>
-      Archive map position {x}, {y} · not official game coordinates
-    </p>
   )
 }
 
@@ -507,7 +581,7 @@ export function References({ items }) {
   if (list.length === 0) return null
 
   return (
-    <section data-section id="references" className="mb-12 scroll-mt-24">
+    <section data-section id="references" className="wiki-references mb-12 scroll-mt-24">
       <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">References</h2>
       <ol className="space-y-2.5">
         {list.map((r, i) => (

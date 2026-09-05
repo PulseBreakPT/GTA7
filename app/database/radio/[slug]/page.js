@@ -3,9 +3,8 @@
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
 
 export default function RadioStationPage() {
@@ -33,13 +32,12 @@ export default function RadioStationPage() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="radio" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio', href: '/database/radio' }, { label: s.name }]} />
 
         <div className="data-rail mt-2">DIAL INDEX · SOURCE-BOUND RECORD · ID {s.slug.toUpperCase()}</div>
 
-        <header className="mt-5">
+        <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={s.status} />
             <GhostBadge status="confirmed" label={s.genre} />
@@ -51,8 +49,10 @@ export default function RadioStationPage() {
           <Hatnote kind="radio" slug={s.slug} />
         </header>
 
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-          <div className="min-w-0 order-2 lg:order-1">
+        <PageTools kind="radio" slug={s.slug} />
+
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+          <div className="wiki-article-body min-w-0 order-2 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
               <div className="mt-4 border-l-2 border-mint/70 pl-3">

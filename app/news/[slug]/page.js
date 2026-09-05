@@ -109,7 +109,7 @@ function App() {
   }))
 
   return (
-    <article className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
+    <article className="wiki-news-article px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news' }, { label: a.title }]} />
 
       <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 panel">
@@ -160,7 +160,7 @@ function App() {
         </section>
       )}
 
-      <div className="mt-7">
+      <div className="wiki-news-paper mt-7">
         <FormattedArticleBody body={a.body} />
       </div>
 

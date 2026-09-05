@@ -1,25 +1,42 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { Suspense, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
-import { RECENT, KIND_META } from '@/lib/wiki-graph'
+import { RECENT, KIND_META, backlinksFor, entryFor, outgoingFor } from '@/lib/wiki-graph'
 
 // O Special:RecentChanges possível num arquivo sem edição pública: a lista
 // de tudo por data de última verificação. Não é histórico de edições — é a
 // data em que cada entrada foi confrontada com a sua fonte, que é o que o
 // conteúdo realmente guarda.
-export default function RecentChangesPage() {
+function RecentChanges() {
+  const params = useSearchParams()
+  const relatedKey = params.get('related') || ''
+  const splitAt = relatedKey.indexOf(':')
+  const relatedKind = splitAt > 0 ? relatedKey.slice(0, splitAt) : ''
+  const relatedSlug = splitAt > 0 ? relatedKey.slice(splitAt + 1) : ''
+  const subject = entryFor(relatedKind, relatedSlug)
   const [kind, setKind] = useState('all')
+
+  const baseEntries = useMemo(() => {
+    if (!subject) return RECENT
+    const connected = new Set([
+      subject.href,
+      ...backlinksFor(subject.kind, subject.slug).map((entry) => entry.href),
+      ...outgoingFor(subject).map((entry) => entry.href),
+    ])
+    return RECENT.filter((entry) => connected.has(entry.href))
+  }, [subject])
 
   const kinds = useMemo(() => {
     const seen = new Map()
-    RECENT.forEach((e) => seen.set(e.kind, (seen.get(e.kind) || 0) + 1))
+    baseEntries.forEach((e) => seen.set(e.kind, (seen.get(e.kind) || 0) + 1))
     return [...seen.entries()].map(([id, count]) => ({ id, label: KIND_META[id].plural, count }))
-  }, [])
+  }, [baseEntries])
 
-  const shown = useMemo(() => RECENT.filter((e) => kind === 'all' || e.kind === kind), [kind])
+  const shown = useMemo(() => baseEntries.filter((e) => kind === 'all' || e.kind === kind), [baseEntries, kind])
 
   // Agrupado por dia, como qualquer lista de alterações.
   const byDay = useMemo(() => {
@@ -38,11 +55,11 @@ export default function RecentChangesPage() {
       <div className="mt-4">
         <CategoryHeader
           eyebrow="Special page"
-          title="Recent changes"
-          description="Every entry by the date it was last checked against its source. This archive has no public editing, so there is no edit history to show — what it can show is when each record was last verified."
-          count={RECENT.length}
+          title={subject ? `Changes related to ${subject.name}` : 'Recent changes'}
+          description={subject ? `The dated verification records directly connected to ${subject.name}: the page itself, pages that link to it and pages it links to.` : 'Every entry by the date it was last checked against its source. This archive has no public editing, so there is no edit history to show — what it can show is when each record was last verified.'}
+          count={baseEntries.length}
           countLabel="dated entries"
-          updatedAt={RECENT[0]?.updatedAt}
+          updatedAt={baseEntries[0]?.updatedAt}
         >
           <div className="mt-4 flex flex-wrap gap-2">
             <button
@@ -55,7 +72,7 @@ export default function RecentChangesPage() {
               )}
             >
               All
-              <span className="font-mono text-[10px] tabular-nums opacity-70">{RECENT.length}</span>
+              <span className="font-mono text-[10px] tabular-nums opacity-70">{baseEntries.length}</span>
             </button>
             {kinds.map((k) => (
               <button
@@ -77,6 +94,7 @@ export default function RecentChangesPage() {
       </div>
 
       <div className="mt-6 space-y-6">
+        {subject && <p className="text-[12.5px] text-dim">Related to <Link href={subject.href} className="text-pink hover:text-paper transition-colors">{subject.name}</Link> · <Link href="/wiki/changes" className="text-mint hover:text-paper transition-colors">show all recent changes</Link></p>}
         {byDay.slice(0, 20).map(([day, items]) => (
           <section key={day}>
             <div className="flex items-center gap-4">
@@ -102,4 +120,8 @@ export default function RecentChangesPage() {
       </div>
     </div>
   )
+}
+
+export default function RecentChangesPage() {
+  return <Suspense fallback={null}><RecentChanges /></Suspense>
 }

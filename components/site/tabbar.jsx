@@ -4,9 +4,10 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
-  House, Library, Map, Newspaper, MoreHorizontal, X, Users, Car, Crosshair,
+  House, Library, Newspaper, MoreHorizontal, X, Users, Car, Crosshair,
   MapPin, Radio as RadioIcon, Repeat2, Layers, FolderTree, Sparkles, BookOpen,
   Images, BookMarked, BarChart3, Clock, Shuffle,
+  Search, CircleHelp, UserRound,
 } from 'lucide-react'
 import { SITE_COUNTERS } from '@/lib/content'
 import { cx } from './ui'
@@ -23,7 +24,7 @@ const inWiki = (p) => WIKI_ROUTES.some((r) => p.startsWith(r)) || p.startsWith('
 const TABS = [
   { key: 'home', label: 'Home', href: '/', icon: House, match: (p) => p === '/', tint: 'pink' },
   { key: 'wiki', label: 'Wiki', href: '/wiki', icon: Library, match: inWiki, tint: 'violet' },
-  { key: 'map', label: 'Map', href: '/map', icon: Map, match: (p) => p === '/map', tint: 'mint' },
+  { key: 'map', label: 'Places', href: '/map', icon: MapPin, match: (p) => p === '/map', tint: 'mint' },
   { key: 'news', label: 'News', href: '/news', icon: Newspaper, match: (p) => p.startsWith('/news'), tint: 'warn' },
 ]
 
@@ -64,11 +65,14 @@ const SHEET_GROUPS = [
   {
     title: 'About the archive', tint: 'mint',
     items: [
+      { label: 'Account', href: '/account', icon: UserRound },
       { label: 'Sources', href: '/sources', icon: BookMarked },
       { label: 'Statistics', href: '/wiki/statistics', icon: BarChart3 },
       { label: 'Recent changes', href: '/wiki/changes', icon: Clock },
       { label: 'All categories', href: '/wiki/categories', icon: FolderTree },
       { label: 'Special pages', href: '/wiki/special', icon: Sparkles },
+      { label: 'Full search', href: '/wiki/search', icon: Search },
+      { label: 'Help', href: '/wiki/help', icon: CircleHelp },
       { label: 'Random entry', href: '/wiki/random', icon: Shuffle },
     ],
   },
@@ -194,7 +198,7 @@ export default function TabBar() {
   return (
     <>
       <div
-        className="fixed inset-x-0 bottom-0 z-[80] flex justify-center px-3 pointer-events-none"
+        className="mobile-tabbar-shell fixed inset-x-0 bottom-0 z-[80] flex justify-center px-3 pointer-events-none"
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
         <nav
@@ -202,7 +206,7 @@ export default function TabBar() {
           aria-label="Primary"
           onPointerLeave={() => setHoverKey(null)}
           className={cx(
-            'pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink',
+            'lusorae-tabbar pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink',
             'transition-[padding,box-shadow] duration-500 ease-out',
             compact ? 'px-7 py-1.5' : 'px-7 py-2'
           )}
@@ -352,7 +356,7 @@ export default function TabBar() {
             className="fixed inset-x-0 bottom-0 z-[79] mx-auto w-full max-w-[720px] px-3 animate-in slide-in-from-bottom-6 fade-in duration-300 ease-out motion-reduce:animate-none"
             style={{ paddingBottom: 'calc(max(0.75rem, env(safe-area-inset-bottom)) + 78px)' }}
           >
-            <div className="rounded-[28px] bg-ink overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.30)]">
+            <div className="lusorae-menu-sheet rounded-[28px] bg-ink overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.30)]">
               {/* Pega, como nas folhas do iOS: diz que isto veio de baixo
                   e que se fecha para baixo. */}
               <div className="flex justify-center pt-2.5 pb-1">
@@ -361,7 +365,7 @@ export default function TabBar() {
 
               <div className="max-h-[min(64vh,560px)] overflow-y-auto overscroll-contain px-4 pb-4">
                 <div className="flex items-center justify-between gap-4 py-3 mb-1 border-b border-black/[0.07]">
-                  <span className="chromatic-title font-cond font-bold text-[15px] tracking-wide text-paper">LEONIDA ARCHIVE</span>
+                  <span className="chromatic-title font-cond font-bold text-[15px] tracking-wide text-paper">LUSORAE</span>
                   <span className="flex items-center gap-3 shrink-0">
                     {counters.map(([n, label]) => (
                       <span key={label} className="flex flex-col items-end leading-none">

@@ -60,7 +60,7 @@ export default function SearchFab() {
     <>
       {!hosted && (
       <div
-        className="fixed top-0 right-0 z-[80] p-3 pointer-events-none"
+        className="mobile-search-fab fixed top-0 right-0 z-[80] p-3 pointer-events-none"
         style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}
       >
         <button
@@ -69,7 +69,7 @@ export default function SearchFab() {
           aria-label="Search the archive"
           aria-keyshortcuts="/"
           className={cx(
-            'group pointer-events-auto relative flex items-center justify-center rounded-[32%] bg-ink',
+            'lusorae-search-fab group pointer-events-auto relative flex items-center justify-center rounded-[32%] bg-ink',
             // A mesma gramática de luz da barra de baixo: aresta no topo,
             // contorno, contacto, elevação e a sombra tingida — aqui em
             // turquesa, que é a cor da pesquisa em todo o sítio.

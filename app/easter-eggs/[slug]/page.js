@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { CircleCheck, Circle, MapPin, Triangle } from 'lucide-react'
 import { easterEggs } from '@/lib/content'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryFooter, CitePage, Navbox, PageInformation, PageTools, References, WhatThisLinks } from '@/components/site/wiki'
 
 function App() {
   const { slug } = useParams()
@@ -29,8 +29,9 @@ function App() {
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: 'Secrets' }, { label: egg.name }]} />
 
       <div className="data-rail mt-2">SECRET INDEX · EVIDENCE RECORD · {egg.region}</div>
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5">
-        <div>
+      <PageTools kind="secrets" slug={egg.slug} />
+      <div id="overview" className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5 scroll-mt-24">
+        <div className="wiki-article-header">
           <div className="flex items-center gap-2">
             <StatusBadge status={egg.status} />
             <span className="font-cond font-semibold uppercase tracking-[0.16em] text-[11px] text-dim">{egg.region}</span>
@@ -91,6 +92,15 @@ function App() {
           ))}
         </div>
       </section>
+
+      <div className="mt-10 max-w-[820px]">
+        <References items={[{ name: egg.sourceName, url: egg.sourceUrl, retrieved: egg.updatedAt }]} />
+        <WhatThisLinks kind="secrets" slug={egg.slug} />
+        <CategoryFooter kind="secrets" slug={egg.slug} />
+        <CitePage kind="secrets" slug={egg.slug} />
+        <PageInformation kind="secrets" slug={egg.slug} />
+        <Navbox kind="secrets" slug={egg.slug} />
+      </div>
     </div>
   )
 }

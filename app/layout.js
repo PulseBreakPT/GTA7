@@ -4,6 +4,9 @@ import { Providers } from './providers'
 import SearchFab from '@/components/site/searchfab'
 import TabBar from '@/components/site/tabbar'
 import Footer from '@/components/site/footer'
+import BootSequence from '@/components/site/boot-sequence'
+import WikiChrome from '@/components/site/wiki-chrome'
+import GlobalEffects from '@/components/site/global-effects'
 
 const cond = Barlow_Condensed({ subsets: ['latin'], weight: ['400','500','600','700'], variable: '--font-cond', display: 'swap' })
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
@@ -18,18 +21,18 @@ const SITE = 'https://lusorae.pt'
 export const metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: 'LEONIDA ARCHIVE — Independent GTA VI Fan Database',
-    template: '%s | LEONIDA ARCHIVE',
+    default: 'LUSORAE — The GTA VI Encyclopedia',
+    template: '%s | LUSORAE',
   },
   description: 'An independent, source-labelled archive for Grand Theft Auto VI: characters, vehicles, weapons, locations, radio and mechanics — every entry carrying the source it came from.',
-  applicationName: 'LEONIDA ARCHIVE',
+  applicationName: 'LUSORAE',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
-    siteName: 'LEONIDA ARCHIVE',
+    siteName: 'LUSORAE',
     locale: 'en_GB',
     url: SITE,
-    title: 'LEONIDA ARCHIVE — Independent GTA VI Fan Database',
+    title: 'LUSORAE — The GTA VI Encyclopedia',
     description: 'Every entry carries the source it came from. An independent fan archive for Grand Theft Auto VI.',
   },
   twitter: { card: 'summary_large_image' },
@@ -42,8 +45,16 @@ export default function RootLayout({ children }) {
       <head>
         <script dangerouslySetInnerHTML={{__html:'window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);'}} />
       </head>
-      <body className={`${cond.variable} ${inter.variable} ${mono.variable} font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
+      <body className={`${cond.variable} ${inter.variable} ${mono.variable} lusorae-fx-root font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
+        <div className="site-atmosphere" aria-hidden="true">
+          <span className="site-aurora site-aurora-a" />
+          <span className="site-aurora site-aurora-b" />
+          <span className="site-orbit" />
+        </div>
         <Providers>
+          <GlobalEffects />
+          <BootSequence />
+          <WikiChrome />
           {/* Atalho para saltar direito ao conteúdo. Fica fora de vista
               até receber foco pelo teclado. */}
           <a
@@ -52,12 +63,12 @@ export default function RootLayout({ children }) {
           >
             Skip to content
           </a>
-          <div className="flex-1 min-w-0 flex flex-col">
+          <div className="site-frame flex-1 min-w-0 flex flex-col">
             <main id="main" tabIndex={-1} className="archive-grid flex-1 flex flex-col">{children}</main>
             {/* O espaço que a barra flutuante ocupa. Sem ele, a barra
                 tapava o fim do rodapé em todas as páginas. */}
             <Footer />
-            <div aria-hidden="true" style={{ height: 'calc(76px + max(0.75rem, env(safe-area-inset-bottom)))' }} />
+            <div className="mobile-tabbar-spacer" aria-hidden="true" style={{ height: 'calc(76px + max(0.75rem, env(safe-area-inset-bottom)))' }} />
           </div>
           <SearchFab />
           <TabBar />

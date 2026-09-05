@@ -21,7 +21,7 @@ const BRANCHES = [
   { label: 'Characters', href: '/database/characters', icon: Users, count: characters.length, image: IMG.luciaCaminos, blurb: 'Named cast, roles and documented relationships.' },
   { label: 'Vehicles', href: '/database/vehicles', icon: Car, count: vehicles.length, image: IMG.grottiCheetah, blurb: 'Every vehicle Rockstar has named, by class and manufacturer.' },
   { label: 'Weapons', href: '/database/weapons', icon: Crosshair, count: weapons.length, image: IMG.morganRevolvers, blurb: 'Armament shown or named in official material.' },
-  { label: 'Locations', href: '/map', icon: MapPin, count: locations.length, image: IMG.viceCity, blurb: 'Named places across Leonida, plotted on the map.' },
+  { label: 'Locations', href: '/map', icon: MapPin, count: locations.length, image: IMG.viceCity, blurb: 'Named places across Leonida, indexed with published imagery.' },
   { label: 'Radio', href: '/database/radio', icon: RadioIcon, count: radioStations.length, image: IMG.ambrosiaDrive, blurb: 'Stations confirmed for the dial.' },
   { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2, count: mechanics.length, image: IMG.ambrosiaNight, blurb: 'Systems Rockstar has described or shown.' },
 ]
@@ -51,7 +51,7 @@ const fmt = (iso) => iso
 // caixa à volta.
 function Section({ id, eyebrow, title, href, linkLabel, children, className }) {
   return (
-    <section id={id} className={cx('px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full scroll-mt-20', className)}>
+    <section id={id} className={cx('home-section px-4 sm:px-6 lg:px-8 py-9 lg:py-12 max-w-[1280px] mx-auto w-full scroll-mt-20', className)}>
       <div className="flex items-center gap-4">
         <div className="shrink-0">
           {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
@@ -130,25 +130,26 @@ function App() {
   const galleryPreview = [IMG.keyArtPier, IMG.viceCity, IMG.ambrosiaSunset, IMG.keysStreet, IMG.grottiCheetah, IMG.swampAirboat]
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="home-shell flex-1 flex flex-col">
       {/* ===== 1. HERO ===== */}
       {/* Sem barra superior, a hero começa no topo do ecrã. O
           deslocamento que a punha por baixo dela deixou de fazer
           sentido — puxava-a para fora do ecrã. */}
-      <section className="corner-brackets relative min-h-[560px] lg:min-h-[680px] overflow-hidden">
+      <section className="home-hero corner-brackets relative min-h-[620px] lg:min-h-[760px] overflow-hidden">
         <div className="absolute inset-0">
-          <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="object-cover object-center saturate-[1.05]" />
+          <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork: Jason and Lucia leaning against a car at sunset in Vice City" fill priority sizes="100vw" className="home-hero-art object-cover object-center saturate-[1.05]" />
           {/* O véu é preciso — o título fica sobre a imagem — mas quem
               tem de segurar a leitura é o halo do próprio texto, não uma
               camada de tinta por cima da arte. Aqui fica só o suficiente
               para assentar o canto esquerdo, e acaba a meio. */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ink/85 from-0% via-ink/30 via-30% to-transparent to-58%" />
-          <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-ink/90 to-transparent" />
+          <div className="home-hero-wash absolute inset-0" />
+          <div className="home-hero-floor absolute inset-x-0 bottom-0 h-1/3" />
         </div>
 
-        <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-14 lg:pt-16 flex flex-col h-full">
-          <div className="ghost-type mt-10 lg:mt-20 max-w-[720px]" data-ghost="LEONIDA">
-            <h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px] [filter:drop-shadow(0_0_18px_rgba(255,255,255,0.95))_drop-shadow(0_0_46px_rgba(255,255,255,0.8))]">
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-5 sm:pt-7 flex flex-col h-full max-w-[1440px] mx-auto">
+          <div className="home-hero-copy ghost-type mt-12 lg:mt-20 max-w-[760px]" data-ghost="VICE CITY">
+            <p className="home-hero-kicker"><span /> Independent · source-labelled · always current</p>
+            <h1 className="home-hero-title chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px]">
               LEONIDA,<br />DOCUMENTED.
             </h1>
             {/* Sobre fotografia, o cinzento do texto secundário não chega: no
@@ -158,7 +159,7 @@ function App() {
               hastes das letras e uma larga para assentar o bloco. E a
               medida encurta, para o parágrafo não avançar para a zona da
               imagem onde já não há véu nenhum a segurá-lo. */}
-            <p className="mt-5 text-paper text-[17px] sm:text-[19px] leading-relaxed max-w-[380px] font-medium [text-shadow:0_0_10px_rgba(255,255,255,0.98),0_0_28px_rgba(255,255,255,0.9)]">
+            <p className="home-hero-lede mt-5 text-paper text-[17px] sm:text-[19px] leading-relaxed max-w-[420px] font-medium">
               {extendedLookBrief.synopsis}
             </p>
             {/* A primeira coisa da página passa a ser aquilo a que se vem:
@@ -168,7 +169,7 @@ function App() {
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="mt-7 w-full max-w-[520px] flex items-center gap-3 h-[56px] px-4 bg-ink border border-line rounded-sm text-left hover:border-mint/70 transition-colors"
+              className="home-hero-search mt-7 w-full max-w-[540px] flex items-center gap-3 h-[58px] px-4 rounded-sm text-left transition-colors"
             >
               <Search size={18} className="text-dim shrink-0" aria-hidden="true" />
               <span className="flex-1 min-w-0 truncate text-[15px] text-dim">
@@ -180,24 +181,32 @@ function App() {
             {/* Os dois caminhos de entrada, lado a lado e com o mesmo peso
                 de caixa: um leva aos verbetes, o outro ao mapa. */}
             <div className="mt-5 flex flex-wrap items-center gap-4">
-              <Link href="#explore-the-wiki" className="magnetic-button tech-mask-sm group inline-flex items-center gap-3 border border-mint/70 bg-ink/55 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-mint hover:bg-mint hover:text-ink transition-colors duration-200">
+              <Link href="#explore-the-wiki" className="home-primary-cta magnetic-button tech-mask-sm group inline-flex items-center gap-3 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] transition-colors duration-200">
                 EXPLORE THE WIKI
                 <ChevronRight size={15} strokeWidth={2.4} aria-hidden="true" />
               </Link>
-              <Link href="/map" className="tech-mask-sm group inline-flex items-center gap-3 border border-line bg-ink/55 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper hover:border-black/50 transition-colors duration-200">
-                OPEN INTERACTIVE MAP
+              <Link href="/map" className="home-secondary-cta tech-mask-sm group inline-flex items-center gap-3 px-6 h-[52px] font-cond font-semibold uppercase tracking-[0.16em] text-[14px] transition-colors duration-200">
+                OPEN VISUAL PLACES ATLAS
                 <MapPin size={15} strokeWidth={2.2} aria-hidden="true" />
               </Link>
             </div>
           </div>
         </div>
+        <div className="home-hero-rail" aria-label="Archive summary">
+          <span><small>Release</small><strong>{extendedLookBrief.releaseDate}</strong></span>
+          <span><small>Setting</small><strong>{extendedLookBrief.setting}</strong></span>
+          <span><small>Indexed</small><strong>{TOTAL_ENTRIES} records</strong></span>
+          <span><small>System</small><strong>Archive online</strong></span>
+        </div>
+        <div className="home-city-signature" aria-hidden="true"><span>Vice</span><strong>City</strong><small>STATE OF LEONIDA · 2026</small></div>
+        <div className="home-scroll-cue" aria-hidden="true"><i /><span>Enter the archive</span></div>
       </section>
 
       {/* ===== 1B. O QUE SE PODE FAZER AQUI ===== */}
       {/* Vem antes de qualquer vitrina: um leitor que não sabe o que fazer
           com o arquivo não precisa de mais imagens, precisa de quatro
           frases que digam para onde ir. */}
-      <section className="px-4 sm:px-6 lg:px-8 pt-8 max-w-[1280px] mx-auto w-full" aria-labelledby="start-here">
+      <section className="home-intents px-4 sm:px-6 lg:px-8 pt-8 max-w-[1280px] mx-auto w-full" aria-labelledby="start-here">
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <h2 id="start-here" className="font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-none text-paper">What are you here for?</h2>
           {daysToRelease != null && daysToRelease > 0 && (
@@ -221,7 +230,7 @@ function App() {
                 </span>
               </>
             )
-            const shell = 'panel rounded-sm p-4 text-left flex flex-col hover:border-mint/60 transition-colors'
+            const shell = 'home-intent-card panel rounded-sm p-4 text-left flex flex-col hover:border-mint/60 transition-colors'
             return intent.href ? (
               <Link key={intent.id} href={intent.href} className={shell}>{body}</Link>
             ) : (
@@ -247,7 +256,7 @@ function App() {
           {BRANCHES.map((branch) => {
             const Icon = branch.icon
             return (
-              <Link key={branch.label} href={branch.href} title={branch.blurb} className="panel rounded-sm overflow-hidden group hover:border-mint/60 transition-colors">
+              <Link key={branch.label} href={branch.href} title={branch.blurb} className="home-branch-card panel rounded-sm overflow-hidden group hover:border-mint/60 transition-colors">
                 <span className="relative block aspect-[16/9]">
                   <Image src={branch.image} alt="" fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
                 </span>

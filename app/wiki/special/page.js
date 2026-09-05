@@ -8,6 +8,7 @@ import { STATS, CATEGORIES, RECENT, SOURCES, SPECIAL_LISTS } from '@/lib/wiki-gr
 // O índice das páginas especiais, como qualquer wiki tem. Junta num sítio
 // as vistas que não são verbetes mas que dizem o estado do arquivo.
 const PAGES = [
+  { href: '/wiki/search', icon: Search, title: 'Search', count: null, desc: 'Full-text search across canonical titles, page text, categories, source labels and archive branches.' },
   { href: '/wiki', icon: List, title: 'All entries', count: STATS.total, desc: 'Every entry in the archive, alphabetically, with a letter bar and filters by branch.' },
   { href: '/wiki/categories', icon: FolderTree, title: 'All categories', count: CATEGORIES.length, desc: 'Every category entries are filed under, with how many each one holds.' },
   { href: '/wiki/changes', icon: Clock, title: 'Recent changes', count: RECENT.length, desc: 'Entries by the date each was last checked against its source.' },

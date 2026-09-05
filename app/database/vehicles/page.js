@@ -4,10 +4,9 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, GitCompareArrows, Check } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
 import VehicleVisual, { classIcon } from '@/components/site/vehicle-visual'
-import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
+import { vehicles, vehicleClasses, featureBriefs, officialCatalog } from '@/lib/content'
 
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
@@ -87,8 +86,7 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="vehicles" counters={vehicleCounters} />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">VEHICLES</h1></div>
 

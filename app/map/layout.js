@@ -1,10 +1,10 @@
 // Título e descrição próprios desta rota. O layout não desenha nada:
 // devolve os filhos tal como vêm.
 export const metadata = {
-  title: { default: 'Interactive map', template: '%s | LEONIDA ARCHIVE' },
-  description: 'The map of Leonida: named regions and locations, plotted and source-labelled.',
+  title: { default: 'Visual places atlas', template: '%s | LEONIDA ARCHIVE' },
+  description: 'A coordinate-free, source-labelled visual atlas of Leonida, its six named regions and every documented place.',
   alternates: { canonical: '/map' },
-  openGraph: { title: 'Interactive map', description: 'The map of Leonida: named regions and locations, plotted and source-labelled.', url: '/map' },
+  openGraph: { title: 'Visual places atlas', description: 'Leonida regions and named locations illustrated only with published GTA VI imagery.', url: '/map' },
 }
 
 export default function Layout({ children }) {

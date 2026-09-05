@@ -4,7 +4,6 @@ import { Suspense, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { mechanics, characters, featureBriefs, officialCatalog } from '@/lib/content'
 import { Breadcrumb } from '@/components/site/wiki'
@@ -36,18 +35,6 @@ function MechanicsPage() {
 
   const list = useMemo(() => mechanics.filter((m) => filter === 'all' || m.status === filter), [filter])
   const selected = mechanics.find((m) => m.slug === selectedSlug) || list[0] || mechanics[0]
-  const confirmedCount = mechanics.filter((m) => m.status === 'confirmed' || m.status === 'verified').length
-
-  // O terceiro contador dizia «04 SYSTEMS» com o número escrito à mão, e o
-  // arquivo tem doze mecânicas. Passa a contar o que se pode contar: quantas
-  // trazem ligação à fonte, que é a promessa desta base.
-  const sourcedCount = mechanics.filter((m) => m.sourceUrl).length
-  const counters = [
-    [String(mechanics.length).padStart(2, '0'), 'MECHANICS'],
-    [String(confirmedCount).padStart(2, '0'), 'VERIFIED+'],
-    [String(sourcedCount).padStart(2, '0'), 'SOURCED'],
-  ]
-
   const SelIcon = MECH_ICONS[selected.icon] || Repeat2
   const relatedChars = characters.slice(0, 2)
 
@@ -56,8 +43,7 @@ function MechanicsPage() {
       <Suspense fallback={null}>
         <SelectedFromQuery onFound={setSelectedSlug} />
       </Suspense>
-      <DbTabs active="mechanics" counters={counters} />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics' }]} />
           <div className="ghost-type" data-ghost="MECHANICS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MECHANICS</h1></div>

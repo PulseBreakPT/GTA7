@@ -4,10 +4,10 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, Triangle, ArrowLeft, ArrowRight } from 'lucide-react'
-import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
+import { WeaponGlyph } from '@/components/site/dbtabs'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import WeaponVisual from '@/components/site/weapon-visual'
-import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
+import { weapons, weaponTypes, featureBriefs, officialCatalog } from '@/lib/content'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -45,8 +45,7 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="weapons" counters={weaponCounters} />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <div className="ghost-type" data-ghost="WEAPONS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">WEAPONS</h1></div>
 

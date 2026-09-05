@@ -1,12 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
-import { locations, regions, mapFilters } from '@/lib/content'
+import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/content'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ArchiveCoordinates, ShortDescription } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 
 export default function LocationPage() {
   const { slug } = useParams()
@@ -17,6 +16,7 @@ export default function LocationPage() {
   }
 
   const region = regions.find((r) => r.id === loc.region)
+  const confirmedImage = confirmedLocationImage(loc)
   const categoryLabel = (mapFilters.find((f) => f.id === loc.category) || {}).label || loc.category
   const related = locations.filter((item) => item.region === loc.region && item.slug !== loc.slug)
 
@@ -33,9 +33,9 @@ export default function LocationPage() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
 
-      <header className="mt-6">
+      <header className="wiki-article-header mt-6">
         <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">Named location</p>
-        <h1 data-ghost="MAP" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[64px] text-paper">{loc.name}</h1>
+        <h1 data-ghost="PLACES" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[64px] text-paper">{loc.name}</h1>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <StatusBadge status={loc.status} />
           <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{categoryLabel}</span>
@@ -48,20 +48,18 @@ export default function LocationPage() {
           <Hatnote kind="locations" slug={loc.slug} />
       </header>
 
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+      <PageTools kind="locations" slug={loc.slug} />
+
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         {/* Corpo do artigo */}
-        <div className="min-w-0 order-2 lg:order-1">
+        <div className="wiki-article-body min-w-0 order-2 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <p className="text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]"><WikiText exclude={`/map/location/${loc.slug}`}>{loc.desc}</WikiText></p>
           </WikiSection>
 
           <WikiSection id="visual" title="Visual Record">
             <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/9] bg-raised">
-              {loc.image ? (
-                <Image src={loc.image} alt={loc.name} fill priority sizes="(max-width:1024px) 100vw, 700px" className="object-cover" />
-              ) : (
-                <LocationThumb x={loc.x} y={loc.y} name={loc.name} label="NO OFFICIAL IMAGE · ARCHIVE MAP" className="w-full h-full" />
-              )}
+              <LocationThumb image={confirmedImage} fallbackImage={region?.image} name={loc.name} className="w-full h-full" priority />
             </div>
           </WikiSection>
 
@@ -71,13 +69,7 @@ export default function LocationPage() {
                 {related.map((item) => (
                   <Link key={item.slug} href={`/map/location/${item.slug}`}
                     className="panel rounded-sm p-2 flex flex-col hover:border-black/30 transition-colors">
-                    {item.image ? (
-                      <span className="relative block h-[84px] w-full rounded-[2px] overflow-hidden">
-                        <Image src={item.image} alt={item.name} fill sizes="200px" className="object-cover" />
-                      </span>
-                    ) : (
-                      <LocationThumb x={item.x} y={item.y} name={item.name} className="h-[84px] w-full rounded-[2px]" />
-                    )}
+                    <LocationThumb image={confirmedLocationImage(item)} fallbackImage={region.image} name={item.name} className="h-[84px] w-full rounded-[2px]" />
                     <span className="flex items-center justify-between gap-1 mt-2">
                       <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-paper truncate">{item.name}</span>
                       <ChevronRight size={12} className="text-dim shrink-0" aria-hidden="true" />
@@ -102,8 +94,7 @@ export default function LocationPage() {
         {/* Caixa de dados */}
         <div className="order-1 lg:order-3">
           <InfoboxShell>
-            <LocationLocator x={loc.x} y={loc.y} name={loc.name} />
-              <ArchiveCoordinates x={loc.x} y={loc.y} className="mt-2" />
+            <LocationLocator image={confirmedImage} fallbackImage={region?.image} name={loc.name} />
 
             <div className="space-y-3 border-t border-black/10 pt-4">
               <InfoRow label="Region">
@@ -115,8 +106,8 @@ export default function LocationPage() {
               <InfoRow label="Status">
                 <StatusBadge status={loc.status} />
               </InfoRow>
-              <InfoRow label="On the map">
-                <Link href={`/map?loc=${loc.slug}`} className="text-mint hover:text-paper transition-colors">Open in interactive map</Link>
+              <InfoRow label="Visual directory">
+                <Link href={`/map?loc=${loc.slug}`} className="text-mint hover:text-paper transition-colors">Open in places directory</Link>
               </InfoRow>
             </div>
 

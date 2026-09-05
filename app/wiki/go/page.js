@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { CornerDownLeft, Search } from 'lucide-react'
-import { ENTRIES, KIND_META, entryByName } from '@/lib/wiki-graph'
+import { ENTRIES, KIND_META, resolveEntry } from '@/lib/wiki-graph'
 import { StatusBadge } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'
 
@@ -18,7 +18,7 @@ function Go() {
   const q = (params.get('q') || '').trim()
   const [resolved, setResolved] = useState(false)
 
-  const exact = useMemo(() => (q ? entryByName(q) : null), [q])
+  const exact = useMemo(() => (q ? resolveEntry(q) : null), [q])
 
   const near = useMemo(() => {
     if (!q || exact) return []

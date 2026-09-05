@@ -1,4 +1,4 @@
-import { ENTRIES } from '@/lib/wiki-graph'
+import { ENTRIES, SPECIAL_LISTS } from '@/lib/wiki-graph'
 import { articles, guides, encyclopediaCategories } from '@/lib/content'
 import { CATEGORIES } from '@/lib/wiki-graph'
 
@@ -12,6 +12,9 @@ const PAGINAS_FIXAS = [
   ['', 1.0],
   ['/wiki', 0.9],
   ['/wiki/special', 0.5],
+  ['/wiki/all', 0.6],
+  ['/wiki/help', 0.4],
+  ['/wiki/glossary', 0.4],
   ['/wiki/categories', 0.6],
   ['/wiki/statistics', 0.5],
   ['/wiki/changes', 0.6],
@@ -56,6 +59,13 @@ export default function sitemap() {
     priority: 0.5,
   }))
 
+  const manutencao = SPECIAL_LISTS.map((list) => ({
+    url: `${SITE}/wiki/special/${list.id}`,
+    lastModified: hoje,
+    changeFrequency: 'weekly',
+    priority: 0.35,
+  }))
+
   const editoriais = [
     ...articles.map((a) => ({ url: `${SITE}/news/${a.slug}`, lastModified: new Date(a.updatedAt || a.publishedAt), changeFrequency: 'monthly', priority: 0.7 })),
     ...guides.map((g) => ({ url: `${SITE}/guides/${g.slug}`, lastModified: new Date(g.updatedAt || g.publishedAt), changeFrequency: 'monthly', priority: 0.6 })),
@@ -65,7 +75,7 @@ export default function sitemap() {
   // Uma entrada pode chegar por dois caminhos (um artigo está em ENTRIES
   // e em articles); o endereço tem de aparecer uma vez só.
   const vistos = new Set()
-  return [...fixas, ...verbetes, ...categorias, ...editoriais].filter((item) => {
+  return [...fixas, ...verbetes, ...categorias, ...manutencao, ...editoriais].filter((item) => {
     if (vistos.has(item.url)) return false
     vistos.add(item.url)
     return true

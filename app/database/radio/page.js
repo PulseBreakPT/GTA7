@@ -3,9 +3,8 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Radio, ChevronRight } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { radioStations, radioCounters } from '@/lib/content'
+import { radioStations } from '@/lib/content'
 import { Breadcrumb } from '@/components/site/wiki'
 
 const FILTERS = ['all', 'confirmed', 'rumour']
@@ -19,8 +18,7 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="radio" counters={radioCounters} />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio' }]} />
           <div className="ghost-type" data-ghost="RADIO"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">RADIO STATIONS</h1></div>
