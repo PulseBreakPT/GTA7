@@ -110,7 +110,7 @@ main::before {
     linear-gradient(120deg, rgba(194,24,91,0.02), transparent 28%, rgba(14,124,107,0.018) 70%, transparent);
 }
 
-/* LUSORAE visual language: restrained intelligence-archive layers. */
+/* GTA LORE WIKI visual language: restrained intelligence-archive layers. */
 .archive-grid::after {
   content: '';
   position: absolute;
@@ -465,7 +465,7 @@ main [role="listbox"] > .panel {
 }
 
 /* ========================================================================== */
-/* LUSORAE OMEGA — modern Vice City layer                                     */
+/* GTA LORE WIKI OMEGA — modern Vice City layer                                     */
 /* Keeps the information architecture above intact and gives it one coherent  */
 /* visual voice: Atlantic light, neon at dusk and Streamline Moderne geometry. */
 /* ========================================================================== */
@@ -672,18 +672,18 @@ main::before {
 .home-branch-card:nth-child(3n) { --branch: var(--vice-cyan); }
 .home-branch-card:hover { border-color: var(--branch) !important; }
 
-.lusorae-footer {
+.gta-lore-wiki-footer {
   background:
     radial-gradient(circle at 12% 18%, rgba(118,87,255,.08), transparent 26rem),
     radial-gradient(circle at 88% 24%, rgba(240,68,165,.08), transparent 24rem),
     linear-gradient(180deg, rgba(255,255,255,.94), rgba(247,247,252,.98));
 }
 
-@keyframes lusorae-enter {
+@keyframes gta-lore-wiki-enter {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.home-hero-copy { animation: lusorae-enter .75s cubic-bezier(.2,.8,.2,1) both; }
+.home-hero-copy { animation: gta-lore-wiki-enter .75s cubic-bezier(.2,.8,.2,1) both; }
 
 @media (max-width: 1023px) {
   .home-hero-rail { left: 1rem; right: 1rem; }
@@ -712,7 +712,7 @@ main::before {
 
 /* Floating chrome: the app controls now belong to the night side of the
    identity, staying instantly recognisable above every light wiki page. */
-.lusorae-tabbar {
+.gta-lore-wiki-tabbar {
   background:
     radial-gradient(circle at 18% 0%, rgba(118,87,255,.22), transparent 38%),
     radial-gradient(circle at 82% 100%, rgba(240,68,165,.18), transparent 40%),
@@ -726,19 +726,19 @@ main::before {
     -14px 16px 42px -26px rgba(118,87,255,.58),
     14px 16px 42px -26px rgba(240,68,165,.52) !important;
 }
-.lusorae-tabbar::after {
+.gta-lore-wiki-tabbar::after {
   content: ''; position: absolute; inset: 4px; z-index: -1; pointer-events: none;
   border: 1px solid rgba(255,255,255,.055); border-radius: 22px;
 }
-.lusorae-tabbar .text-dim { color: rgba(255,255,255,.58) !important; }
-.lusorae-tabbar .text-paper { color: rgba(255,255,255,.92) !important; }
-.lusorae-tabbar .text-pink { color: #ff69b7 !important; }
-.lusorae-tabbar .text-violet { color: #9b8aff !important; }
-.lusorae-tabbar .text-mint { color: #50e2d5 !important; }
-.lusorae-tabbar .text-warn { color: #ffd16b !important; }
-.lusorae-tabbar > .bg-paper { background: linear-gradient(145deg, #4334a2, #b62e78) !important; }
+.gta-lore-wiki-tabbar .text-dim { color: rgba(255,255,255,.58) !important; }
+.gta-lore-wiki-tabbar .text-paper { color: rgba(255,255,255,.92) !important; }
+.gta-lore-wiki-tabbar .text-pink { color: #ff69b7 !important; }
+.gta-lore-wiki-tabbar .text-violet { color: #9b8aff !important; }
+.gta-lore-wiki-tabbar .text-mint { color: #50e2d5 !important; }
+.gta-lore-wiki-tabbar .text-warn { color: #ffd16b !important; }
+.gta-lore-wiki-tabbar > .bg-paper { background: linear-gradient(145deg, #4334a2, #b62e78) !important; }
 
-.lusorae-search-fab {
+.gta-lore-wiki-search-fab {
   color: white;
   background:
     radial-gradient(circle at 18% 10%, rgba(118,87,255,.34), transparent 48%),
@@ -751,10 +751,10 @@ main::before {
     0 16px 42px -15px rgba(11,16,34,.58),
     0 13px 35px -17px rgba(24,207,195,.8) !important;
 }
-.lusorae-search-fab .text-paper { color: #fff !important; }
-.lusorae-search-fab:hover { border-color: rgba(24,207,195,.58); background: rgba(12,19,43,.97) !important; }
+.gta-lore-wiki-search-fab .text-paper { color: #fff !important; }
+.gta-lore-wiki-search-fab:hover { border-color: rgba(24,207,195,.58); background: rgba(12,19,43,.97) !important; }
 
-.lusorae-menu-sheet {
+.gta-lore-wiki-menu-sheet {
   color: #fff;
   background:
     radial-gradient(circle at 10% 0%, rgba(118,87,255,.22), transparent 34%),
@@ -763,12 +763,12 @@ main::before {
   border: 1px solid rgba(255,255,255,.13);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 28px 80px -18px rgba(11,16,34,.72) !important;
 }
-.lusorae-menu-sheet .text-paper { color: rgba(255,255,255,.92) !important; }
-.lusorae-menu-sheet .text-dim { color: rgba(255,255,255,.55) !important; }
-.lusorae-menu-sheet .text-pink { color: #ff69b7 !important; }
-.lusorae-menu-sheet .text-violet { color: #9b8aff !important; }
-.lusorae-menu-sheet .text-mint { color: #50e2d5 !important; }
-.lusorae-menu-sheet .border-black\/\[0\.07\] { border-color: rgba(255,255,255,.09) !important; }
+.gta-lore-wiki-menu-sheet .text-paper { color: rgba(255,255,255,.92) !important; }
+.gta-lore-wiki-menu-sheet .text-dim { color: rgba(255,255,255,.55) !important; }
+.gta-lore-wiki-menu-sheet .text-pink { color: #ff69b7 !important; }
+.gta-lore-wiki-menu-sheet .text-violet { color: #9b8aff !important; }
+.gta-lore-wiki-menu-sheet .text-mint { color: #50e2d5 !important; }
+.gta-lore-wiki-menu-sheet .border-black\/\[0\.07\] { border-color: rgba(255,255,255,.09) !important; }
 
 /* Shared wiki system. These components appear across entries, categories and
    special pages, so this is where the visual upgrade becomes site-wide. */
@@ -1074,11 +1074,11 @@ main input:focus, main select:focus, main textarea:focus {
   .wiki-category-header { border-radius: 18px; }
   .wiki-toc-panel { border-radius: 14px; }
   .wiki-references { padding: .9rem .9rem .25rem; border-radius: 14px; }
-  .lusorae-tabbar { max-width: calc(100vw - 1rem); padding-inline: 1.25rem !important; }
+  .gta-lore-wiki-tabbar { max-width: calc(100vw - 1rem); padding-inline: 1.25rem !important; }
 }
 
-.lusorae-search-layer > div:first-child { background: rgba(6,8,20,.72); backdrop-filter: blur(8px) saturate(.8); }
-.lusorae-search-modal {
+.gta-lore-wiki-search-layer > div:first-child { background: rgba(6,8,20,.72); backdrop-filter: blur(8px) saturate(.8); }
+.gta-lore-wiki-search-modal {
   color: #fff;
   background:
     radial-gradient(circle at 10% 0%, rgba(118,87,255,.24), transparent 38%),
@@ -1089,23 +1089,23 @@ main input:focus, main select:focus, main textarea:focus {
   box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 32px 90px -24px rgba(0,0,0,.76), 0 20px 58px -32px rgba(118,87,255,.9) !important;
   backdrop-filter: blur(24px) saturate(1.35);
 }
-.lusorae-search-modal::before {
+.gta-lore-wiki-search-modal::before {
   content: ''; position: absolute; z-index: 2; inset: 0 0 auto; height: 2px;
   background: linear-gradient(90deg, var(--vice-cyan), var(--vice-violet), var(--vice-pink));
 }
-.lusorae-search-modal .hairline { border-color: rgba(255,255,255,.10); }
-.lusorae-search-modal .text-paper { color: rgba(255,255,255,.94) !important; }
-.lusorae-search-modal .text-dim { color: rgba(255,255,255,.56) !important; }
-.lusorae-search-modal input {
+.gta-lore-wiki-search-modal .hairline { border-color: rgba(255,255,255,.10); }
+.gta-lore-wiki-search-modal .text-paper { color: rgba(255,255,255,.94) !important; }
+.gta-lore-wiki-search-modal .text-dim { color: rgba(255,255,255,.56) !important; }
+.gta-lore-wiki-search-modal input {
   color: #fff !important; background: transparent !important; border: 0 !important; box-shadow: none !important;
 }
-.lusorae-search-modal input::placeholder { color: rgba(255,255,255,.44); }
-.lusorae-search-modal button.bg-surface2,
-.lusorae-search-modal button:hover { background: rgba(118,87,255,.15) !important; }
-.lusorae-search-modal button > span:first-child { border-color: rgba(255,255,255,.13); background: rgba(255,255,255,.05); }
+.gta-lore-wiki-search-modal input::placeholder { color: rgba(255,255,255,.44); }
+.gta-lore-wiki-search-modal button.bg-surface2,
+.gta-lore-wiki-search-modal button:hover { background: rgba(118,87,255,.15) !important; }
+.gta-lore-wiki-search-modal button > span:first-child { border-color: rgba(255,255,255,.13); background: rgba(255,255,255,.05); }
 
 @media (max-width: 640px) {
-  .lusorae-search-modal { top: .75rem !important; border-radius: 20px !important; }
+  .gta-lore-wiki-search-modal { top: .75rem !important; border-radius: 20px !important; }
 }
 
 .status-badge, .ghost-badge {
@@ -1155,11 +1155,11 @@ body > main, body > footer { position: relative; z-index: 1; }
 @keyframes site-drift-a { to { transform: translate(12vw, 24vh) scale(1.18); } }
 @keyframes site-drift-b { to { transform: translate(-13vw, -20vh) scale(.88); } }
 
-.lusorae-boot {
+.gta-lore-wiki-boot {
   position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; overflow: hidden;
   color: #fff; background: #070a19; opacity: 1; transition: opacity .58s ease, visibility .58s, filter .58s ease;
 }
-.lusorae-boot.is-leaving { opacity: 0; visibility: hidden; filter: blur(12px); pointer-events: none; }
+.gta-lore-wiki-boot.is-leaving { opacity: 0; visibility: hidden; filter: blur(12px); pointer-events: none; }
 .boot-aurora {
   position: absolute; inset: -25%;
   background:
@@ -1190,11 +1190,11 @@ body > main, body > footer { position: relative; z-index: 1; }
 .boot-monogram {
   width: 56px; height: 56px; display: grid; place-items: center; margin-bottom: 1.4rem;
   color: #0b1022; background: linear-gradient(145deg, #fff, #ffd4e8); border-radius: 17px 17px 17px 5px;
-  font: italic 800 35px/1 var(--font-cond), sans-serif; box-shadow: 6px 6px 0 var(--vice-pink), 0 22px 55px -20px rgba(240,68,165,.95);
+  font: italic 800 21px/1 var(--font-cond), sans-serif; letter-spacing: .02em; box-shadow: 6px 6px 0 var(--vice-pink), 0 22px 55px -20px rgba(240,68,165,.95);
   animation: boot-mark .72s cubic-bezier(.18,.8,.25,1) both;
 }
 .boot-copy > p { color: rgba(255,255,255,.58); font: 500 10px/1 var(--font-mono), monospace; letter-spacing: .32em; text-transform: uppercase; animation: boot-up .55s .12s ease both; }
-.boot-copy h1 {
+.boot-copy .boot-title {
   margin-top: .5rem; color: transparent; background: linear-gradient(104deg, #fff 10%, #ffd6ed 52%, #ff76b6); background-clip: text; -webkit-background-clip: text;
   font: 700 clamp(4.5rem, 13vw, 9.5rem)/.8 var(--font-cond), sans-serif; letter-spacing: -.055em; text-transform: uppercase;
   filter: drop-shadow(0 14px 30px rgba(0,0,0,.35)); animation: boot-up .65s .18s cubic-bezier(.18,.8,.25,1) both;
@@ -1203,11 +1203,11 @@ body > main, body > footer { position: relative; z-index: 1; }
 .boot-loader { width: min(300px, 62vw); height: 2px; margin-top: 2rem; overflow: hidden; background: rgba(255,255,255,.12); }
 .boot-loader i { display: block; width: 100%; height: 100%; transform-origin: left; background: linear-gradient(90deg, var(--vice-cyan), var(--vice-violet), var(--vice-pink)); box-shadow: 0 0 14px var(--vice-pink); animation: boot-load 1.65s .18s cubic-bezier(.2,.75,.2,1) both; }
 .boot-copy small { margin-top: .8rem; color: rgba(255,255,255,.42); font: 500 8px/1 var(--font-mono), monospace; letter-spacing: .18em; }
-.lusorae-boot > button {
+.gta-lore-wiki-boot > button {
   position: absolute; z-index: 3; right: 1.2rem; bottom: 1.2rem; min-height: 40px; padding: 0 .9rem; color: rgba(255,255,255,.54);
   border: 1px solid rgba(255,255,255,.14); border-radius: 999px; font: 600 9px/1 var(--font-cond), sans-serif; letter-spacing: .16em; text-transform: uppercase;
 }
-.lusorae-boot > button:hover { color: #fff; border-color: rgba(255,255,255,.32); }
+.gta-lore-wiki-boot > button:hover { color: #fff; border-color: rgba(255,255,255,.32); }
 @keyframes boot-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes boot-mark { from { opacity: 0; transform: rotate(-12deg) scale(.65); } to { opacity: 1; transform: none; } }
 @keyframes boot-load { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -1255,7 +1255,7 @@ body > main, body > footer { position: relative; z-index: 1; }
 @media (max-width: 767px) {
   .home-scroll-cue { display: none; }
   .boot-sun { width: 84vw; }
-  .boot-copy h1 { font-size: clamp(4.2rem, 24vw, 7rem) !important; }
+  .boot-copy .boot-title { font-size: clamp(4.2rem, 24vw, 7rem) !important; }
   .boot-copy > span { max-width: 80vw; line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1334,7 +1334,7 @@ body > main, body > footer { position: relative; z-index: 1; }
 .wiki-global-brand > span:first-child {
   width: 30px; height: 30px; display: grid; place-items: center; flex: none;
   color: #fff; background: linear-gradient(145deg, var(--vice-violet), var(--vice-pink)); border-radius: 10px 10px 10px 3px;
-  font: italic 800 19px/1 var(--font-cond), sans-serif; box-shadow: 3px 3px 0 rgba(24,207,195,.34);
+  font: italic 800 11px/1 var(--font-cond), sans-serif; letter-spacing: .01em; box-shadow: 3px 3px 0 rgba(24,207,195,.34);
 }
 .wiki-global-brand > span:last-child { min-width: 0; display: flex; flex-direction: column; }
 .wiki-global-brand strong { overflow: hidden; font: 700 15px/.95 var(--font-cond), sans-serif; letter-spacing: .15em; text-overflow: ellipsis; }
@@ -1389,14 +1389,23 @@ body > main, body > footer { position: relative; z-index: 1; }
   .wiki-global-brand strong { font: 700 16px/.95 var(--font-cond), sans-serif; letter-spacing: .17em; }
   .wiki-global-brand small { margin-top: 4px; color: #727987; font: 500 7px/1 var(--font-mono), monospace; letter-spacing: .11em; text-transform: uppercase; }
   .wiki-global-search {
-    min-width: 0; height: 39px; display: flex; align-items: center; gap: .65rem; padding: 0 .8rem;
+    /* A regra base fixa `width: 40px` para o botão redondo dos ecrãs
+       estreitos, e este bloco nunca a repunha: em ecrã largo o campo
+       ficava do tamanho de um ícone e o rótulo espremia-se por cima da
+       tecla. Aqui ocupa a coluna que a grelha lhe reserva. */
+    width: auto; min-width: 0; height: 39px; display: flex; align-items: center; gap: .65rem; padding: 0 .8rem;
     color: #626b78; background: rgba(247,247,251,.82); border: 1px solid rgba(23,33,75,.13); border-radius: 12px;
     box-shadow: inset 0 1px 2px rgba(23,33,75,.025); transition: border-color .18s, background .18s, box-shadow .18s;
   }
   .wiki-global-search:hover { color: var(--vice-night); background: #fff; border-color: rgba(118,87,255,.36); box-shadow: 0 0 0 3px rgba(118,87,255,.07); }
   .wiki-global-search svg { flex: none; color: var(--vice-violet); }
-  .wiki-global-search span { min-width: 0; flex: 1; text-align: left; font-size: 12px; }
-  .wiki-global-search span { display: block; }
+  /* Sem o `nowrap`, «Search the encyclopedia» partia-se em duas linhas
+     dentro de um botão de 39px e passava por cima da tecla `/`. A regra
+     dos ecrãs médios já o tinha; esta perdeu-o pelo caminho. */
+  .wiki-global-search span {
+    display: block; min-width: 0; flex: 1; text-align: left; font-size: 12px;
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  }
   .wiki-global-search kbd { width: 22px; height: 22px; display: grid; place-items: center; color: #737b87; background: white; border: 1px solid rgba(23,33,75,.13); border-radius: 6px; font: 500 10px/1 var(--font-mono), monospace; }
   .wiki-global-topnav { min-width: 0; height: 100%; display: flex; align-items: stretch; justify-content: flex-end; }
   .wiki-global-topnav a {
@@ -1508,7 +1517,7 @@ body > main, body > footer { position: relative; z-index: 1; }
 
 /* SEARCH COMMAND CENTRE — discovery, filtering and result context in one
    keyboard-friendly surface. */
-.lusorae-search-modal { max-height: calc(100dvh - 6rem); display: flex; flex-direction: column; }
+.gta-lore-wiki-search-modal { max-height: calc(100dvh - 6rem); display: flex; flex-direction: column; }
 .search-command-head {
   min-height: 42px; display: grid; grid-template-columns: auto 1fr 34px; align-items: center; gap: .75rem; padding: .35rem .8rem .35rem 1rem;
   border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.025);
@@ -1516,19 +1525,19 @@ body > main, body > footer { position: relative; z-index: 1; }
 .search-command-head > span { display: inline-flex; align-items: center; gap: .45rem; color: #a998ff; font: 700 9px/1 var(--font-mono), monospace; letter-spacing: .18em; }
 .search-command-head > span svg { color: #ff72b8; }
 .search-command-head > small { color: rgba(255,255,255,.38); font: 500 8px/1 var(--font-mono), monospace; letter-spacing: .08em; text-align: right; text-transform: uppercase; }
-.lusorae-search-modal .search-command-head > button { width: 32px; height: 32px; display: grid; place-items: center; color: rgba(255,255,255,.56); border: 1px solid rgba(255,255,255,.1); border-radius: 9px; }
-.lusorae-search-modal .search-command-head > button:hover { color: #fff; background: rgba(255,255,255,.08) !important; }
+.gta-lore-wiki-search-modal .search-command-head > button { width: 32px; height: 32px; display: grid; place-items: center; color: rgba(255,255,255,.56); border: 1px solid rgba(255,255,255,.1); border-radius: 9px; }
+.gta-lore-wiki-search-modal .search-command-head > button:hover { color: #fff; background: rgba(255,255,255,.08) !important; }
 .search-command-input { min-height: 72px; display: flex; align-items: center; gap: .75rem; padding: .7rem 1rem; border-bottom: 1px solid rgba(255,255,255,.1); }
 .search-command-icon { width: 42px; height: 42px; display: grid; place-items: center; flex: none; color: #fff; border-radius: 13px; background: linear-gradient(145deg, #5b3fd6, #f044a5); box-shadow: 4px 4px 0 rgba(24,207,195,.2), 0 12px 24px -16px rgba(240,68,165,.9); }
-.lusorae-search-modal .search-command-input input { flex: 1; min-width: 0; font-size: clamp(15px,2vw,18px); font-weight: 500; }
-.lusorae-search-modal .search-command-input > button { width: 30px; height: 30px; display: grid; place-items: center; flex: none; color: rgba(255,255,255,.55); border-radius: 8px; }
-.lusorae-search-modal .search-command-input > button:hover { color: #fff; background: rgba(255,255,255,.08) !important; }
+.gta-lore-wiki-search-modal .search-command-input input { flex: 1; min-width: 0; font-size: clamp(15px,2vw,18px); font-weight: 500; }
+.gta-lore-wiki-search-modal .search-command-input > button { width: 30px; height: 30px; display: grid; place-items: center; flex: none; color: rgba(255,255,255,.55); border-radius: 8px; }
+.gta-lore-wiki-search-modal .search-command-input > button:hover { color: #fff; background: rgba(255,255,255,.08) !important; }
 .search-command-input > kbd { min-width: 34px; height: 24px; display: grid; place-items: center; color: rgba(255,255,255,.45); border: 1px solid rgba(255,255,255,.13); border-radius: 6px; background: rgba(255,255,255,.04); font: 500 8px/1 var(--font-mono), monospace; }
 .search-type-tabs { display: flex; gap: .3rem; padding: .55rem .7rem; overflow-x: auto; border-bottom: 1px solid rgba(255,255,255,.09); scrollbar-width: none; }
 .search-type-tabs::-webkit-scrollbar { display: none; }
-.lusorae-search-modal .search-type-tabs button { min-height: 32px; display: inline-flex; align-items: center; gap: .35rem; flex: none; padding: 0 .65rem; color: rgba(255,255,255,.52); border: 1px solid rgba(255,255,255,.1); border-radius: 999px; background: rgba(255,255,255,.025); font: 600 9px/1 var(--font-cond), sans-serif; letter-spacing: .08em; text-transform: uppercase; }
-.lusorae-search-modal .search-type-tabs button:hover { color: #fff; background: rgba(118,87,255,.1) !important; border-color: rgba(169,152,255,.28); }
-.lusorae-search-modal .search-type-tabs button.is-active { color: #fff; border-color: rgba(169,152,255,.48); background: linear-gradient(110deg, rgba(118,87,255,.28), rgba(240,68,165,.16)) !important; }
+.gta-lore-wiki-search-modal .search-type-tabs button { min-height: 32px; display: inline-flex; align-items: center; gap: .35rem; flex: none; padding: 0 .65rem; color: rgba(255,255,255,.52); border: 1px solid rgba(255,255,255,.1); border-radius: 999px; background: rgba(255,255,255,.025); font: 600 9px/1 var(--font-cond), sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.gta-lore-wiki-search-modal .search-type-tabs button:hover { color: #fff; background: rgba(118,87,255,.1) !important; border-color: rgba(169,152,255,.28); }
+.gta-lore-wiki-search-modal .search-type-tabs button.is-active { color: #fff; border-color: rgba(169,152,255,.48); background: linear-gradient(110deg, rgba(118,87,255,.28), rgba(240,68,165,.16)) !important; }
 .search-type-tabs button b { color: rgba(255,255,255,.42); font: 500 8px/1 var(--font-mono), monospace; }
 .search-type-tabs button.is-empty { opacity: .38; }
 .search-command-grid { min-height: 0; display: grid; grid-template-columns: minmax(0,1fr) 230px; overflow: hidden; }
@@ -1538,31 +1547,31 @@ body > main, body > footer { position: relative; z-index: 1; }
 .search-section-title span { color: rgba(255,255,255,.9); font: 700 12px/1 var(--font-cond), sans-serif; letter-spacing: .12em; text-transform: uppercase; }
 .search-section-title small { color: rgba(255,255,255,.36); font: 500 8px/1 var(--font-mono), monospace; text-transform: uppercase; }
 .search-quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; padding: 0 1rem; }
-.lusorae-search-modal .search-quick-grid > button { position: relative; min-height: 78px; display: grid; grid-template-columns: 34px 1fr 14px; grid-template-rows: auto auto; align-items: center; gap: .15rem .65rem; padding: .75rem; color: #fff; border: 1px solid rgba(255,255,255,.1); border-radius: 12px; background: rgba(255,255,255,.035); text-align: left; }
-.lusorae-search-modal .search-quick-grid > button:hover { border-color: rgba(169,152,255,.35); background: rgba(118,87,255,.11) !important; transform: translateY(-1px); }
+.gta-lore-wiki-search-modal .search-quick-grid > button { position: relative; min-height: 78px; display: grid; grid-template-columns: 34px 1fr 14px; grid-template-rows: auto auto; align-items: center; gap: .15rem .65rem; padding: .75rem; color: #fff; border: 1px solid rgba(255,255,255,.1); border-radius: 12px; background: rgba(255,255,255,.035); text-align: left; }
+.gta-lore-wiki-search-modal .search-quick-grid > button:hover { border-color: rgba(169,152,255,.35); background: rgba(118,87,255,.11) !important; transform: translateY(-1px); }
 .search-quick-grid button > span { width: 34px; height: 34px; grid-row: 1 / span 2; display: grid; place-items: center; color: #a998ff; border: 1px solid rgba(169,152,255,.18); border-radius: 10px; background: rgba(118,87,255,.09); }
 .search-quick-grid button strong { align-self: end; font: 700 12px/1 var(--font-cond), sans-serif; letter-spacing: .08em; text-transform: uppercase; }
 .search-quick-grid button small { align-self: start; color: rgba(255,255,255,.43); font-size: 9px; }
 .search-quick-grid button > svg { grid-column: 3; grid-row: 1 / span 2; color: rgba(255,255,255,.35); }
 .search-popular-title { padding-top: 1.15rem; }
 .search-popular { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0 1rem 1.15rem; }
-.lusorae-search-modal .search-popular button { min-height: 31px; padding: 0 .7rem; color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.09); border-radius: 999px; background: rgba(255,255,255,.025); font: 600 9px/1 var(--font-cond), sans-serif; text-transform: uppercase; }
-.lusorae-search-modal .search-popular button:hover { color: #fff; border-color: rgba(24,207,195,.3); background: rgba(24,207,195,.07) !important; }
+.gta-lore-wiki-search-modal .search-popular button { min-height: 31px; padding: 0 .7rem; color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.09); border-radius: 999px; background: rgba(255,255,255,.025); font: 600 9px/1 var(--font-cond), sans-serif; text-transform: uppercase; }
+.gta-lore-wiki-search-modal .search-popular button:hover { color: #fff; border-color: rgba(24,207,195,.3); background: rgba(24,207,195,.07) !important; }
 .search-result-list > button { width: 100%; min-height: 67px; display: grid; grid-template-columns: 38px minmax(0,1fr) auto 18px; align-items: center; gap: .7rem; padding: .65rem 1rem; color: #fff; border-bottom: 1px solid rgba(255,255,255,.075); text-align: left; }
-.lusorae-search-modal .search-result-list > button:hover, .lusorae-search-modal .search-result-list > button.is-selected { background: linear-gradient(90deg, rgba(118,87,255,.15), rgba(240,68,165,.055)) !important; }
+.gta-lore-wiki-search-modal .search-result-list > button:hover, .gta-lore-wiki-search-modal .search-result-list > button.is-selected { background: linear-gradient(90deg, rgba(118,87,255,.15), rgba(240,68,165,.055)) !important; }
 .search-result-icon { width: 36px; height: 36px; display: grid; place-items: center; color: #a998ff; border: 1px solid rgba(169,152,255,.17); border-radius: 10px; background: rgba(118,87,255,.08); }
 .search-result-copy { min-width: 0; }
 .search-result-copy strong { display: block; overflow: hidden; color: rgba(255,255,255,.95); font: 700 14px/1.1 var(--font-cond), sans-serif; letter-spacing: .055em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
 .search-result-copy small { display: block; overflow: hidden; margin-top: .35rem; color: rgba(255,255,255,.42); font-size: 9.5px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
 .search-result-enter { color: var(--vice-cyan); }
 .search-result-arrow { color: rgba(255,255,255,.25); }
-.lusorae-search-modal .search-all-results { position: sticky; bottom: 0; width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: .55rem; padding: 0 1rem; color: #76e4da; border-top: 1px solid rgba(255,255,255,.1); background: rgba(9,13,31,.96) !important; font: 700 10px/1 var(--font-cond), sans-serif; letter-spacing: .12em; text-transform: uppercase; backdrop-filter: blur(14px); }
+.gta-lore-wiki-search-modal .search-all-results { position: sticky; bottom: 0; width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: .55rem; padding: 0 1rem; color: #76e4da; border-top: 1px solid rgba(255,255,255,.1); background: rgba(9,13,31,.96) !important; font: 700 10px/1 var(--font-cond), sans-serif; letter-spacing: .12em; text-transform: uppercase; backdrop-filter: blur(14px); }
 .search-all-results span { color: rgba(255,255,255,.4); font: 500 8px/1 var(--font-mono), monospace; }
 .search-empty-state { min-height: 290px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
 .search-empty-state > svg { color: #a998ff; }
 .search-empty-state strong { margin-top: .9rem; color: #fff; font: 700 17px/1 var(--font-cond), sans-serif; letter-spacing: .1em; text-transform: uppercase; }
 .search-empty-state p { max-width: 45ch; margin-top: .6rem; color: rgba(255,255,255,.45); font-size: 10.5px; line-height: 1.5; }
-.lusorae-search-modal .search-empty-state button { min-height: 36px; margin-top: 1rem; padding: 0 .85rem; color: #8deae2; border: 1px solid rgba(24,207,195,.25); border-radius: 8px; font: 700 9px/1 var(--font-cond), sans-serif; text-transform: uppercase; }
+.gta-lore-wiki-search-modal .search-empty-state button { min-height: 36px; margin-top: 1rem; padding: 0 .85rem; color: #8deae2; border: 1px solid rgba(24,207,195,.25); border-radius: 8px; font: 700 9px/1 var(--font-cond), sans-serif; text-transform: uppercase; }
 .search-command-aside section { padding: .7rem .55rem; border-bottom: 1px solid rgba(255,255,255,.075); }
 .search-command-aside section:last-child { border-bottom: 0; }
 .search-aside-title { display: flex; align-items: center; gap: .45rem; color: rgba(255,255,255,.72); }
@@ -1570,8 +1579,8 @@ body > main, body > footer { position: relative; z-index: 1; }
 .search-aside-title span { font: 700 9px/1 var(--font-mono), monospace; letter-spacing: .11em; text-transform: uppercase; }
 .search-command-aside section > p { margin-top: .65rem; color: rgba(255,255,255,.36); font-size: 9.5px; line-height: 1.45; }
 .search-command-aside ul { margin-top: .5rem; }
-.lusorae-search-modal .search-command-aside li button { width: 100%; min-height: 31px; display: flex; align-items: center; gap: .45rem; overflow: hidden; padding: 0 .35rem; color: rgba(255,255,255,.5); font-size: 9.5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
-.lusorae-search-modal .search-command-aside li button:hover { color: #fff; background: rgba(118,87,255,.09) !important; }
+.gta-lore-wiki-search-modal .search-command-aside li button { width: 100%; min-height: 31px; display: flex; align-items: center; gap: .45rem; overflow: hidden; padding: 0 .35rem; color: rgba(255,255,255,.5); font-size: 9.5px; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+.gta-lore-wiki-search-modal .search-command-aside li button:hover { color: #fff; background: rgba(118,87,255,.09) !important; }
 .search-command-aside dl { margin-top: .65rem; }
 .search-command-aside dl > div { min-height: 29px; display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: rgba(255,255,255,.42); font-size: 9px; }
 .search-command-aside dd { display: flex; gap: .25rem; }
@@ -1582,7 +1591,7 @@ body > main, body > footer { position: relative; z-index: 1; }
 .search-index-health small { display: block; margin-top: .3rem; color: rgba(255,255,255,.34); font-size: 8px; }
 
 @media (max-width: 720px) {
-  .lusorae-search-modal { top: .5rem !important; max-height: calc(100dvh - 1rem); }
+  .gta-lore-wiki-search-modal { top: .5rem !important; max-height: calc(100dvh - 1rem); }
   .search-command-head { grid-template-columns: 1fr 32px; }
   .search-command-head > small { display: none; }
   .search-command-input { min-height: 62px; padding: .55rem .7rem; }
@@ -1600,8 +1609,8 @@ body > main, body > footer { position: relative; z-index: 1; }
 }
 
 /* White search theme — same material language as the account dropdown. */
-.lusorae-search-layer > div:first-child { background: rgba(18,22,40,.34); backdrop-filter: blur(10px) saturate(.82); }
-.lusorae-search-modal {
+.gta-lore-wiki-search-layer > div:first-child { background: rgba(18,22,40,.34); backdrop-filter: blur(10px) saturate(.82); }
+.gta-lore-wiki-search-modal {
   color: #202638;
   background:
     radial-gradient(circle at 8% 0%, rgba(118,87,255,.105), transparent 35%),
@@ -1613,53 +1622,53 @@ body > main, body > footer { position: relative; z-index: 1; }
 .search-command-head { border-color: rgba(23,33,75,.08); background: rgba(255,255,255,.38); }
 .search-command-head > span { color: #6749df; }
 .search-command-head > small { color: #858c98; }
-.lusorae-search-modal .search-command-head > button { color: #707987; border-color: rgba(23,33,75,.1); background: rgba(255,255,255,.62); }
-.lusorae-search-modal .search-command-head > button:hover { color: #17214b; background: #fff !important; }
+.gta-lore-wiki-search-modal .search-command-head > button { color: #707987; border-color: rgba(23,33,75,.1); background: rgba(255,255,255,.62); }
+.gta-lore-wiki-search-modal .search-command-head > button:hover { color: #17214b; background: #fff !important; }
 .search-command-input { border-color: rgba(23,33,75,.1); background: rgba(255,255,255,.38); }
-.lusorae-search-modal .search-command-input input { color: #17214b !important; }
-.lusorae-search-modal .search-command-input input::placeholder { color: #8a919d; }
-.lusorae-search-modal .search-command-input > button { color: #78808d; }
-.lusorae-search-modal .search-command-input > button:hover { color: #17214b; background: rgba(118,87,255,.07) !important; }
+.gta-lore-wiki-search-modal .search-command-input input { color: #17214b !important; }
+.gta-lore-wiki-search-modal .search-command-input input::placeholder { color: #8a919d; }
+.gta-lore-wiki-search-modal .search-command-input > button { color: #78808d; }
+.gta-lore-wiki-search-modal .search-command-input > button:hover { color: #17214b; background: rgba(118,87,255,.07) !important; }
 .search-command-input > kbd { color: #717987; border-color: rgba(23,33,75,.12); background: rgba(255,255,255,.72); }
 .search-type-tabs { border-color: rgba(23,33,75,.09); background: rgba(249,249,252,.48); }
-.lusorae-search-modal .search-type-tabs button { color: #69717e; border-color: rgba(23,33,75,.1); background: rgba(255,255,255,.62); }
-.lusorae-search-modal .search-type-tabs button:hover { color: #17214b; background: rgba(118,87,255,.065) !important; border-color: rgba(118,87,255,.25); }
-.lusorae-search-modal .search-type-tabs button.is-active { color: #5b3fd6; border-color: rgba(118,87,255,.34); background: linear-gradient(110deg, rgba(118,87,255,.105), rgba(240,68,165,.065)) !important; }
+.gta-lore-wiki-search-modal .search-type-tabs button { color: #69717e; border-color: rgba(23,33,75,.1); background: rgba(255,255,255,.62); }
+.gta-lore-wiki-search-modal .search-type-tabs button:hover { color: #17214b; background: rgba(118,87,255,.065) !important; border-color: rgba(118,87,255,.25); }
+.gta-lore-wiki-search-modal .search-type-tabs button.is-active { color: #5b3fd6; border-color: rgba(118,87,255,.34); background: linear-gradient(110deg, rgba(118,87,255,.105), rgba(240,68,165,.065)) !important; }
 .search-type-tabs button b { color: #9298a3; }
 .search-command-aside { border-color: rgba(23,33,75,.09); background: rgba(246,246,250,.58); }
 .search-section-title span { color: #283049; }
 .search-section-title small { color: #8a919d; }
-.lusorae-search-modal .search-quick-grid > button { color: #202638; border-color: rgba(23,33,75,.1); background: rgba(255,255,255,.66); box-shadow: 0 10px 24px -24px rgba(23,33,75,.5); }
-.lusorae-search-modal .search-quick-grid > button:hover { border-color: rgba(118,87,255,.28); background: #fff !important; box-shadow: 0 16px 30px -24px rgba(91,63,214,.55); }
+.gta-lore-wiki-search-modal .search-quick-grid > button { color: #202638; border-color: rgba(23,33,75,.1); background: rgba(255,255,255,.66); box-shadow: 0 10px 24px -24px rgba(23,33,75,.5); }
+.gta-lore-wiki-search-modal .search-quick-grid > button:hover { border-color: rgba(118,87,255,.28); background: #fff !important; box-shadow: 0 16px 30px -24px rgba(91,63,214,.55); }
 .search-quick-grid button > span { color: #6749df; border-color: rgba(118,87,255,.16); background: rgba(118,87,255,.065); }
 .search-quick-grid button small { color: #737b88; }
 .search-quick-grid button > svg { color: #9aa0aa; }
-.lusorae-search-modal .search-popular button { color: #68717f; border-color: rgba(23,33,75,.09); background: rgba(255,255,255,.62); }
-.lusorae-search-modal .search-popular button:hover { color: #126f67; border-color: rgba(24,207,195,.26); background: rgba(24,207,195,.06) !important; }
+.gta-lore-wiki-search-modal .search-popular button { color: #68717f; border-color: rgba(23,33,75,.09); background: rgba(255,255,255,.62); }
+.gta-lore-wiki-search-modal .search-popular button:hover { color: #126f67; border-color: rgba(24,207,195,.26); background: rgba(24,207,195,.06) !important; }
 .search-result-list > button { color: #202638; border-color: rgba(23,33,75,.075); }
-.lusorae-search-modal .search-result-list > button:hover,
-.lusorae-search-modal .search-result-list > button.is-selected { background: linear-gradient(90deg, rgba(118,87,255,.085), rgba(240,68,165,.035)) !important; }
+.gta-lore-wiki-search-modal .search-result-list > button:hover,
+.gta-lore-wiki-search-modal .search-result-list > button.is-selected { background: linear-gradient(90deg, rgba(118,87,255,.085), rgba(240,68,165,.035)) !important; }
 .search-result-icon { color: #6749df; border-color: rgba(118,87,255,.15); background: rgba(118,87,255,.06); }
 .search-result-copy strong { color: #202638; }
 .search-result-copy small { color: #737b88; }
 .search-result-arrow { color: #9aa0aa; }
-.lusorae-search-modal .search-all-results { color: #126f67; border-color: rgba(23,33,75,.09); background: rgba(255,253,252,.96) !important; }
+.gta-lore-wiki-search-modal .search-all-results { color: #126f67; border-color: rgba(23,33,75,.09); background: rgba(255,253,252,.96) !important; }
 .search-all-results span { color: #8a919d; }
 .search-empty-state > svg { color: #6749df; }
 .search-empty-state strong { color: #202638; }
 .search-empty-state p { color: #747c89; }
-.lusorae-search-modal .search-empty-state button { color: #126f67; border-color: rgba(24,207,195,.28); }
+.gta-lore-wiki-search-modal .search-empty-state button { color: #126f67; border-color: rgba(24,207,195,.28); }
 .search-command-aside section { border-color: rgba(23,33,75,.075); }
 .search-aside-title { color: #596272; }
 .search-command-aside section > p { color: #858c98; }
-.lusorae-search-modal .search-command-aside li button { color: #6e7683; }
-.lusorae-search-modal .search-command-aside li button:hover { color: #17214b; background: rgba(118,87,255,.065) !important; }
+.gta-lore-wiki-search-modal .search-command-aside li button { color: #6e7683; }
+.gta-lore-wiki-search-modal .search-command-aside li button:hover { color: #17214b; background: rgba(118,87,255,.065) !important; }
 .search-command-aside dl > div { color: #747c89; }
 .search-command-aside kbd { color: #596272; border-color: rgba(23,33,75,.11); background: rgba(255,255,255,.72); }
 .search-index-health strong { color: #4f5867; }
 .search-index-health small { color: #8a919d; }
-.lusorae-search-modal .text-paper { color: #202638 !important; }
-.lusorae-search-modal .text-dim { color: #747c89 !important; }
+.gta-lore-wiki-search-modal .text-paper { color: #202638 !important; }
+.gta-lore-wiki-search-modal .text-dim { color: #747c89 !important; }
 
 @media (min-width: 1280px) {
   .wiki-global-header { grid-template-columns: 220px minmax(300px, 520px) minmax(0, 1fr); padding-left: 1rem; }
@@ -1886,31 +1895,31 @@ body > main, body > footer { position: relative; z-index: 1; }
 }
 
 /* Global interaction polish inherited by every route. */
-.lusorae-fx-root main :is(a, button, summary) {
+.gta-lore-wiki-fx-root main :is(a, button, summary) {
   transition-timing-function: var(--fx-ease);
 }
-.lusorae-fx-root main :is(.panel, .glass-panel, .wiki-article-body, .wiki-news-paper) {
+.gta-lore-wiki-fx-root main :is(.panel, .glass-panel, .wiki-article-body, .wiki-news-paper) {
   outline: 1px solid transparent;
   outline-offset: -1px;
   transition-property: border-color, box-shadow, transform, outline-color;
   transition-duration: 240ms;
   transition-timing-function: var(--fx-ease);
 }
-.lusorae-fx-root main :is(.panel, .glass-panel, .wiki-article-body, .wiki-news-paper):focus-within {
+.gta-lore-wiki-fx-root main :is(.panel, .glass-panel, .wiki-article-body, .wiki-news-paper):focus-within {
   outline-color: rgba(118,87,255,.22);
   box-shadow: 0 0 0 4px rgba(118,87,255,.055), 0 24px 58px -40px rgba(23,33,75,.5);
 }
-.lusorae-fx-root main h1,
-.lusorae-fx-root main h2 {
+.gta-lore-wiki-fx-root main h1,
+.gta-lore-wiki-fx-root main h2 {
   transition: text-shadow .28s ease, filter .28s ease;
 }
 @media (hover: hover) and (pointer: fine) {
-  .lusorae-fx-root main h1:hover { filter: saturate(1.08); }
-  .lusorae-fx-root main .wiki-content-section > h2:hover {
+  .gta-lore-wiki-fx-root main h1:hover { filter: saturate(1.08); }
+  .gta-lore-wiki-fx-root main .wiki-content-section > h2:hover {
     text-shadow: 10px 0 28px rgba(118,87,255,.14), -8px 0 24px rgba(24,207,195,.1);
   }
-  .lusorae-fx-root main img { transition: transform .65s var(--fx-ease), filter .35s ease; }
-  .lusorae-fx-root main a:hover img { filter: saturate(1.08) contrast(1.025); }
+  .gta-lore-wiki-fx-root main img { transition: transform .65s var(--fx-ease), filter .35s ease; }
+  .gta-lore-wiki-fx-root main a:hover img { filter: saturate(1.08) contrast(1.025); }
 }
 
 @keyframes fx-scan {

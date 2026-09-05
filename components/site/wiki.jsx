@@ -289,7 +289,7 @@ export function CitePage({ kind, slug, title }) {
 
   if (!entry) return null
 
-  const citation = `LEONIDA ARCHIVE. “${title || entry.name}.” Leonida Archive${entry.sourceName ? `, citing ${entry.sourceName}` : ''}${entry.updatedAt ? `, last checked ${entry.updatedAt}` : ''}. ${url}${today ? ` (retrieved ${today})` : ''}.`
+  const citation = `GTA LORE WIKI. “${title || entry.name}.” GTA Lore Wiki${entry.sourceName ? `, citing ${entry.sourceName}` : ''}${entry.updatedAt ? `, last checked ${entry.updatedAt}` : ''}. ${url}${today ? ` (retrieved ${today})` : ''}.`
 
   const copy = async () => {
     try {

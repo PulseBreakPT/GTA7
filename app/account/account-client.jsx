@@ -71,14 +71,14 @@ export default function AccountClient({ initialUser, initialSession, initialSect
 
   useEffect(() => {
     if (!initialTarget) return
-    const saved = localStorage.getItem(`lusorae:suggestion:${initialTarget.kind}:${initialTarget.slug}`)
+    const saved = localStorage.getItem(`gta-lore-wiki:suggestion:${initialTarget.kind}:${initialTarget.slug}`)
     if (!saved) return
     try { setSuggestion((current) => ({ ...current, ...JSON.parse(saved) })) } catch { /* ignore a malformed local draft */ }
   }, [initialTarget])
 
   useEffect(() => {
     if (!initialTarget) return
-    const key = `lusorae:suggestion:${initialTarget.kind}:${initialTarget.slug}`
+    const key = `gta-lore-wiki:suggestion:${initialTarget.kind}:${initialTarget.slug}`
     if (suggestion.summary || suggestion.details || suggestion.sourceUrl) localStorage.setItem(key, JSON.stringify(suggestion))
     else localStorage.removeItem(key)
   }, [initialTarget, suggestion])
@@ -141,7 +141,7 @@ export default function AccountClient({ initialUser, initialSession, initialSect
     if (!initialTarget) return
     const data = await act('suggestion', () => request('suggestion', { body: { ...suggestion, kind: initialTarget.kind, slug: initialTarget.slug } }))
     if (data) {
-      localStorage.removeItem(`lusorae:suggestion:${initialTarget.kind}:${initialTarget.slug}`)
+      localStorage.removeItem(`gta-lore-wiki:suggestion:${initialTarget.kind}:${initialTarget.slug}`)
       setSuggestion({ type: 'correction', summary: '', details: '', sourceUrl: '' })
       await loadWiki()
     }

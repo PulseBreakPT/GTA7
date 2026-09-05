@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
   const { username } = await params
   const profile = await profileFor(username)
   return profile
-    ? { title: `${profile.user.displayName} (@${profile.user.username})`, description: profile.user.bio || `LUSORAE wiki user @${profile.user.username}.` }
+    ? { title: `${profile.user.displayName} (@${profile.user.username})`, description: profile.user.bio || `GTA LORE WIKI wiki user @${profile.user.username}.` }
     : { title: 'User not found', robots: { index: false, follow: false } }
 }
 

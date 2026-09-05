@@ -70,7 +70,7 @@ export default function Footer() {
   const section = currentSection(pathname)
 
   return (
-    <footer className="lusorae-footer compact-footer relative overflow-hidden border-t hairline bg-ink" aria-label="Lusorae footer">
+    <footer className="gta-lore-wiki-footer compact-footer relative overflow-hidden border-t hairline bg-ink" aria-label="GTA Lore Wiki footer">
       {/* O mesmo filete das três cores que assina a barra de navegação. */}
       <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-pink to-transparent opacity-70" aria-hidden="true" />
       <span className="pointer-events-none absolute inset-x-1/4 top-0 h-px bg-gradient-to-r from-mint via-transparent to-violet opacity-60" aria-hidden="true" />
@@ -94,7 +94,7 @@ export default function Footer() {
               <span className="compact-footer-mark" aria-hidden="true">L</span>
               <div>
                 <p className="font-mono text-[8px] uppercase tracking-[0.2em] text-mint">Independent fan reference</p>
-                <h2 className="chromatic-title font-cond font-bold uppercase tracking-[0.04em] leading-none text-[27px] text-paper">LUSORAE</h2>
+                <h2 className="chromatic-title font-cond font-bold uppercase tracking-[0.04em] leading-none text-[27px] text-paper">GTA LORE WIKI</h2>
               </div>
             </div>
             <p className="compact-footer-description">A source-labelled GTA VI encyclopedia for official material and clearly marked community reporting.</p>

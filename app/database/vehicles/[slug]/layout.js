@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
   if (!item) return { title: 'Record not found' }
 
   const name = item.name
-  const description = [item.name, item.manufacturer && item.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `by ${item.manufacturer}` : null, item.association].filter(Boolean).join(' · ') + '. Source-labelled entry in the LEONIDA ARCHIVE.'
+  const description = [item.name, item.manufacturer && item.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `by ${item.manufacturer}` : null, item.association].filter(Boolean).join(' · ') + '. Source-labelled entry in the GTA LORE WIKI.'
 
   return {
     title: `${name} — GTA VI vehicle`,

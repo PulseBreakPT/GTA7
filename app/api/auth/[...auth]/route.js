@@ -91,9 +91,9 @@ async function sendVerification(request, user) {
   const url = `${authBaseUrl(request)}/verify-email?token=${encodeURIComponent(rawToken)}`
   return sendAuthEmail({
     to: user.email,
-    subject: 'Verify your LUSORAE account',
+    subject: 'Verify your GTA LORE WIKI account',
     heading: 'Verify your archive identity',
-    message: 'Confirm this email address to mark your LUSORAE account as verified. This link expires in 24 hours.',
+    message: 'Confirm this email address to mark your GTA LORE WIKI account as verified. This link expires in 24 hours.',
     actionLabel: 'Verify email', actionUrl: url,
     idempotencyKey: `verify-${user.id}-${Date.now()}`,
   })
@@ -217,7 +217,7 @@ export async function GET(request, { params }) {
         profile: publicUser(auth.user),
         data: Object.fromEntries(collectionNames.map((name, index) => [name.replace('wiki_', ''), records[index]])),
       })
-      result.headers.set('Content-Disposition', `attachment; filename="lusorae-${auth.user.username}-export.json"`)
+      result.headers.set('Content-Disposition', `attachment; filename="gta-lore-wiki-${auth.user.username}-export.json"`)
       return result
     }
 
@@ -334,7 +334,7 @@ export async function POST(request, { params }) {
         const rawToken = await issueOneTimeToken(user.id, 'reset-password', 60 * 60_000)
         const url = `${authBaseUrl(request)}/reset-password?token=${encodeURIComponent(rawToken)}`
         const sent = await sendAuthEmail({
-          to: user.email, subject: 'Reset your LUSORAE password', heading: 'Reset your password',
+          to: user.email, subject: 'Reset your GTA LORE WIKI password', heading: 'Reset your password',
           message: 'Use this one-time link to choose a new password. It expires in one hour and invalidates after use.',
           actionLabel: 'Reset password', actionUrl: url,
           idempotencyKey: `reset-${user.id}-${Date.now()}`,

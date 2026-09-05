@@ -69,7 +69,7 @@ export default function SearchFab() {
           aria-label="Search the archive"
           aria-keyshortcuts="/"
           className={cx(
-            'lusorae-search-fab group pointer-events-auto relative flex items-center justify-center rounded-[32%] bg-ink',
+            'gta-lore-wiki-search-fab group pointer-events-auto relative flex items-center justify-center rounded-[32%] bg-ink',
             // A mesma gramática de luz da barra de baixo: aresta no topo,
             // contorno, contacto, elevação e a sombra tingida — aqui em
             // turquesa, que é a cor da pesquisa em todo o sítio.
