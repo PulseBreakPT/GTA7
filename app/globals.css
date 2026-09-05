@@ -712,31 +712,44 @@ main::before {
 
 /* Floating chrome: the app controls now belong to the night side of the
    identity, staying instantly recognisable above every light wiki page. */
+/* A barra de baixo era a única peça escura de um sítio claro: pastilha
+   quase preta com texto branco, por baixo de um cabeçalho, de um campo de
+   pesquisa e de uma gaveta de conta todos em papel. Passa ao mesmo
+   material do painel da conta — o mesmo papel, os mesmos dois tingimentos
+   ténues, a mesma moldura e a mesma sombra —, para que as peças
+   flutuantes do sítio se leiam como a mesma família. */
 .gta-lore-tabbar {
+  color: #202638;
   background:
-    radial-gradient(circle at 18% 0%, rgba(118,87,255,.22), transparent 38%),
-    radial-gradient(circle at 82% 100%, rgba(240,68,165,.18), transparent 40%),
-    rgba(9,13,31,.94) !important;
-  border: 1px solid rgba(255,255,255,.13);
-  backdrop-filter: blur(22px) saturate(1.35);
+    radial-gradient(circle at 12% 0%, rgba(118,87,255,.12), transparent 36%),
+    radial-gradient(circle at 92% 95%, rgba(240,68,165,.09), transparent 42%),
+    rgba(255,253,252,.985) !important;
+  border: 1px solid rgba(23,33,75,.14);
+  backdrop-filter: blur(24px) saturate(1.25);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.16),
-    0 0 0 1px rgba(5,8,20,.22),
-    0 18px 54px -18px rgba(11,16,34,.62),
-    -14px 16px 42px -26px rgba(118,87,255,.58),
-    14px 16px 42px -26px rgba(240,68,165,.52) !important;
+    inset 0 1px 0 #fff,
+    0 30px 75px -28px rgba(10,14,35,.58),
+    0 16px 38px -30px rgba(118,87,255,.75) !important;
 }
 .gta-lore-tabbar::after {
   content: ''; position: absolute; inset: 4px; z-index: -1; pointer-events: none;
-  border: 1px solid rgba(255,255,255,.055); border-radius: 22px;
+  border: 1px solid rgba(23,33,75,.05); border-radius: 22px;
 }
-.gta-lore-tabbar .text-dim { color: rgba(255,255,255,.58) !important; }
-.gta-lore-tabbar .text-paper { color: rgba(255,255,255,.92) !important; }
-.gta-lore-tabbar .text-pink { color: #ff69b7 !important; }
-.gta-lore-tabbar .text-violet { color: #9b8aff !important; }
-.gta-lore-tabbar .text-mint { color: #50e2d5 !important; }
-.gta-lore-tabbar .text-warn { color: #ffd16b !important; }
-.gta-lore-tabbar > .bg-paper { background: linear-gradient(145deg, #4334a2, #b62e78) !important; }
+/* Sobre papel, as cores do tema escuro caem abaixo de 2:1. Estas são as
+   do tema claro do arquivo: o cinzento é o `dim` do sítio (#5A6270) e não
+   o do painel da conta (#707987), que sobre este papel dá 4,43:1 e fica
+   a um passo do mínimo de 4,5:1 para texto pequeno. */
+.gta-lore-tabbar .text-dim { color: #5A6270 !important; }
+.gta-lore-tabbar .text-paper { color: #17214b !important; }
+.gta-lore-tabbar .text-pink { color: #b8256f !important; }
+.gta-lore-tabbar .text-violet { color: #5b3fd6 !important; }
+.gta-lore-tabbar .text-mint { color: #0e7c6b !important; }
+.gta-lore-tabbar .text-warn { color: #8a6a00 !important; }
+/* O destino activo mantém-se em cor cheia com texto branco, como o
+   avatar da conta: é a única coisa na barra que tem de saltar à vista. */
+.gta-lore-tabbar > .bg-paper { background: linear-gradient(145deg, #5b3fd6, #f044a5) !important; }
+.gta-lore-tabbar > a[aria-current='page'], .gta-lore-tabbar > a[aria-current='page'] .text-paper,
+.gta-lore-tabbar > a[aria-current='page'] .text-dim { color: #fff !important; }
 
 .gta-lore-search-fab {
   color: white;
@@ -754,21 +767,22 @@ main::before {
 .gta-lore-search-fab .text-paper { color: #fff !important; }
 .gta-lore-search-fab:hover { border-color: rgba(24,207,195,.58); background: rgba(12,19,43,.97) !important; }
 
+/* A gaveta que a barra abre é a mesma peça, aberta: acompanha-a no papel
+   em vez de continuar escura por baixo de uma barra clara. */
 .gta-lore-menu-sheet {
-  color: #fff;
+  color: #202638;
   background:
-    radial-gradient(circle at 10% 0%, rgba(118,87,255,.22), transparent 34%),
-    radial-gradient(circle at 92% 100%, rgba(240,68,165,.18), transparent 38%),
-    #0b1022 !important;
-  border: 1px solid rgba(255,255,255,.13);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 28px 80px -18px rgba(11,16,34,.72) !important;
+    radial-gradient(circle at 10% 0%, rgba(118,87,255,.12), transparent 34%),
+    radial-gradient(circle at 92% 100%, rgba(240,68,165,.09), transparent 38%),
+    rgba(255,253,252,.985) !important;
+  border: 1px solid rgba(23,33,75,.14);
+  box-shadow: inset 0 1px 0 #fff, 0 28px 80px -18px rgba(10,14,35,.5) !important;
 }
-.gta-lore-menu-sheet .text-paper { color: rgba(255,255,255,.92) !important; }
-.gta-lore-menu-sheet .text-dim { color: rgba(255,255,255,.55) !important; }
-.gta-lore-menu-sheet .text-pink { color: #ff69b7 !important; }
-.gta-lore-menu-sheet .text-violet { color: #9b8aff !important; }
-.gta-lore-menu-sheet .text-mint { color: #50e2d5 !important; }
-.gta-lore-menu-sheet .border-black\/\[0\.07\] { border-color: rgba(255,255,255,.09) !important; }
+.gta-lore-menu-sheet .text-paper { color: #17214b !important; }
+.gta-lore-menu-sheet .text-dim { color: #5A6270 !important; }
+.gta-lore-menu-sheet .text-pink { color: #b8256f !important; }
+.gta-lore-menu-sheet .text-violet { color: #5b3fd6 !important; }
+.gta-lore-menu-sheet .text-mint { color: #0e7c6b !important; }
 
 /* Shared wiki system. These components appear across entries, categories and
    special pages, so this is where the visual upgrade becomes site-wide. */
