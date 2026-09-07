@@ -24,7 +24,6 @@ export default function LocationPage() {
   // As secções seguem a ficha de sítio das wikis: descrição, imagem, e o
   // que fica à volta. «Nearby» só entra no índice se houver vizinhos.
   const sections = [
-    { id: 'overview', label: 'Overview', icon: FileText },
     { id: 'visual', label: 'Visual Record', icon: Images },
     ...(related.length > 0 && region ? [{ id: 'nearby', label: 'Nearby', icon: Compass }] : []),
   { id: 'see-also', label: 'See also', icon: Link2 },
@@ -33,10 +32,10 @@ export default function LocationPage() {
   ]
 
   return (
-    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+    <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
 
-      <header className="wiki-article-header mt-6">
+      <header className="wiki-article-header mt-4">
         <h1 data-ghost="PLACES" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[38px] sm:text-[52px] xl:text-[64px] text-paper">{loc.name}</h1>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <StatusBadge status={loc.status} />
@@ -46,22 +45,17 @@ export default function LocationPage() {
         {/* A descrição do sítio estava só lá em baixo, na secção Overview:
             a ficha abria sem dizer do que trata. */}
         <LeadParagraph name={loc.name} exclude={`/map/location/${loc.slug}`}>{loc.desc}</LeadParagraph>
-        <ShortDescription>
-            Named place in {region ? region.label : 'Leonida'}{categoryLabel ? ` · ${categoryLabel}` : ''}
-          </ShortDescription>
+        <ShortDescription>Named place in Grand Theft Auto VI</ShortDescription>
           <StubNotice kind="locations" slug={loc.slug} />
           <Hatnote kind="locations" slug={loc.slug} />
       </header>
 
       <PageTools kind="locations" slug={loc.slug} />
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
         {/* Corpo do artigo */}
         <div className="wiki-article-body min-w-0 order-3 lg:order-1">
-          <WikiSection id="overview" title="Overview">
-            <p className="text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]"><WikiText exclude={`/map/location/${loc.slug}`}>{loc.desc}</WikiText></p>
-          </WikiSection>
-
+          {/* A descrição do sítio está na abertura; aqui repetia-se inteira. */}
           <WikiSection id="visual" title="Visual Record">
             <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/9] bg-raised">
               <LocationThumb image={confirmedImage} fallbackImage={region?.image} name={loc.name} className="w-full h-full" priority />
@@ -86,7 +80,7 @@ export default function LocationPage() {
           )}
           <SeeAlso kind="locations" slug={loc.slug} />
           <References items={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
-          <ExternalLinks kind="locations" slug={loc.slug} />
+            <ExternalLinks kind="locations" slug={loc.slug} references={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
           <Navbox kind="locations" slug={loc.slug} />
           <CitePage kind="locations" slug={loc.slug} />
           <PageInformation kind="locations" slug={loc.slug} />

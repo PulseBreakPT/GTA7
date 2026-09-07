@@ -17,7 +17,6 @@ const REL_BARS = [
 
 const SECTIONS = [
   { id: 'background', label: 'Background', icon: FileText },
-  { id: 'details', label: 'Details', icon: ListChecks },
   { id: 'relationships', label: 'Relationships', icon: Users },
   { id: 'mechanics', label: 'Associated Mechanics', icon: Zap },
   { id: 'see-also', label: 'See also', icon: Link2 },
@@ -75,55 +74,39 @@ function App() {
   const primaryRel = rels.find((r) => r.primary)
   const primaryOther = primaryRel ? characterBySlug(primaryRel.a === c.slug ? primaryRel.b : primaryRel.a) : null
 
-  // A mesma grelha de pares rótulo/valor das fichas de veículo e de arma:
-  // o que a caixa de dados diz à direita, dito também no corpo, que é onde
-  // se lê e de onde se copia. Só campos que o registo tem — a uma pessoa
-  // não se inventa uma ficha técnica.
-  const detailRows = [
-    { label: 'Role', value: c.role },
-    { label: 'Group', children: c.group ? <span className="capitalize">{c.group}</span> : null },
-    { label: 'Status', children: <StatusBadge status={c.status} /> },
-    { label: 'Primary bond', children: primaryOther ? <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link> : null },
-    { label: 'Documented relationships', value: String(rels.length) },
-    { label: 'Source', value: c.sourceName },
-    { label: 'First recorded', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.publishedAt}</span> },
-    { label: 'Last updated', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.updatedAt}</span> },
-  ]
-
+  // A secção «Details» do corpo repetia a caixa de dados campo por campo —
+  // papel, grupo, estado, ligação principal — e acrescentava metadados que
+  // já estão na informação da página. Saiu inteira: os pares rótulo/valor
+  // vivem na caixa de dados, e o corpo é para o que é prosa.
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters', href: '/database/characters' }, { label: c.name }]} />
 
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
             qualquer largura, como nas fichas das wikis. */}
-        <header className="wiki-article-header mt-5">
+        <header className="wiki-article-header mt-4">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
             <StatusBadge status={c.status} />
           </div>
           <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{c.name}</h1>
           <LeadParagraph name={c.name} exclude={`/database/characters/${c.slug}`}>{c.bio}</LeadParagraph>
-          <ShortDescription>
-            {c.role} in Grand Theft Auto VI{c.group ? ` · ${c.group}` : ''}
-          </ShortDescription>
+          {/* O grupo saiu daqui: já estava no rótulo do topo e outra vez na
+              caixa de dados. A linha curta diz o que o assunto é, e pára. */}
+          <ShortDescription>{c.role} in Grand Theft Auto VI</ShortDescription>
           <StubNotice kind="characters" slug={c.slug} />
           <Hatnote kind="characters" slug={c.slug} />
         </header>
 
         <PageTools kind="characters" slug={c.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
           {/* Corpo do artigo */}
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="background" title="Background">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.long}</WikiText></p>
             </WikiSection>
-
-            <WikiSection id="details" title="Details">
-              <SpecGrid items={detailRows} />
-            </WikiSection>
-
             <WikiSection id="relationships" title="Relationships">
               <div className="space-y-3">
                 {rels.length === 0 && <p className="text-dim text-[13px]">No documented relationships.</p>}
@@ -172,7 +155,7 @@ function App() {
             </WikiSection>
             <SeeAlso kind="characters" slug={c.slug} />
             <References items={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
-            <ExternalLinks kind="characters" slug={c.slug} />
+            <ExternalLinks kind="characters" slug={c.slug} references={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
             <Navbox kind="characters" slug={c.slug} />
             <CitePage kind="characters" slug={c.slug} />
             <PageInformation kind="characters" slug={c.slug} />
@@ -202,6 +185,7 @@ function App() {
                     <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link>
                   </InfoRow>
                 )}
+                <InfoRow label="Relationships" value={String(rels.length)} />
               </div>
 
               <div className="border-t border-black/10 pt-4">

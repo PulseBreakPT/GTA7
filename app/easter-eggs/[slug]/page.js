@@ -10,9 +10,8 @@ import { InfoRow, SpecGrid, WikiSection } from '@/components/site/wiki'
 import { AdjacentRecords, EntryMedia, RecordNotFound, WikiEntryLayout } from '@/components/site/wiki-entry'
 
 const SECTIONS = [
-  { id: 'overview', label: 'Overview', icon: FileText },
+  { id: 'overview', label: 'Where to look', icon: FileText },
   { id: 'clues', label: 'Clue chain', icon: ListChecks },
-  { id: 'details', label: 'Details', icon: Compass },
   { id: 'references', label: 'References', icon: BookMarked },
 ]
 
@@ -26,14 +25,6 @@ function App() {
   const pct = Math.round((found / egg.clues.length) * 100)
   const others = easterEggs.filter((e) => e.slug !== egg.slug).slice(0, 3)
 
-  const detailRows = [
-    { label: 'Region', value: egg.region },
-    { label: 'Status', children: <StatusBadge status={egg.status} /> },
-    { label: 'Clues found', value: `${found} of ${egg.clues.length}` },
-    { label: 'Chain progress', value: `${pct}%` },
-    { label: 'Source', value: egg.sourceName },
-    { label: 'Last updated', children: <span className="font-mono text-[11px] tracking-normal text-paper">{egg.updatedAt}</span> },
-  ]
 
   // A barra de progresso da cadeia de pistas, repetida no corpo e na caixa
   // de dados. É o único dado que este verbete tem e que nenhum outro tem.
@@ -64,23 +55,23 @@ function App() {
       }
       lede={egg.summary}
       leadName={egg.name}
-      shortDescription={`Secret in ${egg.region} · ${found} of ${egg.clues.length} clues documented`}
+      shortDescription="Secret in Grand Theft Auto VI"
       media={<EntryMedia src={egg.image} alt={`${egg.name} reference imagery`} priority />}
       sections={SECTIONS}
       references={[{ name: egg.sourceName, url: egg.sourceUrl, retrieved: egg.updatedAt }]}
       infobox={
         <>
-          <ClueMeter compact />
-          <div className="space-y-3 border-t border-black/10 pt-4">
+          {/* A barra de pistas e o botão do mapa estavam aqui e outra vez no
+              corpo. Ficam no corpo, que é onde se lê a cadeia; a caixa de
+              dados guarda o número, que é o dado. */}
+          <div className="space-y-3">
             <InfoRow label="Region" value={egg.region} />
             <InfoRow label="Status"><StatusBadge status={egg.status} /></InfoRow>
             <InfoRow label="Clues" value={`${found} / ${egg.clues.length}`} />
+            <InfoRow label="Progress" value={`${pct}%`} />
           </div>
           <div className="border-t border-black/10 pt-4">
-            <Link href={`/map?loc=${egg.location}`} className="inline-flex items-center gap-2 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-              <MapPin size={13} aria-hidden="true" /> VIEW ON MAP
-            </Link>
-            <div className="mt-3"><SourceChip name={egg.sourceName} url={egg.sourceUrl} prefix={null} /></div>
+            <SourceChip name={egg.sourceName} url={egg.sourceUrl} prefix={null} />
             <p className="font-mono text-[9px] text-dim mt-2">Updated {egg.updatedAt}</p>
           </div>
         </>
@@ -108,14 +99,14 @@ function App() {
         </AdjacentRecords>
       }
     >
-      <WikiSection id="overview" title="Overview">
-        <p className="text-dim text-[14px] leading-[1.8]">{egg.summary}</p>
-        <div className="mt-5 flex flex-wrap gap-3">
+      {/* O resumo saiu: era a abertura repetida. Ficam as acções, que é o
+          que esta secção tem de próprio. */}
+      <WikiSection id="overview" title="Where to look">
+        <div className="flex flex-wrap gap-3">
           <Link href={`/map?loc=${egg.location}`} className="inline-flex items-center gap-3 border border-paper/90 h-11 px-5 font-cond font-semibold uppercase tracking-[0.16em] text-[13px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
             <MapPin size={15} aria-hidden="true" /> VIEW ON MAP
             <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={9} strokeWidth={2.4} /></span>
           </Link>
-          <SourceChip name={egg.sourceName} url={egg.sourceUrl} className="h-11 px-4 font-semibold tracking-[0.14em] text-[12px]" />
         </div>
       </WikiSection>
 
@@ -133,9 +124,6 @@ function App() {
         </ul>
       </WikiSection>
 
-      <WikiSection id="details" title="Details" className="mb-0">
-        <SpecGrid items={detailRows} />
-      </WikiSection>
     </WikiEntryLayout>
   )
 }

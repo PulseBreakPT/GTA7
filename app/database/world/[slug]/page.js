@@ -17,7 +17,6 @@ export default async function WorldEntryPage({ params }) {
   const next = position < siblings.length - 1 ? siblings[position + 1] : null
   const related = worldEntries.filter((entry) => entry.slug !== item.slug && (entry.branch === item.branch || entry.region === item.region)).slice(0, 6)
   const sections = [
-    { id: 'overview', label: 'Overview' },
     { id: 'record', label: 'Archive record' },
     { id: 'related', label: 'Related records' },
     // Esta ficha é servida do servidor: um ícone é uma função e não
@@ -28,10 +27,10 @@ export default async function WorldEntryPage({ params }) {
   ]
 
   return (
-    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+    <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'World', href: '/database/world' }, { label: item.name }]} />
 
-      <header className="wiki-article-header mt-5">
+      <header className="wiki-article-header mt-4">
         <div className="flex flex-wrap items-center gap-2"><StatusBadge status={item.status} /><span className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">{item.type} · {item.branch}</span></div>
         <h1 data-ghost="WORLD" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{item.name}</h1>
         <LeadParagraph name={item.name} exclude={`/database/world/${item.slug}`}>{item.summary}</LeadParagraph>
@@ -55,9 +54,8 @@ export default async function WorldEntryPage({ params }) {
         </div>
       </nav>
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
         <main className="wiki-article-body min-w-0 order-3 lg:order-1">
-          <WikiSection id="overview" title="Overview"><p className="text-dim text-[15px] leading-[1.85]"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p></WikiSection>
           <WikiSection id="record" title="Archive record">
             <ul className="space-y-3 text-[14px] leading-[1.75] text-dim">{item.details.map((detail) => <li key={detail} className="border-l-2 border-mint/50 pl-4"><WikiText exclude={`/database/world/${item.slug}`}>{detail}</WikiText></li>)}</ul>
             <div className="mt-5 border border-pink/25 bg-pink/[0.04] p-4 text-[13px] leading-relaxed text-dim"><strong className="block font-cond uppercase tracking-[0.12em] text-paper mb-1">Image boundary</strong>{item.imageCaption}</div>
@@ -67,7 +65,7 @@ export default async function WorldEntryPage({ params }) {
           </WikiSection>
           <SeeAlso kind="world" slug={item.slug} />
           <References items={item.sourceUrl ? [{ name: item.sourceName, url: item.sourceUrl, retrieved: item.updatedAt }] : []} />
-          <ExternalLinks kind="world" slug={item.slug} />
+            <ExternalLinks kind="world" slug={item.slug} references={item.sourceUrl ? [{ name: item.sourceName, url: item.sourceUrl, retrieved: item.updatedAt }] : []} />
           <Navbox kind="world" slug={item.slug} />
           <CitePage kind="world" slug={item.slug} />
           <PageInformation kind="world" slug={item.slug} />

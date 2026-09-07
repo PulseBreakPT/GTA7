@@ -94,25 +94,13 @@ function App() {
 
   const bodySections = sectionsOf(a.body)
   const SECTIONS = [
-    { id: 'summary', label: 'At a glance', icon: FileText },
     ...(visuals.length > 0 ? [{ id: 'visuals', label: 'Visual reference', icon: Images }] : []),
     ...bodySections,
-    { id: 'details', label: 'Details', icon: Compass },
     { id: 'references', label: 'References', icon: BookMarked },
   ]
 
   const label = a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'
 
-  const detailRows = [
-    { label: 'Record type', value: a.category === 'official' ? 'Official announcement' : 'Editorial analysis' },
-    { label: 'Verification', children: <GhostBadge status={a.status} /> },
-    { label: 'Reading time', value: `${a.readTime} min` },
-    { label: 'Paragraphs', value: String(a.body.length) },
-    { label: 'Source', value: a.sourceName },
-    { label: 'Source kind', value: src?.kind },
-    { label: 'Published', children: <span className="font-mono text-[11px] tracking-normal text-paper">{a.publishedAt}</span> },
-    { label: 'Last updated', children: <span className="font-mono text-[11px] tracking-normal text-paper">{a.updatedAt}</span> },
-  ]
 
   return (
     <WikiEntryLayout
@@ -128,15 +116,8 @@ function App() {
         </>
       }
       lede={a.excerpt}
-      shortDescription={`${a.category === 'official' ? 'Official announcement' : 'Archive analysis'} · ${fmtDate(a.publishedAt)}`}
+      shortDescription={a.category === "official" ? "Official announcement" : "Archive analysis"}
       media={<EntryMedia src={a.image} alt={a.title} priority />}
-      meta={
-        <>
-          <span className="font-cond uppercase tracking-[0.14em] text-[12px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN READ</span>
-          <SourceChip name={a.sourceName} url={a.sourceUrl} prefix={null} className="text-[12px]" />
-          {src && <span className="font-cond uppercase tracking-[0.14em] text-[11px] text-mint">{src.kind}</span>}
-        </>
-      }
       sections={SECTIONS}
       references={[{ name: a.sourceName, url: a.sourceUrl, retrieved: a.updatedAt }]}
       infobox={
@@ -181,15 +162,15 @@ function App() {
         </AdjacentRecords>
       }
     >
-      <WikiSection id="summary" title="At a glance">
-        <p className="text-[15px] leading-[1.8] text-paper/90">{a.excerpt}</p>
-        {a.status === 'rumour' && (
-          <div className="mt-4 border border-warn/50 bg-warn/10 rounded-sm px-4 py-3 flex items-center gap-3">
-            <TriangleAlert size={16} className="text-warn shrink-0" aria-hidden="true" />
-            <p className="text-[13px] text-paper">Community rumour. Not confirmed by any official source.</p>
-          </div>
-        )}
-      </WikiSection>
+      {/* O «At a glance» era o resumo da abertura outra vez. Fica só o aviso
+          de rumor, que não é resumo nenhum e tem de ser visto antes do
+          corpo. */}
+      {a.status === 'rumour' && (
+        <div className="mb-8 border border-warn/50 bg-warn/10 rounded-sm px-4 py-3 flex items-center gap-3">
+          <TriangleAlert size={16} className="text-warn shrink-0" aria-hidden="true" />
+          <p className="text-[13px] text-paper">Community rumour. Not confirmed by any official source.</p>
+        </div>
+      )}
 
       {visuals.length > 0 && (
         <WikiSection id="visuals" title="Visual reference">
@@ -199,9 +180,6 @@ function App() {
 
       <ArticleBody body={a.body} />
 
-      <WikiSection id="details" title="Details" className="mb-0">
-        <SpecGrid items={detailRows} />
-      </WikiSection>
     </WikiEntryLayout>
   )
 }

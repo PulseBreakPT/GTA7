@@ -68,19 +68,12 @@ function App() {
   const gallery = v.gallery?.length ? v.gallery : [v.image]
   const classLabel = (vehicleClasses.find((c) => c.id === v.cls) || {}).label || v.cls
 
-  // A ficha técnica repete os campos de identificação da caixa de dados —
-  // é o que se lê primeiro numa wiki e o que se copia para fora dela — e
-  // acrescenta os quatro campos mecânicos. O travessão da fonte não é um
-  // valor: passa a nulo, e a grelha di-lo por palavras.
+  // A ficha técnica repetia os sete campos de identificação da caixa de
+  // dados e só depois dizia algo novo. Fica com os quatro campos mecânicos,
+  // que são os que a caixa não tem. O travessão da fonte não é um valor:
+  // passa a nulo, e a grelha di-lo por palavras.
   const spec = (i) => (v.specs?.[i] && v.specs[i] !== '—' ? v.specs[i] : null)
   const specRows = [
-    { label: 'Vehicle class', value: classLabel },
-    { label: 'Manufacturer', value: v.manufacturer },
-    { label: 'Unit', value: v.num },
-    { label: 'Association', value: v.association },
-    v.character ? { label: 'Character', value: v.character } : null,
-    { label: 'Status', children: <StatusBadge status={v.status} /> },
-    { label: 'Evidence', children: <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span> },
     { label: 'Doors', value: spec(0) },
     { label: 'Seats', value: spec(1) },
     { label: 'Drivetrain', value: spec(2) },
@@ -89,12 +82,12 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Vehicles', href: '/database/vehicles' }, { label: v.name }]} />
 
         {/* Cabeçalho fora da grelha: nas fichas de wiki o nome vem sempre
             antes da caixa de dados, mesmo em ecrã estreito. */}
-        <header className="wiki-article-header mt-5">
+        <header className="wiki-article-header mt-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{classLabel}</span>
             <StatusBadge status={v.status} />
@@ -105,28 +98,19 @@ function App() {
               parágrafo de abertura nenhum. Um verbete abre sempre por uma
               frase que diz o que o assunto é, e o registo tem-na. */}
           <LeadParagraph name={v.name} exclude={`/database/vehicles/${v.slug}`}>{v.content || v.association}</LeadParagraph>
-          <ShortDescription>
-            {classLabel} in Grand Theft Auto VI{v.manufacturer && v.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${v.manufacturer}` : ''} · Unit {v.num}
-          </ShortDescription>
+          <ShortDescription>{classLabel} in Grand Theft Auto VI</ShortDescription>
           <StubNotice kind="vehicles" slug={v.slug} />
           <Hatnote kind="vehicles" slug={v.slug} />
         </header>
 
         <PageTools kind="vehicles" slug={v.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
           {/* Corpo do artigo */}
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+            {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
             <WikiSection id="overview" title="Overview">
-              <div className="flex flex-col gap-3">
-                <Attribution label="Association / content" value={v.association} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
-                <Attribution label="Manufacturer / brand" value={v.manufacturer} accent="border-violet/70" exclude={`/database/vehicles/${v.slug}`} />
-                <Attribution label="Character" value={v.character} accent="border-pink/70" exclude={`/database/vehicles/${v.slug}`} />
-                <Attribution label="Content" value={v.content} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
-              </div>
-
-              {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-3 sm:grid-cols-2">
                   {v.confirmedDetails?.length > 0 && (
                     <div className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm">
                       <h3 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h3>
@@ -140,8 +124,8 @@ function App() {
                     </div>
                   )}
                 </div>
-              )}
             </WikiSection>
+          )}
 
             <WikiSection id="performance" title="Performance">
               {v.unpublished ? (
@@ -186,7 +170,7 @@ function App() {
             </WikiSection>
             <SeeAlso kind="vehicles" slug={v.slug} />
             <References items={[{ name: v.sourceName, url: v.sourceUrl, retrieved: v.updatedAt }]} />
-            <ExternalLinks kind="vehicles" slug={v.slug} />
+            <ExternalLinks kind="vehicles" slug={v.slug} references={[{ name: v.sourceName, url: v.sourceUrl, retrieved: v.updatedAt }]} />
             <Navbox kind="vehicles" slug={v.slug} />
             <CitePage kind="vehicles" slug={v.slug} />
             <PageInformation kind="vehicles" slug={v.slug} />

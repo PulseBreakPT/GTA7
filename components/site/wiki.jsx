@@ -78,6 +78,10 @@ export function CategoryHeader({ eyebrow, title, description, count, countLabel 
 // de ficha tem secções diferentes.
 export function TableOfContents({ sections }) {
   const [activeId, setActiveId] = useState('')
+  // As secções que a página declara mas não chega a render (uma lista vazia,
+  // uma fonte que já era referência) deixavam no índice uma linha que não
+  // levava a lado nenhum. O índice passa a listar o que existe mesmo.
+  const [presentIds, setPresentIds] = useState(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -86,9 +90,11 @@ export function TableOfContents({ sections }) {
       })
     }, { rootMargin: '0px 0px -60% 0px' })
 
-    document.querySelectorAll('[data-section]').forEach((el) => observer.observe(el))
+    const nodes = document.querySelectorAll('[data-section]')
+    nodes.forEach((el) => observer.observe(el))
+    setPresentIds(new Set([...nodes].map((el) => el.id).filter(Boolean)))
     return () => observer.disconnect()
-  }, [])
+  }, [sections])
 
   // A numeração é a da Wikipédia: 1, 2, 3, e 3.1, 3.2 para as subsecções.
   // Diz quantas secções há e onde se está dentro do artigo — um índice sem
@@ -96,7 +102,10 @@ export function TableOfContents({ sections }) {
   // declara-se subordinada com `level: 2`; sem isso é de primeiro nível.
   let major = 0
   let minor = 0
-  const numbered = (sections || []).filter(Boolean).map((section) => {
+  const numbered = (sections || [])
+    .filter(Boolean)
+    .filter((section) => presentIds === null || presentIds.has(section.id))
+    .map((section) => {
     if (section.level === 2) {
       minor += 1
       return { ...section, number: `${major}.${minor}` }
@@ -138,8 +147,8 @@ export function TableOfContents({ sections }) {
 // se poder apontar alguém para a secção e não para a entrada inteira.
 export function WikiSection({ id, title, className, children }) {
   return (
-    <section data-section id={id} className={cx('wiki-content-section mb-12 scroll-mt-24', className)}>
-      <h2 className="deco-rule group font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4 flex items-baseline gap-2">
+    <section data-section id={id} className={cx('wiki-content-section mb-7 scroll-mt-24', className)}>
+      <h2 className="deco-rule group font-cond font-bold uppercase tracking-[0.16em] text-[17px] text-paper mb-3 flex items-baseline gap-2">
         {title}
         {id && (
           <a
@@ -469,8 +478,8 @@ export function SpecGrid({ items }) {
 
 export function InfoboxShell({ children, className }) {
   return (
-    <aside className={cx('wiki-infobox panel rounded-sm p-5 bg-ink/30 lg:sticky lg:top-24 h-fit', className)}>
-      <div className="space-y-4">{children}</div>
+    <aside className={cx('wiki-infobox panel rounded-sm p-4 bg-ink/30 lg:sticky lg:top-20 h-fit', className)}>
+      <div className="space-y-3">{children}</div>
     </aside>
   )
 }
@@ -658,8 +667,8 @@ export function SeeAlso({ kind, slug, limit = 6 }) {
   if (list.length === 0) return null
 
   return (
-    <section data-section id="see-also" className="wiki-see-also mb-12 scroll-mt-24">
-      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">See also</h2>
+    <section data-section id="see-also" className="wiki-see-also mb-7 scroll-mt-24">
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[17px] text-paper mb-3">See also</h2>
       <ul className="wiki-see-also-list">
         {list.map((item) => (
           <li key={item.href}>
@@ -681,22 +690,26 @@ export function SeeAlso({ kind, slug, limit = 6 }) {
 // a fonte oficial do verbete e o material do editor do jogo. Fica depois
 // das referências, como manda a ordem — a referência prova o que se
 // escreveu, a ligação externa é para continuar a ler.
-export function externalLinksFor(kind, slug, extra) {
+export function externalLinksFor(kind, slug, extra, references) {
   const entry = entryFor(kind, slug)
   if (!entry) return []
+  // A fonte aparecia três vezes na mesma página: na caixa de dados, na
+  // referência e outra vez aqui. Uma ligação externa que já é referência
+  // não é uma ligação nova — é a mesma linha repetida mais abaixo.
+  const cited = new Set((references || []).map((r) => r && r.url).filter(Boolean))
   return [
     entry.sourceUrl ? { name: entry.sourceName, url: entry.sourceUrl, note: 'Source of record for this entry' } : null,
     ...(extra || []),
-  ].filter((item) => item && item.url)
+  ].filter((item) => item && item.url && !cited.has(item.url))
 }
 
-export function ExternalLinks({ kind, slug, extra }) {
-  const items = externalLinksFor(kind, slug, extra)
+export function ExternalLinks({ kind, slug, extra, references }) {
+  const items = externalLinksFor(kind, slug, extra, references)
   if (items.length === 0) return null
 
   return (
-    <section data-section id="external-links" className="wiki-external-links mb-12 scroll-mt-24">
-      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">External links</h2>
+    <section data-section id="external-links" className="wiki-external-links mb-7 scroll-mt-24">
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[17px] text-paper mb-3">External links</h2>
       <ul className="wiki-see-also-list">
         {items.map((item) => (
           <li key={item.url}>
@@ -761,8 +774,8 @@ export function References({ items }) {
   if (list.length === 0) return null
 
   return (
-    <section data-section id="references" className="wiki-references mb-12 scroll-mt-24">
-      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">References</h2>
+    <section data-section id="references" className="wiki-references mb-7 scroll-mt-24">
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[17px] text-paper mb-3">References</h2>
       <ol className="space-y-2.5">
         {list.map((r, i) => (
           <li key={`${r.name}-${i}`} className="flex gap-3 text-[13px] leading-relaxed">

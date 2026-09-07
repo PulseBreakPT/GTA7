@@ -13,7 +13,6 @@ const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasse
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview', icon: FileText },
-  { id: 'detail', label: 'What is documented', icon: Layers },
   { id: 'related', label: 'Related Mechanics', icon: Repeat2 },
   { id: 'characters', label: 'Linked Characters', icon: Users },
   { id: 'see-also', label: 'See also', icon: Link2 },
@@ -37,10 +36,10 @@ export default function MechanicPage() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics', href: '/database/mechanics' }, { label: m.name }]} />
 
-        <header className="wiki-article-header mt-5">
+        <header className="wiki-article-header mt-4">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={m.status} />
             <span className="min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim">{m.glyph}</span>
@@ -54,13 +53,12 @@ export default function MechanicPage() {
 
         <PageTools kind="mechanics" slug={m.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+            {/* O «Overview» era o mesmo parágrafo que a abertura, palavra
+                por palavra. Ficou o texto longo, que é o que a secção tem
+                de novo para dizer. */}
             <WikiSection id="overview" title="Overview">
-              <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
-            </WikiSection>
-
-            <WikiSection id="detail" title="What is documented">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.long}</WikiText></p>
             </WikiSection>
 
@@ -98,7 +96,7 @@ export default function MechanicPage() {
             </WikiSection>
             <SeeAlso kind="mechanics" slug={m.slug} />
             <References items={[{ name: m.sourceName, url: m.sourceUrl, retrieved: m.updatedAt }]} />
-            <ExternalLinks kind="mechanics" slug={m.slug} />
+            <ExternalLinks kind="mechanics" slug={m.slug} references={[{ name: m.sourceName, url: m.sourceUrl, retrieved: m.updatedAt }]} />
             <Navbox kind="mechanics" slug={m.slug} />
             <CitePage kind="mechanics" slug={m.slug} />
             <PageInformation kind="mechanics" slug={m.slug} />

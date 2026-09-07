@@ -9,9 +9,7 @@ import { InfoRow, SpecGrid, WikiSection } from '@/components/site/wiki'
 import { AdjacentRecords, EntryMedia, RecordNotFound, WikiEntryLayout } from '@/components/site/wiki-entry'
 
 const SECTIONS = [
-  { id: 'overview', label: 'Overview', icon: FileText },
   { id: 'walkthrough', label: 'Walkthrough', icon: ListChecks },
-  { id: 'details', label: 'Details', icon: Compass },
   { id: 'references', label: 'References', icon: BookMarked },
 ]
 
@@ -23,15 +21,6 @@ function App() {
 
   const others = guides.filter((x) => x.slug !== g.slug).slice(0, 3)
 
-  const detailRows = [
-    { label: 'Format', value: 'Step walkthrough' },
-    { label: 'Steps', value: String(g.steps.length) },
-    { label: 'Reading time', value: `${g.readTime} min` },
-    { label: 'Status', children: <StatusBadge status={g.status} /> },
-    { label: 'Source', value: g.sourceName },
-    { label: 'Published', children: <span className="font-mono text-[11px] tracking-normal text-paper">{g.publishedAt}</span> },
-    { label: 'Last updated', children: <span className="font-mono text-[11px] tracking-normal text-paper">{g.updatedAt}</span> },
-  ]
 
   return (
     <WikiEntryLayout
@@ -42,14 +31,8 @@ function App() {
       title={g.title}
       eyebrow={<StatusBadge status={g.status} />}
       lede={g.summary}
-      shortDescription={`Step-by-step guide · ${g.steps.length} steps · ${g.readTime} min`}
+      shortDescription="Guide for Grand Theft Auto VI"
       media={<EntryMedia src={g.image} alt={g.title} priority />}
-      meta={
-        <>
-          <span className="font-cond uppercase tracking-[0.14em] text-[12px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>
-          <SourceChip name={g.sourceName} url={g.sourceUrl} prefix={null} className="text-[12px]" />
-        </>
-      }
       sections={SECTIONS}
       references={[{ name: g.sourceName, url: g.sourceUrl, retrieved: g.updatedAt }]}
       infobox={
@@ -78,10 +61,6 @@ function App() {
         </AdjacentRecords>
       }
     >
-      <WikiSection id="overview" title="Overview">
-        <p className="text-dim text-[14px] leading-[1.8]">{g.summary}</p>
-      </WikiSection>
-
       <WikiSection id="walkthrough" title="Walkthrough">
         <ol className="flex flex-col gap-3">
           {g.steps.map((s, i) => (
@@ -93,9 +72,6 @@ function App() {
         </ol>
       </WikiSection>
 
-      <WikiSection id="details" title="Details" className="mb-0">
-        <SpecGrid items={detailRows} />
-      </WikiSection>
     </WikiEntryLayout>
   )
 }

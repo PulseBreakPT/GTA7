@@ -66,7 +66,7 @@ export function WikiEntryLayout({
   // declarava as outras — agora as três finais entram sozinhas, e só
   // quando a secção existe mesmo, para o índice não apontar para o vazio.
   const showSeeAlso = footer && kind && seeAlso && seeAlsoFor(kind, slug).length > 0
-  const showExternal = footer && kind && externalLinksFor(kind, slug, externalLinks).length > 0
+  const showExternal = footer && kind && externalLinksFor(kind, slug, externalLinks, references).length > 0
   const tocSections = [
     ...(sections || []).filter((section) => section && section.id !== 'references'),
     showSeeAlso ? { id: 'see-also', label: 'See also', icon: Link2 } : null,
@@ -76,10 +76,10 @@ export function WikiEntryLayout({
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={trail} />
 
-        <header className="wiki-article-header mt-5">
+        <header className="wiki-article-header mt-4">
           {eyebrow && <div className="flex flex-wrap items-center gap-2 mb-3">{eyebrow}</div>}
           <h1
             data-ghost={ghost}
@@ -88,13 +88,10 @@ export function WikiEntryLayout({
             {title}
           </h1>
           {media}
-          {lede && (
-            <div className="wiki-article-lede mt-4">
-              {leadName
-                ? <LeadParagraph name={leadName}>{lede}</LeadParagraph>
-                : <div className="text-paper/85 text-[16px] leading-relaxed max-w-[68ch]">{lede}</div>}
-            </div>
-          )}
+          {/* Uma só marcação para a abertura, com nome a negrito ou sem ele:
+              guias e notícias tinham aqui uma div própria, e o mesmo
+              parágrafo saía com outra classe e outro espaçamento. */}
+          {lede && <LeadParagraph name={leadName}>{lede}</LeadParagraph>}
           {shortDescription && <ShortDescription>{shortDescription}</ShortDescription>}
           {meta && (
             <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-y hairline py-3">{meta}</div>
@@ -105,7 +102,7 @@ export function WikiEntryLayout({
 
         {kind && <PageTools kind={kind} slug={slug} />}
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
           {/* A ordem do fim de um artigo de wiki não é arbitrária, e era a
               que aqui estava trocada: ver também, depois referências,
               depois ligações externas, depois as caixas de navegação, e as
@@ -117,7 +114,7 @@ export function WikiEntryLayout({
             {children}
             {footer && kind && seeAlso && <SeeAlso kind={kind} slug={slug} />}
             {references && references.length > 0 && <References items={references} />}
-            {footer && kind && <ExternalLinks kind={kind} slug={slug} extra={externalLinks} />}
+            {footer && kind && <ExternalLinks kind={kind} slug={slug} extra={externalLinks} references={references} />}
             {footer && kind && (
               <>
                 <Navbox kind={kind} slug={slug} />

@@ -1974,7 +1974,7 @@ body > main, body > footer { position: relative; z-index: 1; }
 }
 
 @media (max-width: 767px) {
-  .wiki-entry-grid { gap: 1.35rem !important; }
+  .wiki-entry-grid { gap: 1rem !important; }
   .wiki-entry-grid > :nth-child(3) { margin-bottom: .35rem; }
   .wiki-category-header > div:first-child { align-items: stretch; }
   .wiki-category-header dl {
@@ -2302,7 +2302,7 @@ main :is(h1, h2, h3) {
   font-size: .7rem !important;
   line-height: 1.15 !important;
 }
-.wiki-user-actions { padding: .75rem !important; gap: .75rem !important; }
+.wiki-user-actions { padding: .5rem !important; gap: .5rem !important; }
 .wiki-user-actions-label > span { font-size: .75rem !important; }
 .wiki-user-actions-label small {
   font-size: .675rem !important;
@@ -2357,7 +2357,7 @@ main [role="button"] { min-height: 40px; }
   font-size: clamp(.875rem, .15vw + .84rem, .975rem) !important;
   line-height: 1.65 !important;
 }
-.wiki-entry-grid { row-gap: clamp(1.25rem, 3vw, 2rem) !important; }
+.wiki-entry-grid { row-gap: clamp(.85rem, 2vw, 1.35rem) !important; }
 .wiki-index-layout { gap: clamp(1.25rem, 2.5vw, 2.25rem) !important; }
 
 @media (min-width: 1024px) {
@@ -2404,7 +2404,7 @@ main [role="button"] { min-height: 40px; }
     padding-top: .8rem;
     border-top: 1px solid rgba(23,33,75,.1);
   }
-  .wiki-article-header { padding: 2.35rem 1.1rem 1.35rem !important; }
+  .wiki-article-header { padding: 1.5rem 1rem 1rem !important; }
   .wiki-article-body,
   .wiki-news-paper {
     margin-inline: 0;
@@ -3859,7 +3859,7 @@ main [class*="aspect-"].overflow-hidden { border-radius: 2px; }
 .wiki-button-secondary:hover { border-color: var(--vice-pink); color: var(--vice-pink); }
 
 @media (max-width: 1023px) {
-  .wiki-entry-grid { gap: 1rem !important; }
+  .wiki-entry-grid { gap: .85rem !important; }
   .wiki-entry-grid .wiki-toc-panel {
     padding: 10px !important;
     overflow: hidden;
@@ -5203,7 +5203,7 @@ time { font-family: var(--type-code); font-variant-numeric: tabular-nums slashed
     max-height: 235px;
     aspect-ratio: 16 / 8;
   }
-  .wiki-article-header { padding: 1.25rem 1rem !important; }
+  .wiki-article-header { padding: 1rem .85rem !important; }
   .wiki-article-header .aspect-\[21\/8\],
   .wiki-news-article > .aspect-\[21\/9\] {
     min-height: 210px;
