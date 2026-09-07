@@ -13,6 +13,11 @@ const LOCATION_STATUSES = STATUS_ORDER
   .map((id) => ({ id, label: (STATUS_META[id] || {}).label || id.toUpperCase(), count: locations.filter((item) => item.status === id).length }))
   .filter((item) => item.count > 0)
 
+const REGION_BY_ID = new Map(regions.map((region) => [region.id, region]))
+const regionLabel = (id) => (REGION_BY_ID.get(id) || {}).label || id
+const statusLabel = (id) => (STATUS_META[id] || {}).label || id.toUpperCase()
+const exactCount = (items) => items.filter((item) => confirmedLocationImage(item)).length
+
 function PublishedVisual({ location, region, className, priority = false }) {
   const exactImage = confirmedLocationImage(location)
   const src = exactImage || region?.image
@@ -27,7 +32,7 @@ function PublishedVisual({ location, region, className, priority = false }) {
           : `${region?.label || 'Leonida'} official artwork — regional context for ${location.name}, not the exact place`}
         fill
         priority={priority}
-        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 360px"
+        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 320px"
         className="object-cover transition-transform duration-500 group-hover:scale-[1.035]"
       />
       <span className="absolute inset-x-0 bottom-0 px-2.5 pb-2 pt-8 bg-gradient-to-t from-black/90 via-black/45 to-transparent font-mono text-[8px] uppercase tracking-[0.12em] text-white">
@@ -45,7 +50,7 @@ function RegionCard({ region, active, onSelect }) {
       onClick={() => onSelect(active ? 'all' : region.id)}
       aria-pressed={active}
       className={cx(
-        'group relative min-h-[210px] overflow-hidden rounded-sm border text-left transition-colors',
+        'group relative min-h-[190px] overflow-hidden rounded-sm border text-left transition-colors',
         active ? 'border-pink' : 'border-line hover:border-violet/50'
       )}
     >
@@ -61,13 +66,62 @@ function RegionCard({ region, active, onSelect }) {
   )
 }
 
+// O cartão do lugar: a imagem publicada em cima, a identificação por baixo e
+// a linha de evidência encostada ao fundo, para que numa grelha os cartões
+// acabem todos na mesma linha, tenham a descrição que tiverem.
+function PlaceCard({ location, region }) {
+  const exact = Boolean(confirmedLocationImage(location))
+  return (
+    <Link href={`/map/location/${location.slug}`} className="group panel flex h-full flex-col overflow-hidden rounded-sm hover:border-violet/45">
+      <PublishedVisual location={location} region={region} className="aspect-[16/9]" />
+      <span className="flex flex-1 flex-col p-4">
+        <span className="flex items-start justify-between gap-3">
+          <span className="font-cond font-bold uppercase leading-tight tracking-[0.04em] text-[17px] text-paper">{location.name}</span>
+          <ArrowRight size={14} className="mt-1 shrink-0 text-dim transition-transform group-hover:translate-x-1" />
+        </span>
+        <span className="clamp-2 mt-2 text-[12px] leading-relaxed text-dim">{location.desc}</span>
+        <span className="mt-3 flex flex-wrap items-center gap-2"><StatusBadge status={location.status} /><span className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim">{region?.label}</span></span>
+        <span className="mt-auto pt-3 flex items-center gap-1.5 font-cond uppercase tracking-[0.1em] text-[9px] text-dim">
+          {exact ? <CheckCircle2 size={11} className="text-mint" /> : <ImageIcon size={11} className="text-violet" />}
+          {exact ? 'Exact visual verified' : 'Regional visual context'}
+        </span>
+      </span>
+    </Link>
+  )
+}
+
+// Cada faceta do índice traz a sua contagem e, atrás dela, a proporção que
+// representa no total — a distribuição lê-se de relance sem gráfico nenhum.
+function FacetButton({ label, count, total, active, onSelect, tone = 'violet' }) {
+  const share = total > 0 ? Math.round((count / total) * 100) : 0
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={active}
+      className={cx(
+        'relative w-full overflow-hidden rounded-sm border px-3 py-2 text-left transition-colors',
+        active ? (tone === 'pink' ? 'border-pink bg-pink/5' : 'border-violet bg-violet/5') : 'border-line hover:border-black/30'
+      )}
+    >
+      <span aria-hidden="true" className={cx('absolute inset-y-0 left-0', tone === 'pink' ? 'bg-pink/[0.07]' : 'bg-violet/[0.07]')} style={{ width: `${share}%` }} />
+      <span className="relative flex items-center justify-between gap-3">
+        <span className={cx('font-cond uppercase tracking-[0.08em] text-[11px]', active ? (tone === 'pink' ? 'text-pink' : 'text-violet') : 'text-paper')}>{label}</span>
+        <span className="font-mono text-[10px] tabular-nums text-dim">{count}</span>
+      </span>
+    </button>
+  )
+}
+
 function PlacesDirectory({ requested = null }) {
   const [query, setQuery] = useState('')
   const [regionFilter, setRegionFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [grouping, setGrouping] = useState('region')
+  const [sort, setSort] = useState('evidence')
 
   const selected = locations.find((item) => item.slug === requested)
-  const selectedRegion = selected ? regions.find((item) => item.id === selected.region) : null
+  const selectedRegion = selected ? REGION_BY_ID.get(selected.region) : null
 
   useEffect(() => {
     if (selected) setRegionFilter(selected.region)
@@ -75,13 +129,45 @@ function PlacesDirectory({ requested = null }) {
 
   const results = useMemo(() => {
     const needle = query.trim().toLowerCase()
-    return locations.filter((item) => {
-      const region = regions.find((candidate) => candidate.id === item.region)
+    const filtered = locations.filter((item) => {
+      const region = REGION_BY_ID.get(item.region)
       return (regionFilter === 'all' || item.region === regionFilter)
         && (statusFilter === 'all' || item.status === statusFilter)
         && (!needle || `${item.name} ${item.desc} ${region?.label || ''}`.toLowerCase().includes(needle))
     })
-  }, [query, regionFilter, statusFilter])
+
+    // Ordenar por evidência põe à frente os lugares que o arquivo consegue
+    // ilustrar com uma imagem do próprio sítio; A–Z ignora isso e trata a
+    // lista como uma lista.
+    return filtered.sort((a, b) => {
+      if (sort === 'evidence') {
+        const byExact = Number(Boolean(confirmedLocationImage(b))) - Number(Boolean(confirmedLocationImage(a)))
+        if (byExact) return byExact
+        const byStatus = STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status)
+        if (byStatus) return byStatus
+      }
+      return a.name.localeCompare(b.name, 'en')
+    })
+  }, [query, regionFilter, statusFilter, sort])
+
+  // Sessenta e um lugares numa grelha só são uma parede. Agrupados pela
+  // região — ou pelo estado da fonte — cada bloco tem o tamanho de uma
+  // leitura, e o cabeçalho diz de que se está a falar.
+  const groups = useMemo(() => {
+    if (grouping === 'none') return [{ id: 'all', label: 'All named places', items: results }]
+
+    const order = grouping === 'region' ? regions.map((region) => region.id) : STATUS_ORDER
+    const label = grouping === 'region' ? regionLabel : statusLabel
+    const key = grouping === 'region' ? 'region' : 'status'
+
+    return order
+      .map((id) => ({ id, label: label(id), items: results.filter((item) => item[key] === id) }))
+      .filter((group) => group.items.length > 0)
+  }, [results, grouping])
+
+  const filtersActive = query !== '' || regionFilter !== 'all' || statusFilter !== 'all'
+  const resetFilters = () => { setQuery(''); setRegionFilter('all'); setStatusFilter('all') }
+  const shownExact = exactCount(results)
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 pb-8 max-w-[1440px] w-full mx-auto">
@@ -121,47 +207,103 @@ function PlacesDirectory({ requested = null }) {
             </div>
             <span className="font-mono text-[11px] text-dim tabular-nums">{results.length} / {locations.length}</span>
           </div>
+        </div>
 
-          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-white/80 border border-line rounded-sm focus-within:border-violet/50">
-            <Search size={15} className="text-violet shrink-0" aria-hidden="true" />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search place or region…" aria-label="Search places" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
-            {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
-          </label>
-
-          <div className="mt-3 flex flex-wrap gap-2" aria-label="Source status filters">
-            <button type="button" onClick={() => setStatusFilter('all')} aria-pressed={statusFilter === 'all'} className={cx('h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === 'all' ? 'border-violet text-violet bg-violet/5' : 'border-line text-dim')}>All</button>
-            {LOCATION_STATUSES.map((status) => (
-              <button key={status.id} type="button" onClick={() => setStatusFilter(status.id)} aria-pressed={statusFilter === status.id} className={cx('h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === status.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim')}>
-                {status.label} · {status.count}
-              </button>
+        {/* Índice e controlos lado a lado: a coluna larga leva a grelha, a
+            estreita fica agarrada ao ecrã com a pesquisa e as facetas. */}
+        <div className="wiki-index-layout mt-5 grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 items-start">
+          <div className="min-w-0">
+            {groups.map((group) => (
+              <section key={group.id} className="mt-7 first:mt-0" aria-labelledby={`group-${group.id}`}>
+                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b hairline pb-2">
+                  <h3 id={`group-${group.id}`} className="font-cond font-bold uppercase tracking-[0.06em] text-[19px] text-paper">{group.label}</h3>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-dim tabular-nums">
+                    {group.items.length} {group.items.length === 1 ? 'place' : 'places'} · {exactCount(group.items)} exact
+                  </span>
+                </div>
+                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {group.items.map((location) => <PlaceCard key={location.slug} location={location} region={REGION_BY_ID.get(location.region)} />)}
+                </div>
+              </section>
             ))}
+
+            {results.length === 0 && (
+              <div className="panel rounded-sm p-8 text-center">
+                <p className="font-cond font-bold uppercase text-[18px] text-paper">No matching place</p>
+                <button type="button" onClick={resetFilters} className="mt-3 font-cond uppercase tracking-[0.12em] text-[11px] text-pink">Reset filters</button>
+              </div>
+            )}
           </div>
-        </div>
 
-        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {results.map((location) => {
-            const region = regions.find((item) => item.id === location.region)
-            const exact = Boolean(confirmedLocationImage(location))
-            return (
-              <Link key={location.slug} href={`/map/location/${location.slug}`} className="group panel overflow-hidden rounded-sm hover:border-violet/45">
-                <PublishedVisual location={location} region={region} className="aspect-[16/9]" />
-                <span className="block p-4">
-                  <span className="flex items-start justify-between gap-3">
-                    <span className="font-cond font-bold uppercase leading-tight tracking-[0.04em] text-[17px] text-paper">{location.name}</span>
-                    <ArrowRight size={14} className="mt-1 shrink-0 text-dim transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <span className="mt-2 flex flex-wrap items-center gap-2"><StatusBadge status={location.status} /><span className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim">{region?.label}</span></span>
-                  <span className="mt-3 flex items-center gap-1.5 font-cond uppercase tracking-[0.1em] text-[9px] text-dim">
-                    {exact ? <CheckCircle2 size={11} className="text-mint" /> : <ImageIcon size={11} className="text-violet" />}
-                    {exact ? 'Exact visual verified' : 'Regional visual context'}
-                  </span>
-                </span>
-              </Link>
-            )
-          })}
-        </div>
+          <aside className="tech-mask glass-panel p-5 self-start xl:sticky xl:top-24" aria-label="Index controls">
+            <label className="flex items-center gap-2 h-11 px-3 bg-white/80 border border-line rounded-sm focus-within:border-violet/50">
+              <Search size={15} className="text-violet shrink-0" aria-hidden="true" />
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search place or region…" aria-label="Search places" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
+              {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
+            </label>
 
-        {results.length === 0 && <div className="mt-5 panel rounded-sm p-8 text-center"><p className="font-cond font-bold uppercase text-[18px] text-paper">No matching place</p><button type="button" onClick={() => { setQuery(''); setRegionFilter('all'); setStatusFilter('all') }} className="mt-3 font-cond uppercase tracking-[0.12em] text-[11px] text-pink">Reset filters</button></div>}
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <label className="flex flex-col gap-1">
+                <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Group by</span>
+                <select value={grouping} onChange={(event) => setGrouping(event.target.value)} aria-label="Group places"
+                  className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-violet/50">
+                  <option value="region">Region</option>
+                  <option value="status">Source status</option>
+                  <option value="none">Single list</option>
+                </select>
+              </label>
+              <label className="flex flex-col gap-1">
+                <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Sort</span>
+                <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort places"
+                  className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-violet/50">
+                  <option value="evidence">Evidence first</option>
+                  <option value="name">Name A–Z</option>
+                </select>
+              </label>
+            </div>
+
+            <div className="mt-5">
+              <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Region</p>
+              <div className="mt-2 flex flex-col gap-1.5">
+                <FacetButton label="All regions" count={locations.length} total={locations.length} active={regionFilter === 'all'} onSelect={() => setRegionFilter('all')} />
+                {regions.map((region) => {
+                  const count = locations.filter((item) => item.region === region.id).length
+                  return <FacetButton key={region.id} label={region.label} count={count} total={locations.length} active={regionFilter === region.id} onSelect={() => setRegionFilter(regionFilter === region.id ? 'all' : region.id)} />
+                })}
+              </div>
+            </div>
+
+            <div className="mt-5">
+              <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Source status</p>
+              <div className="mt-2 flex flex-col gap-1.5">
+                <FacetButton label="All statuses" count={locations.length} total={locations.length} active={statusFilter === 'all'} onSelect={() => setStatusFilter('all')} tone="pink" />
+                {LOCATION_STATUSES.map((status) => (
+                  <FacetButton key={status.id} label={status.label} count={status.count} total={locations.length} active={statusFilter === status.id} onSelect={() => setStatusFilter(statusFilter === status.id ? 'all' : status.id)} tone="pink" />
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-5 border-t hairline pt-4">
+              <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Visual evidence in view</p>
+              <dl className="mt-2 grid grid-cols-2 gap-2">
+                <div className="rounded-sm border border-mint/30 bg-mint/5 px-3 py-2">
+                  <dt className="font-cond uppercase tracking-[0.1em] text-[9px] text-mint">Exact</dt>
+                  <dd className="mt-0.5 font-mono text-[16px] tabular-nums text-paper">{shownExact}</dd>
+                </div>
+                <div className="rounded-sm border border-violet/30 bg-violet/5 px-3 py-2">
+                  <dt className="font-cond uppercase tracking-[0.1em] text-[9px] text-violet">Region context</dt>
+                  <dd className="mt-0.5 font-mono text-[16px] tabular-nums text-paper">{results.length - shownExact}</dd>
+                </div>
+              </dl>
+            </div>
+
+            {filtersActive && (
+              <button type="button" onClick={resetFilters} className="mt-4 w-full inline-flex items-center justify-center gap-2 border border-line h-10 font-cond uppercase tracking-[0.14em] text-[11px] text-dim hover:text-paper hover:border-black/40 transition-colors">
+                <X size={13} /> Reset filters
+              </button>
+            )}
+          </aside>
+        </div>
       </section>
     </div>
   )
