@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
 import { mechanics, characters } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
@@ -45,15 +45,16 @@ export default function MechanicPage() {
             <StatusBadge status={m.status} />
             <span className="min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim">{m.glyph}</span>
           </div>
-          <h1 data-ghost="MECHANICS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{m.name}</h1>
+          <h1 data-ghost="MECHANICS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{m.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
+          <ShortDescription>Gameplay mechanic in Grand Theft Auto VI</ShortDescription>
           <StubNotice kind="mechanics" slug={m.slug} />
           <Hatnote kind="mechanics" slug={m.slug} />
         </header>
 
         <PageTools kind="mechanics" slug={m.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>

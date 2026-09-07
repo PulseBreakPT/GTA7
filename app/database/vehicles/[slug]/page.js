@@ -100,7 +100,7 @@ function App() {
             <StatusBadge status={v.status} />
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
           </div>
-          <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{v.name}</h1>
+          <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{v.name}</h1>
           <ShortDescription>
             {classLabel} in Grand Theft Auto VI{v.manufacturer && v.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${v.manufacturer}` : ''} · Unit {v.num}
           </ShortDescription>
@@ -110,7 +110,7 @@ function App() {
 
         <PageTools kind="vehicles" slug={v.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
           {/* Corpo do artigo */}
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">

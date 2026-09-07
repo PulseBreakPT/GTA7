@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
 
 export default function RadioStationPage() {
@@ -42,15 +42,16 @@ export default function RadioStationPage() {
             <GhostBadge status="confirmed" label={s.genre} />
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
           </div>
-          <h1 data-ghost="RADIO" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{s.name}</h1>
+          <h1 data-ghost="RADIO" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{s.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
+          <ShortDescription>Radio station in Grand Theft Auto VI</ShortDescription>
           <StubNotice kind="radio" slug={s.slug} />
           <Hatnote kind="radio" slug={s.slug} />
         </header>
 
         <PageTools kind="radio" slug={s.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>

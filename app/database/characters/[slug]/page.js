@@ -102,7 +102,7 @@ function App() {
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
             <StatusBadge status={c.status} />
           </div>
-          <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px]">{c.name}</h1>
+          <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{c.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.bio}</WikiText></p>
           <ShortDescription>
             {c.role} in Grand Theft Auto VI{c.group ? ` · ${c.group}` : ''}
@@ -113,7 +113,7 @@ function App() {
 
         <PageTools kind="characters" slug={c.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
           {/* Corpo do artigo */}
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="background" title="Background">

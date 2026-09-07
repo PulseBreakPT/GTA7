@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ChevronRight, MapPin } from 'lucide-react'
 import { notFound } from 'next/navigation'
-import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText } from '@/components/site/wiki'
+import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText, ShortDescription } from '@/components/site/wiki'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { worldBranches, worldEntries, worldEntryBySlug } from '@/lib/world-content'
 
@@ -29,8 +29,9 @@ export default async function WorldEntryPage({ params }) {
 
       <header className="wiki-article-header mt-5">
         <div className="flex flex-wrap items-center gap-2"><StatusBadge status={item.status} /><span className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">{item.type} · {item.branch}</span></div>
-        <h1 data-ghost="WORLD" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase text-paper tracking-tight leading-[0.88] text-[44px] sm:text-[62px]">{item.name}</h1>
+        <h1 data-ghost="WORLD" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{item.name}</h1>
         <p className="mt-4 max-w-[70ch] text-paper/85 text-[16px] sm:text-[17px] leading-relaxed"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p>
+        <ShortDescription>{[item.type, item.region].filter(Boolean).join(' · ') || 'World record'} in Grand Theft Auto VI</ShortDescription>
         <StubNotice kind="world" slug={item.slug} />
         <Hatnote kind="world" slug={item.slug} />
       </header>
@@ -48,7 +49,7 @@ export default async function WorldEntryPage({ params }) {
         </div>
       </nav>
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
         <main className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview"><p className="text-dim text-[15px] leading-[1.85]"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p></WikiSection>
           <WikiSection id="record" title="Archive record">

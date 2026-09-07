@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
 
 export default function FactionPage() {
@@ -41,15 +41,16 @@ export default function FactionPage() {
           <GhostBadge status="confirmed" label={f.kind} />
           <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{f.evidenceStatus}</span>
         </div>
-        <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{f.name}</h1>
+        <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{f.name}</h1>
         <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
+        <ShortDescription>Faction in Grand Theft Auto VI</ShortDescription>
         <StubNotice kind="factions" slug={f.slug} />
-          <Hatnote kind="factions" slug={f.slug} />
+        <Hatnote kind="factions" slug={f.slug} />
       </header>
 
       <PageTools kind="factions" slug={f.slug} />
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
         <div className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>

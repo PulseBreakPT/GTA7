@@ -84,7 +84,7 @@ function App() {
             <GhostBadge status="confirmed" label={typeLabel} />
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span>
           </div>
-          <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{w.name}</h1>
+          <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{w.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/weapons/${w.slug}`}>{w.desc}</WikiText></p>
           <ShortDescription>
             {typeLabel} in Grand Theft Auto VI{w.manufacturer && w.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${w.manufacturer}` : ''}
@@ -95,7 +95,7 @@ function App() {
 
         <PageTools kind="weapons" slug={w.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
           {/* Corpo do artigo */}
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">

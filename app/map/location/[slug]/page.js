@@ -49,7 +49,7 @@ export default function LocationPage() {
 
       <PageTools kind="locations" slug={loc.slug} />
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
         {/* Corpo do artigo */}
         <div className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">

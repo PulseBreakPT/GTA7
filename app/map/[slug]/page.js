@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
 import { regions, locations, confirmedLocationImage } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox, ShortDescription, Hatnote, WhatThisLinks } from '@/components/site/wiki'
 
 export default function RegionPage() {
   const { slug } = useParams()
@@ -35,18 +35,20 @@ export default function RegionPage() {
       {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
           qualquer largura, como nas fichas das wikis. */}
       <header className="wiki-article-header mt-5">
-        <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[76px] text-paper">{region.label}</h1>
+        <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[38px] sm:text-[52px] xl:text-[64px] text-paper">{region.label}</h1>
         <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]"><WikiText exclude={`/map/${region.id}`}>{region.blurb}</WikiText></p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <GhostBadge status={region.sourced ? 'confirmed' : 'analysis'} label={region.sourced ? 'Officially named' : 'Image-based archive note'} />
           <span className="font-mono text-[11px] text-dim">{entries.length} DOCUMENTED ENTRIES</span>
         </div>
+        <ShortDescription>Region of Leonida in Grand Theft Auto VI · {entries.length} documented entries</ShortDescription>
         <StubNotice kind="regions" slug={region.id} />
+        <Hatnote kind="regions" slug={region.id} />
       </header>
 
       <PageTools kind="regions" slug={region.id} />
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
         {/* Corpo do artigo */}
         <div className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
@@ -153,6 +155,7 @@ export default function RegionPage() {
               <p className="mt-1.5 text-[11px] leading-relaxed text-dim">Only Rockstar-named places are listed. Every visual is published GTA VI media; contextual region images are labelled and never presented as an exact location.</p>
             </div>
             <WhatLinksHere kind="regions" slug={region.id} />
+            <WhatThisLinks kind="regions" slug={region.id} />
           </InfoboxShell>
         </div>
       </div>
