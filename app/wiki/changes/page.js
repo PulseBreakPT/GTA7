@@ -102,14 +102,16 @@ function RecentChanges() {
               <span className="flex-1 h-px bg-gradient-to-r from-black/20 to-transparent" aria-hidden="true" />
               <span className="font-mono text-[11px] text-dim tabular-nums shrink-0">{items.length}</span>
             </div>
-            <ul className="mt-2 border border-line divide-y divide-black/[0.08]">
+            <ul className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {items.slice(0, 40).map((e) => (
                 <li key={e.href}>
-                  <Link href={e.href} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 hover:bg-surface2/50 transition-colors">
-                    <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint shrink-0 w-[72px]">{KIND_META[e.kind].label}</span>
-                    <span className="font-cond font-semibold uppercase text-[13px] text-paper flex-1 min-w-0 truncate">{e.name}</span>
-                    {e.stub && <span className="font-cond uppercase tracking-[0.14em] text-[8px] text-warn shrink-0">Stub</span>}
-                    <StatusBadge status={e.status} className="shrink-0" />
+                  <Link href={e.href} className="group flex min-h-[108px] h-full flex-col border border-line bg-white/55 p-4 hover:border-pink/55 hover:bg-white transition-colors">
+                    <span className="flex items-center justify-between gap-3">
+                      <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint">{KIND_META[e.kind].label}</span>
+                      <StatusBadge status={e.status} className="shrink-0" />
+                    </span>
+                    <span className="mt-3 font-cond font-semibold uppercase text-[15px] leading-tight text-paper line-clamp-2 group-hover:text-pink transition-colors">{e.name}</span>
+                    {e.stub && <span className="mt-auto pt-3 font-cond uppercase tracking-[0.14em] text-[8px] text-warn">Stub entry</span>}
                   </Link>
                 </li>
               ))}

@@ -35,23 +35,23 @@ const ICONS = {
 const META = {
   wildlife: {
     image: '/media/scenes/swamp-gator.webp',
-    description: 'Animals confirmed in trailers and official material, from the Everglades to the streets of Vice City.',
+    description: 'Animals documented in trailers and official material, from the wetlands to the streets of Vice City.',
   },
   organizations: {
     image: '/media/vehicles/stanier-crew.webp',
-    description: 'Police forces, gangs, teams and other organisations operating in Leonida.',
+    description: 'Police forces, gangs, teams and other organizations operating across Leonida.',
   },
   establishments: {
     image: '/media/places/vice-city.webp',
-    description: 'Hotels, bars, shops, restaurants and buildings identified in the game world.',
+    description: 'Hotels, bars, shops, restaurants and buildings identified throughout the game world.',
   },
   safehouses: {
     image: '/media/key-art/jason-lucia-motel.webp',
-    description: 'Places tied to the story where Lucia, Jason and their allies take shelter.',
+    description: 'Story-related locations where Lucia, Jason and their allies find shelter.',
   },
   geography: {
     image: '/media/places/leonida-keys.webp',
-    description: 'Islands, beaches, wetlands, rivers and other natural features of the state of Leonida.',
+    description: 'Islands, beaches, wetlands, rivers and other natural features across Leonida.',
   },
   businesses: {
     image: '/media/editions/stock-305.webp',
@@ -59,7 +59,7 @@ const META = {
   },
   television: {
     image: '/media/characters/real-dimez.webp',
-    description: 'Channels and programming seen on screens, adverts and broadcasts inside the game world.',
+    description: 'Channels and programming seen on screens, advertisements and broadcasts in the game world.',
   },
 }
 
@@ -110,7 +110,7 @@ export default function WorldIndexPage() {
   }, [branch])
 
   const shown = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase('pt')
+    const normalized = query.trim().toLocaleLowerCase('en')
     const results = worldEntries.filter((entry) => {
       if (branch !== 'all' && branch !== 'overview' && entry.branch !== branch) return false
       if (region !== 'all' && entry.region !== region) return false
@@ -118,7 +118,7 @@ export default function WorldIndexPage() {
       if (!normalized) return true
       return [entry.name, entry.type, entry.region, entry.summary, ...(entry.aliases || [])]
         .filter(Boolean)
-        .some((value) => value.toLocaleLowerCase('pt').includes(normalized))
+        .some((value) => value.toLocaleLowerCase('en').includes(normalized))
     })
 
     return results.sort((a, b) => {
@@ -148,12 +148,12 @@ export default function WorldIndexPage() {
       <CategoryHeader
         eyebrow="World directory"
         title="Leonida World Index"
-        description="Browse the world by subject, region or how strongly it is confirmed. Every record gathers its visual evidence and its context in one place."
+        description="Explore the world by subject, region or evidence status. Each record combines visual evidence and context in an encyclopedia format."
         count={worldEntries.length}
       />
 
-      <section className="mt-6 rounded-2xl border border-line bg-white p-3 shadow-sm md:p-4" aria-label="Search the world index">
-        <label className="flex min-h-14 items-center gap-3 rounded-xl border border-line bg-white px-4 transition focus-within:border-pink focus-within:ring-4 focus-within:ring-pink/10">
+      <section className="mt-6" aria-label="Search the world index">
+        <label className="flex min-h-12 items-center gap-3 rounded-sm border border-line bg-white px-4 transition focus-within:border-pink">
           <Search className="size-5 shrink-0 text-pink" aria-hidden="true" />
           <span className="sr-only">Search the world index</span>
           <input
@@ -164,7 +164,7 @@ export default function WorldIndexPage() {
               if (value && branch === 'overview') chooseBranch('all')
             }}
             className="min-w-0 flex-1 bg-transparent text-base text-paper outline-none placeholder:text-dim"
-            placeholder="Search animals, places, businesses, organisations…"
+            placeholder="Search animals, places, businesses, organizations…"
           />
           {query && (
             <button type="button" onClick={() => setQuery('')} className="rounded-full p-2 text-dim hover:bg-black/5 hover:text-paper" aria-label="Clear search">
@@ -201,7 +201,7 @@ export default function WorldIndexPage() {
               const meta = META[item.id]
               const samples = worldEntries.filter((entry) => entry.branch === item.id).slice(0, 3)
               return (
-                <button key={item.id} type="button" onClick={() => chooseBranch(item.id)} className="group overflow-hidden rounded-2xl border border-line bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-pink/35 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pink/20">
+                <button key={item.id} type="button" onClick={() => chooseBranch(item.id)} className="group overflow-hidden rounded-sm border border-line bg-white text-left transition-colors hover:border-pink/35 focus-visible:outline-none">
                   <div className="relative aspect-[16/7] overflow-hidden bg-black/5">
                     <Image src={meta.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
@@ -225,7 +225,7 @@ export default function WorldIndexPage() {
       ) : (
         <div className="mt-8 lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-8">
           <aside className="hidden lg:block">
-            <nav className="sticky top-28 rounded-2xl border border-line bg-white p-2 shadow-sm" aria-label="World directory sections">
+            <nav className="sticky top-28 rounded-sm border border-line bg-white p-2" aria-label="World directory sections">
               <p className="px-3 pb-2 pt-3 text-[10px] font-black uppercase tracking-[0.18em] text-dim">World directory</p>
               <button type="button" onClick={() => chooseBranch('overview')} className="wiki-side-link w-full text-left">
                 <Landmark className="size-4" /> Overview
@@ -255,7 +255,7 @@ export default function WorldIndexPage() {
               {branch !== 'overview' && <button type="button" onClick={() => chooseBranch('overview')} className="wiki-text-link">Section overview <ArrowRight className="size-4" /></button>}
             </header>
 
-            <div className="mt-4 rounded-2xl border border-line bg-white p-3 md:p-4">
+            <div className="mt-4 rounded-sm border border-line bg-white p-3 md:p-4">
               <div className="mb-3 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-dim"><SlidersHorizontal className="size-4" /> Refine results</div>
               <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_auto]">
                 <label className="wiki-select-wrap"><span>Region</span><select value={region} onChange={(event) => setRegion(event.target.value)}><option value="all">All regions</option>{regions.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
@@ -263,7 +263,7 @@ export default function WorldIndexPage() {
                 <label className="wiki-select-wrap"><span>Order</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="type">Type</option></select></label>
                 <div className="flex items-end justify-between gap-2">
                   {filtering ? <button type="button" onClick={clearFilters} className="min-h-10 px-2 text-xs font-bold text-pink hover:underline">Clear</button> : <span />}
-                  <div className="flex rounded-lg border border-line bg-white p-1" aria-label="Display mode">
+                  <div className="flex rounded-sm border border-line bg-white p-1" aria-label="Display mode">
                     <button type="button" onClick={() => setView('grid')} className={`rounded-md p-2 ${view === 'grid' ? 'bg-paper text-ink' : 'text-dim hover:text-paper'}`} aria-label="Grid view"><Grid2X2 className="size-4" /></button>
                     <button type="button" onClick={() => setView('list')} className={`rounded-md p-2 ${view === 'list' ? 'bg-paper text-ink' : 'text-dim hover:text-paper'}`} aria-label="List view"><List className="size-4" /></button>
                   </div>
@@ -272,18 +272,11 @@ export default function WorldIndexPage() {
             </div>
 
             {shown.length ? (
-              <div className={view === 'grid' ? 'mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3' : 'mt-5 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-white'}>
+              <div className={view === 'grid' ? 'mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3' : 'mt-5 divide-y divide-line overflow-hidden rounded-sm border border-line bg-white'}>
                 {shown.slice(0, limit).map((entry) => (
-                  <Link key={entry.slug} href={`/database/world/${entry.slug}`} className={view === 'grid' ? 'group overflow-hidden rounded-2xl border border-line bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-pink/30 hover:shadow-md' : 'group grid grid-cols-[88px_minmax(0,1fr)_auto] items-center gap-3 p-3 transition hover:bg-pink/[0.035] md:grid-cols-[112px_minmax(0,1fr)_auto]'}>
-                    <div className={view === 'grid' ? 'relative aspect-[16/9] overflow-hidden bg-black/5' : 'relative aspect-[4/3] overflow-hidden rounded-lg bg-black/5'}>
+                  <Link key={entry.slug} href={`/database/world/${entry.slug}`} className={view === 'grid' ? 'group overflow-hidden rounded-sm border border-line bg-white transition-colors hover:border-pink/30' : 'group grid grid-cols-[88px_minmax(0,1fr)_auto] items-center gap-3 p-3 transition-colors hover:bg-pink/[0.035] md:grid-cols-[112px_minmax(0,1fr)_auto]'}>
+                    <div className={view === 'grid' ? 'relative aspect-[16/9] overflow-hidden bg-black/5' : 'relative aspect-[4/3] overflow-hidden rounded-sm bg-black/5'}>
                       <Image src={entry.image} alt="" fill sizes={view === 'grid' ? '(max-width: 768px) 100vw, 33vw' : '112px'} className="object-cover transition duration-500 group-hover:scale-[1.035]" />
-                      {/* Vinte fichas mostram uma imagem do próprio assunto;
-                          as outras mostram contexto da região. Sem esta
-                          marca, as duzentas e cinquenta e sete de contexto
-                          leem-se como retratos do que não retratam. */}
-                      <span className={`absolute left-0 bottom-0 px-1.5 py-[3px] font-mono uppercase tracking-[0.14em] ${view === 'grid' ? 'text-[8px]' : 'text-[7px]'} ${entry.hasOwnImage ? 'bg-mint text-white' : 'bg-ink/85 text-dim'}`}>
-                        {entry.hasOwnImage ? 'Of the subject' : 'Context'}
-                      </span>
                     </div>
                     <div className={view === 'grid' ? 'p-4' : 'min-w-0 py-1'}>
                       <div className="flex flex-wrap items-center gap-2">
@@ -299,7 +292,7 @@ export default function WorldIndexPage() {
                 ))}
               </div>
             ) : (
-              <div className="mt-5 rounded-2xl border border-dashed border-line bg-white px-5 py-16 text-center">
+              <div className="mt-5 rounded-sm border border-dashed border-line bg-white px-5 py-16 text-center">
                 <Search className="mx-auto size-7 text-dim/45" />
                 <h3 className="mt-3 font-black uppercase text-paper">No matching records</h3>
                 <p className="mt-1 text-sm text-dim">Try a broader term or remove one of the filters.</p>

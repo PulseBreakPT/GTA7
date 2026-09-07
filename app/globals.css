@@ -18,6 +18,76 @@ button, a { -webkit-tap-highlight-color: transparent; }
   --radius: 0.375rem;
 }
 
+/* Wiki portals: subject gateways generated from the archive graph. */
+.wiki-portal-card {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  border: 1px solid rgba(56,35,46,.17);
+  border-top: 4px solid var(--vice-violet);
+  background: #fffdf9;
+  padding: 18px;
+}
+.wiki-portal-card:nth-child(3n+2) { border-top-color: var(--vice-pink); }
+.wiki-portal-card:nth-child(3n) { border-top-color: var(--vice-cyan); }
+.wiki-portal-card > header { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 12px; }
+.wiki-portal-card > header > span { display: grid; width: 40px; height: 40px; place-items: center; background: rgba(97,56,195,.09); color: var(--vice-violet); }
+.wiki-portal-card > header p { color: var(--dim); font: 700 9px/1 var(--font-mono), monospace; letter-spacing: .13em; text-transform: uppercase; }
+.wiki-portal-card > header h2 { margin-top: 4px; color: var(--paper); font: 850 21px/.95 var(--font-cond), sans-serif; text-transform: uppercase; }
+.wiki-portal-card > header b { color: var(--paper); font: 850 28px/1 var(--font-cond), sans-serif; }
+.wiki-portal-card > p { margin-top: 16px; color: var(--dim); font: 13px/1.55 Georgia, 'Times New Roman', serif; }
+.wiki-portal-card > dl { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: auto; padding-top: 18px; }
+.wiki-portal-card > dl > div { border-left: 1px solid rgba(56,35,46,.12); padding-left: 9px; }
+.wiki-portal-card dt { color: var(--dim); font: 700 8px/1.2 var(--font-cond), sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.wiki-portal-card dd { margin-top: 5px; color: var(--paper); font: 800 17px/1 var(--font-cond), sans-serif; }
+.wiki-portal-card > a { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: var(--vice-pink); font: 800 11px/1 var(--font-cond), sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+
+.wiki-discovery-callout { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 24px; border: 1px solid rgba(56,35,46,.18); border-left: 4px solid var(--vice-pink); background: #fffdf9; padding: 18px 20px; }
+.wiki-discovery-callout span { color: var(--vice-violet); font: 750 9px/1 var(--font-mono), monospace; letter-spacing: .13em; text-transform: uppercase; }
+.wiki-discovery-callout strong { display: block; margin-top: 5px; color: var(--paper); font: 850 22px/1 var(--font-cond), sans-serif; text-transform: uppercase; }
+.wiki-discovery-callout p { margin-top: 7px; max-width: 70ch; color: var(--dim); font-size: 12px; line-height: 1.5; }
+.wiki-discovery-callout > b { color: var(--vice-pink); font: 850 44px/1 var(--font-cond), sans-serif; }
+.wiki-discovery-callout > a { display: inline-flex; min-height: 40px; align-items: center; gap: 6px; border: 1px solid rgba(56,35,46,.2); padding: 0 14px; color: var(--paper); font: 800 10px/1 var(--font-cond), sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+
+.wiki-portal-actions { display: flex; overflow-x: auto; margin-top: 16px; border: 1px solid rgba(56,35,46,.15); background: #f6efea; scrollbar-width: none; }
+.wiki-portal-actions::-webkit-scrollbar { display: none; }
+.wiki-portal-actions a { display: inline-flex; min-height: 42px; flex: none; align-items: center; gap: 6px; border-right: 1px solid rgba(56,35,46,.12); padding: 0 13px; color: var(--dim); font: 750 10px/1 var(--font-cond), sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.wiki-portal-actions a:hover { background: #fffdf9; color: var(--vice-pink); }
+.wiki-main-box > header > span { color: var(--dim); font: 650 9px/1 var(--font-mono), monospace; }
+.wiki-entry-tile { display: grid; min-height: 104px; grid-template-columns: auto minmax(0,1fr); align-content: start; gap: 8px 10px; border: 1px solid rgba(56,35,46,.15); background: #fff; padding: 12px; }
+.wiki-entry-tile:hover { border-color: var(--vice-pink); }
+.wiki-entry-tile > span,.wiki-entry-tile > time { color: var(--dim); font: 9px/1 var(--font-mono), monospace; }
+.wiki-entry-tile > strong { overflow: hidden; color: var(--paper); font: 800 13px/1.15 var(--font-cond), sans-serif; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.wiki-entry-tile > .status-badge { grid-column: 2; justify-self: start; }
+.wiki-portal-categories { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.wiki-portal-categories a { display: flex; min-height: 42px; align-items: center; gap: 8px; border: 1px solid rgba(56,35,46,.13); padding: 0 11px; color: var(--paper); font: 700 11px/1.15 var(--font-cond), sans-serif; text-transform: uppercase; }
+.wiki-portal-categories a:hover { border-color: var(--vice-violet); color: var(--vice-violet); }
+.wiki-portal-categories span { overflow: hidden; flex: 1; text-overflow: ellipsis; white-space: nowrap; }
+.wiki-portal-categories b { color: var(--dim); font: 600 9px/1 var(--font-mono), monospace; }
+.wiki-portal-health { border: 1px solid rgba(56,35,46,.17); border-top: 3px solid var(--vice-cyan); background: #fffdf9; padding: 15px; }
+.wiki-portal-health h2 { display: flex; align-items: center; gap: 7px; border-bottom: 1px solid rgba(56,35,46,.11); padding-bottom: 11px; color: var(--paper); font: 800 13px/1 var(--font-cond), sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.wiki-portal-health h2 svg { color: var(--vice-cyan); }
+.wiki-portal-health dl > div,.wiki-portal-health nav a { display: flex; min-height: 36px; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid rgba(56,35,46,.08); }
+.wiki-portal-health dt,.wiki-portal-health nav a { color: var(--dim); font: 700 10px/1.2 var(--font-cond), sans-serif; text-transform: uppercase; }
+.wiki-portal-health dd,.wiki-portal-health nav b { color: var(--paper); font: 750 11px/1 var(--font-mono), monospace; }
+.wiki-portal-health nav a:hover { color: var(--vice-pink); }
+.wiki-portal-search { display: grid; grid-template-columns: minmax(0,1fr) 40px; margin-top: 13px; border: 1px solid rgba(56,35,46,.15); background: #fff; }
+.wiki-portal-search input { min-width: 0; height: 40px; background: transparent; padding: 0 11px; color: var(--paper); font-size: 12px; outline: none; }
+.wiki-portal-search button { display: grid; place-items: center; border-left: 1px solid rgba(56,35,46,.15); color: var(--vice-violet); }
+.wiki-discovery-entry { position: relative; display: grid; min-height: 154px; height: 100%; grid-template-columns: auto minmax(0,1fr); align-content: start; gap: 8px 11px; border: 1px solid rgba(56,35,46,.16); border-top: 3px solid var(--vice-violet); background: #fffdf9; padding: 14px; }
+.wiki-discovery-entry:hover { border-top-color: var(--vice-pink); background: #fff; }
+.wiki-discovery-entry > span { color: var(--vice-pink); font: 750 10px/1 var(--font-mono), monospace; }
+.wiki-discovery-entry > small { justify-self: end; color: var(--vice-cyan); font: 750 9px/1 var(--font-cond), sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.wiki-discovery-entry > strong { grid-column: 1/-1; margin-top: 4px; color: var(--paper); font: 850 16px/1.05 var(--font-cond), sans-serif; text-transform: uppercase; }
+.wiki-discovery-entry > p { grid-column: 1/-1; color: var(--dim); font: 11px/1.35 Georgia, 'Times New Roman', serif; }
+.wiki-discovery-entry > .status-badge { grid-column: 1/-1; align-self: end; justify-self: start; margin-top: auto; }
+
+@media (max-width: 767px) {
+  .wiki-discovery-callout { grid-template-columns: minmax(0,1fr) auto; gap: 14px; }
+  .wiki-discovery-callout > a { grid-column: 1/-1; justify-content: center; }
+  .wiki-portal-categories { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
 html, body { max-width: 100vw; overflow-x: hidden; touch-action: pan-x pan-y; }
 html { scroll-behavior: smooth; scroll-padding-top: 68px; }
 
@@ -1178,13 +1248,104 @@ body > main, body > footer { position: relative; z-index: 1; }
   opacity: 1; transition: opacity .52s cubic-bezier(.45,0,.55,1), visibility .52s;
 }
 .gta-lore-boot.is-leaving { opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-visual {
+  position: absolute; inset: -4%; transform: scale(1.075); transform-origin: 66% 45%;
+  background: url('/media/key-art/jason-lucia-beach.webp') 66% 48% / cover no-repeat;
+  animation: boot-camera 3.8s cubic-bezier(.16,.72,.2,1) both;
+  will-change: transform;
+}
+.boot-visual::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(4,6,15,.97) 0%, rgba(5,7,17,.82) 31%, rgba(5,7,17,.28) 58%, rgba(5,7,17,.08) 78%),
+    linear-gradient(180deg, rgba(3,5,13,.55), transparent 34%, transparent 68%, rgba(3,5,13,.86)),
+    linear-gradient(112deg, rgba(24,207,195,.08), transparent 28%, rgba(240,68,165,.12));
+}
+.boot-shutters, .boot-letterbox { position: absolute; z-index: 8; inset: 0; pointer-events: none; }
+.boot-shutters i { position: absolute; top: 0; bottom: 0; width: 51%; background: #050710; will-change: transform; }
+.boot-shutters i:first-child { left: 0; animation: boot-shutter-left 1.05s .12s cubic-bezier(.76,0,.24,1) both; }
+.boot-shutters i:last-child { right: 0; animation: boot-shutter-right 1.05s .12s cubic-bezier(.76,0,.24,1) both; }
+.boot-letterbox i { position: absolute; z-index: 3; left: 0; right: 0; height: clamp(18px,3.1vw,52px); background: #03050b; }
+.boot-letterbox i:first-child { top: 0; animation: boot-bar-top .85s .28s cubic-bezier(.2,.8,.2,1) both; }
+.boot-letterbox i:last-child { bottom: 0; animation: boot-bar-bottom .85s .28s cubic-bezier(.2,.8,.2,1) both; }
+.boot-frame {
+  position: absolute; z-index: 4; inset: clamp(18px,3.1vw,52px) clamp(14px,2.2vw,36px);
+  border-inline: 1px solid rgba(255,255,255,.12); pointer-events: none; opacity: 0;
+  animation: boot-fade .65s .95s ease forwards;
+}
+.boot-frame::before, .boot-frame::after { content: ''; position: absolute; left: 0; width: 38px; height: 1px; background: var(--vice-cyan); }
+.boot-frame::before { top: 0; }.boot-frame::after { bottom: 0; background: var(--vice-pink); }
+.boot-interface { position: relative; z-index: 6; height: 100%; max-width: 1520px; margin: auto; padding: clamp(34px,5vw,76px) clamp(30px,7vw,108px); }
+.boot-meta {
+  display: flex; justify-content: space-between; gap: 2rem; opacity: 0;
+  color: rgba(255,255,255,.58); font: 500 9px/1 var(--font-mono), monospace; letter-spacing: .22em; text-transform: uppercase;
+  animation: boot-fade .55s .92s ease forwards;
+}
+.boot-meta b { color: #fff; font-weight: 700; }
+.boot-copy { position: absolute; left: clamp(30px,7vw,108px); top: 50%; width: min(760px,76vw); transform: translateY(-48%); }
+.boot-kicker {
+  display: flex; align-items: center; gap: .65rem; margin-bottom: clamp(16px,2vw,28px); opacity: 0;
+  color: rgba(255,255,255,.72); font: 500 9px/1 var(--font-mono), monospace; letter-spacing: .2em; text-transform: uppercase;
+  animation: boot-fade .5s 1.02s ease forwards;
+}
+.boot-kicker i { width: 26px; height: 1px; background: var(--vice-cyan); box-shadow: 0 0 12px rgba(24,207,195,.65); }
+.boot-kicker b { margin-left: auto; color: rgba(255,255,255,.34); font-weight: 500; }
+.boot-title { color: #fff; font: 700 clamp(5.3rem,13vw,13.2rem)/.66 var(--font-cond), sans-serif; letter-spacing: -.062em; text-transform: uppercase; }
+.boot-title > span { display: block; overflow: hidden; padding-right: .08em; padding-bottom: .08em; }
+.boot-title > span > b { display: block; font-weight: inherit; transform: translateY(112%); will-change: transform; }
+.boot-title > span:first-child > b { animation: boot-word 1s .72s cubic-bezier(.16,.84,.22,1) forwards; }
+.boot-title > span:last-child > b {
+  color: transparent; background: linear-gradient(100deg,#fff 5%,#ffd5e8 48%,#ff69ad 76%,#ff916c); background-clip: text; -webkit-background-clip: text;
+  animation: boot-word 1s .87s cubic-bezier(.16,.84,.22,1) forwards;
+}
+.boot-deck {
+  width: min(520px,72vw); display: grid; grid-template-columns: 1fr auto; gap: .75rem 2rem; margin-top: clamp(22px,3vw,38px); padding-top: 13px;
+  border-top: 1px solid rgba(255,255,255,.28); opacity: 0; animation: boot-fade .65s 1.35s ease forwards;
+}
+.boot-deck span { font: 600 11px/1 var(--font-cond), sans-serif; letter-spacing: .19em; text-transform: uppercase; }
+.boot-deck small { color: rgba(255,255,255,.5); font: 500 8px/1 var(--font-mono), monospace; }
+.boot-status {
+  position: absolute; left: clamp(30px,7vw,108px); right: clamp(30px,7vw,108px); bottom: clamp(38px,5.5vw,82px);
+  display: grid; grid-template-columns: minmax(140px,1fr) auto auto auto; align-items: center; gap: clamp(1rem,3vw,3.5rem); opacity: 0;
+  color: rgba(255,255,255,.54); font: 500 8px/1 var(--font-mono), monospace; letter-spacing: .17em; text-transform: uppercase;
+  animation: boot-fade .55s 1.45s ease forwards;
+}
+.boot-status > b { color: #fff; font-weight: 500; }
+.boot-timeline { position: relative; height: 2px; overflow: hidden; background: rgba(255,255,255,.16); }
+.boot-timeline i { position: absolute; inset: 0; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg,var(--vice-cyan),var(--vice-violet),var(--vice-pink)); animation: boot-load 1.95s .85s cubic-bezier(.18,.72,.18,1) forwards; }
+.boot-timeline span { position: absolute; top: 0; bottom: 0; left: 73%; width: 1px; background: #fff; }
+.boot-index { position: absolute; z-index: 7; right: clamp(30px,7vw,108px); top: 50%; display: flex; flex-direction: column; align-items: center; gap: .8rem; transform: translateY(-50%); opacity: 0; animation: boot-fade .6s 1.25s ease forwards; }
+.boot-index span { font: 500 11px/1 var(--font-mono), monospace; letter-spacing: .12em; }
+.boot-index i { width: 1px; height: 82px; background: linear-gradient(var(--vice-pink),rgba(255,255,255,.18),var(--vice-cyan)); }
+.boot-index small { color: rgba(255,255,255,.48); font: 500 8px/1 var(--font-mono), monospace; letter-spacing: .16em; writing-mode: vertical-rl; }
 .gta-lore-boot > button {
   position: absolute; z-index: 12; right: clamp(14px,2.2vw,36px); top: clamp(18px,3.1vw,52px); min-height: 42px; padding: 0 1rem; color: rgba(255,255,255,.62);
   border-left: 1px solid rgba(255,255,255,.24); font: 600 9px/1 var(--font-cond), sans-serif; letter-spacing: .18em; text-transform: uppercase;
 }
 .gta-lore-boot > button:hover { color: #fff; border-color: var(--vice-cyan); }
+@keyframes boot-camera { from { transform: scale(1.075) translate3d(0,0,0); } to { transform: scale(1.015) translate3d(-.6%,0,0); } }
+@keyframes boot-shutter-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes boot-shutter-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
+@keyframes boot-bar-top { from { transform: translateY(-100%); } to { transform: none; } }
+@keyframes boot-bar-bottom { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes boot-word { to { transform: translateY(0); } }
+@keyframes boot-fade { to { opacity: 1; } }
+@keyframes boot-load { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 @media (max-width: 640px) {
+  .boot-visual { background-position: 72% 50%; }
+  .boot-visual::after { background: linear-gradient(90deg,rgba(4,6,15,.94),rgba(5,7,17,.48) 72%),linear-gradient(180deg,rgba(3,5,13,.46),transparent 32%,rgba(3,5,13,.88)); }
+  .boot-interface { padding-inline: 24px; }
+  .boot-meta { padding-right: 40px; font-size: 7px; letter-spacing: .14em; }
+  .boot-meta span:last-child { display: none; }
+  .boot-copy { left: 24px; top: 47%; width: calc(100vw - 48px); }
+  .boot-kicker { font-size: 7px; letter-spacing: .14em; }
+  .boot-title { font-size: clamp(5.2rem,27vw,8.4rem); }
+  .boot-deck { grid-template-columns: 1fr; width: calc(100vw - 72px); }
+  .boot-deck small { display: none; }
+  .boot-status { left: 24px; right: 24px; bottom: 42px; grid-template-columns: 1fr auto; }
+  .boot-status > span { display: none; }
+  .boot-index { right: 22px; display: none; }
   .gta-lore-boot > button { right: 14px; top: 18px; }
   .gta-lore-boot > button span { display: none; }
 }
@@ -1230,9 +1391,12 @@ body > main, body > footer { position: relative; z-index: 1; }
 }
 @media (max-width: 767px) {
   .home-scroll-cue { display: none; }
+  .boot-sun { width: 84vw; }
+  .boot-copy .boot-title { font-size: clamp(4.2rem, 24vw, 7rem) !important; }
+  .boot-copy > span { max-width: 80vw; line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site-aurora, .home-scroll-cue i::after { animation: none !important; }
+  .site-aurora, .boot-aurora, .boot-copy > *, .boot-loader i, .home-scroll-cue i::after { animation: none !important; }
 }
 
 /* Compact footer — all destinations remain available, but the information is
@@ -1418,15 +1582,6 @@ body > main, body > footer { position: relative; z-index: 1; }
   .home-masthead { display: none; }
   .home-hero { min-height: 650px !important; }
   .home-hero-copy { margin-top: 4.5rem !important; }
-}
-
-/* Entre os 1024 e os 1439 a coluna de texto não cabe nesses 650px: os dois
-   botões chegavam à faixa de factos, que está encostada ao fundo da hero, e
-   passavam-lhe por cima. A partir dos 1440 a faixa afasta-se para a direita
-   e o problema desaparece sozinho, por isso a correcção é só desta banda —
-   e leva `!important` porque a regra que a antecede também o leva. */
-@media (min-width: 1024px) and (max-width: 1439px) {
-  .home-hero { min-height: 790px !important; }
 }
 
 /* ACCOUNT COMMAND MENU — click-driven and consistent at every breakpoint. */
@@ -1978,6 +2133,7 @@ body { background-attachment: scroll; }
     radial-gradient(circle at 96% 62%, rgba(240,68,165,.065), transparent 34vw);
 }
 .site-aurora { display: none; }
+.boot-aurora { filter: none; animation: none; }
 .gta-lore-boot.is-leaving { filter: none; }
 
 /* Isolate fixed decoration from the document and avoid style invalidation on
@@ -3657,4 +3813,616 @@ main [class*="aspect-"].overflow-hidden { border-radius: 2px; }
     white-space: nowrap;
   }
   .wiki-entry-grid .wiki-toc-panel a::before { display: none; }
+}
+
+/* Wiki namespace navigation and Main Page. The encyclopedia now has a
+   recognisable front page while the exhaustive prefix index remains a
+   dedicated special page. */
+.wiki-local-nav {
+  width: 100%;
+  border-bottom: 1px solid rgba(56,35,46,.16);
+  background: #f6efea;
+}
+.wiki-local-nav > div {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  min-width: 0;
+  align-items: stretch;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.wiki-local-namespace {
+  display: inline-flex;
+  align-items: center;
+  border-right: 1px solid rgba(56,35,46,.14);
+  padding-right: 18px;
+  color: var(--paper);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+.wiki-local-links {
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.wiki-local-links::-webkit-scrollbar { display: none; }
+.wiki-local-links a {
+  position: relative;
+  display: inline-flex;
+  min-height: 46px;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  color: var(--dim);
+  font-family: var(--font-cond), sans-serif;
+  font-size: 12px;
+  font-weight: 650;
+}
+.wiki-local-links a::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  bottom: -1px;
+  left: 12px;
+  height: 3px;
+  background: transparent;
+}
+.wiki-local-links a:hover { color: var(--paper); }
+.wiki-local-links a.is-active { color: var(--vice-pink); }
+.wiki-local-links a.is-active::after { background: var(--vice-pink); }
+
+.wiki-main-search {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  border: 1px solid rgba(56,35,46,.2);
+  border-left: 4px solid var(--vice-violet);
+  background: #fffdf9;
+  color: var(--dim);
+}
+.wiki-main-search > svg { margin-left: 16px; color: var(--vice-violet); }
+.wiki-main-search input {
+  min-width: 0;
+  height: 54px;
+  border: 0;
+  background: transparent;
+  padding: 0 14px;
+  color: var(--paper);
+  font-size: 15px;
+  outline: none;
+}
+.wiki-main-search input::placeholder { color: var(--dim); opacity: .72; }
+.wiki-main-search button {
+  align-self: stretch;
+  border-left: 1px solid rgba(56,35,46,.16);
+  background: var(--paper);
+  padding: 0 24px;
+  color: var(--ink);
+  font-family: var(--font-cond), sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.wiki-main-shortcuts {
+  display: flex;
+  overflow-x: auto;
+  border: solid rgba(56,35,46,.14);
+  border-width: 0 1px 1px;
+  background: #f6efea;
+  scrollbar-width: none;
+}
+.wiki-main-shortcuts::-webkit-scrollbar { display: none; }
+.wiki-main-shortcuts a {
+  display: inline-flex;
+  min-height: 40px;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  border-right: 1px solid rgba(56,35,46,.11);
+  padding: 0 13px;
+  color: var(--dim);
+  font-family: var(--font-cond), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+.wiki-main-shortcuts a:hover { background: #fffdf9; color: var(--vice-pink); }
+
+.wiki-main-box {
+  border: 1px solid rgba(56,35,46,.17);
+  border-top: 4px solid var(--vice-pink);
+  background: #fffdf9;
+}
+.wiki-main-box-violet { border-top-color: var(--vice-violet); }
+.wiki-main-box-mint { border-top-color: var(--vice-cyan); }
+.wiki-main-box > header {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(56,35,46,.14);
+  background: #f6efea;
+  padding: 0 14px;
+}
+.wiki-main-box > header h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--paper);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+.wiki-main-box > header h2 svg { color: var(--vice-pink); }
+.wiki-main-box-violet > header h2 svg { color: var(--vice-violet); }
+.wiki-main-box-mint > header h2 svg { color: var(--vice-cyan); }
+.wiki-main-box > header > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--dim);
+  font-family: var(--font-cond), sans-serif;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.wiki-main-box > header > a:hover { color: var(--vice-pink); }
+.wiki-main-box-body { padding: 16px; }
+
+.wiki-featured-article { display: grid; grid-template-columns: minmax(220px, 36%) minmax(0,1fr); gap: 18px; }
+.wiki-featured-image { position: relative; display: block; min-height: 260px; overflow: hidden; background: #eee4df; }
+.wiki-featured-image img { transition: transform .25s ease; }
+.wiki-featured-image:hover img { transform: scale(1.018); }
+.wiki-entry-namespace {
+  color: var(--dim);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.wiki-featured-article h3 {
+  margin-top: 9px;
+  color: var(--paper);
+  font-family: var(--font-cond), sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 850;
+  line-height: .93;
+  text-transform: uppercase;
+}
+.wiki-featured-article h3 a:hover { color: var(--vice-pink); }
+.wiki-featured-article p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+  margin-top: 13px;
+  color: #382f35;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 14px;
+  line-height: 1.72;
+}
+.wiki-featured-article > div > div:last-child a {
+  color: var(--vice-pink);
+  font-family: var(--font-cond), sans-serif;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.wiki-topic-directory { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border: solid rgba(56,35,46,.11); border-width: 1px 0 0 1px; }
+.wiki-topic-directory > a {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: start;
+  gap: 10px;
+  border: solid rgba(56,35,46,.11);
+  border-width: 0 1px 1px 0;
+  padding: 14px;
+}
+.wiki-topic-directory > a > svg { margin-top: 2px; color: var(--vice-violet); }
+.wiki-topic-directory strong { display: block; color: var(--paper); font: 800 14px/1 var(--font-cond), sans-serif; text-transform: uppercase; }
+.wiki-topic-directory small { display: block; margin-top: 5px; color: var(--dim); font-size: 11px; line-height: 1.4; }
+.wiki-topic-directory b { color: var(--dim); font: 600 11px/1 var(--font-mono), monospace; }
+.wiki-topic-directory > a:hover { background: #f6efea; }
+.wiki-topic-directory > a:hover strong { color: var(--vice-pink); }
+
+.wiki-recent-list li {
+  display: grid;
+  grid-template-columns: 88px minmax(0,1fr) 92px auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 39px;
+  border-bottom: 1px solid rgba(56,35,46,.09);
+}
+.wiki-recent-list li:last-child { border-bottom: 0; }
+.wiki-recent-list time { color: var(--dim); font: 9px/1 var(--font-mono), monospace; }
+.wiki-recent-list a { overflow: hidden; color: var(--paper); font: 750 12px/1.15 var(--font-cond), sans-serif; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.wiki-recent-list a:hover { color: var(--vice-pink); }
+.wiki-recent-list li > span:not(.status-badge) { color: var(--dim); font: 9px/1 var(--font-mono), monospace; text-transform: uppercase; }
+
+.wiki-main-stat-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border: solid rgba(56,35,46,.12); border-width: 1px 0 0 1px; }
+.wiki-main-stat-grid > div { border: solid rgba(56,35,46,.12); border-width: 0 1px 1px 0; padding: 12px; }
+.wiki-main-stat-grid dt { color: var(--dim); font: 700 9px/1 var(--font-cond), sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.wiki-main-stat-grid dd { margin-top: 5px; color: var(--paper); font: 850 25px/1 var(--font-cond), sans-serif; }
+.wiki-main-note { margin-top: 12px; color: var(--dim); font-size: 11px; line-height: 1.55; }
+.wiki-fact-list { list-style: square; padding-left: 18px; color: #382f35; font: 13px/1.65 Georgia, 'Times New Roman', serif; }
+.wiki-fact-list li + li { margin-top: 8px; }
+.wiki-fact-list strong { color: var(--paper); }
+.wiki-ranked-list li { display: grid; grid-template-columns: 22px minmax(0,1fr) auto; align-items: baseline; gap: 7px; padding: 8px 0; border-bottom: 1px solid rgba(56,35,46,.09); }
+.wiki-ranked-list li:last-child { border-bottom: 0; }
+.wiki-ranked-list li > span { color: var(--vice-pink); font: 800 13px/1 var(--font-cond), sans-serif; }
+.wiki-ranked-list a { overflow: hidden; color: var(--paper); font: 750 12px/1 var(--font-cond), sans-serif; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.wiki-ranked-list a:hover { color: var(--vice-pink); }
+.wiki-ranked-list small { color: var(--dim); font: 9px/1 var(--font-mono), monospace; }
+.wiki-category-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+.wiki-category-cloud a { display: inline-flex; min-height: 32px; align-items: center; gap: 6px; border: 1px solid rgba(56,35,46,.15); padding: 0 9px; color: var(--paper); font: 700 11px/1 var(--font-cond), sans-serif; }
+.wiki-category-cloud a:hover { border-color: var(--vice-violet); color: var(--vice-violet); }
+.wiki-category-cloud small { color: var(--dim); font: 9px/1 var(--font-mono), monospace; }
+.wiki-maintenance-list li { display: flex; min-height: 38px; align-items: center; gap: 8px; border-bottom: 1px solid rgba(56,35,46,.09); }
+.wiki-maintenance-list li:last-child { border-bottom: 0; }
+.wiki-maintenance-list a { flex: 1; color: var(--paper); font: 700 12px/1.2 var(--font-cond), sans-serif; }
+.wiki-maintenance-list a:hover { color: var(--vice-pink); }
+.wiki-maintenance-list b { color: var(--dim); font: 600 10px/1 var(--font-mono), monospace; }
+.wiki-main-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 24px; border-top: 1px solid rgba(56,35,46,.18); padding-top: 16px; color: var(--dim); font-size: 11px; line-height: 1.5; }
+.wiki-main-footer p { max-width: 72ch; }
+.wiki-main-footer strong { color: var(--paper); }
+.wiki-main-footer nav { display: flex; flex-wrap: wrap; gap: 12px; }
+.wiki-main-footer a { color: var(--vice-pink); font-family: var(--font-cond), sans-serif; font-weight: 700; }
+
+@media (max-width: 767px) {
+  .wiki-local-nav > div { padding: 0 1rem; }
+  .wiki-local-namespace { display: none; }
+  .wiki-local-links { margin: 0 -1rem; padding: 0 1rem; }
+  .wiki-local-links a { min-height: 43px; padding: 0 11px; }
+  .wiki-main-search { grid-template-columns: auto minmax(0,1fr); }
+  .wiki-main-search button { grid-column: 1 / -1; min-height: 42px; border-top: 1px solid rgba(56,35,46,.14); border-left: 0; }
+  .wiki-featured-article { grid-template-columns: 1fr; }
+  .wiki-featured-image { min-height: 230px; }
+  .wiki-topic-directory { grid-template-columns: 1fr; }
+  .wiki-recent-list li { grid-template-columns: minmax(0,1fr) auto; gap: 6px 10px; padding: 9px 0; }
+  .wiki-recent-list time { grid-row: 2; }
+  .wiki-recent-list li > span:not(.status-badge) { display: none; }
+  .wiki-main-box > header { align-items: flex-start; padding-block: 10px; }
+  .wiki-main-box > header > a { margin-top: 3px; }
+}
+
+/* -------------------------------------------------------------------------- */
+/* UNIFIED CONTROL SYSTEM — the same geometry and interaction language across */
+/* every route. Cards remain cards; actions, filters and fields share tokens.  */
+/* -------------------------------------------------------------------------- */
+:root {
+  --control-height: 42px;
+  --control-radius: 4px;
+  --control-border: rgba(56,35,46,.22);
+  --control-border-hover: rgba(193,46,112,.62);
+  --control-bg: #fffdf9;
+  --control-active: var(--vice-violet);
+  --control-ring: 0 0 0 3px rgba(111,63,196,.12);
+}
+
+button,
+[role="button"],
+input,
+select,
+textarea {
+  border-radius: var(--control-radius) !important;
+}
+
+button,
+[role="button"] {
+  transition: color .16s ease, background-color .16s ease, border-color .16s ease, opacity .16s ease !important;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 0 !important;
+  box-shadow: var(--control-ring) !important;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed !important;
+  opacity: .46 !important;
+}
+
+/* Text actions and filter tabs use one compact secondary-button shell. Large
+   visual cards and invisible dialog backdrops are deliberately excluded. */
+main button:not([aria-label]):not([role="option"]):not(.panel):not([class*="overflow-hidden"]),
+.wiki-page-tools > a,
+.wiki-user-action,
+.wiki-button-secondary,
+.wiki-portal-actions a,
+.legal-back-link,
+.legal-prev-next a {
+  min-height: var(--control-height);
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius) !important;
+  background: var(--control-bg);
+  padding-inline: 14px;
+  box-shadow: none !important;
+  font-family: var(--font-cond), sans-serif;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+main button:not([aria-label]):not([role="option"]):not(.panel):not([class*="overflow-hidden"]):hover,
+.wiki-page-tools > a:hover,
+.wiki-user-action:hover,
+.wiki-button-secondary:hover,
+.wiki-portal-actions a:hover,
+.legal-back-link:hover,
+.legal-prev-next a:hover {
+  border-color: var(--control-border-hover);
+  background: #fff;
+  color: var(--vice-pink);
+}
+
+main button[aria-pressed="true"]:not([role="option"]),
+main button[aria-selected="true"]:not([role="option"]),
+.wiki-user-action.is-active {
+  border-color: var(--control-active) !important;
+  background: var(--control-active) !important;
+  color: #fff !important;
+}
+main button[aria-pressed="true"]:not([role="option"]) *,
+main button[aria-selected="true"]:not([role="option"]) *,
+.wiki-user-action.is-active * { color: inherit !important; }
+
+main button[type="submit"]:not([aria-label]),
+.auth-submit {
+  min-height: 46px;
+  border: 1px solid var(--control-active) !important;
+  border-radius: var(--control-radius) !important;
+  background: var(--control-active) !important;
+  color: #fff !important;
+  padding-inline: 18px;
+  box-shadow: none !important;
+  font-family: var(--font-cond), sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+main button[type="submit"]:not([aria-label]):hover,
+.auth-submit:hover:not(:disabled) { border-color: var(--vice-pink) !important; background: var(--vice-pink) !important; }
+
+/* Icon-only actions keep their required dimensions but now use the same edge,
+   surface and focus treatment as every other control. */
+button[aria-label]:not([class*="inset-0"]):not([role="option"]) {
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius) !important;
+  background: var(--control-bg);
+  box-shadow: none !important;
+}
+
+/* Search shells. This covers the global header, indexes, modal, portals,
+   account authentication and recovery without drawing a second border around
+   their nested input. */
+.wiki-global-search,
+.wiki-account-trigger,
+.wiki-main-search,
+.wiki-portal-search,
+.search-command-input,
+.auth-input-shell,
+main label.flex:has(> input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"])),
+main label > span:has(> input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"])) {
+  min-height: 48px;
+  border: 1px solid var(--control-border) !important;
+  border-radius: var(--control-radius) !important;
+  background: var(--control-bg) !important;
+  box-shadow: none !important;
+}
+
+.wiki-global-search:hover,
+.wiki-account-trigger:hover,
+.wiki-main-search:focus-within,
+.wiki-portal-search:focus-within,
+.search-command-input:focus-within,
+.auth-input-shell:focus-within,
+main label.flex:has(> input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"])):focus-within,
+main label > span:has(> input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"])):focus-within {
+  border-color: var(--control-border-hover) !important;
+  box-shadow: var(--control-ring) !important;
+}
+
+.wiki-main-search > input,
+.wiki-portal-search > input:not([type="hidden"]),
+.search-command-input > input,
+.auth-input-shell > input,
+main label.flex > input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+main label > span > input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]) {
+  min-height: 46px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+}
+
+main input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+main select,
+main textarea {
+  border-color: var(--control-border) !important;
+  border-radius: var(--control-radius) !important;
+  background-color: var(--control-bg) !important;
+  box-shadow: none !important;
+}
+main select { min-height: var(--control-height); }
+main textarea { line-height: 1.6; }
+
+/* Keep search-submit segmentation identical at every width. */
+.wiki-main-search button,
+.wiki-portal-search button {
+  align-self: stretch;
+  min-height: 46px;
+  border: 0 !important;
+  border-left: 1px solid var(--control-border) !important;
+  border-radius: 0 !important;
+  background: var(--control-active) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  .wiki-main-search { grid-template-columns: auto minmax(0,1fr) auto; }
+  .wiki-main-search button {
+    grid-column: auto;
+    border-top: 0 !important;
+    border-left: 1px solid var(--control-border) !important;
+  }
+}
+
+/* UNIFIED SURFACE SYSTEM — cards, panels, overlays and data furniture. */
+:root {
+  --surface-radius: 6px;
+  --surface-radius-inner: 4px;
+  --surface-border: rgba(56,35,46,.17);
+  --surface-border-hover: rgba(193,46,112,.46);
+  --surface-paper: #fffdf9;
+  --surface-muted: #f6efea;
+  --surface-shadow: 0 1px 2px rgba(56,35,46,.045);
+}
+
+main :is(.panel, .card-active, .wiki-main-box, .wiki-portal-card, .wiki-discovery-callout, .wiki-discovery-entry, .wiki-entry-tile, .wiki-portal-health, .mechanic-card, .auth-card, .legal-policy-card),
+.wiki-toc-panel,
+.wiki-infobox,
+.wiki-support-panel,
+.wiki-references,
+.wiki-navbox,
+.wiki-user-actions {
+  border-color: var(--surface-border) !important;
+  border-radius: var(--surface-radius) !important;
+  box-shadow: var(--surface-shadow) !important;
+}
+
+main :is(.panel, .wiki-main-box, .wiki-portal-card, .wiki-discovery-callout, .wiki-discovery-entry, .wiki-entry-tile, .wiki-portal-health, .mechanic-card, .auth-card, .legal-policy-card):hover {
+  border-color: var(--surface-border-hover);
+}
+
+main .panel2,
+main :is(.panel, .card-active) > .relative[class*="aspect-"],
+main :is(.panel, .card-active) > span.relative[class*="aspect-"] {
+  border-radius: var(--surface-radius-inner) !important;
+  box-shadow: none !important;
+}
+
+.wiki-main-box > header,
+.wiki-navbox > div:first-child,
+.wiki-support-panel > summary {
+  border-radius: calc(var(--surface-radius) - 1px) calc(var(--surface-radius) - 1px) 0 0;
+}
+
+.gta-lore-search-modal,
+.wiki-account-panel,
+.gta-lore-menu-sheet,
+.wiki-global-menu-panel {
+  border: 1px solid var(--surface-border) !important;
+  border-radius: var(--surface-radius) !important;
+  background: var(--surface-paper) !important;
+  box-shadow: 0 18px 44px -30px rgba(56,35,46,.52) !important;
+}
+
+.gta-lore-tabbar {
+  border-radius: calc(var(--surface-radius) + 2px) !important;
+  box-shadow: 0 10px 30px -24px rgba(56,35,46,.48) !important;
+}
+.gta-lore-tabbar :is(a, button),
+.gta-lore-menu-sheet :is(a, button),
+.wiki-account-panel :is(a, button),
+.gta-lore-search-modal :is(button, .search-result-icon, .search-quick-grid button > span) {
+  border-radius: var(--control-radius) !important;
+}
+
+.gta-lore-search-modal .search-type-tabs button,
+.gta-lore-search-modal .search-popular button,
+.gta-lore-search-modal .search-empty-state button {
+  min-height: 34px;
+  border-color: var(--control-border) !important;
+  border-radius: var(--control-radius) !important;
+  background: var(--control-bg) !important;
+  box-shadow: none !important;
+}
+.gta-lore-search-modal .search-type-tabs button.is-active {
+  border-color: var(--control-active) !important;
+  background: var(--control-active) !important;
+  color: #fff !important;
+}
+.gta-lore-search-modal .search-quick-grid > button {
+  border-color: var(--surface-border) !important;
+  border-radius: var(--surface-radius) !important;
+  background: var(--surface-paper) !important;
+  box-shadow: none !important;
+}
+
+.status-badge,
+.ghost-badge {
+  min-height: 20px;
+  border-radius: var(--control-radius) !important;
+  box-shadow: none !important;
+  font-family: var(--font-cond), sans-serif;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+main :is(table, .legal-data-table) {
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--surface-radius);
+  background: var(--surface-paper);
+  box-shadow: none !important;
+}
+main :is(table, .legal-data-table) thead { background: var(--surface-muted); }
+main :is(table, .legal-data-table) :is(th, td) { border-color: rgba(56,35,46,.11) !important; }
+
+main details {
+  border-color: var(--surface-border) !important;
+  border-radius: var(--surface-radius) !important;
+  box-shadow: none !important;
+}
+
+/* Repeated navigational bars share one quiet paper treatment. */
+:is(.wiki-main-shortcuts, .wiki-portal-actions, .wiki-local-nav, .wiki-page-tools) {
+  border-color: var(--surface-border) !important;
+  background: var(--surface-muted) !important;
+  box-shadow: none !important;
+}
+:is(.wiki-main-shortcuts, .wiki-portal-actions, .wiki-page-tools) > a {
+  border-color: rgba(56,35,46,.11) !important;
+}
+
+/* Filter collections no longer alternate between segmented controls, pills
+   and loose buttons. Each filter is a self-contained member of one system. */
+main [role="tablist"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  overflow: visible;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+main [role="tablist"] > button {
+  min-height: var(--control-height) !important;
+  border: 1px solid var(--control-border) !important;
+  border-radius: var(--control-radius) !important;
+  background: var(--control-bg);
+  padding-inline: 14px !important;
+}
+main [role="tablist"] > button[aria-selected="true"] {
+  border-color: var(--control-active) !important;
+  background: var(--control-active) !important;
+  color: #fff !important;
 }

@@ -94,7 +94,7 @@ function App() {
               return (
                 <button key={f.id} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
                 </button>

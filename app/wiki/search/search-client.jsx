@@ -83,17 +83,17 @@ export default function SearchClient() {
       ) : results.length === 0 ? (
         <p className="mt-6 panel rounded-sm p-6 text-[14px] text-dim">No indexed page contains all those terms in this branch. Try fewer words or search all branches.</p>
       ) : (
-        <ol className="mt-5 border border-line divide-y divide-black/[0.08]">
+        <ol className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
           {results.slice(0, 100).map((entry, index) => (
             <li key={entry.href}>
-              <Link href={entry.href} className="group grid grid-cols-[32px_1fr] sm:grid-cols-[42px_96px_1fr_auto] gap-x-3 gap-y-1 px-4 py-3 hover:bg-surface2/50 transition-colors">
-                <span className="font-mono text-[10px] text-dim tabular-nums pt-0.5">{String(index + 1).padStart(2, '0')}</span>
-                <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint sm:pt-0.5">{entry.typeLabel}</span>
-                <span className="min-w-0">
-                  <span className="block font-cond font-semibold uppercase text-[15px] text-paper group-hover:text-pink transition-colors">{entry.name}</span>
-                  {entry.excerpt && <span className="mt-1 block text-[12px] leading-relaxed text-dim">{cleanExcerpt(entry.excerpt)}</span>}
+              <Link href={entry.href} className="group flex min-h-[154px] h-full flex-col border border-line bg-white/55 p-4 hover:border-pink/55 hover:bg-white transition-colors">
+                <span className="flex items-center gap-3">
+                  <span className="font-mono text-[10px] text-dim tabular-nums">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint flex-1">{entry.typeLabel}</span>
+                  <StatusBadge status={entry.status} />
                 </span>
-                <span className="hidden sm:block"><StatusBadge status={entry.status} /></span>
+                <span className="mt-3 block font-cond font-semibold uppercase text-[16px] leading-tight text-paper line-clamp-2 group-hover:text-pink transition-colors">{entry.name}</span>
+                {entry.excerpt && <span className="mt-2 block text-[12px] leading-relaxed text-dim line-clamp-3">{cleanExcerpt(entry.excerpt)}</span>}
               </Link>
             </li>
           ))}

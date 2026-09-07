@@ -64,14 +64,18 @@ function Go() {
           <p className="mt-4 text-[14px] leading-relaxed text-dim max-w-[68ch]">
             No entry carries that name exactly. These hold it inside theirs:
           </p>
-          <ul className="mt-4 border border-line divide-y divide-black/[0.08]">
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {near.map((e) => (
               <li key={e.href}>
-                <Link href={e.href} className="flex items-center gap-3 px-4 py-3 hover:bg-surface2/50 transition-colors group">
-                  <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint w-[72px] shrink-0">{KIND_META[e.kind].label}</span>
-                  <span className="flex-1 min-w-0 truncate font-cond font-semibold uppercase text-[14px] text-paper group-hover:text-pink transition-colors">{e.name}</span>
-                  <StatusBadge status={e.status} className="shrink-0" />
-                  <CornerDownLeft size={13} className="text-dim shrink-0" aria-hidden="true" />
+                <Link href={e.href} className="group flex min-h-[104px] h-full flex-col border border-line bg-white/55 p-4 hover:border-pink/55 hover:bg-white transition-colors">
+                  <span className="flex items-center gap-2">
+                    <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint flex-1">{KIND_META[e.kind].label}</span>
+                    <StatusBadge status={e.status} className="shrink-0" />
+                  </span>
+                  <span className="mt-3 flex items-end gap-2">
+                    <span className="flex-1 font-cond font-semibold uppercase text-[14px] leading-tight text-paper line-clamp-2 group-hover:text-pink transition-colors">{e.name}</span>
+                    <CornerDownLeft size={13} className="text-dim shrink-0" aria-hidden="true" />
+                  </span>
                 </Link>
               </li>
             ))}

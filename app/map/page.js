@@ -45,8 +45,8 @@ function RegionCard({ region, active, onSelect }) {
       onClick={() => onSelect(active ? 'all' : region.id)}
       aria-pressed={active}
       className={cx(
-        'group relative min-h-[210px] overflow-hidden rounded-[18px] border text-left transition-all',
-        active ? 'border-pink shadow-[0_18px_45px_-30px_rgba(194,24,91,.7)]' : 'border-line hover:border-violet/50'
+        'group relative min-h-[210px] overflow-hidden rounded-sm border text-left transition-colors',
+        active ? 'border-pink' : 'border-line hover:border-violet/50'
       )}
     >
       <Image src={region.image} alt={`${region.label} official Rockstar postcard`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.045]" />
@@ -87,7 +87,7 @@ function PlacesDirectory({ requested = null }) {
     <div className="px-4 sm:px-6 lg:px-8 pb-8 max-w-[1440px] w-full mx-auto">
       {selected && selectedRegion && (
         <section className="wiki-article-header mt-5 grid grid-cols-1 md:grid-cols-[minmax(260px,.85fr)_1.15fr] gap-5" aria-labelledby="selected-place">
-          <PublishedVisual location={selected} region={selectedRegion} className="min-h-[220px] rounded-[14px]" priority />
+          <PublishedVisual location={selected} region={selectedRegion} className="min-h-[220px] rounded-sm" priority />
           <div className="self-center py-2">
             <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-mint">Requested place</p>
             <h2 id="selected-place" className="mt-2 font-cond font-bold uppercase leading-none text-[34px] sm:text-[42px] text-paper">{selected.name}</h2>
@@ -122,7 +122,7 @@ function PlacesDirectory({ requested = null }) {
             <span className="font-mono text-[11px] text-dim tabular-nums">{results.length} / {locations.length}</span>
           </div>
 
-          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-white/80 border border-line rounded-[10px] focus-within:border-violet/50">
+          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-white/80 border border-line rounded-sm focus-within:border-violet/50">
             <Search size={15} className="text-violet shrink-0" aria-hidden="true" />
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search place or region…" aria-label="Search places" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
             {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
@@ -143,7 +143,7 @@ function PlacesDirectory({ requested = null }) {
             const region = regions.find((item) => item.id === location.region)
             const exact = Boolean(confirmedLocationImage(location))
             return (
-              <Link key={location.slug} href={`/map/location/${location.slug}`} className="group panel overflow-hidden rounded-[16px] hover:border-violet/45">
+              <Link key={location.slug} href={`/map/location/${location.slug}`} className="group panel overflow-hidden rounded-sm hover:border-violet/45">
                 <PublishedVisual location={location} region={region} className="aspect-[16/9]" />
                 <span className="block p-4">
                   <span className="flex items-start justify-between gap-3">
@@ -161,7 +161,7 @@ function PlacesDirectory({ requested = null }) {
           })}
         </div>
 
-        {results.length === 0 && <div className="mt-5 panel rounded-[16px] p-8 text-center"><p className="font-cond font-bold uppercase text-[18px] text-paper">No matching place</p><button type="button" onClick={() => { setQuery(''); setRegionFilter('all'); setStatusFilter('all') }} className="mt-3 font-cond uppercase tracking-[0.12em] text-[11px] text-pink">Reset filters</button></div>}
+        {results.length === 0 && <div className="mt-5 panel rounded-sm p-8 text-center"><p className="font-cond font-bold uppercase text-[18px] text-paper">No matching place</p><button type="button" onClick={() => { setQuery(''); setRegionFilter('all'); setStatusFilter('all') }} className="mt-3 font-cond uppercase tracking-[0.12em] text-[11px] text-pink">Reset filters</button></div>}
       </section>
     </div>
   )

@@ -411,14 +411,16 @@ function App() {
 
       {/* ===== 9. RECENTLY UPDATED ===== */}
       <Section eyebrow="What moved" title="Recently updated" href="/news" linkLabel="Archive log">
-        <ol className="mt-5 border border-line divide-y divide-black/[0.08]">
+        <ol className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {recentlyUpdated.map((entry) => (
             <li key={entry.href}>
-              <Link href={entry.href} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-surface2/50 transition-colors">
-                <span className="font-mono text-[11px] text-dim tabular-nums shrink-0 w-[86px]">{fmt(entry.updatedAt)}</span>
-                <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint shrink-0 w-[70px]">{entry.kind}</span>
-                <span className="font-cond font-semibold uppercase text-[14px] text-paper flex-1 min-w-0 truncate">{entry.name}</span>
-                <StatusBadge status={entry.status} className="shrink-0" />
+              <Link href={entry.href} className="group flex min-h-[110px] h-full flex-col border border-line bg-white/55 p-4 hover:border-pink/55 hover:bg-white transition-colors">
+                <span className="flex items-center justify-between gap-3">
+                  <span className="font-mono text-[10px] text-dim tabular-nums">{fmt(entry.updatedAt)}</span>
+                  <StatusBadge status={entry.status} className="shrink-0" />
+                </span>
+                <span className="mt-3 font-cond font-semibold uppercase text-[14px] leading-tight text-paper line-clamp-2 group-hover:text-pink transition-colors">{entry.name}</span>
+                <span className="mt-auto pt-2 font-cond uppercase tracking-[0.14em] text-[9px] text-mint">{entry.kind}</span>
               </Link>
             </li>
           ))}

@@ -50,27 +50,31 @@ export default function SpecialListPage({ params }) {
           Nothing on this list. For a maintenance list, that is the good outcome.
         </p>
       ) : (
-        <ol className="mt-6 border border-line divide-y divide-black/[0.08]">
+        <ol className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {rows.map((row, i) => {
             const e = row.entry
             return (
-              <li key={(e ? e.href : row.name) + i} className="px-4 py-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
-                <span className="font-mono text-[10px] text-dim tabular-nums w-8 shrink-0">{String(i + 1).padStart(3, '0')}</span>
+              <li key={(e ? e.href : row.name) + i} className="flex min-h-[126px] flex-col border border-line bg-white/55 p-4 hover:border-mint/55 hover:bg-white transition-colors">
+                <span className="flex items-center justify-between gap-3">
+                  <span className="font-mono text-[10px] text-dim tabular-nums">{String(i + 1).padStart(3, '0')}</span>
+                  <span className="font-mono text-[10px] text-dim tabular-nums">{row.value}</span>
+                </span>
                 {e ? (
                   <>
-                    <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint shrink-0 w-[74px]">{KIND_META[e.kind].label}</span>
-                    <Link href={e.href} className="font-cond font-semibold uppercase text-[14px] text-paper hover:text-pink transition-colors flex-1 min-w-0 truncate">{e.name}</Link>
-                    <StatusBadge status={e.status} className="shrink-0" />
+                    <Link href={e.href} className="mt-2 font-cond font-semibold uppercase text-[15px] leading-tight text-paper hover:text-pink transition-colors line-clamp-2">{e.name}</Link>
+                    <span className="mt-3 flex items-center justify-between gap-3">
+                      <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint">{KIND_META[e.kind].label}</span>
+                      <StatusBadge status={e.status} className="shrink-0" />
+                    </span>
                   </>
                 ) : (
                   <>
-                    <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-warn shrink-0 w-[74px]">No page</span>
-                    <span className="font-cond font-semibold uppercase text-[14px] text-warn flex-1 min-w-0 truncate">{row.name}</span>
+                    <span className="mt-2 font-cond font-semibold uppercase text-[15px] leading-tight text-warn line-clamp-2">{row.name}</span>
+                    <span className="mt-3 font-cond uppercase tracking-[0.14em] text-[9px] text-warn">No page</span>
                   </>
                 )}
-                <span className="font-mono text-[10px] text-dim tabular-nums shrink-0">{row.value}</span>
                 {row.from && row.from.length > 0 && (
-                  <span className="basis-full flex flex-wrap gap-x-3 gap-y-1 pl-12">
+                  <span className="mt-auto pt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-black/[0.06]">
                     {row.from.slice(0, 6).map((f) => (
                       <Link key={f.href} href={f.href} className="font-cond uppercase tracking-[0.1em] text-[10px] text-dim hover:text-paper transition-colors">{f.name}</Link>
                     ))}

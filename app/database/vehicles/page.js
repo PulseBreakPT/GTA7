@@ -138,7 +138,7 @@ function App() {
               return (
                 <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <Icon size={14} aria-hidden="true" />
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{c.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{c.count}</span>
@@ -270,7 +270,7 @@ function App() {
       {compareOpen && cmp.length === 2 && (
         <div className="fixed inset-0 z-[85]" role="dialog" aria-modal="true" aria-label="Vehicle comparison">
           <div className="absolute inset-0 bg-black/75" onClick={() => setCompareOpen(false)} />
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-[860px] max-h-[86vh] overflow-y-auto panel rounded-md p-5 sm:p-6">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-[860px] max-h-[86vh] overflow-y-auto panel rounded-sm p-5 sm:p-6">
             <div className="flex items-center justify-between">
               <h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[26px] text-paper">COMPARISON</h2>
               <button type="button" onClick={() => setCompareOpen(false)} aria-label="Close comparison" className="w-11 h-11 flex items-center justify-center text-dim hover:text-paper"><X size={18} /></button>

@@ -29,7 +29,7 @@ export default function SourcesPage() {
         labelled but never link readers to third-party sites.
       </p>
 
-      <div className="mt-6 space-y-6">
+      <div className="mt-6 grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
         {SOURCES.map((source) => (
           <section key={source.name} className="panel rounded-sm p-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
@@ -47,7 +47,7 @@ export default function SourcesPage() {
               </div>
             </div>
 
-            <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-px border-t border-black/10 pt-3">
+            <ul className="mt-4 grid grid-cols-1 gap-x-5 gap-y-px border-t border-black/10 pt-3 sm:grid-cols-2">
               {source.entries.slice(0, 24).map((e) => (
                 <li key={e.href}>
                   <Link href={e.href} className="flex items-center gap-2.5 py-1.5 group">

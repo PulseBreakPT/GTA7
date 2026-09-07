@@ -5,7 +5,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  Bell, BookOpen, Bookmark, Car, CheckCircle2, ChevronDown, Crosshair, FileText,
+  Bell, BookOpen, Bookmark, Car, CheckCircle2, ChevronDown, Compass, Crosshair, FileText,
   FolderPlus, Images, Library, LogIn, LogOut, MapPin, PenLine, Radio, Repeat2,
   Search, Settings2, ShieldCheck, Shuffle, StickyNote, UserPlus, Users, UserRound, Scale, Globe2,
 } from 'lucide-react'
@@ -34,7 +34,9 @@ const GROUPS = [
   {
     label: 'Explore',
     links: [
-      ['Wiki index', '/wiki', Library],
+      ['Wiki main page', '/wiki', Library],
+      ['Topic portals', '/wiki/portals', Compass],
+      ['Discover 100', '/wiki/discover', Compass],
       ['Places atlas', '/map', MapPin],
       ['Articles', '/news', BookOpen],
       ['Media archive', '/media', Images],

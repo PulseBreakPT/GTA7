@@ -121,7 +121,7 @@ export default function Footer() {
                             href={href}
                             aria-current={active ? 'page' : undefined}
                             className={cx(
-                              'group compact-footer-link flex items-center gap-1.5 rounded-lg',
+                              'group compact-footer-link flex items-center gap-1.5 rounded-sm',
                               'font-cond font-semibold uppercase tracking-[0.08em] transition-colors duration-200',
                               active ? cx(tint.text, 'bg-black/[0.04]') : cx('text-dim', tint.hover)
                             )}

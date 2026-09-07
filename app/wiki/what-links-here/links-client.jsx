@@ -10,12 +10,14 @@ import { KIND_META, backlinksFor, entryFor, outgoingFor } from '@/lib/wiki-graph
 function EntryRow({ entry, relation, direction }) {
   return (
     <li>
-      <Link href={entry.href} className="group flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-surface2/50 transition-colors">
-        <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint w-[80px] shrink-0">{KIND_META[entry.kind].label}</span>
-        <span className="flex-1 min-w-0 font-cond font-semibold uppercase text-[14px] text-paper group-hover:text-pink transition-colors truncate">{entry.name}</span>
-        {relation && <span className="font-cond uppercase tracking-[0.1em] text-[9px] text-dim">{relation}</span>}
-        <StatusBadge status={entry.status} className="shrink-0" />
-        <ArrowRight size={12} className={direction === 'out' ? 'text-pink' : 'rotate-180 text-mint'} aria-hidden="true" />
+      <Link href={entry.href} className="group flex min-h-[110px] h-full flex-col border border-line bg-white/55 p-4 hover:border-pink/55 hover:bg-white transition-colors">
+        <span className="flex items-center gap-2">
+          <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint flex-1">{KIND_META[entry.kind].label}</span>
+          <StatusBadge status={entry.status} className="shrink-0" />
+          <ArrowRight size={12} className={direction === 'out' ? 'text-pink' : 'rotate-180 text-mint'} aria-hidden="true" />
+        </span>
+        <span className="mt-3 font-cond font-semibold uppercase text-[14px] leading-tight text-paper line-clamp-2 group-hover:text-pink transition-colors">{entry.name}</span>
+        {relation && <span className="mt-auto pt-2 font-cond uppercase tracking-[0.1em] text-[9px] text-dim line-clamp-1">{relation}</span>}
       </Link>
     </li>
   )
@@ -49,14 +51,14 @@ export default function WhatLinksHereClient() {
         <CategoryHeader eyebrow="What links here" title={subject.name} description="The internal link neighbourhood computed from fields and relationships in the archive. No links are inferred from coincidental words." count={incoming.length} countLabel="incoming links" />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="mt-6 space-y-8">
         <section aria-labelledby="incoming-heading">
           <div className="flex items-center gap-3">
             <Link2 size={15} className="text-mint" aria-hidden="true" />
             <h2 id="incoming-heading" className="font-cond font-bold uppercase tracking-[0.12em] text-[14px] text-paper">Pages linking here</h2>
             <span className="ml-auto font-mono text-[10px] text-dim">{incoming.length}</span>
           </div>
-          {incoming.length ? <ul className="mt-3 border border-line divide-y divide-black/[0.08]">{incoming.map((entry) => <EntryRow key={entry.href} entry={entry} relation={entry.relation} direction="in" />)}</ul> : <p className="mt-3 panel rounded-sm p-5 text-[13px] text-dim">No page currently links to this entry. It is listed on the lonely-pages maintenance report.</p>}
+          {incoming.length ? <ul className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">{incoming.map((entry) => <EntryRow key={entry.href} entry={entry} relation={entry.relation} direction="in" />)}</ul> : <p className="mt-3 panel rounded-sm p-5 text-[13px] text-dim">No page currently links to this entry. It is listed on the lonely-pages maintenance report.</p>}
         </section>
 
         <section aria-labelledby="outgoing-heading">
@@ -65,7 +67,7 @@ export default function WhatLinksHereClient() {
             <h2 id="outgoing-heading" className="font-cond font-bold uppercase tracking-[0.12em] text-[14px] text-paper">Pages linked from here</h2>
             <span className="ml-auto font-mono text-[10px] text-dim">{outgoing.length}</span>
           </div>
-          {outgoing.length ? <ul className="mt-3 border border-line divide-y divide-black/[0.08]">{outgoing.map((entry) => <EntryRow key={entry.href} entry={entry} direction="out" />)}</ul> : <p className="mt-3 panel rounded-sm p-5 text-[13px] text-dim">This entry has no outgoing archive links. It appears on the dead-end-pages maintenance report.</p>}
+          {outgoing.length ? <ul className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">{outgoing.map((entry) => <EntryRow key={entry.href} entry={entry} direction="out" />)}</ul> : <p className="mt-3 panel rounded-sm p-5 text-[13px] text-dim">This entry has no outgoing archive links. It appears on the dead-end-pages maintenance report.</p>}
         </section>
       </div>
 

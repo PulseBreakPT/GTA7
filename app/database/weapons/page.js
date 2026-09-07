@@ -73,7 +73,7 @@ function App() {
           <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Weapon types">
             <button type="button" role="tab" aria-selected={type === 'all'} onClick={() => { setType('all'); setQuery('') }}
               className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                type === 'all' ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                type === 'all' ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
               <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">ALL</span>
               <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(weapons.length)}</span>
             </button>
@@ -83,7 +83,7 @@ function App() {
               return (
                 <button key={t.id} type="button" role="tab" aria-selected={active} onClick={() => { setType(t.id); setQuery('') }}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <WeaponGlyph type={t.id} size={15} className={active ? 'text-pink' : 'text-dim'} />
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{t.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(count)}</span>
