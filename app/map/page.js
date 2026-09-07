@@ -18,7 +18,14 @@ const regionLabel = (id) => (REGION_BY_ID.get(id) || {}).label || id
 const statusLabel = (id) => (STATUS_META[id] || {}).label || id.toUpperCase()
 const exactCount = (items) => items.filter((item) => confirmedLocationImage(item)).length
 
-function PublishedVisual({ location, region, className, priority = false }) {
+// Cada bloco abre com duas filas de azulejos. O resto continua lá, a um
+// clique — o que não continua é a página a crescer sem fim por baixo.
+const GROUP_PREVIEW = 12
+
+// A proveniência da imagem nunca fica implícita. No destaque cabe a frase
+// inteira; no azulejo do índice fica o selo curto, e a frase por extenso
+// continua no texto alternativo e na legenda da grelha.
+function PublishedVisual({ location, region, className, priority = false, compact = false }) {
   const exactImage = confirmedLocationImage(location)
   const src = exactImage || region?.image
   if (!src) return null
@@ -32,12 +39,18 @@ function PublishedVisual({ location, region, className, priority = false }) {
           : `${region?.label || 'Leonida'} official artwork — regional context for ${location.name}, not the exact place`}
         fill
         priority={priority}
-        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 320px"
-        className="object-cover transition-transform duration-500 group-hover:scale-[1.035]"
+        sizes={compact ? '(max-width: 640px) 45vw, 180px' : '(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 320px'}
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.045]"
       />
-      <span className="absolute inset-x-0 bottom-0 px-2.5 pb-2 pt-8 bg-gradient-to-t from-black/90 via-black/45 to-transparent font-mono text-[8px] uppercase tracking-[0.12em] text-white">
-        {exactImage ? 'EXACT PLACE · PUBLISHED GTA VI MEDIA' : 'OFFICIAL REGION CONTEXT · NOT THIS EXACT PLACE'}
-      </span>
+      {compact ? (
+        <span className={cx('absolute left-1.5 top-1.5 rounded-sm px-1.5 py-[2px] font-mono text-[7px] uppercase tracking-[0.14em] text-white', exactImage ? 'bg-mint/90' : 'bg-violet/85')}>
+          {exactImage ? 'Exact' : 'Context'}
+        </span>
+      ) : (
+        <span className="absolute inset-x-0 bottom-0 px-2.5 pb-2 pt-8 bg-gradient-to-t from-black/90 via-black/45 to-transparent font-mono text-[8px] uppercase tracking-[0.12em] text-white">
+          {exactImage ? 'EXACT PLACE · PUBLISHED GTA VI MEDIA' : 'OFFICIAL REGION CONTEXT · NOT THIS EXACT PLACE'}
+        </span>
+      )}
     </span>
   )
 }
@@ -50,40 +63,41 @@ function RegionCard({ region, active, onSelect }) {
       onClick={() => onSelect(active ? 'all' : region.id)}
       aria-pressed={active}
       className={cx(
-        'group relative min-h-[190px] overflow-hidden rounded-sm border text-left transition-colors',
+        'group relative min-h-[150px] overflow-hidden rounded-sm border text-left transition-colors',
         active ? 'border-pink' : 'border-line hover:border-violet/50'
       )}
     >
-      <Image src={region.image} alt={`${region.label} official Rockstar postcard`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.045]" />
+      <Image src={region.image} alt={`${region.label} official Rockstar postcard`} fill sizes="(max-width:640px) 50vw, 240px" className="object-cover transition-transform duration-700 group-hover:scale-[1.045]" />
       <span className="absolute inset-0 bg-gradient-to-t from-[#080c1d]/95 via-[#080c1d]/20 to-transparent" />
-      <span className="absolute inset-x-0 bottom-0 p-4 text-white">
-        <span className="block font-cond font-bold uppercase tracking-[0.06em] text-[20px]">{region.label}</span>
-        <span className="mt-1 flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70">
-          <span>Official Rockstar artwork</span><span>{count} places</span>
+      <span className="absolute inset-x-0 bottom-0 p-3 text-white">
+        <span className="block font-cond font-bold uppercase leading-[1.05] tracking-[0.06em] text-[16px]">{region.label}</span>
+        <span className="mt-1 flex items-center justify-between gap-2 font-mono text-[8px] uppercase tracking-[0.12em] text-white/70">
+          <span>Official artwork</span><span>{count} places</span>
         </span>
       </span>
     </button>
   )
 }
 
-// O cartão do lugar: a imagem publicada em cima, a identificação por baixo e
-// a linha de evidência encostada ao fundo, para que numa grelha os cartões
-// acabem todos na mesma linha, tenham a descrição que tiverem.
-function PlaceCard({ location, region }) {
+// O azulejo do índice: imagem, nome e estado, e mais nada. Sessenta e um
+// lugares só cabem num ecrã se cada um ocupar o que precisa e não o que
+// gostaria — a descrição fica para a ficha, que é onde alguém a vai ler.
+function PlaceTile({ location, region }) {
   const exact = Boolean(confirmedLocationImage(location))
   return (
-    <Link href={`/map/location/${location.slug}`} className="group panel flex h-full flex-col overflow-hidden rounded-sm hover:border-violet/45">
-      <PublishedVisual location={location} region={region} className="aspect-[16/9]" />
-      <span className="flex flex-1 flex-col p-4">
-        <span className="flex items-start justify-between gap-3">
-          <span className="font-cond font-bold uppercase leading-tight tracking-[0.04em] text-[17px] text-paper">{location.name}</span>
-          <ArrowRight size={14} className="mt-1 shrink-0 text-dim transition-transform group-hover:translate-x-1" />
-        </span>
-        <span className="clamp-2 mt-2 text-[12px] leading-relaxed text-dim">{location.desc}</span>
-        <span className="mt-3 flex flex-wrap items-center gap-2"><StatusBadge status={location.status} /><span className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim">{region?.label}</span></span>
-        <span className="mt-auto pt-3 flex items-center gap-1.5 font-cond uppercase tracking-[0.1em] text-[9px] text-dim">
-          {exact ? <CheckCircle2 size={11} className="text-mint" /> : <ImageIcon size={11} className="text-violet" />}
-          {exact ? 'Exact visual verified' : 'Regional visual context'}
+    <Link
+      href={`/map/location/${location.slug}`}
+      title={`${location.name} — ${exact ? 'exact visual verified' : 'regional visual context'}`}
+      className="group panel flex flex-col overflow-hidden rounded-sm hover:border-violet/45"
+    >
+      <PublishedVisual location={location} region={region} className="aspect-[3/2]" compact />
+      <span className="flex flex-1 flex-col justify-between gap-1 px-2 py-2">
+        {/* Sem corte: um nome de três linhas estica a fila inteira, que é o
+            que a grelha faz de graça, e ninguém fica sem saber o que leu. */}
+        <span className="font-cond font-bold uppercase leading-[1.1] tracking-[0.03em] text-[12px] text-paper">{location.name}</span>
+        <span className="flex items-center gap-1.5">
+          <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full" style={{ backgroundColor: (STATUS_META[location.status] || {}).color }} />
+          <span className="truncate font-mono text-[8px] uppercase tracking-[0.12em] text-dim">{statusLabel(location.status)}</span>
         </span>
       </span>
     </Link>
@@ -119,6 +133,7 @@ function PlacesDirectory({ requested = null }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [grouping, setGrouping] = useState('region')
   const [sort, setSort] = useState('evidence')
+  const [expanded, setExpanded] = useState({})
 
   const selected = locations.find((item) => item.slug === requested)
   const selectedRegion = selected ? REGION_BY_ID.get(selected.region) : null
@@ -168,6 +183,9 @@ function PlacesDirectory({ requested = null }) {
   const filtersActive = query !== '' || regionFilter !== 'all' || statusFilter !== 'all'
   const resetFilters = () => { setQuery(''); setRegionFilter('all'); setStatusFilter('all') }
   const shownExact = exactCount(results)
+  // Com um só bloco à vista já não há parede que esconder: quem filtrou até
+  // aqui quer ver o que sobrou, inteiro.
+  const onlyOneGroup = groups.length === 1
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 pb-8 max-w-[1440px] w-full mx-auto">
@@ -192,7 +210,7 @@ function PlacesDirectory({ requested = null }) {
           </div>
           {regionFilter !== 'all' && <button type="button" onClick={() => setRegionFilter('all')} className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-pink"><X size={13} /> Clear region</button>}
         </div>
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
           {regions.map((region) => <RegionCard key={region.id} region={region} active={regionFilter === region.id} onSelect={setRegionFilter} />)}
         </div>
       </section>
@@ -213,19 +231,41 @@ function PlacesDirectory({ requested = null }) {
             estreita fica agarrada ao ecrã com a pesquisa e as facetas. */}
         <div className="wiki-index-layout mt-5 grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 items-start">
           <div className="min-w-0">
-            {groups.map((group) => (
-              <section key={group.id} className="mt-7 first:mt-0" aria-labelledby={`group-${group.id}`}>
-                <div className="flex flex-wrap items-baseline justify-between gap-3 border-b hairline pb-2">
-                  <h3 id={`group-${group.id}`} className="font-cond font-bold uppercase tracking-[0.06em] text-[19px] text-paper">{group.label}</h3>
-                  <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-dim tabular-nums">
-                    {group.items.length} {group.items.length === 1 ? 'place' : 'places'} · {exactCount(group.items)} exact
-                  </span>
-                </div>
-                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {group.items.map((location) => <PlaceCard key={location.slug} location={location} region={REGION_BY_ID.get(location.region)} />)}
-                </div>
-              </section>
-            ))}
+            <p className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b hairline pb-2 font-cond uppercase tracking-[0.1em] text-[10px] text-dim">
+              <span className="inline-flex items-center gap-1.5"><CheckCircle2 size={11} className="text-mint" /> Exact — image of the place itself</span>
+              <span className="inline-flex items-center gap-1.5"><ImageIcon size={11} className="text-violet" /> Context — official artwork of its region</span>
+            </p>
+
+            {groups.map((group) => {
+              const open = expanded[group.id] || onlyOneGroup
+              const shown = open ? group.items : group.items.slice(0, GROUP_PREVIEW)
+              const hidden = group.items.length - shown.length
+              return (
+                <section key={group.id} className="mt-6" aria-labelledby={`group-${group.id}`}>
+                  <div className="flex flex-wrap items-baseline justify-between gap-3 border-b hairline pb-1.5">
+                    <h3 id={`group-${group.id}`} className="font-cond font-bold uppercase tracking-[0.06em] text-[17px] text-paper">{group.label}</h3>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-dim tabular-nums">
+                      {group.items.length} {group.items.length === 1 ? 'place' : 'places'} · {exactCount(group.items)} exact
+                    </span>
+                  </div>
+                  <div className="mt-2.5 grid gap-2 [grid-template-columns:repeat(auto-fill,minmax(132px,1fr))]">
+                    {shown.map((location) => <PlaceTile key={location.slug} location={location} region={REGION_BY_ID.get(location.region)} />)}
+                  </div>
+                  {hidden > 0 && (
+                    <button type="button" onClick={() => setExpanded((state) => ({ ...state, [group.id]: true }))}
+                      className="mt-2 inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[10px] text-violet hover:text-paper">
+                      Show {hidden} more in {group.label} <ArrowRight size={12} />
+                    </button>
+                  )}
+                  {open && !onlyOneGroup && group.items.length > GROUP_PREVIEW && (
+                    <button type="button" onClick={() => setExpanded((state) => ({ ...state, [group.id]: false }))}
+                      className="mt-2 inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[10px] text-dim hover:text-paper">
+                      Collapse {group.label}
+                    </button>
+                  )}
+                </section>
+              )
+            })}
 
             {results.length === 0 && (
               <div className="panel rounded-sm p-8 text-center">
