@@ -35,31 +35,31 @@ const ICONS = {
 const META = {
   wildlife: {
     image: '/media/scenes/swamp-gator.webp',
-    description: 'Animais confirmados nos trailers e material oficial, dos Everglades às ruas de Vice City.',
+    description: 'Animals confirmed in trailers and official material, from the Everglades to the streets of Vice City.',
   },
   organizations: {
     image: '/media/vehicles/stanier-crew.webp',
-    description: 'Forças policiais, gangues, equipas e outras organizações que operam em Leonida.',
+    description: 'Police forces, gangs, teams and other organisations operating in Leonida.',
   },
   establishments: {
     image: '/media/places/vice-city.webp',
-    description: 'Hotéis, bares, lojas, restaurantes e edifícios identificados no mundo do jogo.',
+    description: 'Hotels, bars, shops, restaurants and buildings identified in the game world.',
   },
   safehouses: {
     image: '/media/key-art/jason-lucia-motel.webp',
-    description: 'Locais associados à história onde Lucia, Jason e aliados encontram abrigo.',
+    description: 'Places tied to the story where Lucia, Jason and their allies take shelter.',
   },
   geography: {
     image: '/media/places/leonida-keys.webp',
-    description: 'Ilhas, praias, pântanos, rios e outros elementos naturais do estado de Leonida.',
+    description: 'Islands, beaches, wetlands, rivers and other natural features of the state of Leonida.',
   },
   businesses: {
     image: '/media/editions/stock-305.webp',
-    description: 'Marcas, serviços, produtos e empresas ficcionais documentados em material oficial.',
+    description: 'Fictional brands, services, products and companies documented in official material.',
   },
   television: {
     image: '/media/characters/real-dimez.webp',
-    description: 'Canais e programação vistos em ecrãs, publicidade e transmissões do universo do jogo.',
+    description: 'Channels and programming seen on screens, adverts and broadcasts inside the game world.',
   },
 }
 
@@ -148,14 +148,14 @@ export default function WorldIndexPage() {
       <CategoryHeader
         eyebrow="World directory"
         title="Leonida World Index"
-        description="Explore o mundo por assunto, região ou nível de confirmação. Cada registo reúne evidência visual e contexto num formato de enciclopédia."
+        description="Browse the world by subject, region or how strongly it is confirmed. Every record gathers its visual evidence and its context in one place."
         count={worldEntries.length}
       />
 
       <section className="mt-6 rounded-2xl border border-line bg-white p-3 shadow-sm md:p-4" aria-label="Search the world index">
         <label className="flex min-h-14 items-center gap-3 rounded-xl border border-line bg-white px-4 transition focus-within:border-pink focus-within:ring-4 focus-within:ring-pink/10">
           <Search className="size-5 shrink-0 text-pink" aria-hidden="true" />
-          <span className="sr-only">Pesquisar no mundo</span>
+          <span className="sr-only">Search the world index</span>
           <input
             value={query}
             onChange={(event) => {
@@ -164,10 +164,10 @@ export default function WorldIndexPage() {
               if (value && branch === 'overview') chooseBranch('all')
             }}
             className="min-w-0 flex-1 bg-transparent text-base text-paper outline-none placeholder:text-dim"
-            placeholder="Pesquisar animais, locais, empresas, organizações…"
+            placeholder="Search animals, places, businesses, organisations…"
           />
           {query && (
-            <button type="button" onClick={() => setQuery('')} className="rounded-full p-2 text-dim hover:bg-black/5 hover:text-paper" aria-label="Limpar pesquisa">
+            <button type="button" onClick={() => setQuery('')} className="rounded-full p-2 text-dim hover:bg-black/5 hover:text-paper" aria-label="Clear search">
               <X className="size-4" />
             </button>
           )}
@@ -277,6 +277,13 @@ export default function WorldIndexPage() {
                   <Link key={entry.slug} href={`/database/world/${entry.slug}`} className={view === 'grid' ? 'group overflow-hidden rounded-2xl border border-line bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-pink/30 hover:shadow-md' : 'group grid grid-cols-[88px_minmax(0,1fr)_auto] items-center gap-3 p-3 transition hover:bg-pink/[0.035] md:grid-cols-[112px_minmax(0,1fr)_auto]'}>
                     <div className={view === 'grid' ? 'relative aspect-[16/9] overflow-hidden bg-black/5' : 'relative aspect-[4/3] overflow-hidden rounded-lg bg-black/5'}>
                       <Image src={entry.image} alt="" fill sizes={view === 'grid' ? '(max-width: 768px) 100vw, 33vw' : '112px'} className="object-cover transition duration-500 group-hover:scale-[1.035]" />
+                      {/* Vinte fichas mostram uma imagem do próprio assunto;
+                          as outras mostram contexto da região. Sem esta
+                          marca, as duzentas e cinquenta e sete de contexto
+                          leem-se como retratos do que não retratam. */}
+                      <span className={`absolute left-0 bottom-0 px-1.5 py-[3px] font-mono uppercase tracking-[0.14em] ${view === 'grid' ? 'text-[8px]' : 'text-[7px]'} ${entry.hasOwnImage ? 'bg-mint text-white' : 'bg-ink/85 text-dim'}`}>
+                        {entry.hasOwnImage ? 'Of the subject' : 'Context'}
+                      </span>
                     </div>
                     <div className={view === 'grid' ? 'p-4' : 'min-w-0 py-1'}>
                       <div className="flex flex-wrap items-center gap-2">

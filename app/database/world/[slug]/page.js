@@ -83,7 +83,12 @@ export default async function WorldEntryPage({ params }) {
         <aside className="order-2 lg:order-3">
           <InfoboxShell>
             <figure className="-mx-5 -mt-5 mb-1 overflow-hidden border-b border-line bg-surface2">
-              <div className="relative aspect-[16/10]"><Image src={item.image} alt={`${item.name} — ${item.imageCaption}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" /></div>
+              <div className="relative aspect-[16/10]">
+                <Image src={item.image} alt={`${item.name} — ${item.imageCaption}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
+                <span className={`absolute left-0 bottom-0 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] ${item.hasOwnImage ? 'bg-mint text-white' : 'bg-ink/85 text-dim'}`}>
+                  {item.hasOwnImage ? 'Image of the subject' : 'Regional context'}
+                </span>
+              </div>
               <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{item.imageCaption}</figcaption>
             </figure>
             <div className="space-y-3 border-t border-black/10 pt-4">
