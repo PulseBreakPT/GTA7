@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked, Link2, ExternalLink} from 'lucide-react'
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph } from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
@@ -20,7 +20,9 @@ const SECTIONS = [
   { id: 'performance', label: 'Performance', icon: Gauge },
   { id: 'specifications', label: 'Specifications', icon: ListChecks },
   { id: 'related', label: 'Related Vehicles', icon: Car },
+  { id: 'see-also', label: 'See also', icon: Link2 },
   { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'external-links', label: 'External links', icon: ExternalLink },
 ]
 
 function Attribution({ label, value, accent, exclude }) {
@@ -99,6 +101,10 @@ function App() {
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
           </div>
           <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{v.name}</h1>
+          {/* Esta ficha ia do título direto para a caixa de dados: não tinha
+              parágrafo de abertura nenhum. Um verbete abre sempre por uma
+              frase que diz o que o assunto é, e o registo tem-na. */}
+          <LeadParagraph name={v.name} exclude={`/database/vehicles/${v.slug}`}>{v.content || v.association}</LeadParagraph>
           <ShortDescription>
             {classLabel} in Grand Theft Auto VI{v.manufacturer && v.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${v.manufacturer}` : ''} · Unit {v.num}
           </ShortDescription>
@@ -178,12 +184,14 @@ function App() {
                 </>
               )}
             </WikiSection>
+            <SeeAlso kind="vehicles" slug={v.slug} />
             <References items={[{ name: v.sourceName, url: v.sourceUrl, retrieved: v.updatedAt }]} />
-            <CategoryFooter kind="vehicles" slug={v.slug} />
+            <ExternalLinks kind="vehicles" slug={v.slug} />
+            <Navbox kind="vehicles" slug={v.slug} />
             <CitePage kind="vehicles" slug={v.slug} />
             <PageInformation kind="vehicles" slug={v.slug} />
-            <Navbox kind="vehicles" slug={v.slug} />
-          </div>
+            <CategoryFooter kind="vehicles" slug={v.slug} />
+</div>
 
           {/* Índice */}
           <div className="order-1 lg:order-2">

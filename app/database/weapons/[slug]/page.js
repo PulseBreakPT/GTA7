@@ -4,9 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked, Link2, ExternalLink} from 'lucide-react'
 import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph } from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
@@ -16,7 +16,9 @@ const SECTIONS = [
   { id: 'performance', label: 'Performance', icon: Gauge },
   { id: 'specifications', label: 'Specifications', icon: ListChecks },
   { id: 'related', label: 'Related Weapons', icon: Crosshair },
+  { id: 'see-also', label: 'See also', icon: Link2 },
   { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'external-links', label: 'External links', icon: ExternalLink },
 ]
 
 function Attribution({ label, value, accent }) {
@@ -83,7 +85,7 @@ function App() {
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span>
           </div>
           <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{w.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/weapons/${w.slug}`}>{w.desc}</WikiText></p>
+          <LeadParagraph name={w.name} exclude={`/database/weapons/${w.slug}`}>{w.desc}</LeadParagraph>
           <ShortDescription>
             {typeLabel} in Grand Theft Auto VI{w.manufacturer && w.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${w.manufacturer}` : ''}
           </ShortDescription>
@@ -167,12 +169,14 @@ function App() {
                 </>
               )}
             </WikiSection>
+            <SeeAlso kind="weapons" slug={w.slug} />
             <References items={[{ name: w.sourceName, url: w.sourceUrl, retrieved: w.updatedAt }]} />
-            <CategoryFooter kind="weapons" slug={w.slug} />
+            <ExternalLinks kind="weapons" slug={w.slug} />
+            <Navbox kind="weapons" slug={w.slug} />
             <CitePage kind="weapons" slug={w.slug} />
             <PageInformation kind="weapons" slug={w.slug} />
-            <Navbox kind="weapons" slug={w.slug} />
-          </div>
+            <CategoryFooter kind="weapons" slug={w.slug} />
+</div>
 
           {/* Índice */}
           <div className="order-1 lg:order-2">

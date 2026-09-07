@@ -1039,6 +1039,22 @@ main::before {
    ferramentas cabe numa linha e fica sempre visível. Abaixo de 768px passa
    a ser a única coisa que se vê até alguém a querer — e o artigo começa
    logo a seguir ao cabeçalho, que é o que se foi ali ler. */
+/* O índice numerado, como o de uma wiki. O número alinha à esquerda numa
+   coluna própria para que os rótulos comecem todos no mesmo sítio, e as
+   subsecções recolhem sob a secção a que pertencem. */
+.wiki-toc-panel .wiki-toc-number { min-width: 1.4em; }
+.wiki-toc-sub { margin-left: .9rem; }
+.wiki-toc-sub .wiki-toc-number { min-width: 2em; }
+
+/* «Ver também» e «Ligações externas»: listas de leitura, não cartões. Uma
+   entrada por linha, com o nome em destaque e a natureza a seguir. */
+/* O assunto do verbete, a negrito na primeira frase. É o que torna a
+   abertura citável fora da página. */
+.wiki-lead-subject { font-weight: 700; color: var(--vice-navy, #1b2340); }
+
+.wiki-see-also-list { display: flex; flex-direction: column; gap: .45rem; }
+.wiki-see-also-list > li { min-width: 0; }
+
 .wiki-tools-toggle { display: none; }
 .wiki-tools-chevron { transition: transform .18s; }
 .wiki-tools-chevron.is-open { transform: rotate(90deg); }

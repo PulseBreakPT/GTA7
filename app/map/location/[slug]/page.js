@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
+import { ChevronRight, FileText, Images, Compass, BookMarked, Link2, ExternalLink} from 'lucide-react'
 import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/content'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph } from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 
 export default function LocationPage() {
@@ -27,7 +27,9 @@ export default function LocationPage() {
     { id: 'overview', label: 'Overview', icon: FileText },
     { id: 'visual', label: 'Visual Record', icon: Images },
     ...(related.length > 0 && region ? [{ id: 'nearby', label: 'Nearby', icon: Compass }] : []),
-    { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'see-also', label: 'See also', icon: Link2 },
+  { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'external-links', label: 'External links', icon: ExternalLink },
   ]
 
   return (
@@ -41,6 +43,9 @@ export default function LocationPage() {
           <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{categoryLabel}</span>
           {region && <span className="font-cond uppercase tracking-[0.1em] text-[12px] text-dim">{region.label}</span>}
         </div>
+        {/* A descrição do sítio estava só lá em baixo, na secção Overview:
+            a ficha abria sem dizer do que trata. */}
+        <LeadParagraph name={loc.name} exclude={`/map/location/${loc.slug}`}>{loc.desc}</LeadParagraph>
         <ShortDescription>
             Named place in {region ? region.label : 'Leonida'}{categoryLabel ? ` · ${categoryLabel}` : ''}
           </ShortDescription>
@@ -79,12 +84,14 @@ export default function LocationPage() {
               </div>
             </WikiSection>
           )}
+          <SeeAlso kind="locations" slug={loc.slug} />
           <References items={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
+          <ExternalLinks kind="locations" slug={loc.slug} />
+          <Navbox kind="locations" slug={loc.slug} />
+          <CitePage kind="locations" slug={loc.slug} />
+          <PageInformation kind="locations" slug={loc.slug} />
           <CategoryFooter kind="locations" slug={loc.slug} />
-            <CitePage kind="locations" slug={loc.slug} />
-            <PageInformation kind="locations" slug={loc.slug} />
-            <Navbox kind="locations" slug={loc.slug} />
-        </div>
+</div>
 
         {/* Índice */}
         <div className="order-1 lg:order-2">

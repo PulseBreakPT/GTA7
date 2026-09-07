@@ -4,10 +4,10 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle, Link2, BookMarked, ExternalLink} from 'lucide-react'
 import { regions, locations, confirmedLocationImage } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox, ShortDescription, Hatnote, WhatThisLinks } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox, ShortDescription, Hatnote, WhatThisLinks, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 
 export default function RegionPage() {
@@ -27,6 +27,9 @@ export default function RegionPage() {
     { id: 'gallery', label: 'Gallery', icon: Images },
     ...(entries.length > 0 ? [{ id: 'places', label: 'Named Places', icon: MapPin }] : []),
     ...(region.notPublished?.length > 0 ? [{ id: 'not-published', label: 'Not Published', icon: AlertTriangle }] : []),
+    { id: 'see-also', label: 'See also', icon: Link2 },
+    { id: 'references', label: 'References', icon: BookMarked },
+    { id: 'external-links', label: 'External links', icon: ExternalLink },
   ]
 
   return (
@@ -37,7 +40,7 @@ export default function RegionPage() {
           qualquer largura, como nas fichas das wikis. */}
       <header className="wiki-article-header mt-5">
         <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[38px] sm:text-[52px] xl:text-[64px] text-paper">{region.label}</h1>
-        <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]"><WikiText exclude={`/map/${region.id}`}>{region.blurb}</WikiText></p>
+        <LeadParagraph name={region.label} exclude={`/map/${region.id}`}>{region.blurb}</LeadParagraph>
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <GhostBadge status={region.sourced ? 'confirmed' : 'analysis'} label={region.sourced ? 'Officially named' : 'Image-based archive note'} />
           <span className="font-mono text-[11px] text-dim">{entries.length} DOCUMENTED ENTRIES</span>
@@ -123,12 +126,14 @@ export default function RegionPage() {
               </div>
             </WikiSection>
           )}
+          <SeeAlso kind="regions" slug={region.id} />
           <References items={[{ name: 'Rockstar Games · GTA VI Official Site', url: 'https://www.rockstargames.com/VI' }]} />
-          <CategoryFooter kind="regions" slug={region.id} />
+          <ExternalLinks kind="regions" slug={region.id} />
+          <Navbox kind="regions" slug={region.id} />
           <CitePage kind="regions" slug={region.id} />
           <PageInformation kind="regions" slug={region.id} />
-          <Navbox kind="regions" slug={region.id} />
-        </div>
+          <CategoryFooter kind="regions" slug={region.id} />
+</div>
 
         {/* Índice */}
         <div className="order-1 lg:order-2">

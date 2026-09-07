@@ -63,6 +63,7 @@ function App() {
         </>
       }
       lede={egg.summary}
+      leadName={egg.name}
       shortDescription={`Secret in ${egg.region} · ${found} of ${egg.clues.length} clues documented`}
       media={<EntryMedia src={egg.image} alt={`${egg.name} reference imagery`} priority />}
       sections={SECTIONS}

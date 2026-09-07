@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
+import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked, Link2, ExternalLink} from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import { mechanics, characters } from '@/lib/content'
 
@@ -16,7 +16,9 @@ const SECTIONS = [
   { id: 'detail', label: 'What is documented', icon: Layers },
   { id: 'related', label: 'Related Mechanics', icon: Repeat2 },
   { id: 'characters', label: 'Linked Characters', icon: Users },
+  { id: 'see-also', label: 'See also', icon: Link2 },
   { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'external-links', label: 'External links', icon: ExternalLink },
 ]
 
 export default function MechanicPage() {
@@ -44,7 +46,7 @@ export default function MechanicPage() {
             <span className="min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim">{m.glyph}</span>
           </div>
           <h1 data-ghost="MECHANICS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{m.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
+          <LeadParagraph name={m.name} exclude={`/database/mechanics/${m.slug}`}>{m.desc}</LeadParagraph>
           <ShortDescription>Gameplay mechanic in Grand Theft Auto VI</ShortDescription>
           <StubNotice kind="mechanics" slug={m.slug} />
           <Hatnote kind="mechanics" slug={m.slug} />
@@ -94,12 +96,14 @@ export default function MechanicPage() {
                 ))}
               </div>
             </WikiSection>
+            <SeeAlso kind="mechanics" slug={m.slug} />
             <References items={[{ name: m.sourceName, url: m.sourceUrl, retrieved: m.updatedAt }]} />
-            <CategoryFooter kind="mechanics" slug={m.slug} />
+            <ExternalLinks kind="mechanics" slug={m.slug} />
+            <Navbox kind="mechanics" slug={m.slug} />
             <CitePage kind="mechanics" slug={m.slug} />
             <PageInformation kind="mechanics" slug={m.slug} />
-            <Navbox kind="mechanics" slug={m.slug} />
-          </div>
+            <CategoryFooter kind="mechanics" slug={m.slug} />
+</div>
 
           <div className="order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />

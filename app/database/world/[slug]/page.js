@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ChevronRight, MapPin } from 'lucide-react'
 import { notFound } from 'next/navigation'
-import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText, ShortDescription } from '@/components/site/wiki'
+import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { worldBranches, worldEntries, worldEntryBySlug } from '@/lib/world-content'
 
@@ -20,7 +20,11 @@ export default async function WorldEntryPage({ params }) {
     { id: 'overview', label: 'Overview' },
     { id: 'record', label: 'Archive record' },
     { id: 'related', label: 'Related records' },
+    // Esta ficha é servida do servidor: um ícone é uma função e não
+    // atravessa a fronteira para o índice, que corre no cliente.
+    { id: 'see-also', label: 'See also' },
     { id: 'references', label: 'References' },
+    { id: 'external-links', label: 'External links' },
   ]
 
   return (
@@ -30,7 +34,7 @@ export default async function WorldEntryPage({ params }) {
       <header className="wiki-article-header mt-5">
         <div className="flex flex-wrap items-center gap-2"><StatusBadge status={item.status} /><span className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">{item.type} · {item.branch}</span></div>
         <h1 data-ghost="WORLD" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{item.name}</h1>
-        <p className="mt-4 max-w-[70ch] text-paper/85 text-[16px] sm:text-[17px] leading-relaxed"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p>
+        <LeadParagraph name={item.name} exclude={`/database/world/${item.slug}`}>{item.summary}</LeadParagraph>
         {/* O rótulo do topo já diz o tipo e o ramo; a linha curta acrescenta
             o sítio, quando o registo o tem, e não o repete. */}
         <ShortDescription>{item.region ? `Documented in ${item.region}, Grand Theft Auto VI` : 'World record in Grand Theft Auto VI'}</ShortDescription>
@@ -61,12 +65,14 @@ export default async function WorldEntryPage({ params }) {
           <WikiSection id="related" title="Related records" className="mb-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{related.map((entry) => <Link key={entry.slug} href={`/database/world/${entry.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 hover:border-black/35 transition-colors"><span className="min-w-0 flex-1"><strong className="block font-cond uppercase text-[16px] text-paper truncate">{entry.name}</strong><small className="block mt-1 font-cond uppercase tracking-[0.12em] text-[9px] text-dim">{entry.type} · {entry.region}</small></span><ChevronRight size={14} className="text-dim" /></Link>)}</div>
           </WikiSection>
+          <SeeAlso kind="world" slug={item.slug} />
           <References items={item.sourceUrl ? [{ name: item.sourceName, url: item.sourceUrl, retrieved: item.updatedAt }] : []} />
-          <CategoryFooter kind="world" slug={item.slug} />
+          <ExternalLinks kind="world" slug={item.slug} />
+          <Navbox kind="world" slug={item.slug} />
           <CitePage kind="world" slug={item.slug} />
           <PageInformation kind="world" slug={item.slug} />
-          <Navbox kind="world" slug={item.slug} />
-          <nav className="mt-7 grid gap-3 border-t border-line pt-5 sm:grid-cols-2" aria-label="Adjacent records">
+          <CategoryFooter kind="world" slug={item.slug} />
+<nav className="mt-7 grid gap-3 border-t border-line pt-5 sm:grid-cols-2" aria-label="Adjacent records">
             {previous ? (
               <Link href={`/database/world/${previous.slug}`} className="group border border-line bg-white p-4 hover:border-pink">
                 <span className="flex items-center gap-1 font-cond text-[9px] font-bold uppercase tracking-[0.14em] text-dim"><ArrowLeft size={11} /> Previous in {branchMeta?.label}</span>

@@ -2,17 +2,23 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { BookMarked, ExternalLink, Link2 } from 'lucide-react'
 import { cx } from './ui'
 import {
   Breadcrumb,
   CategoryFooter,
   CitePage,
+  ExternalLinks,
+  externalLinksFor,
   Hatnote,
   InfoboxShell,
+  LeadParagraph,
   Navbox,
   PageInformation,
   PageTools,
   References,
+  SeeAlso,
+  seeAlsoFor,
   ShortDescription,
   StubNotice,
   TableOfContents,
@@ -41,6 +47,7 @@ export function WikiEntryLayout({
   ghost,
   title,
   lede,
+  leadName,
   shortDescription,
   media,
   meta,
@@ -48,10 +55,25 @@ export function WikiEntryLayout({
   infobox,
   infoboxLinks = true,
   references,
+  seeAlso = true,
+  externalLinks,
   footer = true,
   after,
   children,
 }) {
+  // O índice cobre o artigo inteiro, secções de fecho incluídas. Cada
+  // página declarava «References» à mão no seu próprio índice e nenhuma
+  // declarava as outras — agora as três finais entram sozinhas, e só
+  // quando a secção existe mesmo, para o índice não apontar para o vazio.
+  const showSeeAlso = footer && kind && seeAlso && seeAlsoFor(kind, slug).length > 0
+  const showExternal = footer && kind && externalLinksFor(kind, slug, externalLinks).length > 0
+  const tocSections = [
+    ...(sections || []).filter((section) => section && section.id !== 'references'),
+    showSeeAlso ? { id: 'see-also', label: 'See also', icon: Link2 } : null,
+    references && references.length > 0 ? { id: 'references', label: 'References', icon: BookMarked } : null,
+    showExternal ? { id: 'external-links', label: 'External links', icon: ExternalLink } : null,
+  ].filter(Boolean)
+
   return (
     <div className="flex-1 flex flex-col">
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
@@ -66,7 +88,13 @@ export function WikiEntryLayout({
             {title}
           </h1>
           {media}
-          {lede && <div className="wiki-article-lede text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]">{lede}</div>}
+          {lede && (
+            <div className="wiki-article-lede mt-4">
+              {leadName
+                ? <LeadParagraph name={leadName}>{lede}</LeadParagraph>
+                : <div className="text-paper/85 text-[16px] leading-relaxed max-w-[68ch]">{lede}</div>}
+            </div>
+          )}
           {shortDescription && <ShortDescription>{shortDescription}</ShortDescription>}
           {meta && (
             <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-y hairline py-3">{meta}</div>
@@ -78,21 +106,30 @@ export function WikiEntryLayout({
         {kind && <PageTools kind={kind} slug={slug} />}
 
         <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+          {/* A ordem do fim de um artigo de wiki não é arbitrária, e era a
+              que aqui estava trocada: ver também, depois referências,
+              depois ligações externas, depois as caixas de navegação, e as
+              categorias em último — a etiqueta que arruma o verbete no
+              arquivo fecha a página. A citação e os metadados da página são
+              aparato deste arquivo e ficam entre a navegação e as
+              categorias. */}
           <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             {children}
+            {footer && kind && seeAlso && <SeeAlso kind={kind} slug={slug} />}
             {references && references.length > 0 && <References items={references} />}
+            {footer && kind && <ExternalLinks kind={kind} slug={slug} extra={externalLinks} />}
             {footer && kind && (
               <>
-                <CategoryFooter kind={kind} slug={slug} />
+                <Navbox kind={kind} slug={slug} />
                 <CitePage kind={kind} slug={slug} title={typeof title === 'string' ? title : undefined} />
                 <PageInformation kind={kind} slug={slug} />
-                <Navbox kind={kind} slug={slug} />
+                <CategoryFooter kind={kind} slug={slug} />
               </>
             )}
           </div>
 
           <div className="order-1 lg:order-2">
-            <TableOfContents sections={sections} />
+            <TableOfContents sections={tocSections} />
           </div>
 
           <div className="order-2 lg:order-3">

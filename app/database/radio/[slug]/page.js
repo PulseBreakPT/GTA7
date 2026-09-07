@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
+import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked, Link2, ExternalLink} from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import { radioStations } from '@/lib/content'
 
@@ -26,7 +26,9 @@ export default function RadioStationPage() {
     { id: 'overview', label: 'Overview', icon: FileText },
     ...(s.tracks?.length > 0 ? [{ id: 'tracklist', label: 'Reported Tracks', icon: Music }] : []),
     { id: 'related', label: 'Other Stations', icon: ListMusic },
-    { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'see-also', label: 'See also', icon: Link2 },
+  { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'external-links', label: 'External links', icon: ExternalLink },
   ]
 
   return (
@@ -41,7 +43,7 @@ export default function RadioStationPage() {
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
           </div>
           <h1 data-ghost="RADIO" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{s.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
+          <LeadParagraph name={s.name} exclude={`/database/radio/${s.slug}`}>{s.desc}</LeadParagraph>
           <ShortDescription>Radio station in Grand Theft Auto VI</ShortDescription>
           <StubNotice kind="radio" slug={s.slug} />
           <Hatnote kind="radio" slug={s.slug} />
@@ -92,12 +94,14 @@ export default function RadioStationPage() {
                 ))}
               </div>
             </WikiSection>
+            <SeeAlso kind="radio" slug={s.slug} />
             <References items={[{ name: s.sourceName, url: s.sourceUrl, retrieved: s.updatedAt }]} />
-            <CategoryFooter kind="radio" slug={s.slug} />
+            <ExternalLinks kind="radio" slug={s.slug} />
+            <Navbox kind="radio" slug={s.slug} />
             <CitePage kind="radio" slug={s.slug} />
             <PageInformation kind="radio" slug={s.slug} />
-            <Navbox kind="radio" slug={s.slug} />
-          </div>
+            <CategoryFooter kind="radio" slug={s.slug} />
+</div>
 
           <div className="order-1 lg:order-2">
             <TableOfContents sections={sections} />

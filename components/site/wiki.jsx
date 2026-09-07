@@ -90,21 +90,41 @@ export function TableOfContents({ sections }) {
     return () => observer.disconnect()
   }, [])
 
+  // A numeração é a da Wikipédia: 1, 2, 3, e 3.1, 3.2 para as subsecções.
+  // Diz quantas secções há e onde se está dentro do artigo — um índice sem
+  // números obriga a contar as linhas para saber o mesmo. Uma secção
+  // declara-se subordinada com `level: 2`; sem isso é de primeiro nível.
+  let major = 0
+  let minor = 0
+  const numbered = (sections || []).filter(Boolean).map((section) => {
+    if (section.level === 2) {
+      minor += 1
+      return { ...section, number: `${major}.${minor}` }
+    }
+    major += 1
+    minor = 0
+    return { ...section, number: String(major) }
+  })
+
   return (
     <nav className="wiki-toc-panel sticky top-24 h-fit" aria-label="Contents">
       <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mb-3">Contents</p>
       <ul className="space-y-2">
-        {sections.map(({ id, label, icon: Icon }) => (
-          <li key={id}>
+        {numbered.map(({ id, label, icon: Icon, level, number }) => (
+          <li key={id} className={cx(level === 2 && 'wiki-toc-sub')}>
             <a
               href={`#${id}`}
               className={cx(
-                'inline-flex items-center gap-2 font-cond uppercase tracking-[0.08em] text-[12px] transition-colors',
+                'wiki-toc-link inline-flex items-baseline gap-2 font-cond uppercase tracking-[0.08em] transition-colors',
+                level === 2 ? 'text-[11px]' : 'text-[12px]',
                 activeId === id ? 'text-pink' : 'text-dim hover:text-paper'
               )}
             >
-              {Icon && <Icon size={12} aria-hidden="true" />}
-              {label}
+              <span className="wiki-toc-number font-mono text-[10px] tabular-nums text-dim/70 shrink-0">{number}</span>
+              <span className="inline-flex items-center gap-1.5 min-w-0">
+                {Icon && level !== 2 && <Icon size={12} aria-hidden="true" className="shrink-0" />}
+                {label}
+              </span>
             </a>
           </li>
         ))}
@@ -601,6 +621,134 @@ export function WhatLinksHere({ kind, slug }) {
         <p className="mt-2 font-mono text-[10px] text-dim">+{links.length - 8} more</p>
       )}
     </div>
+  )
+}
+
+// «Ver também»: a secção que numa wiki fecha o corpo antes das referências.
+// Não é a lista de tudo o que se relaciona — isso é o navbox e o «o que
+// aponta para aqui». São as poucas entradas que quem leu esta quereria ler
+// a seguir: as que este verbete nomeia, e depois irmãs da mesma categoria
+// para completar. Sem isto, o artigo acaba e o leitor fica sem saída.
+export function seeAlsoFor(kind, slug, limit = 6) {
+  const entry = entryFor(kind, slug)
+  if (!entry) return []
+
+  const named = outgoingFor(entry)
+  const siblings = siblingsFor(entry, limit * 2)
+  // Quando o verbete não nomeia ninguém e não partilha subcategoria com
+  // nenhum outro, `siblingsFor` devolve vazio e a secção desaparecia — três
+  // fichas em doze ficavam sem ela. O recurso é o próprio ramo: outras
+  // entradas do mesmo tipo, que é sempre uma leitura seguinte defensável.
+  const sameKind = named.length + siblings.length > 0
+    ? []
+    : ENTRIES.filter((e) => e.kind === entry.kind && e.href !== entry.href).slice(0, limit)
+  const seen = new Set([entry.href])
+  const list = []
+  for (const candidate of [...named, ...siblings, ...sameKind]) {
+    if (seen.has(candidate.href)) continue
+    seen.add(candidate.href)
+    list.push(candidate)
+    if (list.length === limit) break
+  }
+  return list
+}
+
+export function SeeAlso({ kind, slug, limit = 6 }) {
+  const list = seeAlsoFor(kind, slug, limit)
+  if (list.length === 0) return null
+
+  return (
+    <section data-section id="see-also" className="wiki-see-also mb-12 scroll-mt-24">
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">See also</h2>
+      <ul className="wiki-see-also-list">
+        {list.map((item) => (
+          <li key={item.href}>
+            <Link href={item.href} className="group inline-flex items-baseline gap-2 text-[13px] leading-relaxed">
+              <span className="text-dim shrink-0" aria-hidden="true">·</span>
+              <span className="min-w-0">
+                <span className="text-pink group-hover:text-paper transition-colors">{item.name}</span>
+                <span className="text-dim"> — {KIND_META[item.kind].label.toLowerCase()}{item.categories[1] ? `, ${item.categories[1].toLowerCase()}` : ''}</span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+// «Ligações externas»: onde uma wiki manda o leitor para fora dela. Aqui é
+// a fonte oficial do verbete e o material do editor do jogo. Fica depois
+// das referências, como manda a ordem — a referência prova o que se
+// escreveu, a ligação externa é para continuar a ler.
+export function externalLinksFor(kind, slug, extra) {
+  const entry = entryFor(kind, slug)
+  if (!entry) return []
+  return [
+    entry.sourceUrl ? { name: entry.sourceName, url: entry.sourceUrl, note: 'Source of record for this entry' } : null,
+    ...(extra || []),
+  ].filter((item) => item && item.url)
+}
+
+export function ExternalLinks({ kind, slug, extra }) {
+  const items = externalLinksFor(kind, slug, extra)
+  if (items.length === 0) return null
+
+  return (
+    <section data-section id="external-links" className="wiki-external-links mb-12 scroll-mt-24">
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">External links</h2>
+      <ul className="wiki-see-also-list">
+        {items.map((item) => (
+          <li key={item.url}>
+            <a href={item.url} target="_blank" rel="noreferrer" className="group inline-flex items-baseline gap-2 text-[13px] leading-relaxed">
+              <span className="text-dim shrink-0" aria-hidden="true">·</span>
+              <span className="min-w-0">
+                <span className="text-mint group-hover:text-paper transition-colors break-words">{item.name}</span>
+                {item.note && <span className="text-dim"> — {item.note}</span>}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+// A primeira frase de um verbete de wiki repete o nome do assunto a negrito
+// e diz o que ele é. Não é redundância com o título: é o que torna a
+// abertura citável e legível fora da página, e o que distingue um artigo
+// de um cartão com uma legenda.
+export function LeadParagraph({ name, exclude, children, className }) {
+  const text = typeof children === 'string' ? children : null
+  const body = (() => {
+    if (!name || !text) {
+      return text ? <WikiText exclude={exclude}>{text}</WikiText> : children
+    }
+    // O nome quase sempre já abre a frase. Nesse caso destaca-se onde está,
+    // em vez de o prefixar — prefixar às cegas dava «Jason Duval Jason
+    // Duval is...». Só quando o texto não o nomeia é que a frase é aberta
+    // com ele, que é o que uma wiki faz.
+    const at = text.toLowerCase().indexOf(name.toLowerCase())
+    if (at === -1) {
+      return (
+        <>
+          <strong className="wiki-lead-subject">{name}</strong>
+          {' — '}
+          <WikiText exclude={exclude}>{text}</WikiText>
+        </>
+      )
+    }
+    return (
+      <>
+        {at > 0 && <WikiText exclude={exclude}>{text.slice(0, at)}</WikiText>}
+        <strong className="wiki-lead-subject">{text.slice(at, at + name.length)}</strong>
+        <WikiText exclude={exclude}>{text.slice(at + name.length)}</WikiText>
+      </>
+    )
+  })()
+
+  return (
+    <p className={cx('wiki-lead mt-4 text-paper/85 text-[16px] leading-relaxed max-w-[68ch]', className)}>{body}</p>
   )
 }
 

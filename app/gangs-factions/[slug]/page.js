@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
+import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked, Link2, ExternalLink} from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import { factions } from '@/lib/content'
 
@@ -26,7 +26,9 @@ export default function FactionPage() {
     ...(f.confirmed?.length > 0 ? [{ id: 'confirmed', label: 'Confirmed', icon: BadgeCheck }] : []),
     ...(f.unknown?.length > 0 ? [{ id: 'unknown', label: 'Not Published', icon: HelpCircle }] : []),
     { id: 'related', label: 'Other Factions', icon: Users },
-    { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'see-also', label: 'See also', icon: Link2 },
+  { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'external-links', label: 'External links', icon: ExternalLink },
   ]
 
   return (
@@ -40,7 +42,7 @@ export default function FactionPage() {
           <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{f.evidenceStatus}</span>
         </div>
         <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{f.name}</h1>
-        <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
+        <LeadParagraph name={f.name} exclude={`/gangs-factions/${f.slug}`}>{f.desc}</LeadParagraph>
         <ShortDescription>Faction in Grand Theft Auto VI</ShortDescription>
         <StubNotice kind="factions" slug={f.slug} />
         <Hatnote kind="factions" slug={f.slug} />
@@ -88,12 +90,14 @@ export default function FactionPage() {
               ))}
             </div>
           </WikiSection>
+          <SeeAlso kind="factions" slug={f.slug} />
           <References items={[{ name: f.sourceName, url: f.sourceUrl }]} />
+          <ExternalLinks kind="factions" slug={f.slug} />
+          <Navbox kind="factions" slug={f.slug} />
+          <CitePage kind="factions" slug={f.slug} />
+          <PageInformation kind="factions" slug={f.slug} />
           <CategoryFooter kind="factions" slug={f.slug} />
-            <CitePage kind="factions" slug={f.slug} />
-            <PageInformation kind="factions" slug={f.slug} />
-            <Navbox kind="factions" slug={f.slug} />
-        </div>
+</div>
 
         <div className="order-1 lg:order-2">
           <TableOfContents sections={sections} />

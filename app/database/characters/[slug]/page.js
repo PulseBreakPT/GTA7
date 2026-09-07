@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
+import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked, Link2, ExternalLink} from 'lucide-react'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
@@ -20,7 +20,9 @@ const SECTIONS = [
   { id: 'details', label: 'Details', icon: ListChecks },
   { id: 'relationships', label: 'Relationships', icon: Users },
   { id: 'mechanics', label: 'Associated Mechanics', icon: Zap },
+  { id: 'see-also', label: 'See also', icon: Link2 },
   { id: 'references', label: 'References', icon: BookMarked },
+  { id: 'external-links', label: 'External links', icon: ExternalLink },
 ]
 
 function Portrait({ c, className, sizes = '120px' }) {
@@ -101,7 +103,7 @@ function App() {
             <StatusBadge status={c.status} />
           </div>
           <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{c.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.bio}</WikiText></p>
+          <LeadParagraph name={c.name} exclude={`/database/characters/${c.slug}`}>{c.bio}</LeadParagraph>
           <ShortDescription>
             {c.role} in Grand Theft Auto VI{c.group ? ` · ${c.group}` : ''}
           </ShortDescription>
@@ -168,12 +170,14 @@ function App() {
                 ))}
               </div>
             </WikiSection>
+            <SeeAlso kind="characters" slug={c.slug} />
             <References items={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
-            <CategoryFooter kind="characters" slug={c.slug} />
+            <ExternalLinks kind="characters" slug={c.slug} />
+            <Navbox kind="characters" slug={c.slug} />
             <CitePage kind="characters" slug={c.slug} />
             <PageInformation kind="characters" slug={c.slug} />
-            <Navbox kind="characters" slug={c.slug} />
-          </div>
+            <CategoryFooter kind="characters" slug={c.slug} />
+</div>
 
           {/* Índice */}
           <div className="order-1 lg:order-2">
