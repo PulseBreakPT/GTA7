@@ -1035,6 +1035,27 @@ main::before {
 .wiki-user-action.is-active { color: #a51d68; border-color: rgba(240,68,165,.38); background: rgba(255,250,253,.94); }
 .wiki-user-signin { flex-basis: 100%; color: var(--vice-violet); }
 
+/* O botão que recolhe as ferramentas. Em ecrã largo não existe: a barra de
+   ferramentas cabe numa linha e fica sempre visível. Abaixo de 768px passa
+   a ser a única coisa que se vê até alguém a querer — e o artigo começa
+   logo a seguir ao cabeçalho, que é o que se foi ali ler. */
+.wiki-tools-toggle { display: none; }
+.wiki-tools-chevron { transition: transform .18s; }
+.wiki-tools-chevron.is-open { transform: rotate(90deg); }
+
+@media (max-width: 767px) {
+  .wiki-tools-toggle {
+    width: 100%; min-height: 40px; display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+    padding: .4rem .7rem;
+    color: #565f70; background: rgba(239,241,246,.72); border: 1px solid rgba(23,33,75,.11); border-radius: 10px;
+    font: 700 10px/1 var(--font-cond), sans-serif; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .wiki-tools-toggle > span { display: inline-flex; align-items: center; gap: .45rem; }
+  .wiki-tools-toggle[aria-expanded='true'] { color: var(--vice-violet); border-color: rgba(118,87,255,.32); }
+  .wiki-tools-panels { display: none; }
+  .wiki-tools-panels.is-open { display: block; margin-top: .5rem; }
+}
+
 .wiki-article-body,
 .wiki-news-paper {
   position: relative;
@@ -2374,18 +2395,23 @@ main [role="button"] { min-height: 40px; }
     padding: 3.25rem 1.1rem 1.4rem;
   }
 
-  /* Wrapping exposes every action immediately instead of hiding tools in a
-     horizontal scroller. */
+  /* As ferramentas quebram em fichas compactas, várias por linha. Estavam
+     em grelha de largura inteira: uma linha por ferramenta, onze linhas
+     antes do artigo começar. Uma ferramenta ocupa o que o seu rótulo pede
+     e mais nada. */
   .wiki-page-tools {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: .25rem !important;
     overflow: visible !important;
   }
-  .wiki-page-tools::before { grid-column: 1 / -1; margin: .25rem .35rem; }
+  .wiki-page-tools::before { flex-basis: 100%; margin: .15rem .35rem 0; }
   .wiki-page-tools > :is(a, button) {
-    width: 100%;
+    width: auto;
+    flex: 0 1 auto;
+    min-height: 36px;
     justify-content: flex-start;
-    white-space: normal;
+    white-space: nowrap;
   }
   .wiki-user-actions-label {
     align-items: flex-start !important;
@@ -2393,19 +2419,20 @@ main [role="button"] { min-height: 40px; }
   }
   .wiki-user-actions-label small { text-align: left !important; }
   .wiki-user-actions-buttons {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: .3rem !important;
   }
-  .wiki-user-action { width: 100%; padding-inline: .55rem !important; }
-  .wiki-user-signin { grid-column: 1 / -1; }
+  .wiki-user-action {
+    width: auto;
+    flex: 0 1 auto;
+    min-height: 38px;
+    padding-inline: .6rem !important;
+    white-space: nowrap;
+  }
+  .wiki-user-signin { flex-basis: 100%; }
   .wiki-infobox { position: static !important; }
   .home-section { padding-inline: 1rem !important; }
-}
-
-@media (max-width: 420px) {
-  .wiki-page-tools,
-  .wiki-user-actions-buttons { grid-template-columns: 1fr; }
-  .wiki-user-signin { grid-column: auto; }
 }
 
 /* ========================================================================== */

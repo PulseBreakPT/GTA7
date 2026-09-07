@@ -31,7 +31,9 @@ export default async function WorldEntryPage({ params }) {
         <div className="flex flex-wrap items-center gap-2"><StatusBadge status={item.status} /><span className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">{item.type} · {item.branch}</span></div>
         <h1 data-ghost="WORLD" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{item.name}</h1>
         <p className="mt-4 max-w-[70ch] text-paper/85 text-[16px] sm:text-[17px] leading-relaxed"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p>
-        <ShortDescription>{[item.type, item.region].filter(Boolean).join(' · ') || 'World record'} in Grand Theft Auto VI</ShortDescription>
+        {/* O rótulo do topo já diz o tipo e o ramo; a linha curta acrescenta
+            o sítio, quando o registo o tem, e não o repete. */}
+        <ShortDescription>{item.region ? `Documented in ${item.region}, Grand Theft Auto VI` : 'World record in Grand Theft Auto VI'}</ShortDescription>
         <StubNotice kind="world" slug={item.slug} />
         <Hatnote kind="world" slug={item.slug} />
       </header>

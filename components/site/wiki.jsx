@@ -182,6 +182,11 @@ export function PageTools({ kind, slug }) {
   const [copied, setCopied] = useState(false)
   const [watching, setWatching] = useState(false)
   const [watchBusy, setWatchBusy] = useState(false)
+  // No telemóvel as ferramentas ficam recolhidas. Eram onze blocos de
+  // largura inteira entre o título e o primeiro parágrafo: quem abria uma
+  // ficha percorria uma parede de administração antes de chegar ao que
+  // vinha ler. Em ecrã largo não há botão nenhum — a barra está sempre lá.
+  const [toolsOpen, setToolsOpen] = useState(false)
   const recordedView = useRef('')
 
   useEffect(() => {
@@ -231,6 +236,18 @@ export function PageTools({ kind, slug }) {
 
   return (
     <div className="wiki-tools-stack mt-3">
+      <button
+        type="button"
+        className="wiki-tools-toggle"
+        aria-expanded={toolsOpen}
+        aria-controls="wiki-tools-panels"
+        onClick={() => setToolsOpen((open) => !open)}
+      >
+        <span><Info size={13} aria-hidden="true" /> Page tools</span>
+        <ChevronRight size={14} aria-hidden="true" className={cx('wiki-tools-chevron', toolsOpen && 'is-open')} />
+      </button>
+
+      <div id="wiki-tools-panels" className={cx('wiki-tools-panels', toolsOpen && 'is-open')}>
       <nav className="wiki-page-tools flex flex-wrap items-center gap-x-1 gap-y-1 border-y hairline py-1" aria-label="Article tools">
         {links.map(([label, href, Icon]) => (
           <Link key={label} href={href} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
@@ -275,6 +292,7 @@ export function PageTools({ kind, slug }) {
           )}
         </div>
       </nav>
+      </div>
     </div>
   )
 }
