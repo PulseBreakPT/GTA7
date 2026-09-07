@@ -19,8 +19,6 @@ export default function EasterEggsIndex() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto flex-1">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Secrets' }]} />
 
-      <div className="data-rail mt-2">SECRET INDEX · KEPT APART FROM THE CONFIRMED RECORD</div>
-
       <div className="mt-4">
         <CategoryHeader
           eyebrow="Community finds"

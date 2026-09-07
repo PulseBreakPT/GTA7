@@ -33,8 +33,6 @@ export default function SpecialListPage({ params }) {
         { label: list.title },
       ]} />
 
-      <div className="data-rail mt-2">SPECIAL PAGE · {list.metric.toUpperCase()}</div>
-
       <div className="mt-4">
         <CategoryHeader
           eyebrow="Maintenance list"

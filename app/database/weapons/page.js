@@ -8,6 +8,7 @@ import { WeaponGlyph } from '@/components/site/dbtabs'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes, featureBriefs, officialCatalog } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -47,9 +48,10 @@ function App() {
     <div className="flex-1 flex flex-col">
       <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <div className="ghost-type" data-ghost="WEAPONS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">WEAPONS</h1></div>
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Weapons' }]} />
+          <div className="mt-4"><CategoryHeader eyebrow="Equipment catalogue" title="Weapons" image="/media/gear/morgan-revolvers.webp" imageAlt="Official GTA VI image of the Morgan revolvers" description="Weapons and equipment shown or named in official GTA VI material, with unknown performance values left unknown instead of being inferred." count={weapons.length} countLabel="weapons" updatedAt={lastUpdated} /></div>
 
-          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
+          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>

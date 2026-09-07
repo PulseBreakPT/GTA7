@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Check, X, Minus, ExternalLink, TriangleAlert, Download, Package, Calendar, ShoppingCart, Gamepad2, Users, Layers } from 'lucide-react'
 import { editions, IMG } from '@/lib/content'
 import { cx } from '@/components/site/ui'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 // As secções da página, por esta ordem: primeiro a pergunta que traz cá o
 // leitor (qual é a diferença), depois o que a Ultimate acrescenta, depois o
@@ -125,18 +125,7 @@ function App() {
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1180px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Editions' }]} />
 
-        <div className="data-rail">EDITIONS · OFFICIAL RECORD · UPDATED {editions.updatedAt}</div>
-        <div className="ghost-type mt-3" data-ghost="EDITIONS">
-          <h1 className="chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.82] text-[48px] sm:text-[68px] lg:text-[78px] max-w-[900px]">
-            WHAT’S IN<br />EACH EDITION
-          </h1>
-        </div>
-        <p className="mt-4 max-w-[62ch] text-[15px] sm:text-[16px] leading-[1.7] text-dim">
-          Two editions, and one upgrade that bridges them. Everything below is taken from
-          Rockstar’s own editions page, its support documentation and the PlayStation and Xbox
-          product listings — no retailer copy, no leaks. Where Rockstar has said nothing, this
-          page says so rather than filling the gap.
-        </p>
+        <div className="mt-4"><CategoryHeader eyebrow="Official editions record" title="What’s in each edition" image="/media/key-art/jason-lucia-car.webp" imageAlt="Official GTA VI artwork of Jason and Lucia beside a car" description="Two editions, and one upgrade that bridges them. The comparison keeps published contents, eligibility and unknowns separate rather than filling gaps with retailer copy or leaks." count={editions.tiers.length} countLabel="editions" updatedAt={editions.updatedAt} /></div>
 
         {/* Os quatro factos que enquadram tudo o resto. */}
         <div className="mt-7 grid grid-cols-2 lg:grid-cols-4 gap-px border hairline bg-[rgba(11,15,22,0.12)]">

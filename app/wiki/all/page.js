@@ -45,8 +45,6 @@ export default function AllPagesIndex() {
         { label: 'Special pages', href: '/wiki/special' }, { label: 'All pages' },
       ]} />
 
-      <div className="data-rail mt-2">SPECIAL PAGE · PREFIX INDEX</div>
-
       <div className="mt-4">
         <CategoryHeader
           eyebrow="Index"

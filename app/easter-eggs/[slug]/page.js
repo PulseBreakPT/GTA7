@@ -28,7 +28,6 @@ function App() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto flex-1">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: 'Secrets' }, { label: egg.name }]} />
 
-      <div className="data-rail mt-2">SECRET INDEX · EVIDENCE RECORD · {egg.region}</div>
       <PageTools kind="secrets" slug={egg.slug} />
       <div id="overview" className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5 scroll-mt-24">
         <div className="wiki-article-header">

@@ -3683,6 +3683,36 @@ main [class*="aspect-"].overflow-hidden { border-radius: 2px; }
 
 /* World directory: dense material is entered through a subject overview,
    then narrowed with stable, wiki-like controls. */
+.wiki-category-title {
+  max-width: 18ch;
+  font-size: clamp(2.75rem, 6vw, 4.85rem);
+  line-height: .86;
+  text-wrap: balance;
+}
+.wiki-category-hero-media {
+  width: 100%;
+  aspect-ratio: 16 / 5;
+  min-height: 180px;
+  max-height: 340px;
+}
+.wiki-category-hero-media::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
+}
+.wiki-category-description {
+  max-width: 76ch;
+  font-size: clamp(.9rem, 1.3vw, 1rem);
+  line-height: 1.72;
+  text-wrap: pretty;
+}
+@media (max-width: 639px) {
+  .wiki-category-heading-row { align-items: flex-start; }
+  .wiki-category-facts { width: 100%; justify-content: flex-start; padding-top: .25rem; }
+  .wiki-category-hero-media { min-height: 150px; aspect-ratio: 16 / 7; }
+}
 .wiki-kicker {
   color: var(--vice-pink);
   font-family: var(--font-cond), sans-serif;
@@ -4425,4 +4455,715 @@ main [role="tablist"] > button[aria-selected="true"] {
   border-color: var(--control-active) !important;
   background: var(--control-active) !important;
   color: #fff !important;
+}
+
+/* ========================================================================== */
+/* RESPONSIVE ORGANISATION LAYER                                               */
+/* Keeps the current art direction intact while making the information model   */
+/* respond to the usable canvas (including the desktop wiki rail).             */
+/* ========================================================================== */
+html,
+body { max-width: 100%; overflow-x: clip; }
+
+.site-frame,
+.archive-grid,
+.archive-grid > *,
+main :is(article, section, aside, nav, header, footer, div) { min-width: 0; }
+
+main :is(h1, h2, h3, p, li, dd, a) { overflow-wrap: break-word; }
+.wiki-article-body :is(a, code),
+.legal-document :is(a, code) { overflow-wrap: anywhere; }
+
+/* Places uses intrinsic columns, so it remains a grid on phones without
+   becoming cramped and uses the space left by the persistent wiki rail. */
+.places-region-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)) !important;
+  gap: clamp(.75rem, 1.5vw, 1rem) !important;
+}
+.places-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)) !important;
+  align-items: stretch;
+  gap: clamp(.75rem, 1.4vw, 1rem) !important;
+}
+.places-region-card { min-height: clamp(176px, 18vw, 228px) !important; }
+.places-card { display: flex; min-height: 100%; flex-direction: column; }
+.places-card > span:last-child { flex: 1; }
+.places-toolbar {
+  display: grid;
+  grid-template-columns: minmax(250px, 390px) minmax(0, 1fr);
+  align-items: center;
+  gap: .75rem 1rem;
+}
+.places-search { margin: 0 !important; }
+.places-status-filters { min-width: 0; }
+
+/* Medium screens have enough room for article + facts, but not for the third
+   contents rail. This avoids both a giant full-width infobox and a squeezed
+   three-column article. */
+@media (min-width: 880px) and (max-width: 1023px) {
+  .wiki-entry-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 300px) !important;
+    align-items: start;
+    column-gap: 1.25rem !important;
+  }
+  .wiki-entry-grid > :first-child { grid-column: 1; grid-row: 2; }
+  .wiki-entry-grid > :nth-child(2) { grid-column: 1 / -1; grid-row: 1; }
+  .wiki-entry-grid > :nth-child(3) { grid-column: 2; grid-row: 2; }
+}
+
+/* Wide catalogue cards stay readable rather than stretching into banners. */
+@media (min-width: 1500px) {
+  .places-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .places-region-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+}
+
+@media (max-width: 879px) {
+  .wiki-entry-grid > :nth-child(3) {
+    width: 100%;
+    max-width: 560px;
+    margin-inline: auto;
+  }
+  .places-toolbar { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+  /* Tables retain every column and become locally scrollable. */
+  main :is(table, .legal-data-table) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .places-directory { padding-bottom: 2rem !important; }
+  .places-selected { gap: 1rem !important; }
+  .places-selected > :first-child { min-height: 190px !important; }
+  .places-status-filters {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .places-status-filters > button {
+    width: 100%;
+    min-width: 0;
+    padding-inline: .55rem !important;
+    white-space: normal;
+  }
+}
+
+/* Five bottom-bar targets must fit even on a 320 px viewport. */
+@media (max-width: 380px) {
+  .gta-lore-tabbar {
+    width: calc(100vw - 12px);
+    max-width: none !important;
+    gap: 0 !important;
+    padding-inline: 6px !important;
+  }
+  .gta-lore-tabbar > :is(a, button) {
+    min-width: 0 !important;
+    flex: 1 1 20%;
+  }
+  .gta-lore-tabbar > :is(a, button) span:last-child {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 479px) {
+  .places-region-card { min-height: 184px !important; }
+  .places-card-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .places-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .places-card .status-badge { font-size: 9px !important; }
+}
+
+/* ========================================================================== */
+/* GTA LORE TYPOGRAPHY SYSTEM                                                  */
+/* Condensed display type carries the Vice City voice; Inter runs the          */
+/* interface; a restrained book serif makes long wiki records feel authored.  */
+/* ========================================================================== */
+:root {
+  --type-display: var(--font-cond), 'Arial Narrow', sans-serif;
+  --type-interface: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --type-reading: Georgia, 'Times New Roman', serif;
+  --type-code: var(--font-mono), ui-monospace, SFMono-Regular, Consolas, monospace;
+  --type-hero: clamp(3.35rem, 8.2vw, 8.4rem);
+  --type-route: clamp(2.7rem, 5.2vw, 5rem);
+  --type-section: clamp(1.55rem, 1.22rem + 1vw, 2.15rem);
+  --type-card-title: clamp(1rem, .94rem + .25vw, 1.2rem);
+  --type-reading-size: clamp(1.02rem, .98rem + .16vw, 1.1rem);
+  --type-reading-leading: 1.76;
+  --type-ui: .8125rem;
+  --type-meta: .6875rem;
+  --type-label-tracking: .085em;
+}
+
+html {
+  font-family: var(--type-interface);
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+body {
+  font-family: var(--type-interface);
+  font-synthesis: none;
+  font-optical-sizing: auto;
+}
+
+/* Display hierarchy: assertive and compact, without fake 800/900 weights. */
+main :is(h1, h2, h3),
+.wiki-global-brand strong,
+.home-city-signature,
+.boot-title {
+  font-family: var(--type-display);
+  font-weight: 700;
+  font-kerning: normal;
+}
+main h1 {
+  text-wrap: balance;
+  letter-spacing: -.035em !important;
+}
+.home-hero-title { font-size: var(--type-hero) !important; letter-spacing: -.052em !important; }
+.wiki-category-header h1,
+.wiki-article-header h1,
+.legal-shell > header h1,
+.mechanics-index-head h1 { font-size: var(--type-route) !important; }
+.wiki-content-section > h2,
+.home-section h2,
+.wiki-section-title {
+  font-size: var(--type-section) !important;
+  line-height: 1.02 !important;
+  letter-spacing: .035em !important;
+}
+.wiki-content-section h3 {
+  font-family: var(--type-display);
+  font-weight: 700;
+  letter-spacing: .015em;
+}
+
+/* Reading typography is deliberately different from controls and metadata.
+   That separation makes the article boundary immediately obvious. */
+.wiki-article-body .wiki-content-section > :is(p, ul, ol, blockquote),
+.wiki-news-paper :is(p, li, blockquote),
+.legal-document .wiki-content-section > :is(p, ul, ol, blockquote),
+.legal-bullet-list li {
+  max-width: 68ch;
+  color: #382f35 !important;
+  font-family: var(--type-reading);
+  font-size: var(--type-reading-size) !important;
+  font-weight: 400;
+  line-height: var(--type-reading-leading) !important;
+  letter-spacing: .002em !important;
+  text-wrap: pretty;
+}
+.wiki-article-body .wiki-content-section > p:first-of-type::first-letter {
+  font-kerning: normal;
+}
+.wiki-article-body :is(strong, b),
+.wiki-news-paper :is(strong, b),
+.legal-document :is(strong, b) { color: #38232e; font-weight: 700; }
+
+/* UI typography: one consistent voice for navigation and interaction. */
+:is(button, input, select, textarea) { font-family: inherit; }
+:is(.wiki-global-topnav, .wiki-global-rail, .gta-lore-tabbar, .gta-lore-menu-sheet,
+    .wiki-account-panel, .wiki-page-tools, .wiki-user-actions, .wiki-local-nav,
+    .compact-footer-nav) :is(a, button) {
+  font-family: var(--type-display);
+  font-weight: 600;
+  letter-spacing: .045em;
+}
+.wiki-global-brand strong {
+  font-size: 1.05rem !important;
+  line-height: .95;
+  letter-spacing: .12em !important;
+}
+.wiki-global-brand small {
+  font-family: var(--type-interface) !important;
+  font-size: .6875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.15 !important;
+  letter-spacing: .035em !important;
+}
+.wiki-global-search span,
+.wiki-account-trigger-copy { font-size: .8125rem !important; letter-spacing: .025em !important; }
+.wiki-global-topnav a { font-size: .75rem !important; }
+.wiki-global-menu-panel > p,
+.wiki-global-rail nav section > p,
+.wiki-global-rail-intro > span,
+.wiki-global-rail-status {
+  font-family: var(--type-code) !important;
+  font-size: .625rem !important;
+  line-height: 1.25 !important;
+  letter-spacing: .11em !important;
+}
+.wiki-global-rail li a { font-size: .8125rem !important; line-height: 1.2 !important; }
+
+/* Reusable wiki furniture. Small labels stay compact, never microscopic. */
+.wiki-breadcrumb ol { font-size: .75rem !important; letter-spacing: .065em !important; }
+.wiki-kicker,
+.wiki-entry-namespace,
+.wiki-toc-panel > p,
+.wiki-infobox :is(dt, small),
+.wiki-support-panel :is(dt, small),
+.wiki-category-header dt,
+.wiki-category-header [class*="text-[9px]"] {
+  font-family: var(--type-interface) !important;
+  font-size: var(--type-meta) !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: var(--type-label-tracking) !important;
+}
+.status-badge,
+.ghost-badge {
+  font-size: .6875rem !important;
+  line-height: 1 !important;
+  letter-spacing: .055em !important;
+}
+.wiki-toc-panel a { font-size: .8125rem !important; letter-spacing: .035em !important; }
+.wiki-infobox :is(p, li, dd),
+.wiki-support-panel :is(p, li),
+.wiki-references li {
+  font-family: var(--type-interface);
+  font-size: .875rem !important;
+  line-height: 1.6 !important;
+}
+.wiki-page-tools::before { font-size: .6875rem !important; letter-spacing: .08em !important; }
+.wiki-page-tools > :is(a, button),
+.wiki-user-action,
+.wiki-button-secondary,
+.wiki-portal-actions a {
+  font-size: .75rem !important;
+  line-height: 1.15 !important;
+  letter-spacing: .055em !important;
+}
+
+/* Catalogue and Main Page cards share a clear title/body/meta ladder. */
+:is(.wiki-portal-card, .wiki-entry-tile, .wiki-discovery-entry, .mechanic-card,
+    .places-card, .wiki-main-box) :is(h2, h3, strong) {
+  font-family: var(--type-display);
+  font-weight: 700;
+}
+.wiki-portal-card > header h2,
+.mechanic-card-title-row h2,
+.places-card > span:last-child > span:first-child > span:first-child {
+  font-size: var(--type-card-title) !important;
+  line-height: 1.08 !important;
+  letter-spacing: .025em !important;
+}
+.wiki-portal-card > p,
+.wiki-discovery-entry > p,
+.mechanic-card-copy > p,
+.wiki-main-note {
+  font-size: .8125rem !important;
+  line-height: 1.58 !important;
+}
+.wiki-recent-list a,
+.wiki-ranked-list a,
+.wiki-maintenance-list a,
+.wiki-topic-directory strong { font-size: .8125rem !important; letter-spacing: .025em !important; }
+.wiki-recent-list time,
+.wiki-recent-list li > span:not(.status-badge),
+.wiki-ranked-list small,
+.wiki-topic-directory b,
+.mechanic-card-meta > span:last-child {
+  font-family: var(--type-code);
+  font-size: .625rem !important;
+  letter-spacing: .055em !important;
+}
+
+/* Monospaced text is reserved for actual metadata and numbers. */
+.font-mono,
+code,
+kbd,
+time { font-family: var(--type-code); font-variant-numeric: tabular-nums slashed-zero; }
+
+.compact-footer-description,
+.compact-footer-legal { font-size: .6875rem !important; line-height: 1.55 !important; }
+.compact-footer-label,
+.compact-footer-rail,
+.compact-footer-status { font-size: .625rem !important; letter-spacing: .09em !important; }
+.compact-footer-link { font-size: .75rem !important; letter-spacing: .035em !important; }
+
+@media (max-width: 767px) {
+  :root {
+    --type-hero: clamp(3.25rem, 17vw, 5.75rem);
+    --type-route: clamp(2.45rem, 11.5vw, 3.65rem);
+    --type-section: clamp(1.45rem, 7vw, 1.85rem);
+    --type-reading-size: 1rem;
+    --type-reading-leading: 1.72;
+  }
+  .wiki-category-header h1,
+  .wiki-article-header h1 { max-width: 100%; }
+  .home-hero-lede { font-size: 1rem !important; line-height: 1.62 !important; }
+  .wiki-global-brand strong { font-size: .975rem !important; }
+  .wiki-global-brand small { display: none !important; }
+  .wiki-page-tools > :is(a, button),
+  .wiki-user-action { font-size: .75rem !important; }
+  .places-card .status-badge { font-size: .625rem !important; }
+}
+
+@media (max-width: 380px) {
+  .gta-lore-tabbar > :is(a, button) span:last-child {
+    font-size: .625rem !important;
+    letter-spacing: .035em !important;
+  }
+}
+
+/* ========================================================================== */
+/* VICE CITY HUB — ten functional archive tools                               */
+/* ========================================================================== */
+.vice-city-hub {
+  --vice-hub-paper: #fff9f4;
+  --vice-hub-surface: #fffdf9;
+  --vice-hub-muted: #f4e7ed;
+  --vice-hub-ink: #38232e;
+  --vice-hub-dim: #714958;
+  min-height: 100%;
+  color: var(--vice-hub-ink);
+  transition: color .25s ease, background-color .25s ease;
+}
+.vice-city-shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(1rem, 2.5vw, 2rem) clamp(1rem, 2.8vw, 2.5rem) clamp(3rem, 6vw, 5rem);
+}
+.vice-city-hero {
+  position: relative;
+  min-height: clamp(380px, 48vw, 610px);
+  display: flex;
+  align-items: flex-end;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: 1.25rem;
+  border: 1px solid rgba(56,35,46,.18);
+  border-radius: var(--surface-radius);
+  background: #38232e;
+}
+.vice-city-hero > img { z-index: -2; }
+.vice-city-hero-wash {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(32,17,29,.92) 0%, rgba(42,21,38,.68) 46%, rgba(42,21,38,.05) 78%),
+    linear-gradient(0deg, rgba(32,17,29,.8), transparent 58%);
+}
+.vice-city-hero > div {
+  width: min(760px, 78%);
+  padding: clamp(1.35rem, 4vw, 3.75rem);
+  color: #fff9f4;
+}
+.vice-city-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: #ffd06d;
+  font: 700 .75rem/1 var(--type-interface);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.vice-city-hero h1 {
+  margin-top: .8rem;
+  color: #fff9f4;
+  font: 700 clamp(3.7rem, 8.3vw, 8rem)/.76 var(--type-display);
+  letter-spacing: -.055em !important;
+  text-shadow: 0 5px 28px rgba(21,7,18,.34);
+}
+.vice-city-hero p {
+  max-width: 54ch;
+  margin-top: 1.25rem;
+  color: rgba(255,249,244,.82);
+  font-size: clamp(.95rem, .85rem + .3vw, 1.12rem);
+  line-height: 1.6;
+}
+.vice-city-hero nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.35rem; }
+.vice-city-hero nav a {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: var(--control-radius);
+  padding: 0 .9rem;
+  color: #fff;
+  background: rgba(56,35,46,.42);
+  font: 700 .75rem/1 var(--type-display);
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+.vice-city-hero nav a:hover { border-color: #ffd06d; background: rgba(193,46,112,.72); }
+.vice-city-feature-count {
+  position: absolute;
+  right: clamp(1rem, 2.5vw, 2rem);
+  top: clamp(1rem, 2.5vw, 2rem);
+  display: grid;
+  justify-items: end;
+  color: #fff;
+}
+.vice-city-feature-count b { font: 700 clamp(2.6rem, 5vw, 4.5rem)/.75 var(--type-display); }
+.vice-city-feature-count small { margin-top: .5rem; font: 700 .625rem/1 var(--type-code); letter-spacing: .12em; text-transform: uppercase; }
+
+.vice-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(.75rem, 1.5vw, 1.1rem);
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+.vice-feature {
+  grid-column: span 4;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-top: 4px solid var(--vice-pink);
+  border-radius: var(--surface-radius);
+  background: var(--vice-hub-surface);
+  box-shadow: var(--surface-shadow);
+}
+.vice-feature:nth-child(3n+2) { border-top-color: var(--vice-violet); }
+.vice-feature:nth-child(3n) { border-top-color: var(--vice-cyan); }
+.vice-feature-wide { grid-column: span 4; }
+.vice-feature-visual { grid-column: span 12; }
+.vice-feature-third { grid-column: span 4; }
+.vice-feature > header {
+  min-height: 88px;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: start;
+  gap: .7rem;
+  border-bottom: 1px solid rgba(56,35,46,.12);
+  padding: 1rem;
+  background: var(--vice-hub-muted);
+}
+.vice-feature-number { color: var(--vice-pink); font: 700 .7rem/1 var(--type-code); letter-spacing: .08em; }
+.vice-feature-icon { width: 34px; height: 34px; display: grid; place-items: center; margin-top: -.2rem; color: var(--vice-violet); background: rgba(111,63,196,.09); border-radius: var(--control-radius); }
+.vice-feature h2 { color: var(--vice-hub-ink); font: 700 1.25rem/.95 var(--type-display); letter-spacing: .02em; text-transform: uppercase; }
+.vice-feature > header p { margin-top: .35rem; color: var(--vice-hub-dim); font-size: .78rem; line-height: 1.45; }
+.vice-feature-body { min-height: 0; display: flex; flex: 1; flex-direction: column; padding: 1rem; }
+
+.vice-live-time { color: var(--vice-hub-ink); font: 600 clamp(2.4rem, 5vw, 4.2rem)/.9 var(--type-code); letter-spacing: -.06em; }
+.vice-live-date { margin-top: .7rem; color: var(--vice-hub-dim); font: 700 .7rem/1.35 var(--type-interface); letter-spacing: .08em; text-transform: uppercase; }
+.vice-phase { display: flex; align-items: center; gap: .9rem; color: var(--vice-violet); }
+.vice-phase div { min-width: 0; }
+.vice-phase strong { display: block; color: var(--vice-hub-ink); font: 700 1.4rem/1 var(--type-display); text-transform: uppercase; }
+.vice-phase span { display: block; margin-top: .45rem; color: var(--vice-hub-dim); font-size: .8rem; line-height: 1.4; }
+.vice-mode-toggle {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 1fr 38px 1fr;
+  align-items: center;
+  border: 1px solid var(--control-border) !important;
+  padding: 4px !important;
+  background: var(--vice-hub-muted) !important;
+}
+.vice-mode-toggle span { display: flex; align-items: center; justify-content: center; gap: .35rem; color: var(--vice-hub-dim); font: 700 .72rem/1 var(--type-display); text-transform: uppercase; }
+.vice-mode-toggle i { position: relative; width: 34px; height: 20px; border-radius: 99px; background: var(--vice-violet); }
+.vice-mode-toggle i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform .22s ease; }
+.vice-mode-toggle[aria-pressed="true"] i::after { transform: translateX(14px); }
+
+.vice-selector-head,
+.vice-selector-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.vice-selector-head > span { color: var(--vice-hub-dim); font: 600 .7rem/1 var(--type-code); }
+.vice-selector-head > span b { color: var(--vice-pink); font-size: 1.2rem; }
+.vice-stepper { display: flex; gap: .35rem; }
+.vice-stepper button { width: 40px; height: 40px; display: grid; place-items: center; color: var(--vice-hub-ink); }
+.vice-record-summary { margin-top: auto; padding-top: 1rem; }
+.vice-record-summary h3,
+.vice-random-place strong,
+.vice-dial-record h3,
+.vice-person-record h3,
+.vice-ride-record h3 { display: block; margin-top: .65rem; color: var(--vice-hub-ink); font: 700 1.5rem/.95 var(--type-display); text-transform: uppercase; }
+.vice-record-summary p,
+.vice-random-place p { margin-top: .65rem; color: var(--vice-hub-dim); font-size: .82rem; line-height: 1.55; }
+.vice-record-summary a,
+.vice-selector-foot > a,
+.vice-dial-record a,
+.vice-person-record a,
+.vice-ride-record a {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .75rem;
+  color: var(--vice-pink);
+  font: 700 .75rem/1 var(--type-display);
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+.vice-search-box { min-height: 48px; display: flex; align-items: center; gap: .6rem; padding: 0 .75rem; color: var(--vice-violet); border: 1px solid var(--control-border); background: var(--vice-hub-surface); }
+.vice-search-box input { min-width: 0; flex: 1; border: 0 !important; background: transparent !important; color: var(--vice-hub-ink); font-size: 1rem !important; outline: 0; }
+.vice-search-box button { width: 34px; height: 34px; display: grid; place-items: center; }
+.vice-search-results { margin-top: .6rem; }
+.vice-search-results a { min-height: 38px; display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: .5rem; border-bottom: 1px solid rgba(56,35,46,.09); color: var(--vice-hub-ink); font: 600 .8rem/1.2 var(--type-display); }
+.vice-search-results small { color: var(--vice-hub-dim); font: 600 .58rem/1 var(--type-code); letter-spacing: .06em; }
+.vice-search-results .is-empty { padding: .8rem 0; color: var(--vice-hub-dim); font-size: .8rem; }
+.vice-random-place > span { color: var(--vice-violet); font: 700 .65rem/1 var(--type-code); letter-spacing: .1em; }
+.vice-random-place > div { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 1rem; }
+.vice-random-place button,
+.vice-random-place a { min-height: 42px; display: inline-flex; align-items: center; gap: .4rem; padding: 0 .8rem; border: 1px solid var(--control-border); color: var(--vice-hub-ink); font: 700 .72rem/1 var(--type-display); text-transform: uppercase; }
+.vice-random-place button { color: #fff; border-color: var(--vice-violet) !important; background: var(--vice-violet) !important; }
+
+.vice-postcard { position: relative; min-height: clamp(260px, 35vw, 470px); overflow: hidden; border-radius: var(--surface-radius-inner); background: #38232e; }
+.vice-postcard::after { content: ''; position: absolute; inset: 30% 0 0; background: linear-gradient(transparent, rgba(35,16,29,.86)); }
+.vice-postcard figcaption { position: absolute; z-index: 2; inset: auto 0 0; display: grid; padding: clamp(1rem, 3vw, 2rem); color: #fff; }
+.vice-postcard figcaption span { font: 600 .65rem/1 var(--type-code); letter-spacing: .1em; }
+.vice-postcard figcaption strong { margin-top: .4rem; font: 700 clamp(2.2rem, 5vw, 4.8rem)/.82 var(--type-display); letter-spacing: -.035em; }
+.vice-postcard figcaption small { margin-top: .55rem; color: rgba(255,255,255,.76); font: 700 .72rem/1 var(--type-interface); letter-spacing: .1em; text-transform: uppercase; }
+.vice-selector-foot { margin-top: .6rem; }
+.vice-selector-foot > a { margin-top: 0; }
+
+.vice-dial-record { flex: 1; color: var(--vice-violet); }
+.vice-dial-record .status-badge { margin-left: .7rem; vertical-align: middle; }
+.vice-dial-record p,
+.vice-person-record p,
+.vice-ride-record p { margin-top: .45rem; color: var(--vice-hub-dim); font-size: .75rem; line-height: 1.4; text-transform: uppercase; }
+.vice-feature-third .vice-stepper { justify-content: flex-end; margin-top: 1rem; padding-top: .8rem; border-top: 1px solid rgba(56,35,46,.1); }
+.vice-person-record,
+.vice-ride-record { display: grid; grid-template-columns: 112px minmax(0,1fr); gap: .9rem; align-items: center; }
+.vice-record-image { position: relative; min-height: 132px; overflow: hidden; border-radius: var(--surface-radius-inner); background: var(--vice-hub-muted); }
+.vice-ride-record .vice-record-image { min-height: 96px; }
+.vice-person-record h3,
+.vice-ride-record h3 { font-size: 1.25rem; }
+
+/* Night mode remains scoped to the hub, so a user preference cannot make
+   unrelated encyclopedia routes inconsistent. */
+.vice-city-hub.is-after-dark {
+  --vice-hub-paper: #17101c;
+  --vice-hub-surface: #241725;
+  --vice-hub-muted: #301d2d;
+  --vice-hub-ink: #fff5ee;
+  --vice-hub-dim: #d8b9c8;
+  margin-top: -1px;
+  background: #17101c;
+}
+.vice-city-hub.is-after-dark .wiki-breadcrumb { border-color: rgba(255,255,255,.15); }
+.vice-city-hub.is-after-dark .wiki-breadcrumb :is(a, span) { color: #e8cbd8 !important; }
+.vice-city-hub.is-after-dark .vice-feature { border-color: rgba(255,255,255,.13); box-shadow: 0 18px 45px -35px rgba(240,68,165,.72); }
+.vice-city-hub.is-after-dark .vice-feature > header,
+.vice-city-hub.is-after-dark .vice-feature-third .vice-stepper { border-color: rgba(255,255,255,.1); }
+.vice-city-hub.is-after-dark .vice-search-results a { border-color: rgba(255,255,255,.09); }
+
+@media (max-width: 1099px) {
+  .vice-feature-compact { grid-column: span 4; }
+  .vice-feature-wide { grid-column: span 6; }
+  .vice-feature-wide:nth-child(3) { grid-column: span 12; }
+  .vice-feature-third { grid-column: span 6; }
+  .vice-feature-third:last-child { grid-column: span 12; }
+}
+
+@media (max-width: 767px) {
+  .vice-city-shell { padding-inline: 1rem; }
+  .vice-city-hero { min-height: 520px; }
+  .vice-city-hero > img { object-position: 62% center; }
+  .vice-city-hero-wash { background: linear-gradient(0deg, rgba(32,17,29,.96) 0%, rgba(38,18,33,.7) 58%, rgba(38,18,33,.12) 100%); }
+  .vice-city-hero > div { width: 100%; padding: 1.25rem; }
+  .vice-city-hero h1 { font-size: clamp(3.4rem, 18vw, 5.8rem); }
+  .vice-city-feature-count { top: 1rem; right: 1rem; }
+  .vice-city-feature-count b { font-size: 2.6rem; }
+  .vice-feature-compact,
+  .vice-feature-wide,
+  .vice-feature-wide:nth-child(3),
+  .vice-feature-visual,
+  .vice-feature-third,
+  .vice-feature-third:last-child { grid-column: 1 / -1; }
+  .vice-postcard { min-height: 310px; }
+}
+
+@media (max-width: 420px) {
+  .vice-city-hero { min-height: 500px; }
+  .vice-city-hero nav a { flex: 1; justify-content: center; padding-inline: .55rem; }
+  .vice-feature > header { grid-template-columns: auto minmax(0,1fr); }
+  .vice-feature-icon { grid-row: 1 / span 2; }
+  .vice-feature-number { grid-column: 2; }
+  .vice-feature > header > div { grid-column: 2; }
+  .vice-person-record,
+  .vice-ride-record { grid-template-columns: 92px minmax(0,1fr); }
+  .vice-search-results small { display: none; }
+  .vice-live-time { font-size: 2.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vice-city-hub,
+  .vice-mode-toggle i::after { transition: none !important; }
+}
+
+/* ========================================================================== */
+/* UNIFIED ROUTE COMPOSITION — one editorial rhythm across every namespace.   */
+/* ========================================================================== */
+.wiki-category-header {
+  display: grid;
+  width: 100%;
+  gap: 0;
+}
+.wiki-category-heading-row { min-height: clamp(72px, 9vw, 118px); }
+.wiki-category-hero-media {
+  isolation: isolate;
+  border-color: rgba(56,35,46,.2) !important;
+  border-radius: var(--surface-radius-inner, 2px);
+  background: #eadfda;
+}
+.wiki-category-hero-media img { filter: saturate(1.06) contrast(1.025); }
+.wiki-category-description,
+.wiki-article-lede {
+  max-width: 72ch;
+  color: #51454c !important;
+  font-family: var(--type-reading);
+  font-size: clamp(1rem, .98rem + .18vw, 1.1rem) !important;
+  line-height: 1.72 !important;
+  letter-spacing: .002em;
+}
+.wiki-category-facts {
+  min-width: max-content;
+  padding: .7rem 0 .45rem clamp(.75rem, 2vw, 1.5rem);
+  border-left: 1px solid rgba(56,35,46,.16);
+}
+.wiki-article-header {
+  width: 100%;
+  max-width: 1080px;
+  padding: clamp(1.35rem, 2.5vw, 2rem) !important;
+  border-left-width: 4px !important;
+}
+.wiki-article-header > h1 { margin-top: 0 !important; }
+.wiki-article-header > :is(.corner-brackets, .tech-mask) { width: 100%; }
+.wiki-article-body { min-width: 0; }
+
+/* Index cards share geometry even when their content comes from a different
+   branch. This keeps scanning predictable without erasing their subject tone. */
+:is(.focus-card, .mechanics-card, .places-card, .wiki-portal-card) {
+  min-width: 0;
+  height: 100%;
+}
+:is(.focus-card, .mechanics-card, .places-card, .wiki-portal-card) img {
+  transition: transform .45s ease, filter .3s ease;
+}
+@media (hover: hover) {
+  :is(.focus-card, .mechanics-card, .places-card, .wiki-portal-card):hover img {
+    transform: scale(1.025);
+    filter: saturate(1.08) contrast(1.02);
+  }
+}
+
+@media (max-width: 767px) {
+  .wiki-category-heading-row { min-height: 0; }
+  .wiki-category-facts {
+    min-width: 0;
+    padding: .8rem 0 0;
+    border-top: 1px solid rgba(56,35,46,.13);
+    border-left: 0;
+  }
+  .wiki-category-hero-media {
+    min-height: 170px;
+    max-height: 235px;
+    aspect-ratio: 16 / 8;
+  }
+  .wiki-article-header { padding: 1.25rem 1rem !important; }
+  .wiki-article-header .aspect-\[21\/8\],
+  .wiki-news-article > .aspect-\[21\/9\] {
+    min-height: 210px;
+    aspect-ratio: 4 / 3;
+  }
 }

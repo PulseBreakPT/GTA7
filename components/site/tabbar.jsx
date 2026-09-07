@@ -7,7 +7,7 @@ import {
   House, Library, Newspaper, MoreHorizontal, X, Users, Car, Crosshair,
   MapPin, Radio as RadioIcon, Repeat2, Layers, FolderTree, Sparkles, BookOpen,
   Images, BookMarked, BarChart3, Clock, Shuffle,
-  Search, CircleHelp, UserRound, Globe2,
+  Search, CircleHelp, UserRound, Globe2, Palmtree,
 } from 'lucide-react'
 import { SITE_COUNTERS } from '@/lib/content'
 import { cx } from './ui'
@@ -47,6 +47,7 @@ const SHEET_GROUPS = [
       { label: 'Vehicles', href: '/database/vehicles', icon: Car },
       { label: 'Weapons', href: '/database/weapons', icon: Crosshair },
       { label: 'Locations', href: '/map', icon: MapPin },
+      { label: 'Vice City hub', href: '/vice-city', icon: Palmtree },
       { label: 'Factions', href: '/gangs-factions', icon: Users },
       { label: 'Radio', href: '/database/radio', icon: RadioIcon },
       { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2 },

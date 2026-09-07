@@ -36,6 +36,8 @@ export default function PortalsPage() {
           description="Enter the encyclopedia through a subject rather than an alphabet. Each portal assembles its own articles, categories, sources, recent verification work and maintenance signals."
           count={PORTALS.length}
           countLabel="portals"
+          image="/media/key-art/jason-lucia-beach.webp"
+          imageAlt="Official GTA VI artwork of Jason and Lucia overlooking Vice City"
         />
       </div>
 

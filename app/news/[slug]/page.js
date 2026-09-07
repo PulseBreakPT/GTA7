@@ -112,7 +112,11 @@ function App() {
     <article className="wiki-news-article px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news' }, { label: a.title }]} />
 
-      <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 panel">
+      <header className="wiki-article-header mt-5">
+        <h1 data-ghost="ARTICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] max-w-[920px]">{a.title}</h1>
+      </header>
+
+      <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-5 panel">
         <Image src={a.image} alt={a.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
         <span className="absolute top-4 left-4 flex items-center gap-2">
           <StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} />
@@ -120,11 +124,11 @@ function App() {
         </span>
       </div>
 
-      <div className="ghost-type mt-6" data-ghost="GTA LORE">
-        <h1 data-ghost="ARTICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] max-w-[920px]">{a.title}</h1>
-      </div>
+      <aside className="tech-mask-sm panel mt-5 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
+        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-pink">AT A GLANCE</p>
+        <p className="wiki-article-lede mt-2 font-medium">{a.excerpt}</p>
+      </aside>
 
-      <div className="data-rail mt-5">FILE {a.slug.slice(0, 8).toUpperCase()} · ARCHIVE RECORD · CONTENT INDEX</div>
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN READ</span>
 
@@ -142,11 +146,6 @@ function App() {
           <p className="text-[13px] text-paper">Community rumour. Not confirmed by any official source.</p>
         </div>
       )}
-
-      <aside className="tech-mask-sm panel mt-6 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
-        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-pink">AT A GLANCE</p>
-        <p className="mt-2 text-[16px] sm:text-[17px] leading-[1.65] text-paper font-medium">{a.excerpt}</p>
-      </aside>
 
       {/* A referência visual estava no fim, a seguir ao artigo todo e ao «back
           to top»: chegava-lhe só quem já não precisava dela. Sobe para junto

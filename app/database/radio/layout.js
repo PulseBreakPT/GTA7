@@ -2,9 +2,9 @@
 // devolve os filhos tal como vêm.
 export const metadata = {
   title: { default: 'Radio stations', template: '%s | GTA LORE' },
-  description: 'Stations confirmed for the Grand Theft Auto VI dial.',
+  description: 'Radio-station evidence, Rockstar-published music appearances and clearly labelled community rumours.',
   alternates: { canonical: '/database/radio' },
-  openGraph: { title: 'Radio stations', description: 'Stations confirmed for the Grand Theft Auto VI dial.', url: '/database/radio' },
+  openGraph: { title: 'Radio stations and music', description: 'Radio evidence and music sightings for Grand Theft Auto VI.', url: '/database/radio' },
 }
 
 export default function Layout({ children }) {

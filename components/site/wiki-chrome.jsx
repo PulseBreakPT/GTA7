@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   Bell, BookOpen, Bookmark, Car, CheckCircle2, ChevronDown, Compass, Crosshair, FileText,
   FolderPlus, Images, Library, LogIn, LogOut, MapPin, PenLine, Radio, Repeat2,
-  Search, Settings2, ShieldCheck, Shuffle, StickyNote, UserPlus, Users, UserRound, Scale, Globe2,
+  Search, Settings2, ShieldCheck, Shuffle, StickyNote, UserPlus, Users, UserRound, Scale, Globe2, Palmtree,
 } from 'lucide-react'
 import { cx } from './ui'
 import { useAuth } from './auth-provider'
@@ -18,6 +18,7 @@ const SearchModal = dynamic(() => import('./search'), { ssr: false })
 const TOP = [
   ['Wiki', '/wiki', Library],
   ['Places', '/map', MapPin],
+  ['Vice City', '/vice-city', Palmtree],
   ['Articles', '/news', BookOpen],
 ]
 
@@ -37,6 +38,7 @@ const GROUPS = [
       ['Wiki main page', '/wiki', Library],
       ['Topic portals', '/wiki/portals', Compass],
       ['Discover 100', '/wiki/discover', Compass],
+      ['Vice City hub', '/vice-city', Palmtree],
       ['Places atlas', '/map', MapPin],
       ['Articles', '/news', BookOpen],
       ['Media archive', '/media', Images],

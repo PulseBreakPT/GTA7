@@ -150,6 +150,8 @@ export default function WorldIndexPage() {
         title="Leonida World Index"
         description="Explore the world by subject, region or evidence status. Each record combines visual evidence and context in an encyclopedia format."
         count={worldEntries.length}
+        image="/media/places/vice-city.webp"
+        imageAlt="Official Rockstar Visit Leonida artwork of Vice City"
       />
 
       <section className="mt-6" aria-label="Search the world index">

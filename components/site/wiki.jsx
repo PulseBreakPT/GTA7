@@ -37,16 +37,14 @@ export function Breadcrumb({ trail }) {
 // entradas tem e de quando é a mais recente. A contagem e a data vêm
 // sempre calculadas dos dados — escritas à mão desactualizam-se e passam
 // a mentir sobre o tamanho do arquivo.
-export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, children }) {
+export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, image, imageAlt, imagePosition = 'center', imagePriority = false, children }) {
   return (
-    <header className="wiki-category-header border-b hairline pb-4">
-      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+    <header className="wiki-category-header border-b hairline pb-5">
+      <div className="wiki-category-heading-row flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         <div className="min-w-0">
-          {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
-          <h1 className="mt-1 font-cond font-bold uppercase tracking-tight text-[34px] sm:text-[44px] leading-[0.95] text-paper">{title}</h1>
-          {description && <p className="mt-2 text-[13px] leading-relaxed text-dim max-w-[68ch]">{description}</p>}
+          <h1 className="wiki-category-title mt-1 font-cond font-bold uppercase tracking-tight text-paper">{title}</h1>
         </div>
-        <dl className="flex items-center gap-5 shrink-0">
+        {(count != null || updatedAt) && <dl className="wiki-category-facts flex items-center gap-5 shrink-0">
           <div>
             <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{countLabel}</dt>
             <dd className="font-cond font-bold text-[22px] text-paper tabular-nums leading-none mt-1">{count}</dd>
@@ -57,8 +55,14 @@ export function CategoryHeader({ eyebrow, title, description, count, countLabel 
               <dd className="font-mono text-[12px] text-paper tabular-nums leading-none mt-1.5">{updatedAt}</dd>
             </div>
           )}
-        </dl>
+        </dl>}
       </div>
+      {image && (
+        <div className="wiki-category-hero-media relative mt-5 overflow-hidden border border-line bg-surface2">
+          <Image src={image} alt={imageAlt || ''} fill priority={imagePriority} sizes="(max-width: 1400px) 100vw, 1320px" className="object-cover" style={{ objectPosition: imagePosition }} />
+        </div>
+      )}
+      {description && <p className="wiki-category-description mt-4 text-dim">{description}</p>}
       {children}
     </header>
   )

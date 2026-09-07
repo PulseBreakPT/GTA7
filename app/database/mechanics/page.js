@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ArrowUpRight } from 'lucide-react'
 import { GhostBadge, cx } from '@/components/site/ui'
 import { mechanics, officialCatalog } from '@/lib/content'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House, dynamic: Radar }
 const FILTERS = ['all', 'confirmed', 'verified', 'analysis', 'rumour']
@@ -20,12 +20,7 @@ export default function MechanicsPage() {
       <div className="wiki-index-layout mechanics-index px-4 sm:px-6 lg:px-8 py-6 flex-1">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics' }]} />
 
-        <div className="mechanics-index-head mt-3">
-          <div className="ghost-type" data-ghost="MECHANICS">
-            <h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[56px] sm:text-[78px]">MECHANICS</h1>
-          </div>
-          <p className="mechanics-index-intro">Gameplay systems documented from official footage, separated from analysis and community reports.</p>
-        </div>
+        <div className="mt-4"><CategoryHeader eyebrow="Gameplay systems" title="Mechanics" image="/media/scenes/ambrosia-drive.webp" imageAlt="Official GTA VI screenshot viewed from inside a vehicle" description="Gameplay systems documented from official footage, separated from analysis and community reports." count={mechanics.length} countLabel="mechanics" /></div>
 
         <div className="mt-5 flex flex-wrap gap-1.5" role="tablist" aria-label="Mechanic status filters">
           {FILTERS.map((f) => {

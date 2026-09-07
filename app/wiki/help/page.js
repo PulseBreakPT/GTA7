@@ -49,8 +49,6 @@ export default function HelpPage() {
         { label: 'Special pages', href: '/wiki/special' }, { label: 'Help' },
       ]} />
 
-      <div className="data-rail mt-2">HELP · HOW AN ENTRY IS PUT TOGETHER</div>
-
       <div className="mt-4">
         <CategoryHeader
           eyebrow="Reading the archive"

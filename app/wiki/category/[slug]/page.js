@@ -27,6 +27,7 @@ export default function CategoryPage() {
   const byKind = Object.keys(KIND_META)
     .map((kind) => ({ kind, label: KIND_META[kind].plural, items: category.members.filter((m) => m.kind === kind) }))
     .filter((g) => g.items.length > 0)
+  const hero = category.members.find((member) => member.image)?.image
 
   return (
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
@@ -39,6 +40,8 @@ export default function CategoryPage() {
           description={`Every entry in this archive filed under ${category.label}, whichever branch it belongs to.`}
           count={category.members.length}
           countLabel="members"
+          image={hero}
+          imageAlt={hero ? `Published GTA VI media associated with the ${category.label} category` : undefined}
         />
       </div>
 

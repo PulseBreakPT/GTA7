@@ -55,6 +55,8 @@ export default function WikiMainPage() {
           count={STATS.total}
           countLabel="articles"
           updatedAt={recent[0]?.updatedAt}
+          image="/media/key-art/jason-lucia-motel.webp"
+          imageAlt="Official GTA VI artwork of Jason and Lucia in a motel room"
         />
       </div>
 

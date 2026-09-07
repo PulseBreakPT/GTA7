@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { guides } from '@/lib/content'
 import { StatusBadge, fmtDate } from '@/components/site/ui'
 import { ChevronRight } from 'lucide-react'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -19,12 +19,9 @@ function App() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex-1 w-full max-w-[1280px] mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides' }]} />
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="ghost-type" data-ghost="GUIDES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">GUIDES</h1></div>
-        {/* Estes três números estavam escritos à mão: diziam quatro guias
-            quando são cinco, e trinta e seis minutos quando são a soma dos
-            tempos de leitura. Contam-se agora das próprias entradas. */}
-        <div className="flex items-stretch">
+      <div className="mt-4">
+        <CategoryHeader eyebrow="Practical reference" title="Guides" image="/media/key-art/jason-lucia-robbery.webp" imageAlt="Official GTA VI artwork of Jason and Lucia leaving a robbery" description="Structured walkthroughs for understanding systems, evidence and the world without burying the task beneath archive detail." count={guides.length} countLabel="guides">
+        <div className="mt-4 flex flex-wrap items-stretch gap-y-3">
           {counters.map(([n, label], i) => (
             <div key={label} className={`px-5 flex flex-col justify-center leading-none ${i > 0 ? 'border-l hairline' : ''}`}>
               <span className="font-cond font-bold text-[26px] text-paper tabular-nums text-center">{n}</span>
@@ -32,6 +29,7 @@ function App() {
             </div>
           ))}
         </div>
+        </CategoryHeader>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">

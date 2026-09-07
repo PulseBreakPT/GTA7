@@ -40,8 +40,6 @@ export default function MechanicPage() {
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics', href: '/database/mechanics' }, { label: m.name }]} />
 
-        <div className="data-rail mt-2">MECHANIC FILE · SOURCE-BOUND RECORD · ID {m.slug.toUpperCase()}</div>
-
         <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={m.status} />

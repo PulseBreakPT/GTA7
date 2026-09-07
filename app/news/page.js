@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Heart, BadgeCheck, Eye, ChevronRight, Triangle, Info } from 'lucide-react'
 import { articles, encyclopediaCategories, gtaWikiPageLedger, guides, liveUpdates, sources } from '@/lib/content'
 import { StatusBadge, GhostBadge, cx, fmtDate } from '@/components/site/ui'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const FILTERS = [
   { id: 'all', label: 'ALL' },
@@ -74,10 +74,7 @@ function App() {
       {/* LEFT */}
       <div className="min-w-0">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News' }]} />
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div><p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Leonida reference archive</p><div className="ghost-type" data-ghost="ARTICLES"><h1 className="chromatic-title mt-1 font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARTICLES</h1></div></div>
-          <Link href="/categories" className="inline-flex min-h-[44px] items-center gap-2 border border-line px-4 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-pink">{encyclopediaCategories.length} categories <ChevronRight size={14} /></Link>
-        </div>
+        <div className="mt-4"><CategoryHeader eyebrow="Leonida reference archive" title="Articles" image="/media/key-art/jason-lucia-pier.webp" imageAlt="Official GTA VI artwork of Jason and Lucia by the water" description="News, official announcements, analysis and community reporting organised by evidence type and publication date." count={articles.length} countLabel="articles"><Link href="/categories" className="mt-4 inline-flex min-h-[44px] items-center gap-2 border border-line px-4 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-pink">{encyclopediaCategories.length} categories <ChevronRight size={14} /></Link></CategoryHeader></div>
 
         <div className="mt-4 inline-flex border border-line rounded-sm overflow-hidden" role="tablist" aria-label="News filters">
           {FILTERS.map((f) => (

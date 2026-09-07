@@ -1,29 +1,57 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { Radio, ChevronRight } from 'lucide-react'
+import { Radio, ChevronRight, Music2, Search, ShieldCheck, ExternalLink, VolumeX } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { radioStations } from '@/lib/content'
-import { Breadcrumb } from '@/components/site/wiki'
+import { gtaViMusic, musicEvidence } from '@/lib/music'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const FILTERS = ['all', 'confirmed', 'rumour']
+const MUSIC_FILTERS = ['all', 'rockstar-credit', 'published-media', 'community-rumour']
+
+function EvidenceVisual({ image, alt, compact = false }) {
+  return (
+    <span className={cx('relative block overflow-hidden border-b border-line bg-surface2/60', compact ? 'aspect-[16/8]' : 'aspect-[16/9]')}>
+      {image ? (
+        <Image src={image} alt={alt || ''} fill sizes={compact ? '(max-width:640px) 50vw, 240px' : '(max-width:640px) 100vw, 33vw'} className="object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
+      ) : (
+        <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim" aria-label="No official image published">
+          <Radio size={24} strokeWidth={1.4} aria-hidden="true" />
+          <span className="font-mono text-[8px] uppercase tracking-[0.14em]">No official image</span>
+        </span>
+      )}
+    </span>
+  )
+}
 
 function App() {
   const [filter, setFilter] = useState('all')
   const [selectedSlug, setSelectedSlug] = useState('v-rock')
+  const [musicFilter, setMusicFilter] = useState('all')
+  const [musicQuery, setMusicQuery] = useState('')
 
   const list = useMemo(() => radioStations.filter((r) => filter === 'all' || r.status === filter), [filter])
   const selected = radioStations.find((r) => r.slug === selectedSlug) || list[0] || radioStations[0]
+  const musicList = useMemo(() => {
+    const query = musicQuery.trim().toLowerCase()
+    return gtaViMusic.filter((item) => {
+      const matchesFilter = musicFilter === 'all' || item.evidence === musicFilter
+      const matchesQuery = !query || `${item.title} ${item.artist} ${item.appearance}`.toLowerCase().includes(query)
+      return matchesFilter && matchesQuery
+    })
+  }, [musicFilter, musicQuery])
 
   return (
     <div className="flex-1 flex flex-col">
       <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio' }]} />
-          <div className="ghost-type" data-ghost="RADIO"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">RADIO STATIONS</h1></div>
+          <div className="mt-4"><CategoryHeader eyebrow="Broadcast archive" title="Radio stations" image="/media/scenes/ambrosia-night.webp" imageAlt="Official GTA VI night-time view across Leonida" description="Station names, music appearances and community reports organised by the exact strength of their published evidence." count={radioStations.length} countLabel="stations" updatedAt="2026-09-07" /></div>
 
-          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Station status filters">
+          <div className="mt-5 flex flex-wrap gap-1.5" role="tablist" aria-label="Station status filters">
             {FILTERS.map((f) => {
               const active = filter === f
               const count = f === 'all' ? radioStations.length : radioStations.filter((r) => r.status === f).length
@@ -43,13 +71,14 @@ function App() {
               const active = r.slug === selected.slug
               return (
                 <button key={r.slug} type="button" onClick={() => setSelectedSlug(r.slug)} aria-pressed={active}
-                  className={cx('spotlight-card tech-mask-sm glass-panel p-4 text-left flex flex-col min-h-[140px] transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
-                  <span className="flex items-start justify-between gap-3">
+                  className={cx('group spotlight-card tech-mask-sm glass-panel overflow-hidden text-left flex flex-col min-h-[220px] transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
+                  <EvidenceVisual image={r.image} alt={r.imageAlt} compact />
+                  <span className="flex items-start justify-between gap-3 px-4 pt-3">
                     <Radio size={24} className={active ? 'text-pink' : 'text-dim'} strokeWidth={1.8} aria-hidden="true" />
                   </span>
-                  <span className="block font-cond font-bold uppercase text-[16px] text-paper leading-[1.1] mt-2">{r.name}</span>
-                  <span className="block text-[11px] text-dim uppercase tracking-[0.1em] mt-1">{r.genre}</span>
-                  <span className="mt-auto pt-3"><GhostBadge status={r.status} /></span>
+                  <span className="block font-cond font-bold uppercase text-[16px] text-paper leading-[1.1] mt-2 px-4">{r.name}</span>
+                  <span className="block text-[11px] text-dim uppercase tracking-[0.1em] mt-1 px-4">{r.genre}</span>
+                  <span className="mt-auto p-4 pt-3"><GhostBadge status={r.status} /></span>
                 </button>
               )
             })}
@@ -62,6 +91,7 @@ function App() {
         </div>
 
         <aside className="tech-mask glass-panel p-5 self-start">
+          <div className="group -mx-5 -mt-5 mb-5 overflow-hidden"><EvidenceVisual image={selected.image} alt={selected.imageAlt} /></div>
           <div className="flex items-center gap-3">
             <span className="w-12 h-12 rounded-sm panel2 flex items-center justify-center text-pink" aria-hidden="true"><Radio size={24} strokeWidth={1.8} /></span>
             <div>
@@ -108,6 +138,61 @@ function App() {
           <p className="mt-2 text-[12px] leading-relaxed text-dim">Almost everything above comes from a single piece of leaked gameplay footage from August 2026 showing the in-game radio wheel — not from Rockstar. Only V-Rock and Vice City FM have any form of direct official confirmation; the rest are marked RUMOUR regardless of how definite the names sound.</p>
         </div>
       </div>
+
+      <section className="px-4 sm:px-6 lg:px-8 pb-10" aria-labelledby="music-archive-title">
+        <div className="border-t border-line pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-5 items-end">
+            <div>
+              <div className="flex items-center gap-2 text-pink"><Music2 size={18} aria-hidden="true" /><span className="font-mono text-[10px] uppercase tracking-[0.16em]">Music evidence index</span></div>
+              <h2 id="music-archive-title" className="font-cond font-bold uppercase text-paper text-[40px] sm:text-[54px] leading-[0.9] mt-2">Songs heard &amp; reported</h2>
+              <p className="text-dim text-[13px] sm:text-[14px] leading-relaxed mt-3 max-w-[76ch]">A song used in Rockstar-published footage is not automatically confirmed for the final soundtrack or an in-game station. The labels below preserve that distinction.</p>
+            </div>
+            <label className="control-shell flex items-center gap-3 h-12 px-4">
+              <Search size={17} className="text-dim shrink-0" aria-hidden="true" />
+              <span className="sr-only">Search songs or artists</span>
+              <input value={musicQuery} onChange={(event) => setMusicQuery(event.target.value)} placeholder="Search song or artist" className="w-full bg-transparent border-0 outline-none text-[14px] text-paper placeholder:text-dim/70" />
+            </label>
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-2" role="tablist" aria-label="Music evidence filters">
+            {MUSIC_FILTERS.map((value) => {
+              const active = musicFilter === value
+              const count = value === 'all' ? gtaViMusic.length : gtaViMusic.filter((item) => item.evidence === value).length
+              const label = value === 'all' ? 'All evidence' : musicEvidence[value].shortLabel
+              return <button key={value} type="button" role="tab" aria-selected={active} onClick={() => setMusicFilter(value)} className={cx('control-button h-10 px-3.5 inline-flex items-center gap-2', active && 'control-button-active')}><span>{label}</span><span className="font-mono text-[9px] opacity-65 tabular-nums">{count}</span></button>
+            })}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 mt-5">
+            {musicList.map((item, index) => {
+              const evidence = musicEvidence[item.evidence]
+              return (
+                <article key={item.slug} className="group panel spotlight-card rounded-sm overflow-hidden min-w-0">
+                  <EvidenceVisual image={item.image} alt={item.imageAlt} />
+                  <div className="p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="font-mono text-[10px] text-dim tabular-nums">{String(index + 1).padStart(2, '0')}</span>
+                    <span className={cx('border rounded-full px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em] text-right', evidence.className)}>{evidence.label}</span>
+                  </div>
+                  <h3 className="font-cond font-bold uppercase text-paper text-[18px] leading-tight mt-4 break-words">{item.title}</h3>
+                  <p className="text-dim text-[12px] mt-1 break-words">{item.artist}</p>
+                  <div className="mt-4 pt-3 border-t border-line flex items-center justify-between gap-3">
+                    <span className="font-cond uppercase tracking-[0.12em] text-[9px] text-dim">{item.appearance}</span>
+                    {item.sourceUrl ? <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-cond font-semibold uppercase tracking-[0.1em] text-[9px] text-paper hover:text-pink"><span>Rockstar source</span><ExternalLink size={11} aria-hidden="true" /></a> : <span className="inline-flex items-center gap-1 font-mono uppercase text-[8px] text-dim"><VolumeX size={11} aria-hidden="true" /> No leak link</span>}
+                  </div>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+          {musicList.length === 0 && <div className="panel rounded-sm p-8 text-center mt-5"><p className="font-cond uppercase tracking-[0.12em] text-paper">No songs match this search</p></div>}
+
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="panel rounded-sm p-4 flex items-start gap-3"><ShieldCheck size={20} className="text-mint shrink-0 mt-0.5" aria-hidden="true" /><div><h3 className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-paper">Evidence rule</h3><p className="text-[12px] leading-relaxed text-dim mt-1">Rockstar credit means the verified Rockstar upload names the recording. Published media means the recording is heard in official footage but its identification is editorial. Community rumours remain unverified.</p></div></div>
+            <div className="panel rounded-sm p-4 flex items-start gap-3"><VolumeX size={20} className="text-pink shrink-0 mt-0.5" aria-hidden="true" /><div><h3 className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-paper">Playback unavailable</h3><p className="text-[12px] leading-relaxed text-dim mt-1">GTA LORE does not host, stream or preview these recordings. Promotional use by Rockstar does not grant this independent archive music-distribution rights.</p></div></div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

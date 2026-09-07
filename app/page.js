@@ -21,7 +21,7 @@ const BRANCHES = [
   { label: 'Vehicles', href: '/database/vehicles', icon: Car, count: vehicles.length, image: IMG.grottiCheetah, blurb: 'Every vehicle Rockstar has named, by class and manufacturer.' },
   { label: 'Weapons', href: '/database/weapons', icon: Crosshair, count: weapons.length, image: IMG.morganRevolvers, blurb: 'Armament shown or named in official material.' },
   { label: 'Locations', href: '/map', icon: MapPin, count: locations.length, image: IMG.viceCity, blurb: 'Named places across Leonida, indexed with published imagery.' },
-  { label: 'Radio', href: '/database/radio', icon: RadioIcon, count: radioStations.length, image: IMG.ambrosiaDrive, blurb: 'Stations confirmed for the dial.' },
+  { label: 'Radio', href: '/database/radio', icon: RadioIcon, count: radioStations.length, image: IMG.ambrosiaDrive, blurb: 'Station evidence, published-media songs and community reports.' },
   { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2, count: mechanics.length, image: IMG.weaponPattern, blurb: 'Systems Rockstar has described or shown.' },
   { label: 'World', href: '/database/world', icon: Globe2, count: worldEntries.length, image: IMG.swampGator, blurb: 'Wildlife, organizations, buildings, brands and broadcast media.' },
 ]

@@ -34,7 +34,6 @@ export default function LocationPage() {
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
 
       <header className="wiki-article-header mt-6">
-        <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">Named location</p>
         <h1 data-ghost="PLACES" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[64px] text-paper">{loc.name}</h1>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <StatusBadge status={loc.status} />

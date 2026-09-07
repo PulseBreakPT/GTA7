@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import { Providers } from './providers'
 import TabBar from '@/components/site/tabbar'
 import Footer from '@/components/site/footer'
+import BootSequence from '@/components/site/boot-sequence'
 import WikiChrome from '@/components/site/wiki-chrome'
 import GlobalEffects from '@/components/site/global-effects'
 
@@ -70,6 +71,7 @@ export default function RootLayout({ children }) {
             Skip to content
           </a>
           <GlobalEffects />
+          <BootSequence />
           <WikiChrome />
           <div className="site-frame flex-1 min-w-0 flex flex-col">
             <main id="main" tabIndex={-1} className="archive-grid flex-1 flex flex-col">{children}</main>

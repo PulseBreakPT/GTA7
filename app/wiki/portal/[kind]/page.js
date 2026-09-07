@@ -23,6 +23,7 @@ export default function TopicPortalPage({ params }) {
   const portal = portalByKind(params.kind)
   if (!portal) notFound()
   const coverage = portal.entries.length ? Math.round((portal.sourced / portal.entries.length) * 100) : 0
+  const hero = portal.starters.find((entry) => entry.image)?.image
 
   return (
     <div className="ambient-bloom mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
@@ -35,6 +36,8 @@ export default function TopicPortalPage({ params }) {
           count={portal.entries.length}
           countLabel="articles"
           updatedAt={portal.recent[0]?.updatedAt}
+          image={hero}
+          imageAlt={hero ? `Published GTA VI media associated with the ${portal.plural} portal` : undefined}
         />
       </div>
 

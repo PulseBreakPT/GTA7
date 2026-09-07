@@ -26,24 +26,23 @@ function App() {
     <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-[1080px] w-full mx-auto flex-1">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides' }, { label: g.title }]} />
 
-      <div className="relative aspect-[21/8] overflow-hidden corner-brackets tech-mask panel border border-line mt-3">
-        {g.image ? (
-          <Image src={g.image} alt={g.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-6 text-center">
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">NO VERIFIED IMAGE OF THIS SUBJECT</span>
-          </div>
-        )}
-        <span className="absolute top-4 left-4"><StatusBadge status={g.status} /></span>
-      </div>
-
-      <header className="wiki-article-header mt-6">
+      <header className="wiki-article-header mt-5">
         <h1 data-ghost="GUIDES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px]">{g.title}</h1>
+        <div className="relative aspect-[21/8] overflow-hidden corner-brackets tech-mask panel border border-line mt-5">
+          {g.image ? (
+            <Image src={g.image} alt={g.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-6 text-center">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">NO VERIFIED IMAGE OF THIS SUBJECT</span>
+            </div>
+          )}
+          <span className="absolute top-4 left-4"><StatusBadge status={g.status} /></span>
+        </div>
+        <p className="wiki-article-lede text-paper/85 mt-5">{g.summary}</p>
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-y hairline py-3">
           <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>
           <SourceChip name={g.sourceName} url={g.sourceUrl} prefix={null} className="text-[12px]" />
         </div>
-        <p className="text-paper/85 text-[15px] leading-relaxed mt-5 max-w-[720px]">{g.summary}</p>
       </header>
 
       <section className="wiki-article-body mt-6 max-w-[820px]" aria-label="Guide article">

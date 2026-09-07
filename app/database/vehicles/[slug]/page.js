@@ -92,8 +92,6 @@ function App() {
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Vehicles', href: '/database/vehicles' }, { label: v.name }]} />
 
-        <div className="data-rail mt-2">GARAGE INDEX · REFERENCE RECORD · UNIT {v.num}</div>
-
         {/* Cabeçalho fora da grelha: nas fichas de wiki o nome vem sempre
             antes da caixa de dados, mesmo em ecrã estreito. */}
         <header className="wiki-article-header mt-5">

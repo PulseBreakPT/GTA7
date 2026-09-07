@@ -7,6 +7,7 @@ import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, 
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
 import VehicleVisual, { classIcon } from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses, featureBriefs, officialCatalog } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
@@ -88,9 +89,10 @@ function App() {
     <div className="flex-1 flex flex-col">
       <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">VEHICLES</h1></div>
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Vehicles' }]} />
+          <div className="mt-4"><CategoryHeader eyebrow="Leonida vehicle catalogue" title="Vehicles" image="/media/vehicles/stanier-crew.webp" imageAlt="Official GTA VI artwork showing a customised car and its crew" description="A visual catalogue of road, air and water vehicles, organised by class, manufacturer and evidence strength without turning visual identification into unsupported specifications." count={vehicles.length} countLabel="vehicles" updatedAt={lastUpdated} /></div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40 flex-1 min-w-[200px]">
               <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
               <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vehicle…" aria-label="Search vehicle" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />

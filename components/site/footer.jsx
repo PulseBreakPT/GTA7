@@ -25,6 +25,7 @@ const INDEX = [
       ['Weapons', '/database/weapons'],
       ['World index', '/database/world'],
       ['Places atlas', '/map'],
+      ['Vice City hub', '/vice-city'],
     ],
   },
   {

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack } from 'lucide-react'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
 const REL_BARS = [
@@ -64,9 +65,10 @@ function App() {
     <div className="flex-1 flex flex-col">
       <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <div className="ghost-type" data-ghost="CHARACTERS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">CHARACTERS</h1></div>
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters' }]} />
+          <div className="mt-4"><CategoryHeader eyebrow="People of Leonida" title="Characters" image="/media/key-art/cover.webp" imageAlt="Official Grand Theft Auto VI cover artwork featuring the principal cast" imagePosition="center 42%" description="Named protagonists, allies and figures documented from Rockstar-published material, with reported identities kept visibly separate from confirmed records." count={characters.length} countLabel="characters" updatedAt={lastUpdated} /></div>
 
-          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
+          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>

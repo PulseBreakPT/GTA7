@@ -63,6 +63,8 @@ export default function MediaPage() {
           description="Official artwork, Rockstar’s Visit Leonida postcards, gameplay captures and edition stills, as held by this archive. Captions come from the archive’s own file catalogue, not from Rockstar wording."
           count={ITEMS.length}
           countLabel="images"
+          image="/media/key-art/jason-lucia-beach.webp"
+          imageAlt="Official GTA VI artwork of Jason and Lucia on Vice Beach"
         >
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <label className="glass-panel tech-mask-sm flex items-center gap-2 h-10 px-3 w-full sm:w-[260px]">

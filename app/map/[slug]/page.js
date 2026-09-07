@@ -32,12 +32,9 @@ export default function RegionPage() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: region.label }]} />
 
-      <div className="data-rail mt-2">REGION DOSSIER · NAMED PLACES · ARCHIVE VISUALS</div>
-
       {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
           qualquer largura, como nas fichas das wikis. */}
       <header className="wiki-article-header mt-5">
-        <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">Region dossier</p>
         <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[76px] text-paper">{region.label}</h1>
         <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]"><WikiText exclude={`/map/${region.id}`}>{region.blurb}</WikiText></p>
         <div className="mt-4 flex flex-wrap items-center gap-3">

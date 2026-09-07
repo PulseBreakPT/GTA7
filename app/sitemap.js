@@ -30,6 +30,7 @@ const PAGINAS_FIXAS = [
   ['/sources', 0.6],
   ['/media', 0.6],
   ['/map', 0.8],
+  ['/vice-city', 0.85],
   ['/news', 0.8],
   ['/guides', 0.7],
   ['/editions', 0.6],

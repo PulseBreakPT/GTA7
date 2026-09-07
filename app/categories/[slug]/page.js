@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ChevronRight, FileText } from 'lucide-react'
+import { ChevronRight, FileText } from 'lucide-react'
 import MediaCarousel from '@/components/site/media-carousel'
 import { articles, encyclopediaCategories } from '@/lib/content'
 import { GhostBadge, StatusBadge, fmtDate } from '@/components/site/ui'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 export default function CategoryPage() {
   const { slug } = useParams()
@@ -14,13 +15,8 @@ export default function CategoryPage() {
   if (!category) return <main className="px-4 sm:px-6 py-20 text-center"><p className="font-cond font-bold uppercase text-[40px] text-paper">CATEGORY NOT FOUND</p><Link href="/categories" className="mt-4 inline-block font-cond uppercase tracking-[0.14em] text-pink">← All categories</Link></main>
   const records = category.articles.map((articleSlug) => articles.find((article) => article.slug === articleSlug)).filter(Boolean)
   return <main className="ambient-bloom px-4 sm:px-6 lg:px-8 py-7 lg:py-10 max-w-[1160px] mx-auto w-full">
-    <Link href="/categories" className="inline-flex min-h-[44px] items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[13px] text-dim hover:text-paper"><ArrowLeft size={15} /> Categories</Link>
-    <header className="ghost-type mt-3 border-b hairline pb-6" data-ghost="DOSSIER">
-      <div className="data-rail max-w-[500px] !text-mint">CATEGORY FILE · SUBJECT INDEX · {records.length} RECORDS</div>
-      <h1 className="chromatic-title mt-5 font-cond font-bold uppercase tracking-tight leading-[0.84] text-[56px] sm:text-[84px] text-paper">{category.title}</h1>
-      <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-dim">{category.description}</p>
-      <p className="mt-4 font-mono uppercase tracking-[0.14em] text-[11px] text-dim">{records.length} records · articles are source-labelled individually</p>
-    </header>
+    <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Categories', href: '/categories' }, { label: category.title }]} />
+    <div className="mt-4"><CategoryHeader title={category.title} image={category.cover} imageAlt={`${category.title} category cover`} description={category.description} count={records.length} countLabel="records"><p className="mt-4 font-mono uppercase tracking-[0.14em] text-[10px] text-dim">Articles retain their individual evidence and source labels</p></CategoryHeader></div>
     <section className="mt-5"><MediaCarousel compact label={`${category.title} · visual index`} items={records.map((article) => ({ src: article.image, label: article.title, alt: article.title }))} /></section>
     <div className="focus-grid mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
       {records.map((article, index) => <Link key={article.slug} href={`/news/${article.slug}`} className={`focus-card spotlight-card tech-mask panel overflow-hidden group hover:border-black/35 ${index % 2 ? 'md:mt-10' : ''}`}>
