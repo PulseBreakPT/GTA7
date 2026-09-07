@@ -7,7 +7,7 @@ import { ArrowRight, Check, Eye, EyeOff, KeyRound, LockKeyhole, Mail, ShieldChec
 import { useAuth } from '@/components/site/auth-provider'
 import { cx } from '@/components/site/ui'
 
-const EMPTY = { identifier: '', email: '', username: '', displayName: '', password: '', confirmPassword: '', remember: false }
+const EMPTY = { identifier: '', email: '', username: '', displayName: '', password: '', confirmPassword: '', remember: false, termsAccepted: false }
 
 function safeNext(value) {
   return value?.startsWith('/') && !value.startsWith('//') ? value : '/account'
@@ -57,40 +57,28 @@ function LoginScreen() {
   }
 
   return (
-    <div className="auth-shell ambient-bloom px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full max-w-[1180px] mx-auto flex-1 grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,460px)] gap-8 lg:gap-14 items-center">
-      <section className="auth-intro max-w-[650px]">
-        <div className="data-rail">IDENTITY NETWORK · SECURE ARCHIVE ACCESS</div>
-        <p className="mt-6 font-cond uppercase tracking-[0.2em] text-[11px] text-mint">GTA LORE membership</p>
-        <h1 className="chromatic-title mt-2 font-cond font-bold uppercase tracking-tight leading-[0.86] text-[54px] sm:text-[76px] text-paper">Your archive identity.</h1>
-        <p className="mt-5 max-w-[58ch] text-[15px] sm:text-[17px] leading-relaxed text-dim">One account for saved records, future contribution tools and security controls. Credentials stay server-side; sessions remain individually visible and revocable.</p>
-        <ul className="mt-7 grid sm:grid-cols-3 gap-3">
-          {[
-            [ShieldCheck, 'Server sessions', 'Revocable per device'],
-            [LockKeyhole, 'Protected credentials', 'Memory-hard hashing'],
-            [KeyRound, 'Recovery control', 'One-use expiring links'],
-          ].map(([Icon, title, copy]) => (
-            <li key={title} className="panel rounded-sm p-4">
-              <Icon size={17} className="text-mint" aria-hidden="true" />
-              <strong className="mt-3 block font-cond uppercase tracking-[0.08em] text-[13px] text-paper">{title}</strong>
-              <span className="mt-1 block text-[11px] text-dim">{copy}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+    <div className="auth-shell ambient-bloom px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-14 w-full max-w-[1120px] mx-auto flex-1 grid lg:grid-cols-[minmax(420px,520px)_minmax(0,1fr)] gap-6 lg:gap-12 items-start">
+      <section className="auth-card wiki-infobox panel rounded-sm p-5 sm:p-7 lg:p-8" aria-labelledby="auth-title">
+        <header className="auth-card-heading">
+          <span className="auth-lockmark"><LockKeyhole size={18} aria-hidden="true" /></span>
+          <div>
+            <p className="font-cond font-bold uppercase tracking-[0.18em] text-[11px] text-violet">Secure archive access</p>
+            <h1 id="auth-title" className="mt-1.5 font-cond font-bold uppercase tracking-tight leading-[.94] text-[36px] sm:text-[44px] text-paper">
+              {mode === 'recover' ? 'Reset your access' : mode === 'register' ? 'Create your identity' : 'Welcome back'}
+            </h1>
+            <p className="mt-3 text-[14px] leading-relaxed text-dim">
+              {mode === 'recover' ? 'Enter the verified email connected to your account.' : mode === 'register' ? 'Create one secure account for every GTA Lore wiki tool.' : 'Sign in to continue directly to your personal archive.'}
+            </p>
+          </div>
+        </header>
 
-      <section className="wiki-infobox panel rounded-sm p-5 sm:p-6" aria-labelledby="auth-title">
-        <div className="flex items-center gap-2 border-b hairline pb-4" role="tablist" aria-label="Authentication mode">
+        <div className="auth-mode-tabs mt-6 grid grid-cols-2 gap-1.5 p-1.5" role="tablist" aria-label="Authentication mode">
           {[['login', 'Sign in'], ['register', 'Create account']].map(([id, label]) => (
-            <button key={id} type="button" role="tab" aria-selected={mode === id} onClick={() => switchMode(id)} className={cx('h-9 px-3 font-cond font-bold uppercase tracking-[0.12em] text-[11px] border-b-2 transition-colors', mode === id ? 'border-pink text-pink' : 'border-transparent text-dim hover:text-paper')}>{label}</button>
+            <button key={id} type="button" role="tab" aria-selected={mode === id} onClick={() => switchMode(id)} className={cx('auth-mode-tab min-h-[44px] px-3 font-cond font-bold uppercase tracking-[0.12em] text-[12px] transition-all', mode === id ? 'is-active' : '')}>{label}</button>
           ))}
         </div>
 
-        <div className="mt-5">
-          <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">{mode === 'recover' ? 'Account recovery' : mode === 'register' ? 'New identity' : 'Welcome back'}</p>
-          <h2 id="auth-title" className="mt-1 font-cond font-bold uppercase tracking-tight text-[30px] text-paper">{mode === 'recover' ? 'Reset access' : mode === 'register' ? 'Join the archive' : 'Enter GTA Lore'}</h2>
-        </div>
-
-        <form onSubmit={submit} className="mt-5 space-y-4">
+        <form onSubmit={submit} className="auth-form mt-6 space-y-4">
           {mode === 'register' && (
             <>
               <AuthField icon={UserRound} label="Display name" autoComplete="name" value={form.displayName} onChange={update('displayName')} maxLength={50} required />
@@ -112,15 +100,19 @@ function LoginScreen() {
                   <div className="grid grid-cols-4 gap-1" aria-label={`Password strength ${strength} of 4`}>{[0, 1, 2, 3].map((step) => <span key={step} className={cx('h-1 rounded-full', step < strength ? strength >= 4 ? 'bg-mint' : 'bg-pink' : 'bg-black/10')} />)}</div>
                   <p className="font-mono text-[9px] leading-relaxed text-dim">15–128 characters · passphrases welcome · no forced symbols</p>
                   <AuthField icon={LockKeyhole} label="Confirm password" type={showPassword ? 'text' : 'password'} autoComplete="new-password" value={form.confirmPassword} onChange={update('confirmPassword')} minLength={15} maxLength={128} required />
+                  <div className="auth-legal-consent">
+                    <input id="terms-accepted" type="checkbox" checked={form.termsAccepted} onChange={update('termsAccepted')} required />
+                    <label htmlFor="terms-accepted">I agree to the <Link href="/legal/terms" target="_blank" rel="noreferrer">Terms of Use</Link> and acknowledge the <Link href="/legal/privacy" target="_blank" rel="noreferrer">Privacy Notice</Link>.</label>
+                  </div>
                 </>
               )}
             </>
           )}
 
           {mode === 'login' && (
-            <div className="flex items-center justify-between gap-4">
-              <label className="inline-flex items-center gap-2 font-cond uppercase tracking-[0.1em] text-[10px] text-dim"><input type="checkbox" checked={form.remember} onChange={update('remember')} className="accent-pink" /> Remember for 30 days</label>
-              <button type="button" onClick={() => switchMode('recover')} className="font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-pink hover:text-paper">Forgot password?</button>
+            <div className="flex flex-wrap items-center justify-between gap-3 py-1">
+              <label className="inline-flex min-h-[40px] items-center gap-2.5 font-cond uppercase tracking-[0.08em] text-[11px] text-dim"><input type="checkbox" checked={form.remember} onChange={update('remember')} className="size-4 accent-pink" /> Remember for 30 days</label>
+              <button type="button" onClick={() => switchMode('recover')} className="font-cond font-bold uppercase tracking-[0.08em] text-[11px] text-pink hover:text-paper">Forgot password?</button>
             </div>
           )}
 
@@ -128,30 +120,56 @@ function LoginScreen() {
             <p className="border-l-2 border-warn bg-warn/[0.05] px-3 py-2 text-[11px] leading-relaxed text-dim">Recovery email delivery is awaiting server configuration. Existing sessions and passwords remain unaffected.</p>
           )}
 
-          {error && <p role="alert" className="border-l-2 border-pink bg-pink/[0.05] px-3 py-2 text-[12px] leading-relaxed text-paper">{error}</p>}
-          {success && <p role="status" className="border-l-2 border-mint bg-mint/[0.05] px-3 py-2 text-[12px] leading-relaxed text-paper">{success}</p>}
+          {error && <p id="auth-feedback" role="alert" className="border-l-2 border-pink bg-pink/[0.05] px-3 py-2 text-[12px] leading-relaxed text-paper">{error}</p>}
+          {success && <p id="auth-feedback" role="status" className="border-l-2 border-mint bg-mint/[0.05] px-3 py-2 text-[12px] leading-relaxed text-paper">{success}</p>}
 
-          <button disabled={busy || loading} type="submit" className="w-full h-12 inline-flex items-center justify-center gap-3 bg-paper text-ink font-cond font-bold uppercase tracking-[0.16em] text-[13px] disabled:opacity-50 transition-opacity">
+          <button disabled={busy || loading} aria-busy={busy || loading} aria-describedby={error ? 'auth-feedback' : success ? 'auth-feedback' : undefined} type="submit" className="auth-submit w-full min-h-[54px] inline-flex items-center justify-center gap-3 text-ink font-cond font-bold uppercase tracking-[0.14em] text-[13px] disabled:opacity-50 transition-all">
             {busy ? 'Securing request…' : mode === 'recover' ? 'Send recovery link' : mode === 'register' ? 'Create secure account' : 'Sign in'}
             {!busy && <ArrowRight size={15} aria-hidden="true" />}
           </button>
         </form>
 
-        {mode === 'recover' && <button type="button" onClick={() => switchMode('login')} className="mt-4 font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim hover:text-paper">← Return to sign in</button>}
-        <p className="mt-5 border-t hairline pt-4 text-[10px] leading-relaxed text-dim">By continuing, you accept secure session and audit records strictly necessary to operate your account. GTA LORE never stores your password in readable form.</p>
-        <Link href="/" className="mt-3 inline-block font-cond uppercase tracking-[0.12em] text-[10px] text-mint hover:text-paper">Continue without an account</Link>
+        {mode === 'recover' && <button type="button" onClick={() => switchMode('login')} className="mt-4 font-cond font-bold uppercase tracking-[0.1em] text-[11px] text-dim hover:text-paper">← Return to sign in</button>}
+
+        <footer className="auth-card-footer mt-6 pt-5">
+          <p className="text-[11px] leading-relaxed text-dim">GTA LORE stores only the secure session and audit records required to operate your account. Passwords are never stored in readable form.</p>
+          <Link href="/" className="mt-3 inline-flex items-center gap-2 font-cond font-bold uppercase tracking-[0.1em] text-[11px] text-violet hover:text-pink">Continue without an account <ArrowRight size={12} /></Link>
+        </footer>
       </section>
+
+      <aside className="auth-intro auth-secondary lg:sticky lg:top-24" aria-labelledby="account-benefits-title">
+        <p className="font-cond font-bold uppercase tracking-[0.2em] text-[11px] text-pink">GTA Lore membership</p>
+        <h2 id="account-benefits-title" className="chromatic-title mt-2 font-cond font-bold uppercase tracking-tight leading-[.9] text-[38px] sm:text-[50px] text-paper">Your wiki, remembered.</h2>
+        <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-dim">Save records, follow changes and manage every active session from one private identity.</p>
+
+        <ul className="auth-benefits mt-6 space-y-3">
+          {[
+            [ShieldCheck, 'Server sessions', 'See and revoke access separately on every device.'],
+            [LockKeyhole, 'Protected credentials', 'Passwords use memory-hard hashing and remain unreadable.'],
+            [KeyRound, 'Recovery control', 'Recovery links are single-use and expire automatically.'],
+          ].map(([Icon, title, copy]) => (
+            <li key={title} className="panel rounded-sm p-4 flex gap-4">
+              <span className="auth-benefit-icon"><Icon size={18} aria-hidden="true" /></span>
+              <span className="min-w-0">
+                <strong className="block font-cond uppercase tracking-[0.07em] text-[14px] text-paper">{title}</strong>
+                <span className="mt-1 block text-[12px] leading-relaxed text-dim">{copy}</span>
+              </span>
+              <Check size={15} className="ml-auto shrink-0 text-pink" aria-hidden="true" />
+            </li>
+          ))}
+        </ul>
+      </aside>
     </div>
   )
 }
 
 function AuthField({ icon: Icon, label, hint, action, ...props }) {
   return (
-    <label className="block">
-      <span className="flex items-center justify-between gap-3 font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim"><span>{label}</span>{hint && <small className="font-mono normal-case tracking-normal text-[8px]">{hint}</small>}</span>
-      <span className="mt-1.5 h-11 flex items-center gap-2.5 border border-line rounded-sm px-3 bg-white/70 focus-within:border-violet transition-colors">
-        <Icon size={14} className="text-mint shrink-0" aria-hidden="true" />
-        <input {...props} className="flex-1 min-w-0 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim" />
+    <label className="auth-field block">
+      <span className="flex items-center justify-between gap-3 font-cond font-bold uppercase tracking-[0.1em] text-[11px] text-dim"><span>{label}</span>{hint && <small className="font-mono normal-case tracking-normal text-[9px]">{hint}</small>}</span>
+      <span className="auth-input-shell mt-2 min-h-[52px] flex items-center gap-3 border border-line rounded-sm px-3.5 bg-white/70 transition-all">
+        <Icon size={16} className="text-violet shrink-0" aria-hidden="true" />
+        <input {...props} className="flex-1 min-w-0 bg-transparent outline-none text-[16px] text-paper placeholder:text-dim" />
         {action}
       </span>
     </label>

@@ -52,7 +52,7 @@ export default function LocationPage() {
 
       <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         {/* Corpo do artigo */}
-        <div className="wiki-article-body min-w-0 order-2 lg:order-1">
+        <div className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <p className="text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]"><WikiText exclude={`/map/location/${loc.slug}`}>{loc.desc}</WikiText></p>
           </WikiSection>
@@ -87,12 +87,12 @@ export default function LocationPage() {
         </div>
 
         {/* Índice */}
-        <div className="hidden lg:block order-3 lg:order-2">
+        <div className="order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
         {/* Caixa de dados */}
-        <div className="order-1 lg:order-3">
+        <div className="order-2 lg:order-3">
           <InfoboxShell>
             <LocationLocator image={confirmedImage} fallbackImage={region?.image} name={loc.name} />
 

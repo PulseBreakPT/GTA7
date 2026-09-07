@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { publicSource } from '@/lib/official-links'
 import { ChevronRight, FolderTree, Link2, FileWarning, Quote, Info, Shuffle, Check, Hash, Printer, Copy, Clock3, BookOpen, Bookmark, BookmarkCheck, FolderPlus, PenLine, StickyNote, UserRound } from 'lucide-react'
 import { categoriesFor, backlinksFor, entryFor, entryByName, otherUses, confusableWith, siblingsFor, outgoingFor, KIND_META, ENTRIES, LINK_PATTERN } from '@/lib/wiki-graph'
 import { cx } from './ui'
@@ -433,11 +434,18 @@ export function InfoboxShell({ children, className }) {
 }
 
 export function InfoboxSource({ sourceName, sourceUrl, updatedAt }) {
+  const source = publicSource(sourceName, sourceUrl)
   return (
     <div className="border-t border-black/10 pt-4">
-      <a href={sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-        {sourceName ? sourceName.toUpperCase() : 'SOURCE'}
-      </a>
+      {source.url ? (
+        <a href={source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
+          {source.name.toUpperCase()}
+        </a>
+      ) : (
+        <span className="inline-flex items-center border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-dim">
+          {source.name.toUpperCase()} · NO EXTERNAL LINK
+        </span>
+      )}
       {updatedAt && <p className="font-mono text-[9px] text-dim mt-2">Updated {updatedAt}</p>}
     </div>
   )
@@ -577,7 +585,9 @@ export function WhatLinksHere({ kind, slug }) {
 // Secção de referências, numerada. É o que separa um arquivo de um blogue:
 // cada afirmação tem de poder ser seguida até à origem.
 export function References({ items }) {
-  const list = (items || []).filter((r) => r && r.name)
+  const list = (items || [])
+    .filter((r) => r && r.name)
+    .map((r) => ({ ...r, ...publicSource(r.name, r.url) }))
   if (list.length === 0) return null
 
   return (

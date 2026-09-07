@@ -23,6 +23,7 @@ const INDEX = [
       ['Characters', '/database/characters'],
       ['Vehicles', '/database/vehicles'],
       ['Weapons', '/database/weapons'],
+      ['World index', '/database/world'],
       ['Places atlas', '/map'],
     ],
   },
@@ -62,6 +63,7 @@ function currentSection(pathname) {
   if (pathname.startsWith('/wiki')) return 'ARCHIVE INDEX'
   if (pathname.startsWith('/sources')) return 'PROVENANCE'
   if (pathname.startsWith('/media')) return 'VISUAL RECORD'
+  if (pathname.startsWith('/legal')) return 'LEGAL DESK'
   return 'ARCHIVE'
 }
 
@@ -142,10 +144,17 @@ export default function Footer() {
         </div>
 
         <div className="compact-footer-bottom border-t hairline">
-          <p className="compact-footer-legal text-dim">
-            Independent fan project. Not affiliated with Rockstar Games, Take-Two Interactive, or their subsidiaries.
-            Game details can change; individual records identify their source status.
-          </p>
+          <div className="compact-footer-legal text-dim">
+            <p>Independent fan project. Not affiliated with Rockstar Games, Take-Two Interactive, or their subsidiaries.</p>
+            <nav aria-label="Legal policies">
+              <Link href="/legal">Legal</Link>
+              <Link href="/legal/terms">Terms</Link>
+              <Link href="/legal/privacy">Privacy</Link>
+              <Link href="/legal/cookies">Cookies</Link>
+              <Link href="/legal/copyright">Copyright</Link>
+              <Link href="/legal/community">Community</Link>
+            </nav>
+          </div>
           <div className="compact-footer-status flex items-center gap-2 font-mono tracking-[0.14em] text-dim">
             <Radio size={13} className="text-mint" aria-hidden="true" />
             <span>ARCHIVE ONLINE</span>

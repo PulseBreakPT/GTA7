@@ -52,7 +52,7 @@ export default function FactionPage() {
       <PageTools kind="factions" slug={f.slug} />
 
       <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-        <div className="wiki-article-body min-w-0 order-2 lg:order-1">
+        <div className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
           </WikiSection>
@@ -98,11 +98,11 @@ export default function FactionPage() {
             <Navbox kind="factions" slug={f.slug} />
         </div>
 
-        <div className="hidden lg:block order-3 lg:order-2">
+        <div className="order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
-        <div className="order-1 lg:order-3">
+        <div className="order-2 lg:order-3">
           <InfoboxShell>
             {f.image ? (
               <span className="relative block aspect-[16/10] overflow-hidden rounded-sm border border-line bg-surface2">

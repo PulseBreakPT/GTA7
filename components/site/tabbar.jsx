@@ -7,7 +7,7 @@ import {
   House, Library, Newspaper, MoreHorizontal, X, Users, Car, Crosshair,
   MapPin, Radio as RadioIcon, Repeat2, Layers, FolderTree, Sparkles, BookOpen,
   Images, BookMarked, BarChart3, Clock, Shuffle,
-  Search, CircleHelp, UserRound,
+  Search, CircleHelp, UserRound, Globe2,
 } from 'lucide-react'
 import { SITE_COUNTERS } from '@/lib/content'
 import { cx } from './ui'
@@ -50,6 +50,7 @@ const SHEET_GROUPS = [
       { label: 'Factions', href: '/gangs-factions', icon: Users },
       { label: 'Radio', href: '/database/radio', icon: RadioIcon },
       { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2 },
+      { label: 'World', href: '/database/world', icon: Globe2 },
       { label: 'Editions', href: '/editions', icon: Layers },
     ],
   },
@@ -226,19 +227,6 @@ export default function TabBar() {
             ].join(', '),
           }}
         >
-          {/* Linhas de velocidade, a assinatura do Streamline Moderne:
-              três traços horizontais de cada lado, o do meio mais longo,
-              como nas fachadas e nos letreiros de Ocean Drive. */}
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-[3px]" aria-hidden="true">
-            <span className="block h-px w-2.5 rounded-full bg-pink/45" />
-            <span className="block h-px w-4 rounded-full bg-pink/70" />
-            <span className="block h-px w-2.5 rounded-full bg-pink/45" />
-          </span>
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex flex-col items-end gap-[3px]" aria-hidden="true">
-            <span className="block h-px w-2.5 rounded-full bg-mint/45" />
-            <span className="block h-px w-4 rounded-full bg-mint/70" />
-            <span className="block h-px w-2.5 rounded-full bg-mint/45" />
-          </span>
           {/* O filete das três cores, agora encostado à curva. */}
           <span
             className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-violet to-transparent opacity-60"

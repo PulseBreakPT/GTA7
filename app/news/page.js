@@ -56,7 +56,7 @@ function App() {
     'systems-visuals-and-world-interactions', 'vehicles-and-online-separate-the-known',
   ].includes(a.slug))
   const wikiExtraction = articles.filter((a) => [
-    'gta-wiki-development-and-release-ledger', 'gta-wiki-media-gallery-and-reception', 'gta-wiki-claims-leaks-and-source-boundaries', 'four-creators-rockstar-north-preview', 'creator-preview-record-how-to-read-it', 'creator-preview-session-format-and-boundaries', 'creator-preview-systems-index', 'davy-jones-rockstar-north-preview-record', 'tgg-rockstar-north-preview-record', 'el-rubius-rockstar-north-preview-record', 'mikeshowsha-rockstar-north-preview-record',
+    'official-development-and-release-ledger', 'official-media-gallery-and-reception', 'claims-leaks-and-source-boundaries', 'four-creators-rockstar-north-preview', 'creator-preview-record-how-to-read-it', 'creator-preview-session-format-and-boundaries', 'creator-preview-systems-index', 'davy-jones-rockstar-north-preview-record', 'tgg-rockstar-north-preview-record', 'el-rubius-rockstar-north-preview-record', 'mikeshowsha-rockstar-north-preview-record',
   ].includes(a.slug))
   const filtered = useMemo(() => articles.filter((a) => filter === 'all' || a.category === filter), [filter])
   const updates = allUpdates ? liveUpdates : liveUpdates.slice(0, 4)
@@ -135,7 +135,7 @@ function App() {
             <section className="mt-7" aria-labelledby="feature-roundup-heading">
               <div className="flex items-end justify-between gap-4 border-b hairline pb-2">
                 <div>
-                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">GTA Base feature roundup</p>
+                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Editorial feature record</p>
                   <h2 id="feature-roundup-heading" className="mt-1 font-cond font-bold uppercase tracking-[0.08em] text-[24px] text-paper">Source-led feature briefings</h2>
                 </div>
                 <Link href="/guides/feature-roundup-source-guide" className="font-cond uppercase tracking-[0.12em] text-[12px] text-dim hover:text-paper">How we label sources</Link>
@@ -147,7 +147,7 @@ function App() {
             <section className="mt-7 border-t hairline pt-5" aria-labelledby="wiki-extraction-heading">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">{gtaWikiPageLedger.sourceName}</p>
+                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">Archive subject ledger</p>
                   <h2 id="wiki-extraction-heading" className="mt-1 font-cond font-bold uppercase tracking-[0.08em] text-[24px] text-paper">Full-page source index</h2>
                 </div>
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Extracted {gtaWikiPageLedger.extractedAt}</span>

@@ -2,10 +2,11 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Search, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Shield, Compass } from 'lucide-react'
+import { Search, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Shield, Compass, Globe2 } from 'lucide-react'
 import { StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import { characters, vehicles, weapons, locations, regions, mechanics, radioStations, factions, easterEggs } from '@/lib/content'
+import { worldEntries } from '@/lib/world-content'
 
 // O índice de tudo: a página que qualquer wiki tem e que lista, num sítio
 // só, cada verbete que existe. Constrói-se das listas do arquivo, por isso
@@ -21,6 +22,7 @@ const KINDS = [
   { id: 'radio', label: 'Radio', icon: RadioIcon, href: '/database/radio', items: radioStations.map((s) => ({ name: s.name, slug: s.slug, status: s.status, href: `/database/radio/${s.slug}` })) },
   { id: 'mechanics', label: 'Mechanics', icon: Repeat2, href: '/database/mechanics', items: mechanics.map((m) => ({ name: m.name, slug: m.slug, status: m.status, href: `/database/mechanics/${m.slug}` })) },
   { id: 'secrets', label: 'Secrets', icon: Compass, href: '/map', items: easterEggs.map((e) => ({ name: e.name, slug: e.slug, status: e.status, href: `/easter-eggs/${e.slug}` })) },
+  { id: 'world', label: 'World', icon: Globe2, href: '/database/world', items: worldEntries.map((e) => ({ name: e.name, slug: e.slug, status: e.status, href: `/database/world/${e.slug}` })) },
 ]
 
 const ALL = KINDS.flatMap((k) => k.items.map((item) => ({ ...item, kind: k.id, kindLabel: k.label, icon: k.icon })))

@@ -27,7 +27,13 @@ function App() {
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides' }, { label: g.title }]} />
 
       <div className="relative aspect-[21/8] overflow-hidden corner-brackets tech-mask panel border border-line mt-3">
-        <Image src={g.image} alt={g.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
+        {g.image ? (
+          <Image src={g.image} alt={g.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-6 text-center">
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">NO VERIFIED IMAGE OF THIS SUBJECT</span>
+          </div>
+        )}
         <span className="absolute top-4 left-4"><StatusBadge status={g.status} /></span>
       </div>
 

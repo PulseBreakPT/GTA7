@@ -10,6 +10,7 @@ import {
   validateIdentity, validateMutationRequest, validateUsername, verifyPassword, wikiPreferences,
 } from '@/lib/server/auth'
 import { entryFor } from '@/lib/wiki-graph'
+import { LEGAL_VERSION } from '@/lib/legal'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -65,10 +66,11 @@ function safeSourceUrl(value) {
   if (sourceUrl.length > 800) throw new AuthError('Source URL is too long.', 400, 'INVALID_SOURCE')
   try {
     const parsed = new URL(sourceUrl)
-    if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('protocol')
+    const isRockstar = parsed.protocol === 'https:' && (parsed.hostname === 'rockstargames.com' || parsed.hostname.endsWith('.rockstargames.com'))
+    if (!isRockstar) throw new Error('source')
     return parsed.toString()
   } catch {
-    throw new AuthError('Enter a valid http or https source URL.', 400, 'INVALID_SOURCE')
+    throw new AuthError('Use an official Rockstar Games source URL.', 400, 'INVALID_SOURCE')
   }
 }
 
@@ -237,6 +239,7 @@ export async function POST(request, { params }) {
 
     if (route === 'register') {
       await rateLimit('register-ip', ip, 5, 60 * 60_000)
+      if (data.termsAccepted !== true) throw new AuthError('Accept the Terms of Use and acknowledge the Privacy Notice to create an account.', 400, 'TERMS_REQUIRED')
       const identity = validateIdentity(data)
       const problems = passwordProblems(data.password, identity)
       if (problems.length) throw new AuthError(problems[0], 400, 'WEAK_PASSWORD')
@@ -256,6 +259,7 @@ export async function POST(request, { params }) {
         passwordHash: await hashPassword(data.password),
         bio: '', role: 'reader', status: 'active', emailVerifiedAt: null,
         wikiPreferences: { ...DEFAULT_WIKI_PREFERENCES }, notificationsReadAt: new Date(0),
+        termsAcceptedAt: now, termsVersion: LEGAL_VERSION, privacyNoticeVersion: LEGAL_VERSION,
         failedLoginCount: 0, lockedUntil: null,
         createdAt: now, updatedAt: now, lastLoginAt: now,
       }
@@ -518,7 +522,7 @@ export async function POST(request, { params }) {
       if (summary.length < 8 || summary.length > 160) throw new AuthError('Summary must be 8–160 characters.', 400, 'INVALID_SUMMARY')
       if (details.length < 20 || details.length > 4_000) throw new AuthError('Details must be 20–4,000 characters.', 400, 'INVALID_DETAILS')
       const sourceUrl = safeSourceUrl(data.sourceUrl)
-      if (type !== 'typo' && !sourceUrl) throw new AuthError('Evidence-based suggestions require a source URL.', 400, 'SOURCE_REQUIRED')
+      if (type !== 'typo' && !sourceUrl) throw new AuthError('Evidence-based suggestions require an official Rockstar Games URL.', 400, 'SOURCE_REQUIRED')
       const now = new Date()
       const suggestion = {
         id: randomUUID(), userId: auth.user.id, key, kind: entry.kind, slug: entry.slug,

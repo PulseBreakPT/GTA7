@@ -52,7 +52,7 @@ export default function RadioStationPage() {
         <PageTools kind="radio" slug={s.slug} />
 
         <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-          <div className="wiki-article-body min-w-0 order-2 lg:order-1">
+          <div className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
               <div className="mt-4 border-l-2 border-mint/70 pl-3">
@@ -101,11 +101,11 @@ export default function RadioStationPage() {
             <Navbox kind="radio" slug={s.slug} />
           </div>
 
-          <div className="hidden lg:block order-3 lg:order-2">
+          <div className="order-1 lg:order-2">
             <TableOfContents sections={sections} />
           </div>
 
-          <div className="order-1 lg:order-3">
+          <div className="order-2 lg:order-3">
             <InfoboxShell>
               <div className="flex items-center gap-3">
                 <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">

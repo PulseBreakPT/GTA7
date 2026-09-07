@@ -70,7 +70,13 @@ function App() {
         </div>
 
         <div className="corner-brackets tech-mask relative panel overflow-hidden min-h-[320px] lg:min-h-[480px]">
-          <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
+          {egg.image ? (
+            <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-6 text-center">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">NO VERIFIED IMAGE OF THIS SUBJECT</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -81,7 +87,13 @@ function App() {
           {others.map((e) => (
             <Link key={e.slug} href={`/easter-eggs/${e.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors">
               <div className="relative aspect-[16/8]">
-                <Image src={e.image} alt={e.name} fill sizes="33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
+                {e.image ? (
+                  <Image src={e.image} alt={e.name} fill sizes="33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-4 text-center">
+                    <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-dim">NO VERIFIED SUBJECT IMAGE</span>
+                  </div>
+                )}
               </div>
               <div className="p-4">
                 <StatusBadge status={e.status} />

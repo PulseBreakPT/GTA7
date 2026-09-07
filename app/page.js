@@ -1,15 +1,14 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronRight, ExternalLink, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Images, BookOpen, Newspaper, Search, Library, ShieldCheck, Tag } from 'lucide-react'
-import SearchModal from '@/components/site/search'
-import { StatusBadge, GhostBadge, cx } from '@/components/site/ui'
+import { ChevronRight, ExternalLink, Users, Car, Crosshair, MapPin, Radio as RadioIcon, Repeat2, Images, BookOpen, Newspaper, Search, Library, ShieldCheck, Tag, Globe2 } from 'lucide-react'
+import { ReleaseCountdown, SearchTrigger } from '@/components/site/home-client'
+import { StatusBadge, GhostBadge } from '@/components/site/ui'
+import { isRockstarUrl } from '@/lib/official-links'
 import {
   IMG, extendedLookBrief, articles, guides, characters, vehicles, weapons,
   mechanics, regions, locations, radioStations, factions, easterEggs,
 } from '@/lib/content'
+import { worldEntries } from '@/lib/world-content'
 
 // A home segue a ordem das wikis grandes: primeiro o que o jogo é, depois
 // a porta para os verbetes, depois o que mudou, e só no fim as coisas de
@@ -23,7 +22,8 @@ const BRANCHES = [
   { label: 'Weapons', href: '/database/weapons', icon: Crosshair, count: weapons.length, image: IMG.morganRevolvers, blurb: 'Armament shown or named in official material.' },
   { label: 'Locations', href: '/map', icon: MapPin, count: locations.length, image: IMG.viceCity, blurb: 'Named places across Leonida, indexed with published imagery.' },
   { label: 'Radio', href: '/database/radio', icon: RadioIcon, count: radioStations.length, image: IMG.ambrosiaDrive, blurb: 'Stations confirmed for the dial.' },
-  { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2, count: mechanics.length, image: IMG.ambrosiaNight, blurb: 'Systems Rockstar has described or shown.' },
+  { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2, count: mechanics.length, image: IMG.weaponPattern, blurb: 'Systems Rockstar has described or shown.' },
+  { label: 'World', href: '/database/world', icon: Globe2, count: worldEntries.length, image: IMG.swampGator, blurb: 'Wildlife, organizations, buildings, brands and broadcast media.' },
 ]
 
 // Os quatro rótulos que o arquivo usa para dizer de onde vem cada facto.
@@ -45,6 +45,7 @@ const FAQ = [
 ]
 
 const fmt = (iso) => iso
+const cx = (...classes) => classes.filter(Boolean).join(' ')
 
 // Título de secção com a régua a atravessar até à ligação, como nos
 // painéis técnicos: a linha diz onde a secção começa sem precisar de uma
@@ -57,7 +58,7 @@ function Section({ id, eyebrow, title, href, linkLabel, children, className }) {
           {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
           <h2 className="mt-1 font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-[0.95] text-paper">{title}</h2>
         </div>
-        <span className="flex-1 h-px bg-gradient-to-r from-black/25 to-transparent" aria-hidden="true" />
+        <span className="home-section-rule flex-1 h-px bg-line" aria-hidden="true" />
         {href && (
           <Link href={href} className="shrink-0 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-dim hover:text-paper transition-colors">
             {linkLabel} →
@@ -73,45 +74,21 @@ function Section({ id, eyebrow, title, href, linkLabel, children, className }) {
 // número que o campo de pesquisa promete, e por isso não pode ser escrito
 // à mão: uma entrada nova tem de o mexer sozinha.
 const TOTAL_ENTRIES = characters.length + vehicles.length + weapons.length + locations.length
-  + mechanics.length + radioStations.length + factions.length + easterEggs.length
+  + mechanics.length + radioStations.length + factions.length + easterEggs.length + worldEntries.length
   + articles.length + guides.length
 
 // Quem chega à página não sabia o que fazer com ela: havia doze secções de
 // vitrina e nenhuma acção à entrada. Estas são as quatro coisas a que se
 // vem a um arquivo destes, ditas por palavras e com o destino colado.
 const INTENTS = [
-  { id: 'search', icon: Search, label: 'Look something up', blurb: `Search all ${TOTAL_ENTRIES} entries by name — a car, a gun, a person, a place.` },
-  { id: 'browse', icon: Library, label: 'Browse the database', href: '#explore-the-wiki', blurb: 'Seven collections, each filtered by class, faction or region.' },
-  { id: 'trust', icon: ShieldCheck, label: 'See what is actually confirmed', href: '#how-this-works', blurb: 'Confirmed, verified, analysis or rumour — every entry says which, and why.' },
-  { id: 'editions', icon: Tag, label: 'Decide which edition to buy', href: '/editions', blurb: 'Standard against Ultimate, the 16 extra items, and the four dates.' },
+    { id: 'search', icon: Search, label: 'Find a record', blurb: `Search ${TOTAL_ENTRIES} named records — vehicles, people, weapons and places.` },
+    { id: 'browse', icon: Library, label: 'Browse by subject', href: '#explore-the-wiki', blurb: 'Open a collection filtered by class, faction, manufacturer or region.' },
+    { id: 'trust', icon: ShieldCheck, label: 'Check the evidence', href: '#how-this-works', blurb: 'See whether each claim is official, visible in footage, analysis or rumour.' },
+    { id: 'editions', icon: Tag, label: 'Compare editions', href: '/editions', blurb: 'Compare both editions, 16 extras and four release dates from the source material.' },
 ]
 
 function App() {
-  const [searchOpen, setSearchOpen] = useState(false)
-  // A contagem decrescente depende do dia em que se lê, por isso só se
-  // calcula depois da montagem: no servidor daria um número diferente do
-  // do browser e o React reclamava da hidratação.
-  const [daysToRelease, setDaysToRelease] = useState(null)
-  useEffect(() => {
-    const at = Date.parse(extendedLookBrief.releaseDate)
-    if (!Number.isNaN(at)) setDaysToRelease(Math.ceil((at - Date.now()) / 86400000))
-  }, [])
-
-  // A barra oblíqua abre a pesquisa, como em qualquer wiki grande. Não
-  // rouba a tecla a quem está a escrever num campo.
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return
-      const el = document.activeElement
-      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return
-      e.preventDefault()
-      setSearchOpen(true)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-
-  const official = articles.find((a) => a.category === 'official') || articles[0]
+  const official = articles.find((a) => a.category === 'official' && isRockstarUrl(a.sourceUrl)) || articles.find((a) => isRockstarUrl(a.sourceUrl))
   const latestNews = articles.filter((a) => a.slug !== official.slug).slice(0, 3)
   const featuredCast = characters.filter((c) => c.image).slice(0, 6)
   const sourcedRegions = regions.filter((r) => r.image).slice(0, 6)
@@ -148,7 +125,7 @@ function App() {
 
         <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-5 sm:pt-7 flex flex-col h-full max-w-[1440px] mx-auto">
           <div className="home-hero-copy ghost-type mt-12 lg:mt-20 max-w-[760px]" data-ghost="VICE CITY">
-            <p className="home-hero-kicker"><span /> Independent · source-labelled · always current</p>
+            <p className="home-hero-kicker"><span /> Independent fan archive · evidence shown with every record</p>
             <h1 className="home-hero-title chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[72px] sm:text-[108px] xl:text-[142px]">
               LEONIDA,<br />DOCUMENTED.
             </h1>
@@ -166,17 +143,15 @@ function App() {
                 procurar um nome. O campo é um botão — a pesquisa a sério
                 vive no modal, com teclado e resultados —, mas tem a forma
                 de campo porque é essa a forma que se reconhece. */}
-            <button
-              type="button"
-              onClick={() => setSearchOpen(true)}
+            <SearchTrigger
               className="home-hero-search mt-7 w-full max-w-[540px] flex items-center gap-3 h-[58px] px-4 rounded-sm text-left transition-colors"
             >
               <Search size={18} className="text-dim shrink-0" aria-hidden="true" />
               <span className="flex-1 min-w-0 truncate text-[15px] text-dim">
-                Search {TOTAL_ENTRIES} entries — a vehicle, a character, a place…
+                Search {TOTAL_ENTRIES} records
               </span>
               <kbd className="hidden sm:flex items-center justify-center w-6 h-6 shrink-0 border border-line rounded-[3px] font-mono text-[11px] text-dim">/</kbd>
-            </button>
+            </SearchTrigger>
 
             {/* Os dois caminhos de entrada, lado a lado e com o mesmo peso
                 de caixa: um leva aos verbetes, o outro ao mapa. */}
@@ -196,7 +171,7 @@ function App() {
           <span><small>Release</small><strong>{extendedLookBrief.releaseDate}</strong></span>
           <span><small>Setting</small><strong>{extendedLookBrief.setting}</strong></span>
           <span><small>Indexed</small><strong>{TOTAL_ENTRIES} records</strong></span>
-          <span><small>System</small><strong>Archive online</strong></span>
+          <span><small>Evidence</small><strong>Official / reported</strong></span>
         </div>
         <div className="home-city-signature" aria-hidden="true"><span>Vice</span><strong>City</strong><small>STATE OF LEONIDA · 2026</small></div>
         <div className="home-scroll-cue" aria-hidden="true"><i /><span>Enter the archive</span></div>
@@ -208,14 +183,10 @@ function App() {
           frases que digam para onde ir. */}
       <section className="home-intents px-4 sm:px-6 lg:px-8 pt-8 max-w-[1280px] mx-auto w-full" aria-labelledby="start-here">
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <h2 id="start-here" className="font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-none text-paper">What are you here for?</h2>
-          {daysToRelease != null && daysToRelease > 0 && (
-            <span className="font-cond uppercase tracking-[0.16em] text-[11px] text-mint">
-              {daysToRelease} days to release · {extendedLookBrief.releaseDate}
-            </span>
-          )}
+          <h2 id="start-here" className="font-cond font-bold uppercase tracking-tight text-[26px] sm:text-[32px] leading-none text-paper">Start with a task</h2>
+          <ReleaseCountdown releaseDate={extendedLookBrief.releaseDate} />
         </div>
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="home-intent-list mt-4">
           {INTENTS.map((intent) => {
             const Icon = intent.icon
             const body = (
@@ -230,11 +201,11 @@ function App() {
                 </span>
               </>
             )
-            const shell = 'home-intent-card panel rounded-sm p-4 text-left flex flex-col hover:border-mint/60 transition-colors'
+            const shell = 'home-intent-card p-4 text-left flex flex-col transition-colors'
             return intent.href ? (
               <Link key={intent.id} href={intent.href} className={shell}>{body}</Link>
             ) : (
-              <button key={intent.id} type="button" onClick={() => setSearchOpen(true)} className={shell}>{body}</button>
+              <SearchTrigger key={intent.id} className={shell}>{body}</SearchTrigger>
             )
           })}
         </div>
@@ -252,7 +223,7 @@ function App() {
         {/* Cada ramo mostra a contagem por cima da imagem e, por baixo, a
             faixa que diz que tudo o que lá está traz fonte. É a promessa do
             arquivo repetida à entrada de cada porta. */}
-        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="home-branch-grid mt-5">
           {BRANCHES.map((branch) => {
             const Icon = branch.icon
             return (
@@ -355,8 +326,8 @@ function App() {
       </Section>
 
       {/* ===== 6. THE DATABASE IN NUMBERS ===== */}
-      <Section eyebrow="Everything indexed" title="The database" href="/database/vehicles" linkLabel="Open the database">
-        <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-px border border-line bg-line">
+      <Section eyebrow="Everything indexed" title="The database" href="/database/world" linkLabel="Open the database">
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-px border border-line bg-line">
           {[
             ['Vehicles', vehicles.length, '/database/vehicles'],
             ['Weapons', weapons.length, '/database/weapons'],
@@ -365,6 +336,7 @@ function App() {
             ['Mechanics', mechanics.length, '/database/mechanics'],
             ['Radio', radioStations.length, '/database/radio'],
             ['Factions', factions.length, '/gangs-factions'],
+            ['World', worldEntries.length, '/database/world'],
           ].map(([label, count, href]) => (
             <Link key={label} href={href} className="bg-ink p-4 sm:p-5 hover:bg-surface2/60 transition-colors">
               <p className="font-cond font-bold text-[30px] leading-none text-paper tabular-nums">{count}</p>
@@ -509,7 +481,6 @@ function App() {
         </div>
       </Section>
 
-      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   )
 }

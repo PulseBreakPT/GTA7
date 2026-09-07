@@ -18,6 +18,13 @@ const PAGINAS_FIXAS = [
   ['/wiki/categories', 0.6],
   ['/wiki/statistics', 0.5],
   ['/wiki/changes', 0.6],
+  ['/legal', 0.4],
+  ['/legal/terms', 0.3],
+  ['/legal/privacy', 0.3],
+  ['/legal/cookies', 0.3],
+  ['/legal/copyright', 0.3],
+  ['/legal/community', 0.3],
+  ['/legal/disclaimer', 0.3],
   ['/sources', 0.6],
   ['/media', 0.6],
   ['/map', 0.8],
@@ -31,6 +38,7 @@ const PAGINAS_FIXAS = [
   ['/database/characters', 0.8],
   ['/database/radio', 0.7],
   ['/database/mechanics', 0.7],
+  ['/database/world', 0.8],
 ]
 
 export default function sitemap() {

@@ -18,15 +18,15 @@ export default function SourcesPage() {
         <CategoryHeader
           eyebrow="Provenance"
           title="Sources"
-          description="Every source this archive cites, and exactly which entries rest on it. Follow any link to check the claim at its origin — that is the whole point of labelling."
+          description="Official Rockstar sources cited by this archive, with every linked entry grouped beneath its origin."
           count={SOURCES.length}
           countLabel="sources"
         />
       </div>
 
       <p className="mt-4 text-[13px] leading-relaxed text-dim max-w-[80ch]">
-        {STATS.withSource} of {STATS.total} entries carry a source link. Where an entry has none, it says so on its own
-        page rather than borrowing credibility from a neighbour.
+        {STATS.withSource} of {STATS.total} entries carry a direct Rockstar source link. Editorial records remain clearly
+        labelled but never link readers to third-party sites.
       </p>
 
       <div className="mt-6 space-y-6">
