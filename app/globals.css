@@ -1178,104 +1178,13 @@ body > main, body > footer { position: relative; z-index: 1; }
   opacity: 1; transition: opacity .52s cubic-bezier(.45,0,.55,1), visibility .52s;
 }
 .gta-lore-boot.is-leaving { opacity: 0; visibility: hidden; pointer-events: none; }
-.boot-visual {
-  position: absolute; inset: -4%; transform: scale(1.075); transform-origin: 66% 45%;
-  background: url('/media/key-art/jason-lucia-beach.webp') 66% 48% / cover no-repeat;
-  animation: boot-camera 3.8s cubic-bezier(.16,.72,.2,1) both;
-  will-change: transform;
-}
-.boot-visual::after {
-  content: ''; position: absolute; inset: 0;
-  background:
-    linear-gradient(90deg, rgba(4,6,15,.97) 0%, rgba(5,7,17,.82) 31%, rgba(5,7,17,.28) 58%, rgba(5,7,17,.08) 78%),
-    linear-gradient(180deg, rgba(3,5,13,.55), transparent 34%, transparent 68%, rgba(3,5,13,.86)),
-    linear-gradient(112deg, rgba(24,207,195,.08), transparent 28%, rgba(240,68,165,.12));
-}
-.boot-shutters, .boot-letterbox { position: absolute; z-index: 8; inset: 0; pointer-events: none; }
-.boot-shutters i { position: absolute; top: 0; bottom: 0; width: 51%; background: #050710; will-change: transform; }
-.boot-shutters i:first-child { left: 0; animation: boot-shutter-left 1.05s .12s cubic-bezier(.76,0,.24,1) both; }
-.boot-shutters i:last-child { right: 0; animation: boot-shutter-right 1.05s .12s cubic-bezier(.76,0,.24,1) both; }
-.boot-letterbox i { position: absolute; z-index: 3; left: 0; right: 0; height: clamp(18px,3.1vw,52px); background: #03050b; }
-.boot-letterbox i:first-child { top: 0; animation: boot-bar-top .85s .28s cubic-bezier(.2,.8,.2,1) both; }
-.boot-letterbox i:last-child { bottom: 0; animation: boot-bar-bottom .85s .28s cubic-bezier(.2,.8,.2,1) both; }
-.boot-frame {
-  position: absolute; z-index: 4; inset: clamp(18px,3.1vw,52px) clamp(14px,2.2vw,36px);
-  border-inline: 1px solid rgba(255,255,255,.12); pointer-events: none; opacity: 0;
-  animation: boot-fade .65s .95s ease forwards;
-}
-.boot-frame::before, .boot-frame::after { content: ''; position: absolute; left: 0; width: 38px; height: 1px; background: var(--vice-cyan); }
-.boot-frame::before { top: 0; }.boot-frame::after { bottom: 0; background: var(--vice-pink); }
-.boot-interface { position: relative; z-index: 6; height: 100%; max-width: 1520px; margin: auto; padding: clamp(34px,5vw,76px) clamp(30px,7vw,108px); }
-.boot-meta {
-  display: flex; justify-content: space-between; gap: 2rem; opacity: 0;
-  color: rgba(255,255,255,.58); font: 500 9px/1 var(--font-mono), monospace; letter-spacing: .22em; text-transform: uppercase;
-  animation: boot-fade .55s .92s ease forwards;
-}
-.boot-meta b { color: #fff; font-weight: 700; }
-.boot-copy { position: absolute; left: clamp(30px,7vw,108px); top: 50%; width: min(760px,76vw); transform: translateY(-48%); }
-.boot-kicker {
-  display: flex; align-items: center; gap: .65rem; margin-bottom: clamp(16px,2vw,28px); opacity: 0;
-  color: rgba(255,255,255,.72); font: 500 9px/1 var(--font-mono), monospace; letter-spacing: .2em; text-transform: uppercase;
-  animation: boot-fade .5s 1.02s ease forwards;
-}
-.boot-kicker i { width: 26px; height: 1px; background: var(--vice-cyan); box-shadow: 0 0 12px rgba(24,207,195,.65); }
-.boot-kicker b { margin-left: auto; color: rgba(255,255,255,.34); font-weight: 500; }
-.boot-title { color: #fff; font: 700 clamp(5.3rem,13vw,13.2rem)/.66 var(--font-cond), sans-serif; letter-spacing: -.062em; text-transform: uppercase; }
-.boot-title > span { display: block; overflow: hidden; padding-right: .08em; padding-bottom: .08em; }
-.boot-title > span > b { display: block; font-weight: inherit; transform: translateY(112%); will-change: transform; }
-.boot-title > span:first-child > b { animation: boot-word 1s .72s cubic-bezier(.16,.84,.22,1) forwards; }
-.boot-title > span:last-child > b {
-  color: transparent; background: linear-gradient(100deg,#fff 5%,#ffd5e8 48%,#ff69ad 76%,#ff916c); background-clip: text; -webkit-background-clip: text;
-  animation: boot-word 1s .87s cubic-bezier(.16,.84,.22,1) forwards;
-}
-.boot-deck {
-  width: min(520px,72vw); display: grid; grid-template-columns: 1fr auto; gap: .75rem 2rem; margin-top: clamp(22px,3vw,38px); padding-top: 13px;
-  border-top: 1px solid rgba(255,255,255,.28); opacity: 0; animation: boot-fade .65s 1.35s ease forwards;
-}
-.boot-deck span { font: 600 11px/1 var(--font-cond), sans-serif; letter-spacing: .19em; text-transform: uppercase; }
-.boot-deck small { color: rgba(255,255,255,.5); font: 500 8px/1 var(--font-mono), monospace; }
-.boot-status {
-  position: absolute; left: clamp(30px,7vw,108px); right: clamp(30px,7vw,108px); bottom: clamp(38px,5.5vw,82px);
-  display: grid; grid-template-columns: minmax(140px,1fr) auto auto auto; align-items: center; gap: clamp(1rem,3vw,3.5rem); opacity: 0;
-  color: rgba(255,255,255,.54); font: 500 8px/1 var(--font-mono), monospace; letter-spacing: .17em; text-transform: uppercase;
-  animation: boot-fade .55s 1.45s ease forwards;
-}
-.boot-status > b { color: #fff; font-weight: 500; }
-.boot-timeline { position: relative; height: 2px; overflow: hidden; background: rgba(255,255,255,.16); }
-.boot-timeline i { position: absolute; inset: 0; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg,var(--vice-cyan),var(--vice-violet),var(--vice-pink)); animation: boot-load 1.95s .85s cubic-bezier(.18,.72,.18,1) forwards; }
-.boot-timeline span { position: absolute; top: 0; bottom: 0; left: 73%; width: 1px; background: #fff; }
-.boot-index { position: absolute; z-index: 7; right: clamp(30px,7vw,108px); top: 50%; display: flex; flex-direction: column; align-items: center; gap: .8rem; transform: translateY(-50%); opacity: 0; animation: boot-fade .6s 1.25s ease forwards; }
-.boot-index span { font: 500 11px/1 var(--font-mono), monospace; letter-spacing: .12em; }
-.boot-index i { width: 1px; height: 82px; background: linear-gradient(var(--vice-pink),rgba(255,255,255,.18),var(--vice-cyan)); }
-.boot-index small { color: rgba(255,255,255,.48); font: 500 8px/1 var(--font-mono), monospace; letter-spacing: .16em; writing-mode: vertical-rl; }
 .gta-lore-boot > button {
   position: absolute; z-index: 12; right: clamp(14px,2.2vw,36px); top: clamp(18px,3.1vw,52px); min-height: 42px; padding: 0 1rem; color: rgba(255,255,255,.62);
   border-left: 1px solid rgba(255,255,255,.24); font: 600 9px/1 var(--font-cond), sans-serif; letter-spacing: .18em; text-transform: uppercase;
 }
 .gta-lore-boot > button:hover { color: #fff; border-color: var(--vice-cyan); }
-@keyframes boot-camera { from { transform: scale(1.075) translate3d(0,0,0); } to { transform: scale(1.015) translate3d(-.6%,0,0); } }
-@keyframes boot-shutter-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-@keyframes boot-shutter-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
-@keyframes boot-bar-top { from { transform: translateY(-100%); } to { transform: none; } }
-@keyframes boot-bar-bottom { from { transform: translateY(100%); } to { transform: none; } }
-@keyframes boot-word { to { transform: translateY(0); } }
-@keyframes boot-fade { to { opacity: 1; } }
-@keyframes boot-load { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 @media (max-width: 640px) {
-  .boot-visual { background-position: 72% 50%; }
-  .boot-visual::after { background: linear-gradient(90deg,rgba(4,6,15,.94),rgba(5,7,17,.48) 72%),linear-gradient(180deg,rgba(3,5,13,.46),transparent 32%,rgba(3,5,13,.88)); }
-  .boot-interface { padding-inline: 24px; }
-  .boot-meta { padding-right: 40px; font-size: 7px; letter-spacing: .14em; }
-  .boot-meta span:last-child { display: none; }
-  .boot-copy { left: 24px; top: 47%; width: calc(100vw - 48px); }
-  .boot-kicker { font-size: 7px; letter-spacing: .14em; }
-  .boot-title { font-size: clamp(5.2rem,27vw,8.4rem); }
-  .boot-deck { grid-template-columns: 1fr; width: calc(100vw - 72px); }
-  .boot-deck small { display: none; }
-  .boot-status { left: 24px; right: 24px; bottom: 42px; grid-template-columns: 1fr auto; }
-  .boot-status > span { display: none; }
-  .boot-index { right: 22px; display: none; }
   .gta-lore-boot > button { right: 14px; top: 18px; }
   .gta-lore-boot > button span { display: none; }
 }
@@ -1321,12 +1230,9 @@ body > main, body > footer { position: relative; z-index: 1; }
 }
 @media (max-width: 767px) {
   .home-scroll-cue { display: none; }
-  .boot-sun { width: 84vw; }
-  .boot-copy .boot-title { font-size: clamp(4.2rem, 24vw, 7rem) !important; }
-  .boot-copy > span { max-width: 80vw; line-height: 1.45; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site-aurora, .boot-aurora, .boot-copy > *, .boot-loader i, .home-scroll-cue i::after { animation: none !important; }
+  .site-aurora, .home-scroll-cue i::after { animation: none !important; }
 }
 
 /* Compact footer — all destinations remain available, but the information is
@@ -1512,6 +1418,15 @@ body > main, body > footer { position: relative; z-index: 1; }
   .home-masthead { display: none; }
   .home-hero { min-height: 650px !important; }
   .home-hero-copy { margin-top: 4.5rem !important; }
+}
+
+/* Entre os 1024 e os 1439 a coluna de texto não cabe nesses 650px: os dois
+   botões chegavam à faixa de factos, que está encostada ao fundo da hero, e
+   passavam-lhe por cima. A partir dos 1440 a faixa afasta-se para a direita
+   e o problema desaparece sozinho, por isso a correcção é só desta banda —
+   e leva `!important` porque a regra que a antecede também o leva. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .home-hero { min-height: 790px !important; }
 }
 
 /* ACCOUNT COMMAND MENU — click-driven and consistent at every breakpoint. */
@@ -2063,7 +1978,6 @@ body { background-attachment: scroll; }
     radial-gradient(circle at 96% 62%, rgba(240,68,165,.065), transparent 34vw);
 }
 .site-aurora { display: none; }
-.boot-aurora { filter: none; animation: none; }
 .gta-lore-boot.is-leaving { filter: none; }
 
 /* Isolate fixed decoration from the document and avoid style invalidation on
