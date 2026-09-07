@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
 const REL_BARS = [
@@ -63,10 +64,7 @@ function App() {
 
   if (!c) {
     return (
-      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
-        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
-        <Link href="/database/characters" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO CHARACTERS</Link>
-      </div>
+      <RecordNotFound backHref="/database/characters" backLabel="BACK TO CHARACTERS" />
     )
   }
 

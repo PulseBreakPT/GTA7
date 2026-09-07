@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Imag
 import { regions, locations, confirmedLocationImage } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox, ShortDescription, Hatnote, WhatThisLinks } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 
 export default function RegionPage() {
   const { slug } = useParams()
@@ -15,7 +16,7 @@ export default function RegionPage() {
   const [slide, setSlide] = useState(0)
 
   if (!region) {
-    return <div className="px-6 py-20 text-paper">Region not found.</div>
+    return <RecordNotFound backHref="/map" backLabel="BACK TO THE MAP" />
   }
 
   const gallery = region.gallery?.length ? region.gallery : [region.image]

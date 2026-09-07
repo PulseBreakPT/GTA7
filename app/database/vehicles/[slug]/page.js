@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
@@ -44,10 +45,7 @@ function App() {
 
   if (!v) {
     return (
-      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
-        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
-        <Link href="/database/vehicles" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO GARAGE</Link>
-      </div>
+      <RecordNotFound backHref="/database/vehicles" backLabel="BACK TO GARAGE" />
     )
   }
 

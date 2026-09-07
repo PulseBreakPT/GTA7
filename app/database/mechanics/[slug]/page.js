@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 import { mechanics, characters } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
@@ -24,10 +25,7 @@ export default function MechanicPage() {
 
   if (!m) {
     return (
-      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
-        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
-        <Link href="/database/mechanics" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO MECHANICS</Link>
-      </div>
+      <RecordNotFound backHref="/database/mechanics" backLabel="BACK TO MECHANICS" />
     )
   }
 

@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
 
@@ -35,10 +36,7 @@ function App() {
 
   if (!w) {
     return (
-      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
-        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
-        <Link href="/database/weapons" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO ARSENAL</Link>
-      </div>
+      <RecordNotFound backHref="/database/weapons" backLabel="BACK TO ARSENAL" />
     )
   }
 

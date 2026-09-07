@@ -6,13 +6,14 @@ import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-reac
 import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/content'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 
 export default function LocationPage() {
   const { slug } = useParams()
   const loc = locations.find((item) => item.slug === slug)
 
   if (!loc) {
-    return <div className="px-6 py-20 text-paper">Location not found.</div>
+    return <RecordNotFound backHref="/map" backLabel="BACK TO THE MAP" />
   }
 
   const region = regions.find((r) => r.id === loc.region)
@@ -34,7 +35,7 @@ export default function LocationPage() {
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
 
       <header className="wiki-article-header mt-6">
-        <h1 data-ghost="PLACES" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[64px] text-paper">{loc.name}</h1>
+        <h1 data-ghost="PLACES" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[38px] sm:text-[52px] xl:text-[64px] text-paper">{loc.name}</h1>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <StatusBadge status={loc.status} />
           <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{categoryLabel}</span>

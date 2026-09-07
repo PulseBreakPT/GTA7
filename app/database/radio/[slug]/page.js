@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 import { radioStations } from '@/lib/content'
 
 export default function RadioStationPage() {
@@ -14,10 +15,7 @@ export default function RadioStationPage() {
 
   if (!s) {
     return (
-      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
-        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
-        <Link href="/database/radio" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO THE DIAL</Link>
-      </div>
+      <RecordNotFound backHref="/database/radio" backLabel="BACK TO THE DIAL" />
     )
   }
 

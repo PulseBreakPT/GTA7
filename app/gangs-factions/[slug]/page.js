@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription } from '@/components/site/wiki'
+import { RecordNotFound } from '@/components/site/wiki-entry'
 import { factions } from '@/lib/content'
 
 export default function FactionPage() {
@@ -14,10 +15,7 @@ export default function FactionPage() {
 
   if (!f) {
     return (
-      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
-        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
-        <Link href="/gangs-factions" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO FACTIONS</Link>
-      </div>
+      <RecordNotFound backHref="/gangs-factions" backLabel="BACK TO FACTIONS" />
     )
   }
 
