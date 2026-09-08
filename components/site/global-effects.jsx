@@ -6,6 +6,12 @@ export default function GlobalEffects() {
   const progressRef = useRef(null)
 
   useEffect(() => {
+    const suppressBrowserTimingCloneError = (event) => {
+      if (event.error instanceof DOMException && event.error.name === 'DataCloneError' && event.message?.includes('PerformanceServerTiming')) {
+        event.stopImmediatePropagation()
+        event.preventDefault()
+      }
+    }
     const preventGesture = (event) => event.preventDefault()
     const preventWheelZoom = (event) => {
       if (event.ctrlKey || event.metaKey) event.preventDefault()
@@ -19,12 +25,14 @@ export default function GlobalEffects() {
     document.addEventListener('gesturechange', preventGesture, { passive: false })
     window.addEventListener('wheel', preventWheelZoom, { passive: false })
     window.addEventListener('keydown', preventKeyboardZoom)
+    window.addEventListener('error', suppressBrowserTimingCloneError, true)
 
     return () => {
       document.removeEventListener('gesturestart', preventGesture)
       document.removeEventListener('gesturechange', preventGesture)
       window.removeEventListener('wheel', preventWheelZoom)
       window.removeEventListener('keydown', preventKeyboardZoom)
+      window.removeEventListener('error', suppressBrowserTimingCloneError, true)
     }
   }, [])
 

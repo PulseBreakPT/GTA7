@@ -4,11 +4,16 @@ import { getDb } from '@/lib/server/mongo'
 import {
   AuthError, attachSessionCookie, audit, authBaseUrl, authFromRequest,
   DEFAULT_WIKI_PREFERENCES,
-  burnPasswordAttempt, clearAuthCookies, consumeOneTimeToken, createSession, ensureAuthIndexes,
-  ensureCsrf, findOneTimeToken, hashPassword, issueOneTimeToken, passwordProblems, publicUser, rateLimit,
+  botChallenge, burnPasswordAttempt, clearAuthCookies, consumeOneTimeToken, createSession, emailLookup, encryptedEmail, ensureAuthIndexes,
+  ensureCsrf, findOneTimeToken, hashPassword, issueOneTimeToken, passwordHashNeedsUpgrade, passwordProblems, publicUser, rateLimit,
+  requireBotChallenge, revealUserEmail,
   requireAuth, requireRole, revokeSession, revokeUserSessions, sendAuthEmail, sessionView,
   validateIdentity, validateMutationRequest, validateUsername, verifyPassword, wikiPreferences,
 } from '@/lib/server/auth'
+import {
+  assertAllowedFields, cleanText, contributionDetails, privateNoteBody,
+  protectContributionDetails, protectPrivateNote, protectReviewNote, reviewNoteBody,
+} from '@/lib/server/security'
 import { entryFor } from '@/lib/wiki-graph'
 import { LEGAL_VERSION } from '@/lib/legal'
 
@@ -16,12 +21,60 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const DAY = 86_400_000
+const MAX_JSON_BYTES = 32_768
+
+const POST_FIELDS = Object.freeze({
+  register: ['email', 'username', 'displayName', 'password', 'confirmPassword', 'remember', 'termsAccepted', 'website', '_challenge'],
+  login: ['identifier', 'password', 'remember', 'website', '_challenge'],
+  logout: [], 'logout-all': [],
+  'forgot-password': ['email', 'website', '_challenge'],
+  'reset-password': ['token', 'password'],
+  'verify-email': ['token'],
+  'resend-verification': [],
+  watch: ['kind', 'slug', 'watching'],
+  'page-view': ['kind', 'slug'],
+  'history-clear': [],
+  'watch-pin': ['kind', 'slug', 'pinned'],
+  'collection-create': ['name', 'description', 'color'],
+  'collection-delete': ['collectionId'],
+  'collection-item': ['kind', 'slug', 'collectionId', 'saved'],
+  note: ['kind', 'slug', 'body'],
+  suggestion: ['kind', 'slug', 'type', 'summary', 'details', 'sourceUrl'],
+  'notifications-read': [],
+  'suggestion-review': ['id', 'status', 'reviewNote'],
+  'change-password': ['currentPassword', 'password'],
+  'delete-account': ['confirmation', 'currentPassword'],
+})
+
+const PATCH_FIELDS = Object.freeze({
+  preferences: ['publicProfile', 'recordHistory', 'compactMode'],
+  profile: ['displayName', 'username', 'bio'],
+})
+
+function validateFields(route, data, method) {
+  const allowed = method === 'PATCH' ? PATCH_FIELDS[route] : POST_FIELDS[route]
+  if (!allowed) return
+  try { assertAllowedFields(data, allowed) }
+  catch { throw new AuthError('Request contains unsupported fields.', 400, 'UNSUPPORTED_FIELDS') }
+}
+
+function textInput(value, options) {
+  try { return cleanText(value, options) }
+  catch (error) { throw new AuthError(error.message, 400, 'INVALID_INPUT') }
+}
+
+function booleanInput(value, label) {
+  if (typeof value !== 'boolean') throw new AuthError(`${label} must be true or false.`, 400, 'INVALID_INPUT')
+  return value
+}
 
 function response(data, status = 200) {
   const result = NextResponse.json(data, { status })
   result.headers.set('Cache-Control', 'no-store, max-age=0')
   result.headers.set('Pragma', 'no-cache')
   result.headers.set('Vary', 'Cookie')
+  result.headers.set('X-Request-ID', randomUUID())
+  result.headers.set('X-Content-Type-Options', 'nosniff')
   return result
 }
 
@@ -35,10 +88,13 @@ function clientIp(request) {
 
 async function bodyOf(request) {
   try {
-    const value = await request.json()
+    const source = await request.text()
+    if (Buffer.byteLength(source, 'utf8') > MAX_JSON_BYTES) throw new AuthError('Request is too large.', 413, 'REQUEST_TOO_LARGE')
+    const value = JSON.parse(source)
     if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('invalid')
     return value
-  } catch {
+  } catch (error) {
+    if (error instanceof AuthError) throw error
     throw new AuthError('Invalid JSON body.', 400, 'INVALID_BODY')
   }
 }
@@ -46,8 +102,9 @@ async function bodyOf(request) {
 function authFailure(error) {
   if (error instanceof AuthError) return response({ ok: false, error: error.message, code: error.code }, error.status)
   if (error?.code === 11000) return response({ ok: false, error: 'That email or username is unavailable.', code: 'IDENTITY_UNAVAILABLE' }, 409)
-  console.error('Authentication service error', error)
-  return response({ ok: false, error: 'Authentication service unavailable.', code: 'AUTH_UNAVAILABLE' }, 500)
+  const incident = randomUUID()
+  console.error(JSON.stringify({ level: 'error', event: 'auth.service_failure', incident, type: error?.name || 'Error' }))
+  return response({ ok: false, error: 'Authentication service unavailable.', code: 'AUTH_UNAVAILABLE', incident }, 500)
 }
 
 function requestedEntry(data) {
@@ -59,6 +116,21 @@ function requestedEntry(data) {
 }
 
 const cleanWikiRecord = ({ _id, userId, ...record }) => record
+const cleanPrivateNote = (record) => {
+  const clean = cleanWikiRecord(record)
+  const body = privateNoteBody(clean)
+  delete clean.bodyEncrypted
+  return { ...clean, body }
+}
+const cleanSuggestion = (record) => {
+  const clean = cleanWikiRecord(record)
+  const details = contributionDetails(clean)
+  const reviewNote = reviewNoteBody(clean)
+  delete clean.detailsEncrypted
+  delete clean.reviewNoteEncrypted
+  delete clean.reviewerId
+  return { ...clean, details, reviewNote }
+}
 
 function safeSourceUrl(value) {
   const sourceUrl = String(value || '').trim()
@@ -66,7 +138,7 @@ function safeSourceUrl(value) {
   if (sourceUrl.length > 800) throw new AuthError('Source URL is too long.', 400, 'INVALID_SOURCE')
   try {
     const parsed = new URL(sourceUrl)
-    const isRockstar = parsed.protocol === 'https:' && (parsed.hostname === 'rockstargames.com' || parsed.hostname.endsWith('.rockstargames.com'))
+    const isRockstar = parsed.protocol === 'https:' && !parsed.username && !parsed.password && !parsed.port && (parsed.hostname === 'rockstargames.com' || parsed.hostname.endsWith('.rockstargames.com'))
     if (!isRockstar) throw new Error('source')
     return parsed.toString()
   } catch {
@@ -92,7 +164,7 @@ async function sendVerification(request, user) {
   const rawToken = await issueOneTimeToken(user.id, 'verify-email', DAY)
   const url = `${authBaseUrl(request)}/verify-email?token=${encodeURIComponent(rawToken)}`
   return sendAuthEmail({
-    to: user.email,
+    to: revealUserEmail(user),
     subject: 'Verify your GTA LORE account',
     heading: 'Verify your archive identity',
     message: 'Confirm this email address to mark your GTA LORE account as verified. This link expires in 24 hours.',
@@ -105,6 +177,7 @@ export async function GET(request, { params }) {
   try {
     const route = (await pathOf(params)).join('/')
     await ensureAuthIndexes()
+    await rateLimit('auth-read-ip', `${clientIp(request)}:${route}`, route === 'session' ? 600 : 240, 15 * 60_000)
 
     if (route === 'session') {
       const auth = await authFromRequest(request)
@@ -115,6 +188,7 @@ export async function GET(request, { params }) {
         user: publicUser(auth?.user),
         session: auth ? sessionView(auth.session, auth.session.id) : null,
         csrfToken,
+        botChallenge: botChallenge(csrfToken),
         capabilities: { emailDelivery: Boolean(process.env.RESEND_API_KEY && process.env.AUTH_EMAIL_FROM) },
       })
       carrier.cookies.getAll().forEach((cookie) => result.cookies.set(cookie))
@@ -194,12 +268,12 @@ export async function GET(request, { params }) {
         ok: true,
         watchlist: watchlist.map(cleanWikiRecord),
         history: history.map(cleanWikiRecord),
-        suggestions: suggestions.map(cleanWikiRecord),
-        reviewQueue: reviewQueue.map(cleanWikiRecord),
+        suggestions: suggestions.map(cleanSuggestion),
+        reviewQueue: reviewQueue.map(cleanSuggestion),
         notifications: notifications.slice(0, 80),
         collections: collections.map(cleanWikiRecord),
         collectionItems: collectionItems.map(cleanWikiRecord),
-        notes: notes.map(cleanWikiRecord),
+        notes: notes.map(cleanPrivateNote),
         metrics,
         achievements: achievementsFor(auth.user, metrics),
         preferences,
@@ -214,10 +288,16 @@ export async function GET(request, { params }) {
         { userId: auth.user.id },
         { projection: { _id: 0, userId: 0, reviewerId: 0 } },
       ).limit(2_000).toArray()))
+      const exported = Object.fromEntries(collectionNames.map((name, index) => {
+        const rows = name === 'wiki_notes' ? records[index].map(cleanPrivateNote)
+          : name === 'wiki_suggestions' ? records[index].map(cleanSuggestion)
+            : records[index]
+        return [name.replace('wiki_', ''), rows]
+      }))
       const result = response({
         exportedAt: new Date(),
         profile: publicUser(auth.user),
-        data: Object.fromEntries(collectionNames.map((name, index) => [name.replace('wiki_', ''), records[index]])),
+        data: exported,
       })
       result.headers.set('Content-Disposition', `attachment; filename="gta-lore-${auth.user.username}-export.json"`)
       return result
@@ -234,18 +314,22 @@ export async function POST(request, { params }) {
     validateMutationRequest(request)
     const route = (await pathOf(params)).join('/')
     const data = await bodyOf(request)
+    validateFields(route, data, 'POST')
     const ip = clientIp(request)
     const db = await ensureAuthIndexes()
+    if (['register', 'login', 'forgot-password'].includes(route)) requireBotChallenge(data, request.headers.get('x-csrf-token'))
 
     if (route === 'register') {
       await rateLimit('register-ip', ip, 5, 60 * 60_000)
       if (data.termsAccepted !== true) throw new AuthError('Accept the Terms of Use and acknowledge the Privacy Notice to create an account.', 400, 'TERMS_REQUIRED')
       const identity = validateIdentity(data)
+      if (data.confirmPassword !== undefined && data.confirmPassword !== data.password) throw new AuthError('Passwords do not match.', 400, 'PASSWORD_MISMATCH')
       const problems = passwordProblems(data.password, identity)
       if (problems.length) throw new AuthError(problems[0], 400, 'WEAK_PASSWORD')
+      const protectedEmail = encryptedEmail(identity.email)
 
       const existing = await db.collection('auth_users').findOne({
-        $or: [{ emailNormalized: identity.emailNormalized }, { usernameNormalized: identity.usernameNormalized }],
+        $or: [{ emailNormalized: { $in: [protectedEmail.emailNormalized, identity.emailNormalized] } }, { usernameNormalized: identity.usernameNormalized }],
       }, { projection: { emailNormalized: 1, usernameNormalized: 1 } })
       if (existing) {
         await burnPasswordAttempt(data.password)
@@ -254,8 +338,10 @@ export async function POST(request, { params }) {
       }
 
       const now = new Date()
+      const identityWithoutEmail = { ...identity }
+      delete identityWithoutEmail.email
       const user = {
-        id: randomUUID(), ...identity,
+        id: randomUUID(), ...identityWithoutEmail, ...protectedEmail,
         passwordHash: await hashPassword(data.password),
         bio: '', role: 'reader', status: 'active', emailVerifiedAt: null,
         wikiPreferences: { ...DEFAULT_WIKI_PREFERENCES }, notificationsReadAt: new Date(0),
@@ -265,7 +351,7 @@ export async function POST(request, { params }) {
       }
       await db.collection('auth_users').insertOne(user)
       const verificationSent = await sendVerification(request, user).catch(() => false)
-      const { rawToken, session } = await createSession(user.id, request, Boolean(data.remember))
+      const { rawToken, session } = await createSession(user.id, request, data.remember == null ? false : booleanInput(data.remember, 'Remember'))
       await audit(request, { userId: user.id, action: 'account.created', metadata: { verificationSent } })
       const result = response({ ok: true, user: publicUser(user), session: sessionView(session, session.id), verificationSent }, 201)
       attachSessionCookie(result, rawToken, session.expiresAt)
@@ -273,7 +359,7 @@ export async function POST(request, { params }) {
     }
 
     if (route === 'login') {
-      const identifier = String(data.identifier || '').trim().toLowerCase()
+      const identifier = textInput(data.identifier, { min: 1, max: 254, label: 'Email or username' }).toLowerCase()
       const suppliedPassword = typeof data.password === 'string' ? data.password : ''
       const passwordAcceptable = Array.from(suppliedPassword).length > 0 && Array.from(suppliedPassword).length <= 128 && identifier.length <= 254
       const password = passwordAcceptable ? suppliedPassword : suppliedPassword.slice(0, 128)
@@ -281,9 +367,11 @@ export async function POST(request, { params }) {
         rateLimit('login-ip', ip, 60, 15 * 60_000),
         rateLimit('login-account', `${ip}:${identifier}`, 10, 15 * 60_000),
       ])
-      const user = await db.collection('auth_users').findOne({
-        $or: [{ emailNormalized: identifier }, { usernameNormalized: identifier }],
-      })
+      const lookup = emailLookup(identifier)
+      const user = await db.collection('auth_users').findOne({ $or: [
+        { emailNormalized: { $in: [lookup.protectedValue, lookup.normalized] } },
+        { usernameNormalized: identifier },
+      ] })
       const checkedPassword = user ? await verifyPassword(password, user.passwordHash) : await burnPasswordAttempt(password)
       const validPassword = passwordAcceptable && checkedPassword
       const locked = user?.lockedUntil && new Date(user.lockedUntil) > new Date()
@@ -298,9 +386,15 @@ export async function POST(request, { params }) {
       }
 
       const now = new Date()
-      await db.collection('auth_users').updateOne({ id: user.id }, { $set: { failedLoginCount: 0, lockedUntil: null, lastLoginAt: now, updatedAt: now } })
+      const securityUpgrade = {}
+      if (user.email && !user.emailEncrypted) Object.assign(securityUpgrade, encryptedEmail(user.email))
+      if (passwordHashNeedsUpgrade(user.passwordHash)) securityUpgrade.passwordHash = await hashPassword(password)
+      const update = { failedLoginCount: 0, lockedUntil: null, lastLoginAt: now, updatedAt: now, ...securityUpgrade }
+      await db.collection('auth_users').updateOne({ id: user.id }, { $set: update, ...(user.email ? { $unset: { email: '' } } : {}) })
+      Object.assign(user, update)
+      if (user.email) delete user.email
       user.lastLoginAt = now
-      const { rawToken, session } = await createSession(user.id, request, Boolean(data.remember))
+      const { rawToken, session } = await createSession(user.id, request, data.remember == null ? false : booleanInput(data.remember, 'Remember'))
       await audit(request, { userId: user.id, action: 'session.login' })
       const result = response({ ok: true, user: publicUser(user), session: sessionView(session, session.id) })
       attachSessionCookie(result, rawToken, session.expiresAt)
@@ -328,17 +422,18 @@ export async function POST(request, { params }) {
     }
 
     if (route === 'forgot-password') {
-      const email = String(data.email || '').trim().toLowerCase()
+      const email = textInput(data.email, { min: 3, max: 254, label: 'Email' }).toLowerCase()
+      const lookup = emailLookup(email)
       await Promise.all([
         rateLimit('recovery-ip', ip, 8, 60 * 60_000),
         rateLimit('recovery-account', email, 3, 60 * 60_000),
       ])
-      const user = await db.collection('auth_users').findOne({ emailNormalized: email, status: 'active' })
+      const user = await db.collection('auth_users').findOne({ emailNormalized: { $in: [lookup.protectedValue, lookup.normalized] }, status: 'active' })
       if (user) {
         const rawToken = await issueOneTimeToken(user.id, 'reset-password', 60 * 60_000)
         const url = `${authBaseUrl(request)}/reset-password?token=${encodeURIComponent(rawToken)}`
         const sent = await sendAuthEmail({
-          to: user.email, subject: 'Reset your GTA LORE password', heading: 'Reset your password',
+          to: revealUserEmail(user), subject: 'Reset your GTA LORE password', heading: 'Reset your password',
           message: 'Use this one-time link to choose a new password. It expires in one hour and invalidates after use.',
           actionLabel: 'Reset password', actionUrl: url,
           idempotencyKey: `reset-${user.id}-${Date.now()}`,
@@ -357,7 +452,7 @@ export async function POST(request, { params }) {
       if (!record) throw new AuthError('This recovery link is invalid or expired.', 400, 'INVALID_TOKEN')
       const user = await db.collection('auth_users').findOne({ id: record.userId, status: 'active' })
       if (!user) throw new AuthError('This recovery link is invalid or expired.', 400, 'INVALID_TOKEN')
-      const problems = passwordProblems(data.password, user)
+      const problems = passwordProblems(data.password, { email: revealUserEmail(user), username: user.username })
       if (problems.length) throw new AuthError(problems[0], 400, 'WEAK_PASSWORD')
       const passwordHash = await hashPassword(data.password)
       const consumed = await consumeOneTimeToken(resetToken, 'reset-password')
@@ -395,7 +490,7 @@ export async function POST(request, { params }) {
       const auth = await requireAuth(request)
       await rateLimit('wiki-watch', `${ip}:${auth.user.id}`, 400, DAY)
       const { entry, key } = requestedEntry(data)
-      const watching = Boolean(data.watching)
+      const watching = booleanInput(data.watching, 'Watching')
       if (watching) {
         await db.collection('wiki_watchlist').updateOne(
           { userId: auth.user.id, key },
@@ -438,7 +533,7 @@ export async function POST(request, { params }) {
     if (route === 'watch-pin') {
       const auth = await requireAuth(request)
       const { key } = requestedEntry(data)
-      const pinned = Boolean(data.pinned)
+      const pinned = booleanInput(data.pinned, 'Pinned')
       const result = await db.collection('wiki_watchlist').updateOne({ userId: auth.user.id, key }, { $set: { pinned } })
       if (!result.matchedCount) throw new AuthError('Watch this page before pinning it.', 409, 'NOT_WATCHED')
       return response({ ok: true, pinned, message: pinned ? 'Page pinned.' : 'Page unpinned.' })
@@ -447,11 +542,9 @@ export async function POST(request, { params }) {
     if (route === 'collection-create') {
       const auth = await requireAuth(request)
       await rateLimit('wiki-collection', `${ip}:${auth.user.id}`, 50, DAY)
-      const name = String(data.name || '').trim()
-      const description = String(data.description || '').trim()
+      const name = textInput(data.name, { min: 2, max: 40, label: 'Collection name' })
+      const description = textInput(data.description, { min: 0, max: 160, label: 'Collection description' })
       const color = ['mint', 'violet', 'pink', 'sunset', 'ocean'].includes(data.color) ? data.color : 'violet'
-      if (name.length < 2 || name.length > 40) throw new AuthError('Collection name must be 2–40 characters.', 400, 'INVALID_COLLECTION')
-      if (description.length > 160) throw new AuthError('Collection description must be 160 characters or fewer.', 400, 'INVALID_COLLECTION')
       const now = new Date()
       const collection = { id: randomUUID(), userId: auth.user.id, name, nameNormalized: name.toLowerCase(), description, color, createdAt: now, updatedAt: now }
       await db.collection('wiki_collections').insertOne(collection)
@@ -461,7 +554,8 @@ export async function POST(request, { params }) {
 
     if (route === 'collection-delete') {
       const auth = await requireAuth(request)
-      const collectionId = String(data.collectionId || '').slice(0, 80)
+      const collectionId = textInput(data.collectionId, { min: 36, max: 36, label: 'Collection identifier' })
+      if (!/^[0-9a-f-]{36}$/i.test(collectionId)) throw new AuthError('Collection not found.', 404, 'COLLECTION_NOT_FOUND')
       const owned = await db.collection('wiki_collections').findOne({ id: collectionId, userId: auth.user.id }, { projection: { _id: 1 } })
       if (!owned) throw new AuthError('Collection not found.', 404, 'COLLECTION_NOT_FOUND')
       await Promise.all([
@@ -476,10 +570,11 @@ export async function POST(request, { params }) {
       const auth = await requireAuth(request)
       await rateLimit('wiki-collection-item', `${ip}:${auth.user.id}`, 800, DAY)
       const { entry, key } = requestedEntry(data)
-      const collectionId = String(data.collectionId || '').slice(0, 80)
+      const collectionId = textInput(data.collectionId, { min: 36, max: 36, label: 'Collection identifier' })
+      if (!/^[0-9a-f-]{36}$/i.test(collectionId)) throw new AuthError('Collection not found.', 404, 'COLLECTION_NOT_FOUND')
       const owned = await db.collection('wiki_collections').findOne({ id: collectionId, userId: auth.user.id }, { projection: { _id: 1 } })
       if (!owned) throw new AuthError('Collection not found.', 404, 'COLLECTION_NOT_FOUND')
-      const saved = Boolean(data.saved)
+      const saved = booleanInput(data.saved, 'Saved')
       if (saved) {
         await db.collection('wiki_collection_items').updateOne(
           { userId: auth.user.id, collectionId, key },
@@ -496,8 +591,7 @@ export async function POST(request, { params }) {
       const auth = await requireAuth(request)
       await rateLimit('wiki-note', `${ip}:${auth.user.id}`, 500, DAY)
       const { entry, key } = requestedEntry(data)
-      const body = String(data.body || '').trim()
-      if (body.length > 3_000) throw new AuthError('Private notes must be 3,000 characters or fewer.', 400, 'INVALID_NOTE')
+      const body = textInput(data.body, { min: 0, max: 3_000, multiline: true, label: 'Private note' })
       if (!body) {
         await db.collection('wiki_notes').deleteOne({ userId: auth.user.id, key })
         return response({ ok: true, deleted: true, message: 'Private note deleted.' })
@@ -505,7 +599,7 @@ export async function POST(request, { params }) {
       const now = new Date()
       await db.collection('wiki_notes').updateOne(
         { userId: auth.user.id, key },
-        { $set: { body, kind: entry.kind, slug: entry.slug, title: entry.name, href: entry.href, updatedAt: now }, $setOnInsert: { id: randomUUID(), userId: auth.user.id, key, createdAt: now } },
+        { $set: { bodyEncrypted: protectPrivateNote(body), kind: entry.kind, slug: entry.slug, title: entry.name, href: entry.href, updatedAt: now }, $unset: { body: '' }, $setOnInsert: { id: randomUUID(), userId: auth.user.id, key, createdAt: now } },
         { upsert: true },
       )
       await audit(request, { userId: auth.user.id, action: 'wiki.note_saved', metadata: { key } })
@@ -517,21 +611,19 @@ export async function POST(request, { params }) {
       await rateLimit('wiki-suggestion', `${ip}:${auth.user.id}`, 12, DAY)
       const { entry, key } = requestedEntry(data)
       const type = ['correction', 'source', 'expansion', 'typo'].includes(data.type) ? data.type : 'correction'
-      const summary = String(data.summary || '').trim()
-      const details = String(data.details || '').trim()
-      if (summary.length < 8 || summary.length > 160) throw new AuthError('Summary must be 8–160 characters.', 400, 'INVALID_SUMMARY')
-      if (details.length < 20 || details.length > 4_000) throw new AuthError('Details must be 20–4,000 characters.', 400, 'INVALID_DETAILS')
+      const summary = textInput(data.summary, { min: 8, max: 160, label: 'Summary' })
+      const details = textInput(data.details, { min: 20, max: 4_000, multiline: true, label: 'Details' })
       const sourceUrl = safeSourceUrl(data.sourceUrl)
       if (type !== 'typo' && !sourceUrl) throw new AuthError('Evidence-based suggestions require an official Rockstar Games URL.', 400, 'SOURCE_REQUIRED')
       const now = new Date()
       const suggestion = {
         id: randomUUID(), userId: auth.user.id, key, kind: entry.kind, slug: entry.slug,
-        title: entry.name, href: entry.href, type, summary, details, sourceUrl,
+        title: entry.name, href: entry.href, type, summary, detailsEncrypted: protectContributionDetails(details), sourceUrl,
         status: 'pending', createdAt: now, updatedAt: now,
       }
       await db.collection('wiki_suggestions').insertOne(suggestion)
       await audit(request, { userId: auth.user.id, action: 'wiki.suggestion_submitted', metadata: { key, suggestionId: suggestion.id } })
-      return response({ ok: true, suggestion: cleanWikiRecord(suggestion), message: 'Suggestion submitted to the editorial queue.' }, 201)
+      return response({ ok: true, suggestion: cleanSuggestion(suggestion), message: 'Suggestion submitted to the editorial queue.' }, 201)
     }
 
     if (route === 'notifications-read') {
@@ -544,14 +636,14 @@ export async function POST(request, { params }) {
     if (route === 'suggestion-review') {
       const reviewer = await requireRole(request, ['editor', 'moderator', 'admin'])
       await rateLimit('wiki-review', `${ip}:${reviewer.user.id}`, 300, DAY)
-      const id = String(data.id || '').slice(0, 80)
+      const id = textInput(data.id, { min: 36, max: 36, label: 'Suggestion identifier' })
       const status = ['accepted', 'rejected'].includes(data.status) ? data.status : ''
-      const reviewNote = String(data.reviewNote || '').trim().slice(0, 500)
+      const reviewNote = textInput(data.reviewNote, { min: 0, max: 500, multiline: true, label: 'Review note' })
       if (!id || !status) throw new AuthError('Choose a valid review decision.', 400, 'INVALID_REVIEW')
       const updatedAt = new Date()
       const result = await db.collection('wiki_suggestions').updateOne(
         { id, status: 'pending' },
-        { $set: { status, reviewNote, reviewerId: reviewer.user.id, updatedAt } },
+        { $set: { status, reviewNoteEncrypted: protectReviewNote(reviewNote), reviewerId: reviewer.user.id, updatedAt }, $unset: { reviewNote: '' } },
       )
       if (!result.matchedCount) throw new AuthError('Suggestion is no longer pending.', 409, 'REVIEW_CONFLICT')
       await audit(request, { userId: reviewer.user.id, action: `wiki.suggestion_${status}`, metadata: { suggestionId: id } })
@@ -563,7 +655,7 @@ export async function POST(request, { params }) {
       await rateLimit('password-change', `${ip}:${auth.user.id}`, 8, 60 * 60_000)
       const currentPassword = typeof data.currentPassword === 'string' && data.currentPassword.length <= 128 ? data.currentPassword : ''
       if (!await verifyPassword(currentPassword, auth.user.passwordHash)) throw new AuthError('Current password is incorrect.', 403, 'REAUTH_FAILED')
-      const problems = passwordProblems(data.password, auth.user)
+      const problems = passwordProblems(data.password, { email: revealUserEmail(auth.user), username: auth.user.username })
       if (problems.length) throw new AuthError(problems[0], 400, 'WEAK_PASSWORD')
       if (await verifyPassword(data.password, auth.user.passwordHash)) throw new AuthError('Choose a password you have not just used.', 400, 'PASSWORD_REUSED')
       const now = new Date()
@@ -607,14 +699,16 @@ export async function PATCH(request, { params }) {
     validateMutationRequest(request)
     const route = (await pathOf(params)).join('/')
     const data = await bodyOf(request)
+    validateFields(route, data, 'PATCH')
     const auth = await requireAuth(request)
     const db = await getDb()
+    await rateLimit('auth-patch', `${clientIp(request)}:${auth.user.id}`, 180, 15 * 60_000)
     if (route === 'preferences') {
       const previous = wikiPreferences(auth.user)
       const preferences = {
-        publicProfile: Boolean(data.publicProfile),
-        recordHistory: Boolean(data.recordHistory),
-        compactMode: Boolean(data.compactMode),
+        publicProfile: booleanInput(data.publicProfile, 'Public profile'),
+        recordHistory: booleanInput(data.recordHistory, 'Reading history'),
+        compactMode: booleanInput(data.compactMode, 'Compact mode'),
       }
       const updatedAt = new Date()
       await db.collection('auth_users').updateOne({ id: auth.user.id }, { $set: { wikiPreferences: preferences, updatedAt } })
@@ -623,11 +717,9 @@ export async function PATCH(request, { params }) {
       return response({ ok: true, user: publicUser({ ...auth.user, wikiPreferences: preferences, updatedAt }), preferences, message: 'Wiki preferences saved.' })
     }
     if (route !== 'profile') return response({ ok: false, error: 'Authentication route not found.', code: 'NOT_FOUND' }, 404)
-    const displayName = String(data.displayName || '').trim()
+    const displayName = textInput(data.displayName, { min: 2, max: 50, label: 'Display name' })
     const { username, usernameNormalized } = validateUsername(data.username)
-    const bio = String(data.bio || '').trim()
-    if (displayName.length < 2 || displayName.length > 50) throw new AuthError('Display name must be 2–50 characters.', 400, 'INVALID_DISPLAY_NAME')
-    if (bio.length > 240) throw new AuthError('Bio must be 240 characters or fewer.', 400, 'INVALID_BIO')
+    const bio = textInput(data.bio, { min: 0, max: 240, multiline: true, label: 'Bio' })
     const collision = await db.collection('auth_users').findOne({ usernameNormalized, id: { $ne: auth.user.id } }, { projection: { id: 1 } })
     if (collision) throw new AuthError('That username is unavailable.', 409, 'USERNAME_UNAVAILABLE')
     const updatedAt = new Date()
@@ -647,7 +739,9 @@ export async function DELETE(request, { params }) {
     if (parts[0] !== 'sessions' || !parts[1]) return response({ ok: false, error: 'Authentication route not found.', code: 'NOT_FOUND' }, 404)
     const auth = await requireAuth(request)
     const db = await getDb()
-    const sessionId = parts[1]
+    await rateLimit('auth-delete', `${clientIp(request)}:${auth.user.id}`, 120, 15 * 60_000)
+    const sessionId = String(parts[1])
+    if (!/^[0-9a-f-]{36}$/i.test(sessionId)) throw new AuthError('Session not found.', 404, 'SESSION_NOT_FOUND')
     const target = await db.collection('auth_sessions').findOne({ id: sessionId, userId: auth.user.id })
     if (target) await db.collection('auth_sessions').deleteOne({ id: sessionId, userId: auth.user.id })
     await audit(request, { userId: auth.user.id, action: 'session.revoked', metadata: { current: sessionId === auth.session.id } })

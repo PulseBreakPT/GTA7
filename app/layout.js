@@ -56,9 +56,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        <script dangerouslySetInnerHTML={{__html:'window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);'}} />
-      </head>
       <body className={`${cond.variable} ${inter.variable} ${mono.variable} gta-lore-fx-root font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
         <Providers>
           {/* Atalho para saltar direito ao conteúdo. Fica fora de vista
