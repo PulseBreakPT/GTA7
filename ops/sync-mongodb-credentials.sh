@@ -18,39 +18,46 @@ set -a
 . /opt/leonida/.env
 set +a
 
-export ALVO_DB="$DB_NAME"
-# A palavra-passe vem percent-codificada dentro do endereco — o gerador usa
-# base64, que traz +, / e =. O cliente descodifica-a antes de autenticar,
-# por isso e a forma descodificada que tem de ficar no servidor. Alinhar
-# pela forma codificada foi o que fez a primeira tentativa desta correcao
-# continuar a falhar.
-export ALVO_PWD="$(python3 -c "
-import os, urllib.parse
-print(urllib.parse.unquote(urllib.parse.urlsplit(os.environ['MONGO_URL']).password or ''))
-")"
-export ALVO_USER="$(python3 -c "
-import os, urllib.parse
-print(urllib.parse.unquote(urllib.parse.urlsplit(os.environ['MONGO_URL']).username or ''))
-")"
+# O guiao com a palavra-passe vive num ficheiro temporario so do dono e
+# desaparece mesmo que isto falhe a meio.
+GUIAO="$(mktemp)"
+chmod 0600 "$GUIAO"
+trap 'rm -f -- "$GUIAO"' EXIT
 
-test -n "$ALVO_USER" && test -n "$ALVO_PWD" || {
-  echo 'O MONGO_URL nao traz utilizador e palavra-passe.' >&2
-  exit 1
-}
+# A palavra-passe nunca passa pelo ambiente nem pela linha de comando: uma
+# variavel exportada fica legivel em /proc para todo o processo que herde
+# este, e os argumentos aparecem no `ps` de qualquer utilizador da maquina.
+# Vai por stdin, que so o processo destinatario le.
+#
+# Quanto ao valor: vem percent-codificado dentro do endereco, porque o
+# gerador usa base64 e traz +, / e =. O cliente descodifica-o antes de
+# autenticar, por isso e a forma descodificada que tem de ficar no servidor.
+# Alinhar pela forma codificada foi o que fez a primeira tentativa desta
+# correccao continuar a falhar.
+MONGO_URL="$MONGO_URL" DB_NAME="$DB_NAME" python3 <<'PY' > "$GUIAO"
+import json, os, urllib.parse
+partes = urllib.parse.urlsplit(os.environ['MONGO_URL'])
+utilizador = urllib.parse.unquote(partes.username or '')
+palavra = urllib.parse.unquote(partes.password or '')
+if not utilizador or not palavra:
+    raise SystemExit('O MONGO_URL nao traz utilizador e palavra-passe.')
+print(f'''
+const alvo = db.getSiblingDB({json.dumps(os.environ['DB_NAME'])})
+const utilizador = {json.dumps(utilizador)}
+const papeis = [{{ role: "readWrite", db: {json.dumps(os.environ['DB_NAME'])} }}]
+if (alvo.getUser(utilizador)) {{
+  alvo.updateUser(utilizador, {{ pwd: {json.dumps(palavra)}, roles: papeis }})
+  print("utilizador " + utilizador + ": palavra-passe alinhada com o ambiente")
+}} else {{
+  alvo.createUser({{ user: utilizador, pwd: {json.dumps(palavra)}, roles: papeis }})
+  print("utilizador " + utilizador + ": criado")
+}}
+''')
+PY
 
 # Sem credenciais: a autenticacao esta desligada no servidor, e e por isso
 # que ainda se consegue corrigir isto.
-mongosh --quiet --eval '
-const alvo = db.getSiblingDB(process.env.ALVO_DB)
-const papeis = [{ role: "readWrite", db: process.env.ALVO_DB }]
-if (alvo.getUser(process.env.ALVO_USER)) {
-  alvo.updateUser(process.env.ALVO_USER, { pwd: process.env.ALVO_PWD, roles: papeis })
-  print("utilizador " + process.env.ALVO_USER + ": palavra-passe alinhada com o ambiente")
-} else {
-  alvo.createUser({ user: process.env.ALVO_USER, pwd: process.env.ALVO_PWD, roles: papeis })
-  print("utilizador " + process.env.ALVO_USER + ": criado")
-}
-'
+mongosh --quiet < "$GUIAO"
 
 echo -n 'verificacao: '
 if mongosh --quiet "$MONGO_URL" --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; then

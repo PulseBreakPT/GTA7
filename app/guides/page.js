@@ -32,7 +32,7 @@ function App() {
         </CategoryHeader>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
         {guides.map((g) => (
           <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors flex flex-col">
             <div className="relative aspect-[16/7] overflow-hidden">

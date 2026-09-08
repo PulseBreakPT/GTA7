@@ -5635,3 +5635,174 @@ time { font-family: var(--type-code); font-variant-numeric: tabular-nums slashed
   .wiki-news-paper { padding: 1.15rem 1rem !important; }
   .article-inline-toc ol { grid-template-columns: 1fr; }
 }
+
+/* ========================================================================== */
+/* HIGH-DENSITY EDITORIAL RHYTHM                                              */
+/* Reduce dead space without shrinking type, tap targets or image evidence.   */
+/* Off-screen sections also reserve realistic heights instead of a blanket    */
+/* 520px, which previously looked like empty content while scrolling.          */
+/* ========================================================================== */
+:root {
+  --wiki-section-space: clamp(1.35rem, 2.2vw, 2.15rem);
+  --route-block-space: clamp(.9rem, 1.6vw, 1.35rem);
+}
+
+.home-section { contain-intrinsic-size: auto 420px; }
+.home-intents,
+#explore-the-wiki { contain-intrinsic-size: auto 300px; }
+.wiki-content-section { contain-intrinsic-size: auto 220px; }
+.wiki-support-panel,
+.wiki-references { contain-intrinsic-size: auto 110px; }
+
+/* Route gutters stay responsive; only excess vertical canvas is removed. */
+.site-frame > main > :is(.ambient-bloom, article.ambient-bloom, main[class*="max-w-"]),
+.site-frame > main > .flex-1 > .ambient-bloom {
+  padding-top: var(--route-block-space) !important;
+  padding-bottom: var(--route-block-space) !important;
+}
+
+.wiki-breadcrumb { padding-block: .38rem; }
+.wiki-category-header {
+  margin-top: .65rem !important;
+  padding: clamp(.8rem, 1.5vw, 1.15rem) clamp(1rem, 2.2vw, 1.55rem) !important;
+}
+.wiki-category-heading-row { min-height: clamp(52px, 6vw, 78px); }
+.wiki-category-hero-media { margin-top: .85rem !important; }
+.wiki-category-description { margin-top: .75rem !important; line-height: 1.58 !important; }
+.wiki-category-facts { padding-block: .35rem !important; }
+
+.wiki-article-header {
+  margin-top: .75rem !important;
+  padding: .8rem 0 1rem !important;
+}
+.wiki-article-header > p:first-of-type {
+  margin-top: .7rem !important;
+  line-height: 1.6 !important;
+}
+.wiki-tools-stack { margin-top: .55rem !important; }
+.wiki-page-tools { padding-block: .25rem !important; }
+.wiki-user-actions { margin-top: .35rem; padding: .55rem !important; }
+.wiki-entry-grid {
+  margin-top: .85rem !important;
+  row-gap: .75rem !important;
+}
+
+.wiki-article-body,
+.wiki-news-paper { padding: clamp(1rem, 2vw, 1.55rem) !important; }
+.wiki-article-body .wiki-content-section {
+  margin-bottom: var(--wiki-section-space) !important;
+  padding-bottom: clamp(.7rem, 1.2vw, 1rem) !important;
+}
+.wiki-article-body .wiki-content-section:last-of-type { margin-bottom: 0 !important; }
+.wiki-article-body .wiki-content-section > h2,
+.wiki-references > h2 {
+  margin-bottom: .7rem !important;
+  padding-bottom: .45rem !important;
+}
+.wiki-content-section h3 { margin-top: 1.2em; margin-bottom: .55em; }
+.wiki-content-section > :is(p, ul, ol) + :is(p, ul, ol) { margin-top: .8em; }
+.wiki-article-body .wiki-content-section > :is(p, ul, ol, blockquote),
+.wiki-news-paper .article-news-section p { line-height: 1.66 !important; }
+
+.wiki-toc-body,
+.wiki-infobox-body { padding: .75rem !important; }
+.wiki-infobox-body { gap: .75rem !important; }
+.wiki-info-row { padding-block: .5rem !important; }
+.wiki-references { margin-bottom: 1rem !important; padding: .8rem !important; }
+.wiki-support-panel { margin-top: .7rem !important; }
+.wiki-navbox { margin-top: 1.15rem !important; }
+.wiki-article-body > footer { margin-top: 1.25rem !important; padding-top: .8rem !important; }
+
+.wiki-main-search { margin-top: .85rem !important; }
+.wiki-index-layout { gap: clamp(.8rem, 1.5vw, 1.25rem) !important; }
+.wiki-main-box-body { padding: 12px; }
+.wiki-main-footer { margin-top: 16px; padding-top: 11px; }
+.wiki-portal-actions { margin-top: .75rem; }
+.wiki-discovery-callout { gap: 16px; padding-block: 14px; }
+
+.home-intents { padding-top: clamp(1.25rem, 2.5vw, 2rem) !important; }
+.home-section,
+#explore-the-wiki {
+  padding-top: clamp(1.65rem, 3vw, 2.75rem) !important;
+  padding-bottom: clamp(1.65rem, 3vw, 2.75rem) !important;
+}
+.home-section > .flex:first-child,
+#explore-the-wiki > .flex:first-child { padding-bottom: .75rem !important; }
+
+.article-inline-toc { margin-bottom: 1.15rem; }
+.article-news-section { padding-bottom: clamp(1rem, 1.8vw, 1.45rem); }
+.article-news-section + .article-news-section { padding-top: clamp(1rem, 1.8vw, 1.45rem); }
+.article-news-section h2 { margin-bottom: .7rem; padding-bottom: .45rem; }
+
+/* Large Tailwind spacing utilities are reserved for intentional full-screen
+   compositions. Inside ordinary content they use the same compact scale. */
+.site-frame main .mt-12 { margin-top: 2rem !important; }
+.site-frame main .mt-10 { margin-top: 1.65rem !important; }
+.site-frame main .mt-8 { margin-top: 1.35rem !important; }
+.site-frame main .mt-6 { margin-top: 1rem !important; }
+.site-frame main .mb-12 { margin-bottom: 2rem !important; }
+.site-frame main .gap-12 { gap: 2rem !important; }
+.site-frame main .gap-8 { gap: 1.25rem !important; }
+.site-frame main .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem !important; }
+.site-frame main .py-24 { padding-top: 2.75rem !important; padding-bottom: 2.75rem !important; }
+.site-frame main .py-20 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+.site-frame main .py-16 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+.site-frame main .py-12 { padding-top: 1.75rem !important; padding-bottom: 1.75rem !important; }
+.site-frame main .pb-24 { padding-bottom: 2rem !important; }
+.site-frame main .pb-12 { padding-bottom: 1.75rem !important; }
+
+.compact-footer > div:last-child { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.compact-footer-grid { gap: clamp(.9rem, 2vw, 1.75rem); }
+
+@media (max-width: 767px) {
+  :root {
+    --wiki-section-space: 1.35rem;
+    --route-block-space: .75rem;
+  }
+  .wiki-category-heading-row { min-height: 0; gap: .55rem; }
+  .wiki-category-hero-media { min-height: 145px; margin-top: .7rem !important; }
+  .wiki-category-facts { padding-top: .55rem !important; }
+  .wiki-article-header { padding: .65rem 0 .8rem !important; }
+  .wiki-entry-grid { margin-top: .65rem !important; gap: .65rem !important; }
+  .wiki-article-body,
+  .wiki-news-paper { padding: .9rem !important; }
+  .wiki-article-body .wiki-content-section { margin-bottom: 1.35rem !important; }
+  .wiki-user-actions-buttons { gap: .3rem; }
+  .home-section,
+  #explore-the-wiki { padding-block: 1.5rem !important; }
+  .site-frame main .mt-12 { margin-top: 1.5rem !important; }
+  .site-frame main .mt-10 { margin-top: 1.35rem !important; }
+  .site-frame main .mt-8 { margin-top: 1.15rem !important; }
+  .site-frame main .mt-6 { margin-top: .85rem !important; }
+  .site-frame main .mb-12 { margin-bottom: 1.4rem !important; }
+  .compact-footer > div:last-child { padding-block: .85rem !important; }
+}
+
+/* ========================================================================== */
+/* GRELHAS DE ENTRADA                                                         */
+/* Onde havia listas com miniatura encostada, ha agora azulejos: a imagem     */
+/* e a prova, e numa lista de linhas ela nao se ve. As grelhas de doze        */
+/* colunas do ecra largo nao servem no telemovel — tres cartoes lado a lado   */
+/* em 360px nao sao cartoes, sao selos.                                       */
+/* ========================================================================== */
+@media (max-width: 767px) {
+  .home-branch-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .6rem;
+  }
+  .home-branch-card,
+  .home-branch-card:nth-child(1),
+  .home-branch-card:nth-child(2) { grid-column: span 1; }
+  .home-branch-card .font-cond.text-\[22px\] { font-size: 17px; }
+}
+
+@media (max-width: 419px) {
+  .home-branch-grid { grid-template-columns: minmax(0, 1fr); }
+  .home-feed-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Acima dos 1400px a coluna de noticias e a de guias ganham uma terceira
+   casa: os cartoes deixam de esticar em banners. */
+@media (min-width: 1400px) {
+  .home-feed-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

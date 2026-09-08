@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ArrowUpRight, Gauge, Radio } from 'lucide-react'
 import { cx } from './ui'
+import siteVersion from '@/site-version.json'
 
 // O rodapé segue a mesma lógica do menu: cada grupo tem a sua cor, e o
 // destaque de passagem é um véu nessa cor em vez do cinzento comum. Os
@@ -158,7 +159,7 @@ export default function Footer() {
           </div>
           <div className="compact-footer-status flex items-center gap-2 font-mono tracking-[0.14em] text-dim">
             <Radio size={13} className="text-mint" aria-hidden="true" />
-            <span>ARCHIVE ONLINE</span>
+            <span>v{siteVersion.version} · ARCHIVE ONLINE</span>
             <Gauge size={14} className="text-pink" aria-hidden="true" />
           </div>
         </div>

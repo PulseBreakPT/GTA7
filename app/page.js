@@ -353,13 +353,16 @@ function App() {
             <h3 className="flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">
               <Newspaper size={13} aria-hidden="true" /> Latest news
             </h3>
-            <div className="mt-3 flex flex-col gap-3">
+            {/* Era uma lista de linhas com uma miniatura de 92px encostada à
+                esquerda: a imagem não se via e a coluna corria pelo ecrã
+                abaixo. Passa a azulejo, como os ramos e as regiões. */}
+            <div className="home-feed-grid mt-3 grid grid-cols-2 gap-3">
               {latestNews.map((a) => (
-                <Link key={a.slug} href={`/news/${a.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-black/30 transition-colors">
-                  <span className="relative w-[92px] h-[62px] shrink-0 overflow-hidden rounded-sm border border-line">
-                    <Image src={a.image} alt="" fill sizes="92px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
+                <Link key={a.slug} href={`/news/${a.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors">
+                  <span className="relative block aspect-[16/9] overflow-hidden">
+                    <Image src={a.image} alt="" fill sizes="(max-width:640px) 50vw, 25vw" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
                   </span>
-                  <span className="min-w-0 flex-1">
+                  <span className="block p-3">
                     <span className="flex items-center gap-2">
                       <StatusBadge status={a.status} />
                       <span className="font-mono text-[10px] text-dim tabular-nums">{fmt(a.publishedAt)}</span>
@@ -374,13 +377,13 @@ function App() {
             <h3 className="flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">
               <BookOpen size={13} aria-hidden="true" /> Guides
             </h3>
-            <div className="mt-3 flex flex-col gap-3">
+            <div className="home-feed-grid mt-3 grid grid-cols-2 gap-3">
               {latestGuides.map((g) => (
-                <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm p-3 flex gap-3 group hover:border-black/30 transition-colors">
-                  <span className="relative w-[92px] h-[62px] shrink-0 overflow-hidden rounded-sm border border-line">
-                    <Image src={g.image} alt="" fill sizes="92px" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
+                <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors">
+                  <span className="relative block aspect-[16/9] overflow-hidden">
+                    <Image src={g.image} alt="" fill sizes="(max-width:640px) 50vw, 25vw" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
                   </span>
-                  <span className="min-w-0 flex-1">
+                  <span className="block p-3">
                     <span className="flex items-center gap-2">
                       <GhostBadge status={g.status} />
                       <span className="font-mono text-[10px] text-dim tabular-nums">{g.readTime} min</span>
