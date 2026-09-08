@@ -49,7 +49,7 @@ export default async function WorldEntryPage({ params }) {
       </nav>
 
       <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-        <main className="wiki-article-body min-w-0 order-3 lg:order-1">
+        <main id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview"><p className="text-dim text-[15px] leading-[1.85]"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p></WikiSection>
           <WikiSection id="record" title="Archive record">
             <ul className="space-y-3 text-[14px] leading-[1.75] text-dim">{item.details.map((detail) => <li key={detail} className="border-l-2 border-mint/50 pl-4"><WikiText exclude={`/database/world/${item.slug}`}>{detail}</WikiText></li>)}</ul>
@@ -81,7 +81,7 @@ export default async function WorldEntryPage({ params }) {
 
         <aside className="order-1 lg:order-2"><TableOfContents sections={sections} /></aside>
         <aside className="order-2 lg:order-3">
-          <InfoboxShell>
+          <InfoboxShell title={item.name} subtitle="World record">
             <figure className="-mx-5 -mt-5 mb-1 overflow-hidden border-b border-line bg-surface2">
               <div className="relative aspect-[16/10]"><Image src={item.image} alt={`${item.name} — ${item.imageCaption}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" /></div>
               <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{item.imageCaption}</figcaption>

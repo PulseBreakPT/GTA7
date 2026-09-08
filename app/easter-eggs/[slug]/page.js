@@ -29,7 +29,7 @@ function App() {
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: 'Secrets' }, { label: egg.name }]} />
 
       <PageTools kind="secrets" slug={egg.slug} />
-      <div id="overview" className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5 scroll-mt-24">
+      <div id="article-content" className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5 scroll-mt-24">
         <div className="wiki-article-header">
           <div className="flex items-center gap-2">
             <StatusBadge status={egg.status} />

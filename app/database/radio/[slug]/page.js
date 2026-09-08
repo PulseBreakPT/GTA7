@@ -51,7 +51,7 @@ export default function RadioStationPage() {
         <PageTools kind="radio" slug={s.slug} />
 
         <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-          <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
               <div className="mt-4 border-l-2 border-mint/70 pl-3">
@@ -105,22 +105,12 @@ export default function RadioStationPage() {
           </div>
 
           <div className="order-2 lg:order-3">
-            <InfoboxShell>
+            <InfoboxShell title={s.name} subtitle="Radio profile">
               <div className="-mx-4 -mt-4 mb-4">
                 <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-surface2/60">
                   {s.image ? <Image src={s.image} alt={s.imageAlt || ''} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover" /> : <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim"><RadioIcon size={26} strokeWidth={1.4} aria-hidden="true" /><span className="font-mono text-[8px] uppercase tracking-[0.14em]">No official image</span></div>}
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">
-                  <RadioIcon size={28} strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0">
-                  <p className="font-cond font-bold uppercase text-[18px] text-paper leading-none truncate">{s.name}</p>
-                  <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-1.5 truncate">{s.genre}</p>
-                </div>
-              </div>
-
               <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Genre" value={s.genre} />
                 <InfoRow label="Status">

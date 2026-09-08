@@ -10,6 +10,7 @@ Required:
 ```env
 MONGO_URL=mongodb://...
 DB_NAME=leonida_archive
+DATA_ENCRYPTION_KEY=32-random-bytes-in-base64
 AUTH_BASE_URL=https://lusorae.pt
 AUTH_TRUSTED_ORIGINS=https://lusorae.pt
 ```
@@ -23,26 +24,30 @@ AUTH_EMAIL_FROM="GTA LORE <account@lusorae.pt>"
 
 Without the two email variables, registration, login, profiles, password
 changes, sessions and account deletion work normally. Email verification and
-forgot-password delivery stay visibly unavailable; reset tokens are never
-exposed to the browser or logs.
+forgot-password delivery stay visibly unavailable; recovery responses never
+disclose whether an account exists, and query strings are omitted from access logs.
 
 ## Security model
 
 - Passwords: Unicode-friendly 15–128 character policy and Node `scrypt`
-  (`N=65536`, `r=8`, `p=1`) with a random 128-bit salt.
+  (`N=65536`, `r=8`, `p=2`) with a random 128-bit salt. Legacy `p=1` hashes
+  upgrade automatically after a successful sign-in.
+- Private data: emails, private notes, contribution details and review notes use
+  AES-256-GCM at rest. Email lookup uses a keyed blind index instead of plaintext.
 - Sessions: random 256-bit opaque tokens. Only SHA-256 token hashes are stored.
 - Cookies: `__Host-` prefix in production, `HttpOnly`, `Secure`, `SameSite=Strict`,
   path `/`, explicit expiry and high priority.
 - CSRF: server-issued double-submit token, JSON-only mutations, origin and
   `Sec-Fetch-Site` verification.
-- Abuse resistance: per-IP and per-identity rate buckets, constant-cost unknown
-  user checks, generic login errors and progressive account lockouts.
+- Abuse resistance: signed browser challenges, a honeypot, per-IP and per-identity
+  rate buckets, constant-cost unknown-user checks, generic login errors and
+  progressive account lockouts.
 - Recovery: hashed, single-use, one-hour reset tokens. Password reset revokes
   every session.
 - Verification: hashed, single-use, 24-hour email tokens.
 - Sensitive changes: current-password reauthentication; password changes close
   all other sessions.
-- Audit: privacy-reduced security events, hashed IP address, 180-day TTL.
+- Audit: privacy-reduced security events, keyed network-address digest, 180-day TTL.
 - Authorization: users carry `reader`, `editor` or `admin`; server code can use
   `requireRole()` from `lib/server/auth.js`. Client role checks are never trusted.
 

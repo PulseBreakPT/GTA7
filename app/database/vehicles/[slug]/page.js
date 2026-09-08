@@ -112,7 +112,7 @@ function App() {
 
         <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
-          <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <div className="flex flex-col gap-3">
                 <Attribution label="Association / content" value={v.association} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
@@ -194,7 +194,7 @@ function App() {
 
           {/* Caixa de dados */}
           <div className="order-2 lg:order-3">
-            <InfoboxShell>
+            <InfoboxShell title={v.name} subtitle="Vehicle profile">
               <div>
                 <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">
                   {gallery[slide] ? (

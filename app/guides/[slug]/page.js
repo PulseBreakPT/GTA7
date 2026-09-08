@@ -45,7 +45,7 @@ function App() {
         </div>
       </header>
 
-      <section className="wiki-article-body mt-6 max-w-[820px]" aria-label="Guide article">
+      <section id="article-content" className="wiki-article-body mt-6 max-w-[820px]" aria-label="Guide article">
         <ol className="flex flex-col gap-3 max-w-[760px]">
           {g.steps.map((s, i) => (
             <li key={i} className="panel tech-mask-sm p-4 flex gap-4">

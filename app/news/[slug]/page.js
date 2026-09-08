@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ChevronUp, Quote, Star, TriangleAlert } from 'lucide-react'
+import { ChevronUp, TriangleAlert } from 'lucide-react'
 import MediaCarousel from '@/components/site/media-carousel'
 import { articles, articleVisuals, categoriesForArticle, relatedArticlesFor, sources } from '@/lib/content'
 import { GhostBadge, SourceChip, StatusBadge, fmtDate } from '@/components/site/ui'
@@ -19,13 +19,6 @@ const SECTION_RULES = [
   ['COMBAT & INVENTORY', /combat|weapon|gun|shoot|Focus|aim|hit|body|inventory|armour/i],
   ['ACTIVITIES & PROGRESSION', /gym|fitness|train|fishing|hunting|activity|attribute|profile|mission|story/i],
   ['INTERFACE & TECHNICAL NOTES', /HUD|phone|menu|FPS|PS5|first-person|interface|performance|technical/i],
-]
-
-const SECTION_THEMES = [
-  { text: 'text-mint', border: 'border-mint/45', bg: 'bg-mint/8', dot: 'bg-mint' },
-  { text: 'text-pink', border: 'border-pink/45', bg: 'bg-pink/8', dot: 'bg-pink' },
-  { text: 'text-violet', border: 'border-violet/45', bg: 'bg-violet/8', dot: 'bg-violet' },
-  { text: 'text-warn', border: 'border-warn/45', bg: 'bg-warn/8', dot: 'bg-warn' },
 ]
 
 const sectionFor = (text, index) => {
@@ -44,37 +37,29 @@ function InlineText({ text }) {
 }
 
 function FormattedArticleBody({ body }) {
-  let previousSection = ''
-  const sections = body.reduce((list, paragraph, index) => {
-    const section = sectionFor(paragraph, index)
-    return list.includes(section) ? list : [...list, section]
-  }, [])
+  const records = body.map((paragraph, index) => ({
+    section: sectionFor(paragraph, index),
+    text: paragraph.replace(/^([A-Z][A-Z &]+) — /, ''),
+  }))
+  const sections = records.reduce((list, record) => list.includes(record.section) ? list : [...list, record.section], [])
 
   return (
     <>
-      {sections.length >= 3 && <nav aria-label="On this page" className="mb-8 border border-line bg-panel/50 p-4 sm:p-5">
-        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-mint mb-3">IN THIS RECORD</p>
-        <div className="flex flex-wrap gap-2">{sections.map((section, index) => {
-          const theme = SECTION_THEMES[index % SECTION_THEMES.length]
-          return <a key={section} href={`#section-${index + 1}`} className={`inline-flex items-center gap-1.5 border ${theme.border} ${theme.bg} px-2 py-1 font-cond uppercase tracking-[0.1em] text-[10px] ${theme.text} hover:bg-black/10`}><span className={`w-1.5 h-1.5 rounded-full ${theme.dot}`} />{String(index + 1).padStart(2, '0')} · {section}</a>
-        })}</div>
+      {sections.length >= 3 && <nav aria-label="On this page" className="article-inline-toc">
+        <p>In this record <span>{sections.length} sections</span></p>
+        <ol>{sections.map((section, index) => (
+          <li key={section}><a href={`#section-${index + 1}`}><span>{String(index + 1).padStart(2, '0')}</span>{section}</a></li>
+        ))}</ol>
       </nav>}
-      <div className="max-w-[780px] flex flex-col gap-7 sm:gap-9 border-l border-black/10 pl-4 sm:pl-6">
-        {body.map((paragraph, index) => {
-          const section = sectionFor(paragraph, index)
-          const sectionIndex = sections.indexOf(section)
-          const theme = SECTION_THEMES[sectionIndex % SECTION_THEMES.length]
-          const isNewSection = section !== previousSection
-          previousSection = section
-          const cleanParagraph = paragraph.replace(/^([A-Z][A-Z &]+) — /, '')
-          return <div key={index} className={isNewSection ? 'pt-4 first:pt-0' : ''}>
-            {isNewSection && <div className="mb-3"><p className={`font-mono text-[9px] tracking-[0.18em] ${theme.text} mb-1.5`}>EVIDENCE GROUP</p><h2 id={`section-${sectionIndex + 1}`} className={`scroll-mt-24 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-[18px] sm:text-[20px] ${theme.text} border-b ${theme.border} pb-2`}><span className={`w-2 h-2 rounded-full ${theme.dot}`} />{section}</h2></div>}
-            <div className="relative">
-              {index === 0 && <Quote size={20} className="text-pink mb-2" aria-hidden="true" />}
-              <p className={index === 0 ? 'text-[18px] sm:text-[20px] leading-[1.72] text-paper font-medium max-w-[66ch]' : 'text-[17px] sm:text-[18px] leading-[1.9] text-paper/90 max-w-[68ch]'}><InlineText text={cleanParagraph} /></p>
-            </div>
-          </div>
-        })}
+      <div id="article-content" className="article-news-sections">
+        {sections.map((section, sectionIndex) => (
+          <section key={section} id={`section-${sectionIndex + 1}`} className="article-news-section">
+            <h2><span>{String(sectionIndex + 1).padStart(2, '0')}</span>{section}</h2>
+            {records.filter((record) => record.section === section).map((record, index) => (
+              <p key={`${section}-${index}`}><InlineText text={record.text} /></p>
+            ))}
+          </section>
+        ))}
       </div>
     </>
   )

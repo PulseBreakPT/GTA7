@@ -31,7 +31,6 @@ export default function MechanicPage() {
     )
   }
 
-  const Icon = MECH_ICONS[m.icon] || Repeat2
   const related = mechanics.filter((x) => x.slug !== m.slug).slice(0, 4)
   const linkedChars = characters.slice(0, 2)
 
@@ -54,7 +53,7 @@ export default function MechanicPage() {
         <PageTools kind="mechanics" slug={m.slug} />
 
         <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-          <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
             </WikiSection>
@@ -107,23 +106,13 @@ export default function MechanicPage() {
           </div>
 
           <div className="order-2 lg:order-3">
-            <InfoboxShell>
+            <InfoboxShell title={m.name} subtitle="Mechanic profile">
               <figure className="mechanic-infobox-media -mx-5 -mt-5 mb-1 overflow-hidden border-b border-line bg-surface2">
                 <div className="relative aspect-[16/10]">
                   <Image src={m.image} alt={m.imageAlt} fill sizes="300px" priority className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
                 </div>
                 <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{m.imageCaption}</figcaption>
               </figure>
-              <div className="flex items-center gap-3">
-                <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">
-                  <Icon size={28} strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0">
-                  <p className="font-cond font-bold uppercase text-[18px] text-paper leading-none truncate">{m.name}</p>
-                  <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-1.5">Button prompt {m.glyph}</p>
-                </div>
-              </div>
-
               <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Status">
                   <StatusBadge status={m.status} />

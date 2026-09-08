@@ -1,5 +1,37 @@
+const production = process.env.NODE_ENV === 'production'
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  // Static App Router output contains Next's inline Flight bootstrap. A nonce
+  // would force every one of the 345 routes to dynamic rendering, so inline
+  // bootstrap code is allowed while script URLs stay same-origin and inline
+  // event-handler attributes remain forbidden below.
+  "script-src 'self' 'unsafe-inline'",
+  "script-src-attr 'none'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "media-src 'self'",
+  "worker-src 'self' blob:",
+  "manifest-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-src 'none'",
+  "frame-ancestors 'none'",
+  ...(production ? ['upgrade-insecure-requests'] : []),
+].join('; ')
+
 const nextConfig = {
   output: 'standalone',
+  poweredByHeader: false,
+  productionBrowserSourceMaps: false,
+  reactStrictMode: true,
+  experimental: {
+    // Add tamper-detection metadata to framework assets while retaining static
+    // generation and CDN caching.
+    sri: { algorithm: 'sha384' },
+  },
   // Sem isto, o Next infere a raiz subindo à procura de lockfiles: quando o
   // checkout está numa subpasta (um worktree, por exemplo) o standalone sai
   // aninhado nesse caminho e o server.js deixa de estar onde se espera.
@@ -27,6 +59,15 @@ const nextConfig = {
     maxInactiveAge: 10000,
     pagesBufferLength: 2,
   },
+  async redirects() {
+    if (!production) return []
+    return [{
+      source: '/:path*',
+      has: [{ type: 'header', key: 'x-forwarded-proto', value: 'http' }],
+      destination: 'https://lusorae.pt/:path*',
+      permanent: true,
+    }]
+  },
   async headers() {
     return [
       {
@@ -36,24 +77,22 @@ const nextConfig = {
         // a poder embeber esta e recolher cliques por cima dela.
         source: "/(.*)",
         headers: [
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
-          { key: "Content-Security-Policy", value: "frame-ancestors 'self';" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Content-Security-Policy", value: contentSecurityPolicy },
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+          { key: "Permissions-Policy", value: "accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(self), usb=()" },
           { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+          { key: "Origin-Agent-Cluster", value: "?1" },
+          { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
         ],
       },
       {
-        // Apenas os endpoints públicos do template aceitam CORS. As rotas
-        // de autenticação são deliberadamente same-origin e validam origem,
-        // CSRF e cookies seguros por pedido.
-        source: "/api/:path(root|status)",
+        source: "/api/:path*",
         headers: [
-          { key: "Access-Control-Allow-Origin", value: process.env.CORS_ORIGINS || "*" },
-          { key: "Access-Control-Allow-Methods", value: "GET, POST, PUT, DELETE, OPTIONS" },
-          { key: "Access-Control-Allow-Headers", value: "*" },
+          { key: "Cache-Control", value: "no-store, max-age=0" },
         ],
       },
     ];

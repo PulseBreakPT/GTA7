@@ -48,7 +48,7 @@ export default function RegionPage() {
 
       <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         {/* Corpo do artigo */}
-        <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+        <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="panel2 rounded-sm p-3">
@@ -134,7 +134,7 @@ export default function RegionPage() {
 
         {/* Caixa de dados */}
         <div className="order-2 lg:order-3">
-          <InfoboxShell>
+          <InfoboxShell title={region.label} subtitle="Region profile">
             <LocationLocator image={region.image} name={region.label} sourceLabel="OFFICIAL ROCKSTAR REGION ARTWORK" />
 
             <div className="space-y-3 border-t border-black/10 pt-4">

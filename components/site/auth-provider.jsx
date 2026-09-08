@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [capabilities, setCapabilities] = useState({ emailDelivery: false })
   const csrfRef = useRef('')
+  const botChallengeRef = useRef('')
   const loadPromise = useRef(null)
 
   const refresh = useCallback(async () => {
@@ -19,6 +20,7 @@ export function AuthProvider({ children }) {
           const data = await response.json()
           if (!response.ok) throw new Error(data.error || 'Could not load session.')
           csrfRef.current = data.csrfToken || ''
+          botChallengeRef.current = data.botChallenge || ''
           setUser(data.user || null)
           setSession(data.session || null)
           setCapabilities(data.capabilities || { emailDelivery: false })
@@ -39,17 +41,27 @@ export function AuthProvider({ children }) {
 
   const request = useCallback(async (path, { method = 'POST', body = {}, retry = true } = {}) => {
     if (!csrfRef.current) await refresh()
+    const challengeProtected = ['register', 'login', 'forgot-password'].includes(path)
+    const requestBody = challengeProtected ? { ...body, _challenge: botChallengeRef.current } : body
     const response = await fetch(`/api/auth/${path}`, {
       method,
       credentials: 'same-origin',
       cache: 'no-store',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfRef.current },
-      body: JSON.stringify(body),
+      body: JSON.stringify(requestBody),
     })
     const data = await response.json().catch(() => ({ ok: false, error: 'Invalid server response.' }))
     if (response.status === 403 && data.code === 'CSRF_REJECTED' && retry) {
       csrfRef.current = ''
       await refresh()
+      return request(path, { method, body, retry: false })
+    }
+    if (response.status === 403 && data.code === 'BOT_CHALLENGE_REJECTED' && retry) {
+      botChallengeRef.current = ''
+      await refresh()
+      // A freshly issued challenge must age briefly before use. This keeps
+      // the lightweight bot check effective without making a real user retry.
+      await new Promise((resolve) => window.setTimeout(resolve, 550))
       return request(path, { method, body, retry: false })
     }
     if (!response.ok) {

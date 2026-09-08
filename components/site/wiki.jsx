@@ -92,23 +92,32 @@ export function TableOfContents({ sections }) {
 
   return (
     <nav className="wiki-toc-panel sticky top-24 h-fit" aria-label="Contents">
-      <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mb-3">Contents</p>
-      <ul className="space-y-2">
-        {sections.map(({ id, label, icon: Icon }) => (
-          <li key={id}>
-            <a
-              href={`#${id}`}
-              className={cx(
-                'inline-flex items-center gap-2 font-cond uppercase tracking-[0.08em] text-[12px] transition-colors',
-                activeId === id ? 'text-pink' : 'text-dim hover:text-paper'
-              )}
-            >
-              {Icon && <Icon size={12} aria-hidden="true" />}
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <details className="wiki-toc-disclosure" open>
+        <summary className="wiki-toc-summary">
+          <span>
+            <strong>Contents</strong>
+            <small>{sections.length} sections</small>
+          </span>
+          <ChevronRight size={15} aria-hidden="true" />
+        </summary>
+        <ol className="wiki-toc-list">
+          {sections.map(({ id, label, icon: Icon }, index) => (
+            <li key={id}>
+              <a
+                href={`#${id}`}
+                className={cx(
+                  'transition-colors',
+                  activeId === id ? 'text-pink' : 'text-dim hover:text-paper'
+                )}
+              >
+                <span className="wiki-toc-number">{String(index + 1).padStart(2, '0')}</span>
+                {Icon && <Icon size={13} aria-hidden="true" />}
+                <span>{label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
     </nav>
   )
 }
@@ -222,7 +231,7 @@ export function PageTools({ kind, slug }) {
 
   const related = encodeURIComponent(`${kind}:${slug}`)
   const links = [
-    ['Read', '#overview', BookOpen],
+    ['Read', '#article-content', BookOpen],
     ['What links here', `/wiki/what-links-here?kind=${kind}&slug=${slug}`, Link2],
     ['Related changes', `/wiki/changes?related=${related}`, Clock3],
     ['Page information', '#page-information', Info],
@@ -305,24 +314,27 @@ export function CitePage({ kind, slug, title }) {
   }
 
   return (
-    <section id="page-citation" className="wiki-support-panel mt-10 panel rounded-sm p-4 scroll-mt-24" aria-labelledby={`cite-${kind}-${slug}`}>
-      <h2 id={`cite-${kind}-${slug}`} className="flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
+    <details id="page-citation" className="wiki-support-panel mt-4 panel rounded-sm scroll-mt-24">
+      <summary id={`cite-${kind}-${slug}`} className="cursor-pointer list-none px-4 py-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
         <Quote size={13} className="text-mint" aria-hidden="true" /> Cite this page
-      </h2>
-      <p className="mt-2.5 font-mono text-[11px] leading-[1.7] text-dim break-words select-all">{citation}</p>
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={copy}
-          className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors"
-        >
-          {copied ? <><Check size={12} className="text-mint" aria-hidden="true" /> Copied</> : 'Copy citation'}
-        </button>
-        <span className="font-mono text-[10px] text-dim">
-          Cite the source itself where you can; cite the archive when the arrangement is what you are quoting.
-        </span>
+        <ChevronRight size={12} className="ml-auto text-dim" aria-hidden="true" />
+      </summary>
+      <div className="border-t hairline px-4 pb-4">
+        <p className="mt-3 font-mono text-[11px] leading-[1.7] text-dim break-words select-all">{citation}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={copy}
+            className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors"
+          >
+            {copied ? <><Check size={12} className="text-mint" aria-hidden="true" /> Copied</> : 'Copy citation'}
+          </button>
+          <span className="font-mono text-[10px] text-dim">
+            Cite the source itself where you can; cite the archive when the arrangement is what you are quoting.
+          </span>
+        </div>
       </div>
-    </section>
+    </details>
   )
 }
 
@@ -401,9 +413,9 @@ export function Navbox({ kind, slug, title }) {
 export function InfoRow({ label, value, children }) {
   if (!children && (value == null || value === '')) return null
   return (
-    <div>
-      <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{label}</span>
-      <div className="font-cond font-semibold text-[13px] text-paper mt-1">{children || value}</div>
+    <div className="wiki-info-row">
+      <span className="wiki-info-label">{label}</span>
+      <div className="wiki-info-value">{children || value}</div>
     </div>
   )
 }
@@ -429,10 +441,19 @@ export function SpecGrid({ items }) {
   )
 }
 
-export function InfoboxShell({ children, className }) {
+export function InfoboxShell({ children, className, title = 'Article facts', subtitle = 'At a glance' }) {
   return (
-    <aside className={cx('wiki-infobox panel rounded-sm p-5 bg-ink/30 lg:sticky lg:top-24 h-fit', className)}>
-      <div className="space-y-4">{children}</div>
+    <aside className={cx('wiki-infobox panel rounded-sm bg-ink/30 lg:sticky lg:top-24 h-fit', className)} aria-label={`${title} facts`}>
+      <details className="wiki-infobox-disclosure" open>
+        <summary className="wiki-infobox-heading">
+          <span>
+            <small>{subtitle}</small>
+            <strong>{title}</strong>
+          </span>
+          <ChevronRight size={16} aria-hidden="true" />
+        </summary>
+        <div className="wiki-infobox-body space-y-4">{children}</div>
+      </details>
     </aside>
   )
 }

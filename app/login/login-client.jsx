@@ -7,7 +7,7 @@ import { ArrowRight, Check, Eye, EyeOff, KeyRound, LockKeyhole, Mail, ShieldChec
 import { useAuth } from '@/components/site/auth-provider'
 import { cx } from '@/components/site/ui'
 
-const EMPTY = { identifier: '', email: '', username: '', displayName: '', password: '', confirmPassword: '', remember: false, termsAccepted: false }
+const EMPTY = { identifier: '', email: '', username: '', displayName: '', password: '', confirmPassword: '', remember: false, termsAccepted: false, website: '' }
 
 function safeNext(value) {
   return value?.startsWith('/') && !value.startsWith('//') ? value : '/account'
@@ -39,14 +39,14 @@ function LoginScreen() {
     setBusy(true); setError(''); setSuccess('')
     try {
       if (mode === 'recover') {
-        const data = await request('forgot-password', { body: { email: form.email } })
+        const data = await request('forgot-password', { body: { email: form.email, website: form.website } })
         setSuccess(data.message)
       } else if (mode === 'register') {
         if (form.password !== form.confirmPassword) throw new Error('Passwords do not match.')
         await request('register', { body: form })
         router.replace(safeNext(params.get('next')))
       } else {
-        await request('login', { body: { identifier: form.identifier, password: form.password, remember: form.remember } })
+        await request('login', { body: { identifier: form.identifier, password: form.password, remember: form.remember, website: form.website } })
         router.replace(safeNext(params.get('next')))
       }
     } catch (submitError) {
@@ -79,6 +79,7 @@ function LoginScreen() {
         </div>
 
         <form onSubmit={submit} className="auth-form mt-6 space-y-4">
+          <label className="sr-only" aria-hidden="true">Website<input tabIndex={-1} autoComplete="off" value={form.website} onChange={update('website')} /></label>
           {mode === 'register' && (
             <>
               <AuthField icon={UserRound} label="Display name" autoComplete="name" value={form.displayName} onChange={update('displayName')} maxLength={50} required />
