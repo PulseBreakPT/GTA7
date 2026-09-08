@@ -3,6 +3,21 @@ set -Eeuo pipefail
 umask 077
 
 test "$(id -u)" -eq 0 || { echo 'Run as root.' >&2; exit 1; }
+
+# `systemctl restart` devolve o controlo quando o processo arranca, não
+# quando ele aceita ligações. Testar logo a seguir dava ECONNREFUSED e a
+# configuração era revertida por uma falha que era só pressa: espera-se
+# pelo socket, até meio minuto, antes de dar o arranque por falhado.
+esperar_mongod() {
+  local tentativa
+  for tentativa in $(seq 1 30); do
+    if mongosh --quiet --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 1
+  done
+  return 1
+}
 ENV_FILE="${GTALORE_ENV_FILE:-/opt/leonida/.env}"
 MONGO_CONFIG="${GTALORE_MONGO_CONFIG:-/etc/mongod.conf}"
 test -r "$ENV_FILE" && test -f "$MONGO_CONFIG" || { echo 'MongoDB configuration is unavailable.' >&2; exit 1; }
@@ -62,6 +77,12 @@ else
   printf '\nsecurity:\n  authorization: enabled\n' >> "$MONGO_CONFIG"
 fi
 systemctl restart mongod.service
+esperar_mongod || {
+  cp "$MONGO_CONFIG.before-gtalore-auth" "$MONGO_CONFIG"
+  systemctl restart mongod.service
+  echo 'MongoDB did not accept connections after the restart; configuration was rolled back.' >&2
+  exit 1
+}
 
 set -a
 # shellcheck disable=SC1090
@@ -70,6 +91,7 @@ set +a
 if ! mongosh --quiet "$MONGO_URL" --eval 'db.runCommand({ ping: 1 })' >/dev/null; then
   cp "$MONGO_CONFIG.before-gtalore-auth" "$MONGO_CONFIG"
   systemctl restart mongod.service
+  esperar_mongod || true
   echo 'MongoDB authentication test failed; configuration was rolled back.' >&2
   exit 1
 fi
