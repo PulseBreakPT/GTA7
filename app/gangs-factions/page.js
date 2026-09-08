@@ -3,17 +3,15 @@ import Image from 'next/image'
 import { Shield, MapPin } from 'lucide-react'
 import { factions } from '@/lib/content'
 import { GhostBadge, SourceChip } from '@/components/site/ui'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 export default function GangsFactionsPage() {
   return (
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-8 max-w-[1180px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Factions' }]} />
-      <p className="data-rail text-mint">LEONIDA ARCHIVE · ORGANIZED GROUPS INDEX</p>
-      <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title mt-3 font-cond font-bold uppercase leading-[0.82] tracking-tight text-[64px] sm:text-[78px] text-paper">GANGS &amp; FACTIONS</h1>
-      <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-dim">Official Rockstar information only. Named groups are kept separate from groups Rockstar describes but has not formally named; trailer identifications, leaks and rumours are excluded.</p>
+      <div className="mt-4"><CategoryHeader eyebrow="Organised groups index" title="Gangs & Factions" image="/media/factions/vice-city-group.jpeg" imageAlt="Official GTA VI image of a group in Vice City" description="Official Rockstar information only. Named groups are kept separate from groups Rockstar describes but has not formally named; trailer identifications, leaks and rumours are excluded." count={factions.length} countLabel="factions" /></div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <div className="visual-card-grid two-up-visual-grid mt-6">
         {factions.map((faction) => (
           <article key={faction.slug} className="panel rounded-sm p-5 border border-line">
             {faction.image && <div className="relative mb-5 aspect-[16/8] overflow-hidden rounded-sm border border-line"><Image src={faction.image} alt={`${faction.name} official media`} fill sizes="(max-width: 768px) 100vw, 520px" className="object-cover" /></div>}

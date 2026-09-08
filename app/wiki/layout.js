@@ -1,12 +1,12 @@
-// Título e descrição próprios desta rota. O layout não desenha nada:
-// devolve os filhos tal como vêm.
+import WikiLocalNav from '@/components/site/wiki-local-nav'
+
 export const metadata = {
-  title: { default: 'The Wiki', template: '%s | LEONIDA ARCHIVE' },
-  description: 'Every entry in the LEONIDA ARCHIVE, alphabetically: characters, vehicles, weapons, locations, factions, radio and mechanics.',
+  title: { default: 'Wiki Main Page', template: '%s | GTA LORE' },
+  description: 'The GTA LORE encyclopedia: browse GTA VI topics, categories, recent changes, sources and every indexed page.',
   alternates: { canonical: '/wiki' },
-  openGraph: { title: 'The Wiki', description: 'Every entry in the LEONIDA ARCHIVE, alphabetically: characters, vehicles, weapons, locations, factions, radio and mechanics.', url: '/wiki' },
+  openGraph: { title: 'GTA LORE Wiki', description: 'Browse the GTA VI encyclopedia by topic, category, source and recent change.', url: '/wiki' },
 }
 
 export default function Layout({ children }) {
-  return children
+  return <><WikiLocalNav />{children}</>
 }

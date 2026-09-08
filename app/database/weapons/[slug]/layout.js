@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
   if (!item) return { title: 'Record not found' }
 
   const name = item.name
-  const description = item.desc || `${item.name}. Source-labelled entry in the LEONIDA ARCHIVE.`
+  const description = item.desc || `${item.name}. Source-labelled entry in the GTA LORE.`
 
   return {
     title: `${name} — GTA VI weapon`,

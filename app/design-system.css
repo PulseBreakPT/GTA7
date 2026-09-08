@@ -1,0 +1,211 @@
+/* Shared visual finish. Loaded after legacy styles by the root layout.
+   Semantic components inherit these tokens; route layouts retain ownership
+   of their grids, imagery and interaction state. No animation loop required. */
+.lore-design {
+  --surface-radius: 14px;
+  --surface-radius-inner: 10px;
+  --surface-border: rgba(56, 35, 46, .14);
+  --surface-shadow: 0 2px 4px rgb(56 35 46 / .025), 0 12px 28px -22px rgb(56 35 46 / .25);
+  --control-height: 44px;
+  --control-radius: 9px;
+  --control-border: rgba(56, 35, 46, .22);
+  --control-border-hover: #a92762;
+  --control-bg: #fffdfb;
+  --control-ring: 0 0 0 3px rgb(111 63 196 / .2);
+  --lore-surface: #fffdfb;
+  --lore-wash: #f5eff7;
+  --lore-ink: #30202f;
+  --lore-muted: #655360;
+  background: #faf7f5;
+  color: var(--lore-ink);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+.lore-design ::selection { background: #eac7e5; color: #30202f; }
+.lore-design :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid #6f3fc4 !important;
+  outline-offset: 3px;
+  box-shadow: var(--control-ring) !important;
+}
+
+/* A quiet masthead and consistent white dropdown surfaces. */
+.lore-design .wiki-global-header {
+  background: #fffdfb !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+  box-shadow: 0 6px 22px -18px rgb(56 35 46 / .45) !important;
+  backdrop-filter: none !important;
+}
+.lore-design .wiki-global-brand { letter-spacing: .14em; }
+.lore-design .wiki-global-topnav > a {
+  border-radius: var(--control-radius);
+  padding-inline: 12px;
+}
+.lore-design .wiki-global-topnav > a.is-active {
+  background: #f0e8f9;
+  color: #6033ae;
+}
+.lore-design :is(.wiki-account-panel, .wiki-global-menu-panel) {
+  border: 1px solid var(--surface-border);
+  border-radius: var(--surface-radius) !important;
+  background: #fff !important;
+  box-shadow: 0 16px 48px -16px rgb(48 32 47 / .25) !important;
+}
+
+/* Route headings sit on the page; photographs have their own clear edge. */
+.lore-design :is(.wiki-category-title, .wiki-article-header h1) {
+  font-family: var(--font-cond), sans-serif !important;
+  font-size: clamp(2.5rem, 1.75rem + 3vw, 4.5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: -.025em !important;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  word-break: normal;
+  text-shadow: none !important;
+}
+.lore-design .wiki-category-header { padding-bottom: 1rem; }
+.lore-design .wiki-category-heading-row { align-items: center; gap: 1rem; }
+.lore-design .wiki-category-facts {
+  min-width: 0;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--control-radius);
+  background: var(--lore-surface);
+  padding: .65rem .85rem;
+}
+.lore-design .wiki-category-facts dd { white-space: nowrap; }
+.lore-design .wiki-category-hero-media {
+  border: 1px solid var(--surface-border) !important;
+  border-radius: var(--surface-radius) !important;
+}
+.lore-design .wiki-category-description {
+  max-width: 70ch;
+  color: var(--lore-muted) !important;
+  line-height: 1.65 !important;
+}
+.lore-design .wiki-article-header {
+  max-width: none;
+  border: 0 !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: .75rem 0 1rem !important;
+  box-shadow: none !important;
+}
+.lore-design .wiki-article-header::before,
+.lore-design .wiki-article-header::after,
+.lore-design .wiki-article-header .ghost-type::before { display: none !important; }
+
+/* Shared cards: soft edges, restrained depth, readable titles. */
+.lore-design :is(.panel, .wiki-main-box, .wiki-portal-card, .wiki-entry-tile,
+  .wiki-discovery-entry, .visual-card-grid > a, .visual-card-grid > article,
+  .world-subject-card, .world-record-grid > a) {
+  border-color: var(--surface-border);
+  border-radius: var(--surface-radius) !important;
+  box-shadow: var(--surface-shadow);
+}
+.lore-design :is(.world-subject-card, .world-record-grid > a, .wiki-main-box,
+  .wiki-entry-tile, .wiki-discovery-entry) { background-color: var(--lore-surface); }
+.lore-design .visual-card-grid :is(h2, h3) {
+  word-break: normal;
+  overflow-wrap: break-word;
+  line-height: 1.15 !important;
+  text-wrap: balance;
+}
+.lore-design .world-subject-count {
+  flex-shrink: 0;
+  white-space: nowrap;
+  word-break: normal;
+  min-width: 2.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.lore-design .world-subject-card .world-subject-title { max-width: 100%; }
+.lore-design .world-record-grid h3 {
+  white-space: normal;
+  overflow: visible;
+  font-family: var(--font-cond), sans-serif;
+  font-size: 1.4rem;
+}
+.lore-design .world-subject-body { gap: .35rem; }
+
+/* Reading surfaces and supporting facts stay visually distinct. */
+.lore-design :is(.wiki-article-body, .wiki-news-paper) {
+  border: 1px solid var(--surface-border) !important;
+  border-radius: var(--surface-radius) !important;
+  background: var(--lore-surface) !important;
+  box-shadow: var(--surface-shadow) !important;
+  padding: clamp(1rem, 2vw, 1.75rem) !important;
+}
+.lore-design :is(.wiki-infobox, .wiki-toc-panel, .wiki-references) {
+  border-color: var(--surface-border) !important;
+  border-radius: var(--surface-radius-inner) !important;
+  background: var(--lore-surface) !important;
+  box-shadow: none !important;
+}
+.lore-design .wiki-infobox-heading {
+  background: var(--lore-wash) !important;
+  border-bottom: 1px solid var(--surface-border);
+}
+.lore-design .wiki-infobox-heading strong { line-height: 1.2; }
+.lore-design .wiki-article-body .wiki-content-section {
+  margin-bottom: 1.5rem !important;
+  padding-bottom: 1.25rem !important;
+}
+.lore-design .wiki-article-body .wiki-content-section > h2 {
+  font-size: clamp(1.5rem, 1.35rem + .5vw, 1.9rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  border-bottom: 0;
+  margin-bottom: .65rem !important;
+  padding-bottom: 0 !important;
+}
+.lore-design .wiki-article-body :is(p, li) a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+.lore-design .wiki-article-body :is(p, li) a:hover { text-decoration-line: underline; }
+.lore-design .wiki-toc-panel a { min-height: 40px; line-height: 1.4 !important; }
+
+/* Fields inherit one shape; typing remains comfortable on small screens. */
+.lore-design :is(.wiki-main-search, .wiki-portal-search, .search-command-input,
+  .auth-input-shell, main label.flex:has(> input)) {
+  border-radius: var(--control-radius) !important;
+  background-color: var(--lore-surface) !important;
+}
+.lore-design :is(.wiki-main-search, .wiki-portal-search, .search-command-input,
+  .auth-input-shell, main label.flex) > input:not([type="checkbox"]):not([type="radio"]) {
+  font-size: 1rem !important;
+  line-height: 1.4;
+}
+.lore-design :is(.wiki-filter-pill, .wiki-button-secondary, .wiki-user-action) {
+  min-height: 44px;
+  font-size: .8125rem;
+  letter-spacing: .035em;
+}
+.lore-design .compact-footer {
+  border-top: 1px solid var(--surface-border);
+  background: #f3edef;
+}
+.lore-design .compact-footer-description,
+.lore-design .compact-footer-legal { font-size: .75rem !important; }
+
+@media (hover: hover) and (pointer: fine) {
+  .lore-design :is(a.panel, button.panel, .world-subject-card, .visual-card-grid > a):hover {
+    border-color: #b58bc5;
+    box-shadow: 0 4px 6px rgb(56 35 46 / .03), 0 16px 30px -22px rgb(111 63 196 / .4);
+  }
+}
+@media (max-width: 639px) {
+  .lore-design .wiki-category-heading-row { gap: .75rem; }
+  .lore-design .wiki-category-facts { flex-wrap: wrap; gap: 1rem; }
+  .lore-design .world-subject-body > p { display: block; font-size: .875rem; line-height: 1.55; }
+  .lore-design .world-record-grid a > div:last-child > p:first-of-type {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lore-design .visual-card-grid img { transition: none !important; transform: none !important; }
+}

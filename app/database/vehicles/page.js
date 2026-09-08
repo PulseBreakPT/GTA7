@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, CircleDot, Triangle, Maximize2, X, ArrowLeft, ArrowRight, DoorClosed, Armchair, Cog, Settings2, GitCompareArrows, Check } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
 import VehicleVisual, { classIcon } from '@/components/site/vehicle-visual'
-import { vehicles, vehicleClasses, vehicleCounters, featureBriefs, officialCatalog } from '@/lib/content'
+import { vehicles, vehicleClasses, featureBriefs, officialCatalog } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const SPEC_ICONS = [DoorClosed, Armchair, Settings2, Cog]
 const SPEC_LABELS = ['DOORS', 'SEATS', 'DRIVE', 'ENGINE']
@@ -87,12 +87,12 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="vehicles" counters={vehicleCounters} />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <div className="ghost-type" data-ghost="VEHICLES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">VEHICLES</h1></div>
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Vehicles' }]} />
+          <div className="mt-4"><CategoryHeader eyebrow="Leonida vehicle catalogue" title="Vehicles" image="/media/vehicles/stanier-crew.webp" imageAlt="Official GTA VI artwork showing a customised car and its crew" description="A visual catalogue of road, air and water vehicles, organised by class, manufacturer and evidence strength without turning visual identification into unsupported specifications." count={vehicles.length} countLabel="vehicles" updatedAt={lastUpdated} /></div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40 flex-1 min-w-[200px]">
               <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
               <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vehicle…" aria-label="Search vehicle" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
@@ -140,7 +140,7 @@ function App() {
               return (
                 <button key={c.id} type="button" role="tab" aria-selected={active} onClick={() => { setCls(c.id); setQuery('') }}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <Icon size={14} aria-hidden="true" />
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{c.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{c.count}</span>
@@ -272,7 +272,7 @@ function App() {
       {compareOpen && cmp.length === 2 && (
         <div className="fixed inset-0 z-[85]" role="dialog" aria-modal="true" aria-label="Vehicle comparison">
           <div className="absolute inset-0 bg-black/75" onClick={() => setCompareOpen(false)} />
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-[860px] max-h-[86vh] overflow-y-auto panel rounded-md p-5 sm:p-6">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-[860px] max-h-[86vh] overflow-y-auto panel rounded-sm p-5 sm:p-6">
             <div className="flex items-center justify-between">
               <h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[26px] text-paper">COMPARISON</h2>
               <button type="button" onClick={() => setCompareOpen(false)} aria-label="Close comparison" className="w-11 h-11 flex items-center justify-center text-dim hover:text-paper"><X size={18} /></button>

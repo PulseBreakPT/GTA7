@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Search } from 'lucide-react'
+import { FolderTree, Search } from 'lucide-react'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import { CATEGORIES } from '@/lib/wiki-graph'
 
@@ -26,6 +26,7 @@ export default function CategoriesIndexPage() {
     })
     return [...groups.entries()].sort(([a], [b]) => (a === '#' ? 1 : b === '#' ? -1 : a.localeCompare(b)))
   }, [shown])
+  const rootCategories = useMemo(() => CATEGORIES.filter((category) => category.parents.length === 0), [])
 
   return (
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
@@ -51,6 +52,29 @@ export default function CategoriesIndexPage() {
           </label>
         </CategoryHeader>
       </div>
+
+      {!query && rootCategories.length > 0 && (
+        <section className="mt-6" aria-labelledby="root-categories-heading">
+          <div className="flex items-center gap-4">
+            <h2 id="root-categories-heading" className="font-cond font-bold uppercase tracking-[0.14em] text-[15px] text-mint leading-none shrink-0">Root categories</h2>
+            <span className="flex-1 h-px bg-gradient-to-r from-black/20 to-transparent" aria-hidden="true" />
+            <span className="font-mono text-[11px] text-dim tabular-nums">{rootCategories.length}</span>
+          </div>
+          <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {rootCategories.map((category) => (
+              <li key={category.slug}>
+                <Link href={`/wiki/category/${category.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 group hover:border-mint/50 transition-colors">
+                  <FolderTree size={16} className="text-mint shrink-0" aria-hidden="true" />
+                  <span className="flex-1 min-w-0">
+                    <span className="block font-cond font-bold uppercase text-[14px] text-paper group-hover:text-mint transition-colors">{category.label}</span>
+                    <span className="mt-1 block font-mono text-[9px] text-dim">{category.children.length} subcategories · {category.members.length} pages</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {shown.length === 0 ? (
         <div className="py-16 text-center">

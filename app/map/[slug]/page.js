@@ -5,9 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
-import { regions, locations } from '@/lib/content'
+import { regions, locations, confirmedLocationImage } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox } from '@/components/site/wiki'
 
 export default function RegionPage() {
   const { slug } = useParams()
@@ -32,12 +32,9 @@ export default function RegionPage() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: region.label }]} />
 
-      <div className="data-rail mt-2">REGION DOSSIER · NAMED PLACES · ARCHIVE VISUALS</div>
-
       {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
           qualquer largura, como nas fichas das wikis. */}
-      <header className="mt-5">
-        <p className="font-cond text-[11px] uppercase tracking-[0.2em] text-pink">Region dossier</p>
+      <header className="wiki-article-header mt-5">
         <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[76px] text-paper">{region.label}</h1>
         <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]"><WikiText exclude={`/map/${region.id}`}>{region.blurb}</WikiText></p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -47,9 +44,11 @@ export default function RegionPage() {
         <StubNotice kind="regions" slug={region.id} />
       </header>
 
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+      <PageTools kind="regions" slug={region.id} />
+
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         {/* Corpo do artigo */}
-        <div className="min-w-0 order-2 lg:order-1">
+        <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="panel2 rounded-sm p-3">
@@ -101,13 +100,7 @@ export default function RegionPage() {
                 {entries.map((entry) => (
                   <Link key={entry.slug} href={`/map/location/${entry.slug}`}
                     className="panel rounded-sm p-2 flex flex-col hover:border-black/30 transition-colors">
-                    {entry.image ? (
-                      <span className="relative block h-[84px] w-full rounded-[2px] overflow-hidden">
-                        <Image src={entry.image} alt={entry.name} fill sizes="200px" className="object-cover" />
-                      </span>
-                    ) : (
-                      <LocationThumb x={entry.x} y={entry.y} name={entry.name} className="h-[84px] w-full rounded-[2px]" />
-                    )}
+                    <LocationThumb image={confirmedLocationImage(entry)} fallbackImage={region.image} name={entry.name} className="h-[84px] w-full rounded-[2px]" />
                     <span className="flex items-center justify-between gap-1 mt-2">
                       <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-paper truncate">{entry.name}</span>
                       <ChevronRight size={12} className="text-dim shrink-0" aria-hidden="true" />
@@ -127,18 +120,22 @@ export default function RegionPage() {
               </div>
             </WikiSection>
           )}
+          <References items={[{ name: 'Rockstar Games · GTA VI Official Site', url: 'https://www.rockstargames.com/VI' }]} />
           <CategoryFooter kind="regions" slug={region.id} />
+          <CitePage kind="regions" slug={region.id} />
+          <PageInformation kind="regions" slug={region.id} />
+          <Navbox kind="regions" slug={region.id} />
         </div>
 
         {/* Índice */}
-        <div className="hidden lg:block order-3 lg:order-2">
+        <div className="order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
         {/* Caixa de dados */}
-        <div className="order-1 lg:order-3">
-          <InfoboxShell>
-            <LocationLocator x={region.cx} y={region.cy} name={region.label} />
+        <div className="order-2 lg:order-3">
+          <InfoboxShell title={region.label} subtitle="Region profile">
+            <LocationLocator image={region.image} name={region.label} sourceLabel="OFFICIAL ROCKSTAR REGION ARTWORK" />
 
             <div className="space-y-3 border-t border-black/10 pt-4">
               <InfoRow label="Official type" value={region.officialType} />
@@ -146,14 +143,14 @@ export default function RegionPage() {
               <InfoRow label="Official theme" value={region.theme} />
               <InfoRow label="County" value={region.county} />
               <InfoRow label="Documented entries" value={String(entries.length)} />
-              <InfoRow label="On the map">
-                <Link href="/map" className="text-mint hover:text-paper transition-colors">Open in interactive map</Link>
+              <InfoRow label="Visual directory">
+                <Link href="/map" className="text-mint hover:text-paper transition-colors">Open places directory</Link>
               </InfoRow>
             </div>
 
             <div className="border-t border-black/10 pt-4">
               <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Source note</p>
-              <p className="mt-1.5 text-[11px] leading-relaxed text-dim">Only Rockstar-named places are listed. The visual arrangement is an archive index, not an official map or boundary layout.</p>
+              <p className="mt-1.5 text-[11px] leading-relaxed text-dim">Only Rockstar-named places are listed. Every visual is published GTA VI media; contextual region images are labelled and never presented as an exact location.</p>
             </div>
             <WhatLinksHere kind="regions" slug={region.id} />
           </InfoboxShell>

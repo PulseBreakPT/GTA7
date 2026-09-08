@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ChevronUp, Quote, Star, TriangleAlert } from 'lucide-react'
+import { ChevronUp, TriangleAlert } from 'lucide-react'
 import MediaCarousel from '@/components/site/media-carousel'
 import { articles, articleVisuals, categoriesForArticle, relatedArticlesFor, sources } from '@/lib/content'
 import { GhostBadge, SourceChip, StatusBadge, fmtDate } from '@/components/site/ui'
@@ -19,13 +19,6 @@ const SECTION_RULES = [
   ['COMBAT & INVENTORY', /combat|weapon|gun|shoot|Focus|aim|hit|body|inventory|armour/i],
   ['ACTIVITIES & PROGRESSION', /gym|fitness|train|fishing|hunting|activity|attribute|profile|mission|story/i],
   ['INTERFACE & TECHNICAL NOTES', /HUD|phone|menu|FPS|PS5|first-person|interface|performance|technical/i],
-]
-
-const SECTION_THEMES = [
-  { text: 'text-mint', border: 'border-mint/45', bg: 'bg-mint/8', dot: 'bg-mint' },
-  { text: 'text-pink', border: 'border-pink/45', bg: 'bg-pink/8', dot: 'bg-pink' },
-  { text: 'text-violet', border: 'border-violet/45', bg: 'bg-violet/8', dot: 'bg-violet' },
-  { text: 'text-warn', border: 'border-warn/45', bg: 'bg-warn/8', dot: 'bg-warn' },
 ]
 
 const sectionFor = (text, index) => {
@@ -44,37 +37,29 @@ function InlineText({ text }) {
 }
 
 function FormattedArticleBody({ body }) {
-  let previousSection = ''
-  const sections = body.reduce((list, paragraph, index) => {
-    const section = sectionFor(paragraph, index)
-    return list.includes(section) ? list : [...list, section]
-  }, [])
+  const records = body.map((paragraph, index) => ({
+    section: sectionFor(paragraph, index),
+    text: paragraph.replace(/^([A-Z][A-Z &]+) — /, ''),
+  }))
+  const sections = records.reduce((list, record) => list.includes(record.section) ? list : [...list, record.section], [])
 
   return (
     <>
-      {sections.length >= 3 && <nav aria-label="On this page" className="mb-8 border border-line bg-panel/50 p-4 sm:p-5">
-        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-mint mb-3">IN THIS RECORD</p>
-        <div className="flex flex-wrap gap-2">{sections.map((section, index) => {
-          const theme = SECTION_THEMES[index % SECTION_THEMES.length]
-          return <a key={section} href={`#section-${index + 1}`} className={`inline-flex items-center gap-1.5 border ${theme.border} ${theme.bg} px-2 py-1 font-cond uppercase tracking-[0.1em] text-[10px] ${theme.text} hover:bg-black/10`}><span className={`w-1.5 h-1.5 rounded-full ${theme.dot}`} />{String(index + 1).padStart(2, '0')} · {section}</a>
-        })}</div>
+      {sections.length >= 3 && <nav aria-label="On this page" className="article-inline-toc">
+        <p>In this record <span>{sections.length} sections</span></p>
+        <ol>{sections.map((section, index) => (
+          <li key={section}><a href={`#section-${index + 1}`}><span>{String(index + 1).padStart(2, '0')}</span>{section}</a></li>
+        ))}</ol>
       </nav>}
-      <div className="max-w-[780px] flex flex-col gap-7 sm:gap-9 border-l border-black/10 pl-4 sm:pl-6">
-        {body.map((paragraph, index) => {
-          const section = sectionFor(paragraph, index)
-          const sectionIndex = sections.indexOf(section)
-          const theme = SECTION_THEMES[sectionIndex % SECTION_THEMES.length]
-          const isNewSection = section !== previousSection
-          previousSection = section
-          const cleanParagraph = paragraph.replace(/^([A-Z][A-Z &]+) — /, '')
-          return <div key={index} className={isNewSection ? 'pt-4 first:pt-0' : ''}>
-            {isNewSection && <div className="mb-3"><p className={`font-mono text-[9px] tracking-[0.18em] ${theme.text} mb-1.5`}>EVIDENCE GROUP</p><h2 id={`section-${sectionIndex + 1}`} className={`scroll-mt-24 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-[18px] sm:text-[20px] ${theme.text} border-b ${theme.border} pb-2`}><span className={`w-2 h-2 rounded-full ${theme.dot}`} />{section}</h2></div>}
-            <div className="relative">
-              {index === 0 && <Quote size={20} className="text-pink mb-2" aria-hidden="true" />}
-              <p className={index === 0 ? 'text-[18px] sm:text-[20px] leading-[1.72] text-paper font-medium max-w-[66ch]' : 'text-[17px] sm:text-[18px] leading-[1.9] text-paper/90 max-w-[68ch]'}><InlineText text={cleanParagraph} /></p>
-            </div>
-          </div>
-        })}
+      <div id="article-content" className="article-news-sections">
+        {sections.map((section, sectionIndex) => (
+          <section key={section} id={`section-${sectionIndex + 1}`} className="article-news-section">
+            <h2><span>{String(sectionIndex + 1).padStart(2, '0')}</span>{section}</h2>
+            {records.filter((record) => record.section === section).map((record, index) => (
+              <p key={`${section}-${index}`}><InlineText text={record.text} /></p>
+            ))}
+          </section>
+        ))}
       </div>
     </>
   )
@@ -109,23 +94,26 @@ function App() {
   }))
 
   return (
-    <article className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
+    <article className="wiki-news-article px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news' }, { label: a.title }]} />
 
-      <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 panel">
+      <header className="wiki-article-header mt-5">
+        <h1 data-ghost="ARTICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] max-w-[920px]">{a.title}</h1>
+      </header>
+
+      <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-5 panel">
         <Image src={a.image} alt={a.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
         <span className="absolute top-4 left-4 flex items-center gap-2">
           <StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} />
           <GhostBadge status={a.status} />
         </span>
       </div>
-      {a.imageCredit && <p className="mt-2 text-right font-cond uppercase tracking-[0.12em] text-[10px] text-dim">Portrait: <a href={a.imageCreditUrl} target="_blank" rel="noreferrer" className="text-paper/75 hover:text-pink underline underline-offset-2">{a.imageCredit}</a></p>}
 
-      <div className="ghost-type mt-6" data-ghost="LUSORAE">
-        <h1 data-ghost="ARTICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] max-w-[920px]">{a.title}</h1>
-      </div>
+      <aside className="tech-mask-sm panel mt-5 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
+        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-pink">AT A GLANCE</p>
+        <p className="wiki-article-lede mt-2 font-medium">{a.excerpt}</p>
+      </aside>
 
-      <div className="data-rail mt-5">FILE {a.slug.slice(0, 8).toUpperCase()} · ARCHIVE RECORD · CONTENT INDEX</div>
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN READ</span>
 
@@ -144,11 +132,6 @@ function App() {
         </div>
       )}
 
-      <aside className="tech-mask-sm panel mt-6 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
-        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-pink">AT A GLANCE</p>
-        <p className="mt-2 text-[16px] sm:text-[17px] leading-[1.65] text-paper font-medium">{a.excerpt}</p>
-      </aside>
-
       {/* A referência visual estava no fim, a seguir ao artigo todo e ao «back
           to top»: chegava-lhe só quem já não precisava dela. Sobe para junto
           do resumo e antes do corpo — vê-se do que trata, depois lê-se.
@@ -160,7 +143,7 @@ function App() {
         </section>
       )}
 
-      <div className="mt-7">
+      <div className="wiki-news-paper mt-7">
         <FormattedArticleBody body={a.body} />
       </div>
 

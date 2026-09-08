@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Heart, BadgeCheck, Eye, ChevronRight, Triangle, Info } from 'lucide-react'
 import { articles, encyclopediaCategories, gtaWikiPageLedger, guides, liveUpdates, sources } from '@/lib/content'
 import { StatusBadge, GhostBadge, cx, fmtDate } from '@/components/site/ui'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const FILTERS = [
   { id: 'all', label: 'ALL' },
@@ -23,13 +23,13 @@ const SUMMARY = [
 
 function ArticleCard({ a }) {
   return (
-    <Link href={`/news/${a.slug}`} className="panel rounded-sm p-4 flex gap-4 group hover:border-black/30 transition-colors">
-      <div className="relative w-[38%] min-w-[120px] shrink-0 overflow-hidden rounded-sm border border-line">
-        <Image src={a.image} alt={a.title} fill sizes="(max-width:1024px) 40vw, 18vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
+    <Link href={`/news/${a.slug}`} className="news-grid-card panel overflow-hidden group hover:border-black/30 transition-colors">
+      <div className="relative aspect-[16/9] overflow-hidden bg-surface2">
+        <Image src={a.image} alt={a.title} fill sizes="(max-width:640px) 50vw, (max-width:1024px) 40vw, 18vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
       </div>
-      <div className="flex-1 min-w-0 flex flex-col py-1">
+      <div className="flex-1 min-w-0 flex flex-col p-3 sm:p-4">
         <div><StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} /></div>
-        <h3 className="font-cond font-bold uppercase text-paper text-[22px] leading-[1.02] tracking-tight mt-2.5">{a.title}</h3>
+        <h3 className="font-cond font-bold uppercase text-paper text-[16px] sm:text-[21px] leading-[1.02] tracking-tight mt-2.5 line-clamp-2">{a.title}</h3>
         <p className="text-dim text-[12px] leading-relaxed mt-2 clamp-2">{a.excerpt}</p>
         <div className="mt-auto pt-3 flex items-center justify-between">
           <span className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN</span>
@@ -56,7 +56,7 @@ function App() {
     'systems-visuals-and-world-interactions', 'vehicles-and-online-separate-the-known',
   ].includes(a.slug))
   const wikiExtraction = articles.filter((a) => [
-    'gta-wiki-development-and-release-ledger', 'gta-wiki-media-gallery-and-reception', 'gta-wiki-claims-leaks-and-source-boundaries', 'four-creators-rockstar-north-preview', 'creator-preview-record-how-to-read-it', 'creator-preview-session-format-and-boundaries', 'creator-preview-systems-index', 'davy-jones-rockstar-north-preview-record', 'tgg-rockstar-north-preview-record', 'el-rubius-rockstar-north-preview-record', 'mikeshowsha-rockstar-north-preview-record',
+    'official-development-and-release-ledger', 'official-media-gallery-and-reception', 'claims-leaks-and-source-boundaries', 'four-creators-rockstar-north-preview', 'creator-preview-record-how-to-read-it', 'creator-preview-session-format-and-boundaries', 'creator-preview-systems-index', 'davy-jones-rockstar-north-preview-record', 'tgg-rockstar-north-preview-record', 'el-rubius-rockstar-north-preview-record', 'mikeshowsha-rockstar-north-preview-record',
   ].includes(a.slug))
   const filtered = useMemo(() => articles.filter((a) => filter === 'all' || a.category === filter), [filter])
   const updates = allUpdates ? liveUpdates : liveUpdates.slice(0, 4)
@@ -70,14 +70,11 @@ function App() {
     .map((a, i) => ({ rank: String(i + 1).padStart(2, '0'), slug: a.slug, title: a.title.charAt(0) + a.title.slice(1).toLowerCase(), date: `${a.readTime} min` }))
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 xl:grid-cols-[1fr_408px] gap-6">
+    <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 xl:grid-cols-[1fr_408px] gap-6">
       {/* LEFT */}
       <div className="min-w-0">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News' }]} />
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div><p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">Leonida reference archive</p><div className="ghost-type" data-ghost="ARTICLES"><h1 className="chromatic-title mt-1 font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">ARTICLES</h1></div></div>
-          <Link href="/categories" className="inline-flex min-h-[44px] items-center gap-2 border border-line px-4 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-pink">{encyclopediaCategories.length} categories <ChevronRight size={14} /></Link>
-        </div>
+        <div className="mt-4"><CategoryHeader eyebrow="Leonida reference archive" title="Articles" image="/media/key-art/jason-lucia-pier.webp" imageAlt="Official GTA VI artwork of Jason and Lucia by the water" description="News, official announcements, analysis and community reporting organised by evidence type and publication date." count={articles.length} countLabel="articles"><Link href="/categories" className="mt-4 inline-flex min-h-[44px] items-center gap-2 border border-line px-4 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-pink">{encyclopediaCategories.length} categories <ChevronRight size={14} /></Link></CategoryHeader></div>
 
         <div className="mt-4 inline-flex border border-line rounded-sm overflow-hidden" role="tablist" aria-label="News filters">
           {FILTERS.map((f) => (
@@ -129,37 +126,37 @@ function App() {
               </div>
             </Link>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="visual-card-grid news-card-grid mt-4">
               {support.map((a) => <ArticleCard key={a.slug} a={a} />)}
             </div>
             <section className="mt-7" aria-labelledby="feature-roundup-heading">
               <div className="flex items-end justify-between gap-4 border-b hairline pb-2">
                 <div>
-                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">GTA Base feature roundup</p>
+                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Editorial feature record</p>
                   <h2 id="feature-roundup-heading" className="mt-1 font-cond font-bold uppercase tracking-[0.08em] text-[24px] text-paper">Source-led feature briefings</h2>
                 </div>
                 <Link href="/guides/feature-roundup-source-guide" className="font-cond uppercase tracking-[0.12em] text-[12px] text-dim hover:text-paper">How we label sources</Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div className="visual-card-grid news-card-grid mt-4">
                 {featureRoundup.map((a) => <ArticleCard key={a.slug} a={a} />)}
               </div>
             </section>
             <section className="mt-7 border-t hairline pt-5" aria-labelledby="wiki-extraction-heading">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">{gtaWikiPageLedger.sourceName}</p>
+                  <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">Archive subject ledger</p>
                   <h2 id="wiki-extraction-heading" className="mt-1 font-cond font-bold uppercase tracking-[0.08em] text-[24px] text-paper">Full-page source index</h2>
                 </div>
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Extracted {gtaWikiPageLedger.extractedAt}</span>
               </div>
               <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-dim">{gtaWikiPageLedger.caution}</p>
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="visual-card-grid news-card-grid mt-4">
                 {wikiExtraction.map((a) => <ArticleCard key={a.slug} a={a} />)}
               </div>
             </section>
           </>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+          <div className="visual-card-grid news-card-grid mt-5">
             {filtered.map((a) => <ArticleCard key={a.slug} a={a} />)}
             {filtered.length === 0 && (
               <div className="panel rounded-sm p-8 text-center col-span-full">

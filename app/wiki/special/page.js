@@ -1,13 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { List, FolderTree, BarChart3, Clock, Shuffle, BookMarked, Search, Images, ChevronRight } from 'lucide-react'
+import { List, FolderTree, BarChart3, Clock, Compass, Shuffle, BookMarked, Search, Images, ChevronRight } from 'lucide-react'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import { STATS, CATEGORIES, RECENT, SOURCES, SPECIAL_LISTS } from '@/lib/wiki-graph'
 
 // O índice das páginas especiais, como qualquer wiki tem. Junta num sítio
 // as vistas que não são verbetes mas que dizem o estado do arquivo.
 const PAGES = [
+  { href: '/wiki/search', icon: Search, title: 'Search', count: null, desc: 'Full-text search across canonical titles, page text, categories, source labels and archive branches.' },
+  { href: '/wiki/portals', icon: Compass, title: 'Topic portals', count: 10, desc: 'Subject gateways combining starting points, categories, recent checks and maintenance for every namespace.' },
+  { href: '/wiki/discover', icon: Compass, title: 'Discover 100', count: 100, desc: 'One hundred balanced routes into sourced, complete and connected parts of the encyclopedia.' },
   { href: '/wiki', icon: List, title: 'All entries', count: STATS.total, desc: 'Every entry in the archive, alphabetically, with a letter bar and filters by branch.' },
   { href: '/wiki/categories', icon: FolderTree, title: 'All categories', count: CATEGORIES.length, desc: 'Every category entries are filed under, with how many each one holds.' },
   { href: '/wiki/changes', icon: Clock, title: 'Recent changes', count: RECENT.length, desc: 'Entries by the date each was last checked against its source.' },
@@ -70,14 +73,16 @@ export default function SpecialPagesIndex() {
           Every one of these is computed from the entries themselves. They are published rather than kept private
           because a list of what is missing is worth as much as the record: it is how a wiki audits itself in the open.
         </p>
-        <ul className="mt-4 border border-line divide-y divide-black/[0.08]">
+        <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {MAINTENANCE.map((m) => (
             <li key={m.href}>
-              <Link href={m.href} className="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-4 py-3 hover:bg-surface2/50 transition-colors group">
-                <span className="font-cond font-bold uppercase tracking-[0.06em] text-[15px] text-paper group-hover:text-pink transition-colors">{m.title}</span>
-                <span className="font-mono text-[11px] text-dim tabular-nums">{m.count}</span>
-                <span className="basis-full lg:basis-auto lg:flex-1 min-w-0 text-[12.5px] leading-snug text-dim lg:truncate">{m.desc}</span>
-                <ChevronRight size={13} className="text-dim shrink-0" aria-hidden="true" />
+              <Link href={m.href} className="group flex min-h-[142px] h-full flex-col border border-line bg-white/55 p-4 hover:border-pink/55 hover:bg-white transition-colors">
+                <span className="flex items-start justify-between gap-3">
+                  <span className="font-cond font-bold uppercase tracking-[0.06em] text-[16px] leading-tight text-paper group-hover:text-pink transition-colors">{m.title}</span>
+                  <span className="font-cond font-bold text-[20px] leading-none text-paper tabular-nums">{m.count}</span>
+                </span>
+                <span className="mt-2 text-[12.5px] leading-snug text-dim line-clamp-3">{m.desc}</span>
+                <span className="mt-auto pt-3 inline-flex items-center gap-1 font-cond uppercase tracking-[0.14em] text-[9px] text-dim group-hover:text-paper">Open report <ChevronRight size={11} aria-hidden="true" /></span>
               </Link>
             </li>
           ))}

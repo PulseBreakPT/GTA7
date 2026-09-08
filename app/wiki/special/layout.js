@@ -2,9 +2,9 @@
 // devolve os filhos tal como vêm.
 export const metadata = {
   title: 'Special pages',
-  description: 'Indexes, counts and provenance for the LEONIDA ARCHIVE — the views that are not entries.',
+  description: 'Indexes, counts and provenance for the GTA LORE — the views that are not entries.',
   alternates: { canonical: '/wiki/special' },
-  openGraph: { title: 'Special pages', description: 'Indexes, counts and provenance for the LEONIDA ARCHIVE — the views that are not entries.', url: '/wiki/special' },
+  openGraph: { title: 'Special pages', description: 'Indexes, counts and provenance for the GTA LORE — the views that are not entries.', url: '/wiki/special' },
 }
 
 export default function Layout({ children }) {

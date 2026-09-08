@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
 
 export default function FactionPage() {
@@ -35,9 +35,7 @@ export default function FactionPage() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Factions', href: '/gangs-factions' }, { label: f.name }]} />
 
-      <div className="data-rail mt-2">FACTION FILE · SOURCE-BOUND RECORD · {f.region}</div>
-
-      <header className="mt-5">
+      <header className="wiki-article-header mt-5">
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge status={f.status} />
           <GhostBadge status="confirmed" label={f.kind} />
@@ -49,8 +47,10 @@ export default function FactionPage() {
           <Hatnote kind="factions" slug={f.slug} />
       </header>
 
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-        <div className="min-w-0 order-2 lg:order-1">
+      <PageTools kind="factions" slug={f.slug} />
+
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
           </WikiSection>
@@ -96,12 +96,12 @@ export default function FactionPage() {
             <Navbox kind="factions" slug={f.slug} />
         </div>
 
-        <div className="hidden lg:block order-3 lg:order-2">
+        <div className="order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
-        <div className="order-1 lg:order-3">
-          <InfoboxShell>
+        <div className="order-2 lg:order-3">
+          <InfoboxShell title={f.name} subtitle="Faction profile">
             {f.image ? (
               <span className="relative block aspect-[16/10] overflow-hidden rounded-sm border border-line bg-surface2">
                 <Image src={f.image} alt={f.name} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />

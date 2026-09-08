@@ -1,6 +1,7 @@
 'use client'
 
 import { Check, HelpCircle, Activity, BadgeCheck, X, Circle, Triangle, Square, ExternalLink } from 'lucide-react'
+import { publicSource } from '@/lib/official-links'
 
 export const cx = (...a) => a.filter(Boolean).join(' ')
 
@@ -37,7 +38,7 @@ export function StatusBadge({ status, label, className }) {
   const text = label || m.label
   return (
     <span
-      className={cx('inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm', className)}
+      className={cx('status-badge inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm', className)}
       style={{ color: ACCENT.onAccent, backgroundColor: m.color }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />
@@ -51,7 +52,7 @@ export function GhostBadge({ status, label, className }) {
   const text = label || m.label
   return (
     <span
-      className={cx('inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm border', className)}
+      className={cx('ghost-badge inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm border', className)}
       style={{ color: m.color, borderColor: `${m.color}55`, backgroundColor: `${m.color}0F` }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />
@@ -147,11 +148,12 @@ export function fmtDate(iso) {
 // Fica o nome da fonte, dito por extenso e a cinzento, que é exactamente o
 // que o arquivo pode garantir sobre esse registo.
 export function SourceChip({ name, url, prefix = 'SOURCE', className }) {
-  const label = name
-    ? (prefix ? `${prefix}: ${String(name).toUpperCase()}` : String(name).toUpperCase())
+  const source = publicSource(name, url)
+  const label = source.name
+    ? (prefix ? `${prefix}: ${String(source.name).toUpperCase()}` : String(source.name).toUpperCase())
     : (prefix || 'SOURCE')
   const base = 'inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px]'
-  if (!url) {
+  if (!source.url) {
     return (
       <span className={cx(base, 'text-dim', className)}>
         {label}
@@ -160,7 +162,7 @@ export function SourceChip({ name, url, prefix = 'SOURCE', className }) {
     )
   }
   return (
-    <a href={url} target="_blank" rel="noreferrer" className={cx(base, 'text-paper hover:border-black/40 transition-colors', className)}>
+    <a href={source.url} target="_blank" rel="noreferrer" className={cx(base, 'text-paper hover:border-black/40 transition-colors', className)}>
       {label} <ExternalLink size={11} aria-hidden="true" />
     </a>
   )

@@ -5,9 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
 const REL_BARS = [
@@ -18,10 +18,13 @@ const REL_BARS = [
 
 export function Portrait({ c, className, sizes = '120px', priority = false }) {
   const pos = className && className.includes('absolute') ? '' : 'relative'
-  if (c.image) {
+  const visual = c.image || c.contextImage
+  const contextual = !c.image && Boolean(c.contextImage)
+  if (visual) {
     return (
-      <span className={cx(pos, 'block overflow-hidden bg-surface2', className)}>
-        <Image src={c.image} alt={`Portrait of ${c.name}`} fill priority={priority} sizes={sizes} className="object-cover object-top" />
+      <span className={cx(pos, 'character-visual block overflow-hidden bg-surface2', contextual && 'is-contextual', className)} title={contextual ? c.imageCaption : undefined}>
+        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill priority={priority} sizes={sizes} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
+        {contextual && <span className="character-context-label">Context</span>}
       </span>
     )
   }
@@ -63,12 +66,12 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="characters" />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <div className="ghost-type" data-ghost="CHARACTERS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">CHARACTERS</h1></div>
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters' }]} />
+          <div className="mt-4"><CategoryHeader eyebrow="People of Leonida" title="Characters" image="/media/key-art/cover.webp" imageAlt="Official Grand Theft Auto VI cover artwork featuring the principal cast" imagePosition="center 42%" description="Named protagonists, allies and figures documented from Rockstar-published material, with reported identities kept visibly separate from confirmed records." count={characters.length} countLabel="characters" updatedAt={lastUpdated} /></div>
 
-          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
+          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
             <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
           </label>
@@ -96,7 +99,7 @@ function App() {
               return (
                 <button key={f.id} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
                   className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
                   <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.label}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
                 </button>
