@@ -6,6 +6,7 @@ import { Search, X } from 'lucide-react'
 import { IMG } from '@/lib/content'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import { cx } from '@/components/site/ui'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 // A galeria não tem lista própria: lê o catálogo de imagens do arquivo e
 // agrupa-o pela pasta em que cada ficheiro está. Assim nunca fica
@@ -63,9 +64,11 @@ export default function MediaPage() {
           description="Official artwork, Rockstar’s Visit Leonida postcards, gameplay captures and edition stills, as held by this archive. Captions come from the archive’s own file catalogue, not from Rockstar wording."
           count={ITEMS.length}
           countLabel="images"
+          image="/media/key-art/jason-lucia-beach.webp"
+          imageAlt="Official GTA VI artwork of Jason and Lucia on Vice Beach"
         >
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <label className="glass-panel tech-mask-sm flex items-center gap-2 h-10 px-3 w-full sm:w-[260px]">
+          <CollapsibleFilters title="Media filters" count={shown.length} activeCount={Number(Boolean(query.trim())) + Number(group !== 'all')} summary={`${shown.length} of ${ITEMS.length} images`}>
+            <label className="wiki-filter-search">
               <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
               <input
                 value={query}
@@ -75,7 +78,7 @@ export default function MediaPage() {
                 className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0"
               />
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="wiki-filter-group">
               {groups.map((g) => (
                 <button
                   key={g.id}
@@ -83,7 +86,7 @@ export default function MediaPage() {
                   onClick={() => setGroup(g.id)}
                   aria-pressed={group === g.id}
                   className={cx(
-                    'inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
+                    'filter-chip inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
                     group === g.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40'
                   )}
                 >
@@ -92,7 +95,7 @@ export default function MediaPage() {
                 </button>
               ))}
             </div>
-          </div>
+          </CollapsibleFilters>
         </CategoryHeader>
       </div>
 

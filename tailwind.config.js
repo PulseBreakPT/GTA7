@@ -11,37 +11,33 @@ module.exports = {
   theme: {
     container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
     extend: {
-      // Tema claro. Os nomes mantêm-se — `ink` é o fundo e `paper` o
-      // texto, tal como antes — porque são centenas de utilizações no
-      // projecto: trocar o significado de dois tokens vira o site todo
-      // sem tocar numa única classe. O que muda de verdade são os
-      // acentos: os pastéis do tema escuro davam menos de 2:1 sobre
-      // branco, ou seja, texto ilegível. Aqui cada um tem a versão
-      // escura da mesma cor, acima de 4.5:1.
+      // Paleta extraída da key art oficial de Jason e Lucia. Os tons mais
+      // escuros são derivados acessíveis das mesmas cores, para texto e
+      // controlos manterem contraste sobre o papel quente.
       colors: {
-        ink: '#FFFFFF',
-        raised: '#F7F8FA',
-        surface2: '#EDEFF3',
-        paper: '#0B0F16',
-        dim: '#5A6270',
-        line: 'rgba(11,15,22,0.14)',
-        pink: '#C2185B',
-        mint: '#0E7C6B',
-        violet: '#5B3FD6',
-        warn: '#8A6A00',
-        danger: '#B3202A',
-        border: 'rgba(11,15,22,0.14)',
-        input: 'rgba(11,15,22,0.14)',
-        ring: '#C2185B',
-        background: '#FFFFFF',
-        foreground: '#0B0F16',
-        primary: { DEFAULT: '#0B0F16', foreground: '#FFFFFF' },
-        secondary: { DEFAULT: '#EDEFF3', foreground: '#0B0F16' },
-        destructive: { DEFAULT: '#B3202A', foreground: '#FFFFFF' },
-        muted: { DEFAULT: '#EDEFF3', foreground: '#5A6270' },
-        accent: { DEFAULT: '#C2185B', foreground: '#FFFFFF' },
-        popover: { DEFAULT: '#FFFFFF', foreground: '#0B0F16' },
-        card: { DEFAULT: '#FFFFFF', foreground: '#0B0F16' },
+        ink: '#FFF9F4',
+        raised: '#F9EEF0',
+        surface2: '#EDDCE4',
+        paper: '#38232E',
+        dim: '#714958',
+        line: 'rgba(56,35,46,0.16)',
+        pink: '#C12E70',
+        mint: '#445CC0',
+        violet: '#6F3FC4',
+        warn: '#8A533C',
+        danger: '#A74444',
+        border: 'rgba(56,35,46,0.16)',
+        input: 'rgba(56,35,46,0.16)',
+        ring: '#C12E70',
+        background: '#FFF9F4',
+        foreground: '#38232E',
+        primary: { DEFAULT: '#38232E', foreground: '#FFF9F4' },
+        secondary: { DEFAULT: '#EDDCE4', foreground: '#38232E' },
+        destructive: { DEFAULT: '#A74444', foreground: '#FFF9F4' },
+        muted: { DEFAULT: '#EDDCE4', foreground: '#714958' },
+        accent: { DEFAULT: '#C12E70', foreground: '#FFF9F4' },
+        popover: { DEFAULT: '#FFF9F4', foreground: '#38232E' },
+        card: { DEFAULT: '#FFF9F4', foreground: '#38232E' },
       },
       fontFamily: {
         cond: ['var(--font-cond)', 'Arial Narrow', 'sans-serif'],

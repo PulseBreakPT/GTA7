@@ -1,495 +1,207 @@
 'use client'
 
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
-import Link from 'next/link'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Search, Plus, Minus, RotateCcw, Triangle, X, SlidersHorizontal, Compass, Check, MapPin } from 'lucide-react'
-import { regions, mapFilters, locations, easterEggs, featureBriefs } from '@/lib/content'
-import { GhostBadge, StatusBadge, STATUS_META, ACCENT, cx } from '@/components/site/ui'
-import MapTerrain, { MAP_VBW, MAP_VBH } from '@/components/site/map-terrain'
+import { ArrowRight, CheckCircle2, Image as ImageIcon, Search, X } from 'lucide-react'
+import { confirmedLocationImage, locations, regions } from '@/lib/content'
+import { STATUS_META, StatusBadge, cx } from '@/components/site/ui'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
-const VBW = MAP_VBW, VBH = MAP_VBH
-
-// Os marcadores eram pintados pela categoria, e a categoria trazia as cores
-// do tema escuro: `#F5F4F0`, um quase-branco, em cima de um mapa de papel.
-// Os 61 marcadores do arquivo estavam praticamente invisíveis, e a linha da
-// categoria no painel de detalhe era texto branco sobre branco. Passam a ser
-// pintados pelo estado da fonte, com as cores dos próprios selos — que é a
-// única leitura que interessa a um mapa deste arquivo: o que a Rockstar
-// nomeou, o que só se vê em imagem, e o que anda a circular sem apoio.
-const statusColor = (status) => (STATUS_META[status] || STATUS_META.analysis).color
-
-// Os estados que existem nos lugares, pela ordem em que se lêem, e só os
-// que têm entradas. O filtro anterior era por categoria: as quatro
-// categorias existiam, mas 61 dos 61 lugares estavam na mesma, e as outras
-// três eram interruptores que só serviam para esvaziar o mapa.
 const STATUS_ORDER = ['confirmed', 'verified', 'analysis', 'category', 'rumour']
 const LOCATION_STATUSES = STATUS_ORDER
-  .map((id) => ({ id, label: (STATUS_META[id] || {}).label || id.toUpperCase(), color: statusColor(id), count: locations.filter((l) => l.status === id).length }))
-  .filter((s2) => s2.count > 0)
+  .map((id) => ({ id, label: (STATUS_META[id] || {}).label || id.toUpperCase(), count: locations.filter((item) => item.status === id).length }))
+  .filter((item) => item.count > 0)
 
-function MapSurface({ view, setView, dragging, setDragging, markers, selected, onSelect }) {
-  const svgRef = useRef(null)
-  const drag = useRef(null)
-
-  const onPointerDown = (e) => {
-    drag.current = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y, moved: false }
-    setDragging(true)
-    e.currentTarget.setPointerCapture(e.pointerId)
-  }
-  const onPointerMove = (e) => {
-    if (!drag.current) return
-    const rect = svgRef.current.getBoundingClientRect()
-    const sx = VBW / rect.width
-    const dx = (e.clientX - drag.current.x) * sx
-    const dy = (e.clientY - drag.current.y) * sx
-    if (Math.abs(dx) + Math.abs(dy) > 3) drag.current.moved = true
-    setView((v) => ({ ...v, x: drag.current.vx + dx, y: drag.current.vy + dy }))
-  }
-  const onPointerUp = () => { drag.current = null; setDragging(false) }
-  const onWheel = (e) => {
-    e.preventDefault()
-    setView((v) => {
-      const k2 = Math.min(4, Math.max(0.55, v.k * (e.deltaY < 0 ? 1.15 : 0.87)))
-      const px = (VBW / 2 - v.x) / v.k
-      const py = (VBH / 2 - v.y) / v.k
-      return { x: VBW / 2 - px * k2, y: VBH / 2 - py * k2, k: k2 }
-    })
-  }
-
-  const sel = markers.find((m) => m.slug === selected)
-  const r = (n) => n / view.k
+function PublishedVisual({ location, region, className, priority = false }) {
+  const exactImage = confirmedLocationImage(location)
+  const contextualImage = location.contextImage || region?.image
+  const src = exactImage || contextualImage
+  if (!src) return null
 
   return (
-    <svg
-      ref={svgRef}
-      viewBox={`0 0 ${VBW} ${VBH}`}
-      className="w-full h-full touch-none cursor-grab active:cursor-grabbing select-none"
-      role="application"
-      aria-label="Interactive map of Leonida. Drag to pan, scroll to zoom."
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
-      onWheel={onWheel}
-    >
-      <rect width={VBW} height={VBH} fill="#DCE6EF" />
-      <g style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.k})`, transformOrigin: '0 0', transition: dragging ? 'none' : 'transform 300ms ease' }}>
-        <MapTerrain />
-        {/* route to selection */}
-        {/* markers */}
-        {markers.map((m) => {
-          const active = m.slug === selected
-          const color = statusColor(m.status)
-          return (
-            <g
-              key={m.slug}
-              transform={`translate(${m.x},${m.y})`}
-              role="button"
-              tabIndex={0}
-              aria-label={`${m.name}, ${m.category}${active ? ', selected' : ''}`}
-              className="cursor-pointer focus:outline-none"
-              onClick={(e) => { e.stopPropagation(); onSelect(m.slug) }}
-              onPointerDown={(e) => e.stopPropagation()}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(m.slug) } }}
-            >
-              {active && <circle r={r(17)} fill="none" stroke="#0B0F16" strokeWidth={r(2)} />}
-              {active && <circle r={r(24)} fill="none" stroke="#C2185B" strokeWidth={r(1.5)} opacity="0.55" />}
-              <circle r={r(8)} fill="#FFFFFF" stroke={color} strokeWidth={r(2.5)} />
-              <circle r={r(3)} fill={color} />
-              {(active || view.k >= 1.6) && (
-                <text y={r(-24)} textAnchor="middle" fontFamily="var(--font-cond)" fontWeight="600" fontSize={r(14)} fill="#0B0F16" letterSpacing="1.5" style={{ paintOrder: 'stroke', stroke: '#FFFFFF', strokeWidth: r(3) }}>
-                  {m.name}
-                </text>
-              )}
-            </g>
-          )
-        })}
-      </g>
-    </svg>
+    <span className={cx('relative block overflow-hidden bg-surface2', className)}>
+      <Image
+        src={src}
+        alt={exactImage
+          ? `${location.name} in published GTA VI media`
+          : `Official GTA VI visual context for ${location.name}, not an exact-place identification`}
+        fill
+        priority={priority}
+        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 360px"
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.035]"
+      />
+      <span className="absolute inset-x-0 bottom-0 px-2.5 pb-2 pt-8 bg-gradient-to-t from-black/90 via-black/45 to-transparent font-mono text-[8px] uppercase tracking-[0.12em] text-white">
+        {exactImage ? 'EXACT PLACE · PUBLISHED GTA VI MEDIA' : 'OFFICIAL REGION CONTEXT · NOT THIS EXACT PLACE'}
+      </span>
+    </span>
   )
 }
 
-function MapPage() {
-  const params = useSearchParams()
+function RegionCard({ region, active, onSelect }) {
+  const count = locations.filter((item) => item.region === region.id).length
+  return (
+    <article
+      className={cx(
+        'places-region-card group relative min-h-[210px] overflow-hidden rounded-sm border text-left transition-colors',
+        active ? 'border-pink' : 'border-line hover:border-violet/50'
+      )}
+    >
+      <Link href={`/map/${region.id}`} className="absolute inset-0" aria-label={`Open ${region.label} region article`}>
+        <Image src={region.image} alt={`${region.label} official Rockstar postcard`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.045]" />
+        <span className="absolute inset-0 bg-gradient-to-t from-[#080c1d]/95 via-[#080c1d]/20 to-transparent" />
+        <span className="absolute inset-x-0 bottom-0 p-4 text-white">
+          <span className="block font-cond font-bold uppercase tracking-[0.06em] text-[20px]">{region.label}</span>
+          <span className="mt-1 flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70">
+            <span>Official Rockstar artwork</span><span>{count} places</span>
+          </span>
+        </span>
+      </Link>
+      <button
+        type="button"
+        onClick={() => onSelect(active ? 'all' : region.id)}
+        aria-pressed={active}
+        className="absolute right-3 top-3 z-[2] min-h-9 rounded-sm border border-white/35 bg-black/55 px-3 font-cond text-[10px] font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm hover:bg-white hover:text-paper"
+      >
+        {active ? 'Clear' : 'Filter'}
+      </button>
+    </article>
+  )
+}
+
+function PlacesDirectory({ requested = null }) {
   const [query, setQuery] = useState('')
-  const [region, setRegion] = useState(null)
-  const [cats, setCats] = useState(() => new Set(LOCATION_STATUSES.map((f) => f.id)))
-  const [selected, setSelected] = useState('ocean-beach')
-  const [view, setView] = useState({ x: 0, y: 0, k: 1 })
-  const [dragging, setDragging] = useState(false)
-  const [sheet, setSheet] = useState(null) // 'filters' | 'detail' | null (mobile)
+  const [regionFilter, setRegionFilter] = useState('all')
+  const [statusFilter, setStatusFilter] = useState('all')
+
+  const selected = locations.find((item) => item.slug === requested)
+  const selectedRegion = selected ? regions.find((item) => item.id === selected.region) : null
 
   useEffect(() => {
-    const loc = params.get('loc')
-    if (loc && locations.some((l) => l.slug === loc)) {
-      const m = locations.find((l) => l.slug === loc)
-      setSelected(loc)
-      setView({ x: VBW / 2 - m.x * 1.8, y: VBH / 2 - m.y * 1.8, k: 1.8 })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    if (selected) setRegionFilter(selected.region)
+  }, [selected])
 
-  const markers = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    return locations.filter((l) =>
-      cats.has(l.status) &&
-      (!region || l.region === region) &&
-      (!q || l.name.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q) || l.category.includes(q))
-    )
-  }, [query, region, cats])
-  const visibleRegions = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return regions
-    return regions.filter((item) => `${item.label} ${item.blurb || ''}`.toLowerCase().includes(q))
-  }, [query])
+  const results = useMemo(() => {
+    const needle = query.trim().toLowerCase()
+    return locations.filter((item) => {
+      const region = regions.find((candidate) => candidate.id === item.region)
+      return (regionFilter === 'all' || item.region === regionFilter)
+        && (statusFilter === 'all' || item.status === statusFilter)
+        && (!needle || `${item.name} ${item.desc} ${region?.label || ''}`.toLowerCase().includes(needle))
+    })
+  }, [query, regionFilter, statusFilter])
+  const activeFilterCount = Number(Boolean(query.trim())) + Number(regionFilter !== 'all') + Number(statusFilter !== 'all')
 
-  const sel = locations.find((l) => l.slug === selected)
-  const selVisible = sel && markers.some((m) => m.slug === sel.slug)
-  const egg = sel && easterEggs.find((e) => e.slug === sel.slug)
+  return (
+    <div className="places-directory px-4 sm:px-6 lg:px-8 pb-8 max-w-[1440px] w-full mx-auto">
+      {selected && selectedRegion && (
+        <section className="places-selected wiki-article-header mt-5 grid grid-cols-1 md:grid-cols-[minmax(260px,.85fr)_1.15fr] gap-5" aria-labelledby="selected-place">
+          <PublishedVisual location={selected} region={selectedRegion} className="min-h-[220px] rounded-sm" priority />
+          <div className="self-center py-2">
+            <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-mint">Requested place</p>
+            <h2 id="selected-place" className="mt-2 font-cond font-bold uppercase leading-none text-[34px] sm:text-[42px] text-paper">{selected.name}</h2>
+            <div className="mt-3 flex flex-wrap items-center gap-2"><StatusBadge status={selected.status} /><span className="font-cond uppercase tracking-[0.1em] text-[11px] text-dim">{selectedRegion.label}</span></div>
+            <p className="mt-4 max-w-[58ch] text-[14px] leading-[1.7] text-dim">{selected.desc}</p>
+            <Link href={`/map/location/${selected.slug}`} className="mt-5 inline-flex items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-[12px] text-pink hover:text-paper">Open complete record <ArrowRight size={14} /></Link>
+          </div>
+        </section>
+      )}
 
-  const pickRegion = (id) => {
-    const next = region === id ? null : id
-    setRegion(next)
-    if (next) {
-      const rg = regions.find((r2) => r2.id === id)
-      setView({ x: VBW / 2 - rg.cx * rg.k, y: VBH / 2 - rg.cy * rg.k, k: rg.k })
-    } else {
-      setView({ x: 0, y: 0, k: 1 })
-    }
-  }
+      <section className="mt-8" aria-labelledby="regions-heading">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-mint">Official Rockstar postcards</p>
+            <h2 id="regions-heading" className="mt-1 font-cond font-bold uppercase tracking-tight text-[28px] sm:text-[34px] text-paper">Six confirmed regions</h2>
+          </div>
+          {regionFilter !== 'all' && <button type="button" onClick={() => setRegionFilter('all')} className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-pink"><X size={13} /> Clear region</button>}
+        </div>
+        <div className="places-region-grid visual-card-grid mt-4">
+          {regions.map((region) => <RegionCard key={region.id} region={region} active={regionFilter === region.id} onSelect={setRegionFilter} />)}
+        </div>
+      </section>
 
-  const toggleCat = (id) => setCats((prev) => {
-    const n = new Set(prev)
-    if (n.has(id)) n.delete(id); else n.add(id)
-    return n
-  })
+      <section id="places-index" className="mt-10 scroll-mt-24" aria-labelledby="places-heading">
+        <div className="wiki-category-header">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-violet">Coordinate-free visual index</p>
+              <h2 id="places-heading" className="mt-2 font-cond font-bold uppercase tracking-tight text-[31px] sm:text-[40px] text-paper">Named places</h2>
+              <p className="mt-2 max-w-[68ch] text-[13px] leading-relaxed text-dim">Only published GTA VI imagery is displayed. When no exact frame is verified, the card uses official regional artwork and says so directly.</p>
+            </div>
+            <span className="font-mono text-[11px] text-dim tabular-nums">{results.length} / {locations.length}</span>
+          </div>
 
-  const selectMarker = (slug) => { setSelected(slug); setSheet('detail') }
-  const zoom = (dir) => setView((v) => {
-    const k2 = Math.min(4, Math.max(0.55, v.k * (dir > 0 ? 1.25 : 0.8)))
-    const px = (VBW / 2 - v.x) / v.k, py = (VBH / 2 - v.y) / v.k
-    return { x: VBW / 2 - px * k2, y: VBH / 2 - py * k2, k: k2 }
-  })
-  const reset = () => { setRegion(null); setView({ x: 0, y: 0, k: 1 }) }
+          <CollapsibleFilters title="Place filters" count={results.length} activeCount={activeFilterCount} summary={`${results.length} of ${locations.length} places${regionFilter !== 'all' ? ' · region filtered' : ''}`}>
+            <label className="wiki-filter-search places-search">
+              <Search size={15} className="text-violet shrink-0" aria-hidden="true" />
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search place or region…" aria-label="Search places" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
+              {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
+            </label>
 
-  const FiltersPanel = (
-    <>
-      <div>
-        <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">REGIONS</h2>
-        <div className="mt-2 flex flex-col gap-1.5">
-          {regions.map((r2) => (
-            <button key={r2.id} type="button" onClick={() => pickRegion(r2.id)} aria-pressed={region === r2.id}
-              className={cx('border rounded-sm overflow-hidden text-left transition-all duration-150',
-                region === r2.id ? 'card-active bg-surface2 border-transparent' : 'border-line hover:border-black/30 group')}>
-              <span className="flex items-center justify-between px-3 h-11 font-cond font-semibold uppercase tracking-[0.12em] text-[14px]">
-                <span className={region === r2.id ? 'text-paper' : 'text-dim group-hover:text-paper'}>{r2.label}</span>
-                <Compass size={13} className="opacity-60" aria-hidden="true" />
-              </span>
-              {/* A região seleccionada mostra o postal oficial e o que dela se
-                  sabe; `sourced` distingue descrição oficial de leitura da
-                  própria imagem, para não passarem por confirmação igual. */}
-              {region === r2.id && r2.blurb && (
-                <span className="block border-t border-line/60">
-                  {r2.image && (
-                    <span className="block relative aspect-[16/7] overflow-hidden">
-                      <Image src={r2.image} alt={`Official artwork for ${r2.label}`} fill sizes="320px" className="object-cover" />
-                    </span>
-                  )}
-                  <span className="block px-3 py-2.5">
-                    <span className="block font-sans text-[12px] leading-snug text-dim normal-case tracking-normal">{r2.blurb}</span>
-                    <span className="block mt-1.5 font-cond uppercase tracking-[0.14em] text-[10px] text-dim/70">
-                      {r2.sourced ? 'Official description' : 'Read from official imagery'}
-                    </span>
+            <div className="wiki-filter-group places-status-filters" aria-label="Source status filters">
+              <button type="button" onClick={() => setStatusFilter('all')} aria-pressed={statusFilter === 'all'} className={cx('filter-chip h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === 'all' ? 'border-violet text-violet bg-violet/5' : 'border-line text-dim')}>All</button>
+              {LOCATION_STATUSES.map((status) => (
+                <button key={status.id} type="button" onClick={() => setStatusFilter(status.id)} aria-pressed={statusFilter === status.id} className={cx('filter-chip h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === status.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim')}>
+                  {status.label} · {status.count}
+                </button>
+              ))}
+            </div>
+          </CollapsibleFilters>
+        </div>
+
+        <div className="places-card-grid visual-card-grid mt-5" aria-live="polite">
+          {results.map((location) => {
+            const region = regions.find((item) => item.id === location.region)
+            const exact = Boolean(confirmedLocationImage(location))
+            return (
+              <Link key={location.slug} href={`/map/location/${location.slug}`} className="places-card group panel overflow-hidden rounded-sm hover:border-violet/45">
+                <PublishedVisual location={location} region={region} className="aspect-[16/9]" />
+                <span className="block p-4">
+                  <span className="flex items-start justify-between gap-3">
+                    <span className="font-cond font-bold uppercase leading-tight tracking-[0.04em] text-[17px] text-paper">{location.name}</span>
+                    <ArrowRight size={14} className="mt-1 shrink-0 text-dim transition-transform group-hover:translate-x-1" />
+                  </span>
+                  <span className="mt-2 flex flex-wrap items-center gap-2"><StatusBadge status={location.status} /><span className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim">{region?.label}</span></span>
+                  <span className="mt-3 flex items-center gap-1.5 font-cond uppercase tracking-[0.1em] text-[9px] text-dim">
+                    {exact ? <CheckCircle2 size={11} className="text-mint" /> : <ImageIcon size={11} className="text-violet" />}
+                    {exact ? 'Exact visual verified' : 'Regional visual context'}
                   </span>
                 </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="mt-5">
-        <h2 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">SOURCE LABEL</h2>
-        <p className="mt-1 text-[11px] leading-snug text-dim">The marker takes the colour of its label. Turn one off to take it off the map.</p>
-        <div className="mt-2 flex flex-col gap-1.5">
-          {LOCATION_STATUSES.map((f) => {
-            const on = cats.has(f.id)
-            return (
-              <button key={f.id} type="button" onClick={() => toggleCat(f.id)} aria-pressed={on}
-                className={cx('flex items-center gap-3 px-3 h-11 border rounded-sm transition-all duration-150', on ? 'border-line bg-surface2/70' : 'border-line/50 opacity-50 hover:opacity-80')}>
-                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: f.color }} aria-hidden="true" />
-                <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[14px] text-paper flex-1 text-left">{f.label}</span>
-                <span className="font-mono text-[11px] text-dim tabular-nums">{String(f.count).padStart(2, '0')}</span>
-                {on && <Check size={13} className="text-mint" aria-hidden="true" />}
-              </button>
+              </Link>
             )
           })}
         </div>
-      </div>
-      {/* Aqui estavam três barras — DISCOVERED 64%, VERIFIED 48%,
-          UNEXPLORED 29% — com os números escritos à mão no código. Não
-          contavam nada: nem somavam, nem correspondiam a coisa nenhuma do
-          arquivo. Ficam as proporções reais dos 61 lugares, contadas das
-          próprias entradas, mais quantos têm imagem oficial. */}
-      <div className="mt-5 flex flex-col gap-2.5">
-        {LOCATION_STATUSES.map((p) => (
-          <div key={p.label} className="flex items-center gap-3">
-            <span className="w-7 h-7 rounded-full border border-line flex items-center justify-center shrink-0" style={{ color: p.color }} aria-hidden="true"><MapPin size={13} /></span>
-            <span className="font-cond font-semibold uppercase tracking-[0.12em] text-[12px] text-paper w-24 shrink-0">{p.label}</span>
-            <span className="relative flex-1 h-[5px] bg-black/10" role="img" aria-label={`${p.label}: ${p.count} of ${locations.length} named places`}>
-              <span className="absolute inset-y-0 left-0" style={{ width: `${Math.round((p.count / locations.length) * 100)}%`, backgroundColor: p.color }} />
-            </span>
-            <span className="font-mono text-[10px] text-dim tabular-nums">{p.count}/{locations.length}</span>
-          </div>
-        ))}
-        <p className="font-mono text-[10px] text-dim uppercase tracking-[0.14em]">
-          {locations.filter((l) => l.image).length} of {locations.length} carry an official image
-        </p>
-      </div>
-    </>
-  )
 
-  const DetailPanel = sel ? (
-    <div className="flex flex-col h-full">
-      <div className="flex items-start justify-between gap-3">
-        <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[30px]">{sel.name}</h2>
-        <StatusBadge status={sel.status} />
-      </div>
-      <p className="font-cond uppercase tracking-[0.14em] text-[11px] mt-1" style={{ color: statusColor(sel.status) }}>
-        {(mapFilters.find((f) => f.id === sel.category) || {}).label || sel.category} · {(regions.find((r2) => r2.id === sel.region) || {}).label || sel.region}
-      </p>
-      <p className="text-dim text-[13px] leading-relaxed mt-3">{sel.desc}</p>
-      {sel.clues && (
-        <div className="mt-4">
-          <div className="flex items-center justify-between">
-            <span className="font-cond font-semibold uppercase tracking-[0.14em] text-[12px] text-paper">{sel.clues[0]} / {sel.clues[1]} CLUES</span>
-            <span className="font-mono text-[10px] text-dim">{Math.round((sel.clues[0] / sel.clues[1]) * 100)}%</span>
-          </div>
-          <div className="flex gap-1.5 mt-2" role="img" aria-label={`${sel.clues[0]} of ${sel.clues[1]} clues found`}>
-            {[...Array(sel.clues[1])].map((_, i) => (
-              <span key={i} className={cx('h-[6px] flex-1 rounded-sm', i < sel.clues[0] ? 'bg-pink' : 'bg-black/10')} />
-            ))}
-          </div>
-        </div>
-      )}
-      {!selVisible && <p className="mt-3 text-[11px] text-warn">Marker hidden by current filters.</p>}
-      <div className="mt-auto pt-5 flex flex-col gap-2">
-        {egg ? (
-          <Link href={`/easter-eggs/${egg.slug}`} className="inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
-            VIEW EASTER EGG
-            <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
-          </Link>
-        ) : sel.vehicle ? (
-          <Link href={`/database/vehicles/${sel.vehicle}`} className="inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
-            VIEW VEHICLE
-            <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
-          </Link>
-        ) : (
-          <Link href="/guides/vice-city-districts-primer" className="inline-flex items-center justify-center gap-3 border border-paper/90 h-12 font-cond font-semibold uppercase tracking-[0.16em] text-[14px] text-paper hover:bg-paper hover:text-ink transition-colors duration-200">
-            OPEN DISTRICT GUIDE
-            <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center" aria-hidden="true"><Triangle size={10} strokeWidth={2.4} /></span>
-          </Link>
-        )}
-        <p className="font-mono text-[10px] text-dim uppercase tracking-wide">SOURCE: {sel.sourceName} · UPDATED {sel.updatedAt}</p>
-      </div>
-    </div>
-  ) : null
-
-  return (
-    <div className="px-4 sm:px-6 lg:px-8 pt-4 pb-6 flex-1 flex flex-col">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="max-w-[560px] font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
-          Official location index only · Rockstar has not published a complete labelled map, boundaries, coordinates or scale.
-        </p>
-        <label className="tech-mask-sm glass-panel flex items-center gap-2 w-full sm:w-[340px] h-11 px-3 focus-within:border-black/40">
-          <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a place or region…" aria-label="Search places and regions" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
-          {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
-        </label>
-      </div>
-
-      {/* O mapa esteve aqui desenhado desde o início e deixou de ser
-          renderizado no import do design: o `MapSurface` ficou definido e
-          nunca chamado, e os painéis de filtros e de detalhe passaram para
-          dentro de `div className="hidden"` — a página que a home anuncia
-          como «OPEN INTERACTIVE MAP» não tinha mapa nenhum. Volta, com os
-          dois painéis à vista e as gavetas de baixo no telemóvel. */}
-      <div className="mt-5 grid grid-cols-1 lg:grid-cols-[248px_1fr_320px] gap-4 items-start">
-        <aside className="hidden lg:block panel rounded-sm p-4 max-h-[74vh] overflow-y-auto">{FiltersPanel}</aside>
-
-        <div className="relative panel rounded-sm overflow-hidden aspect-[1000/620] min-h-[380px]">
-          <MapSurface
-            view={view}
-            setView={setView}
-            dragging={dragging}
-            setDragging={setDragging}
-            markers={markers}
-            selected={selected}
-            onSelect={selectMarker}
-          />
-          {/* Comandos de vista. Ficam sobre o mapa, com a mesma pílula das
-              outras peças flutuantes. */}
-          <div className="absolute right-3 top-3 flex flex-col gap-1.5">
-            {[[Plus, 'Zoom in', () => zoom(1)], [Minus, 'Zoom out', () => zoom(-1)], [RotateCcw, 'Reset view', reset]].map(([Icon, label, fn]) => (
-              <button key={label} type="button" onClick={fn} aria-label={label}
-                className="panel2 rounded-full w-10 h-10 flex items-center justify-center text-dim hover:text-paper hover:border-black/40 transition-colors">
-                <Icon size={15} aria-hidden="true" />
-              </button>
-            ))}
-          </div>
-          <span className="absolute left-3 bottom-3 panel2 rounded-sm px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-dim">
-            {markers.length} of {locations.length} shown
-          </span>
-          {/* No telemóvel os painéis vivem em gavetas: a lateral não cabe. */}
-          <button type="button" onClick={() => setSheet('filters')}
-            className="lg:hidden absolute right-3 bottom-3 panel2 rounded-full h-10 px-4 inline-flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-paper">
-            <SlidersHorizontal size={14} aria-hidden="true" /> Filters
-          </button>
-        </div>
-
-        <aside className="hidden lg:block panel rounded-sm p-4 max-h-[74vh] overflow-y-auto">
-          {DetailPanel || <p className="text-[13px] text-dim">Pick a marker to read its record.</p>}
-        </aside>
-      </div>
-
-      <div className="mt-4 grid grid-cols-1 gap-4 min-h-0 max-w-[1240px]">
-
-        {/* region information */}
-        <section className="tech-mask glass-panel p-4 sm:p-6" aria-labelledby="region-intel-heading">
-          <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-            <div>
-              <p className="font-cond text-[11px] uppercase tracking-[0.18em] text-pink">Leonida field guide</p>
-              <h2 id="region-intel-heading" className="font-cond font-bold uppercase tracking-tight text-[28px] sm:text-[34px] text-paper">Region intel</h2>
-              <p className="mt-1 text-[13px] leading-relaxed text-dim">A source-labelled index for every named Leonida region in this archive.</p>
-            </div>
-            <span className="panel2 rounded-sm px-2.5 py-1.5 font-mono text-[11px] text-dim">{visibleRegions.length} OF {regions.length} REGIONS</span>
-          </div>
-          <div className="focus-grid grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {visibleRegions.map((r2, index) => {
-              const regionMarkers = locations.filter((l) => l.region === r2.id)
-              const active = region === r2.id
-                return (
-                <Link key={r2.id} href={`/map/${r2.id}`}
-                  className={cx('focus-card spotlight-card tech-mask-sm group text-left border overflow-hidden transition-all', index % 2 ? 'sm:mt-8' : '', active ? 'border-pink bg-surface2' : 'border-line hover:border-black/40')}>
-                  {r2.image && <span className="corner-brackets film-frame block relative aspect-[16/7] overflow-hidden bg-surface2"><Image src={r2.image} alt={`Imagem de ${r2.label}`} fill sizes="(max-width: 640px) 100vw, 420px" className="object-cover transition-transform duration-700 group-hover:scale-[1.06]" /><span className="absolute right-3 top-3 z-[4] font-mono text-[9px] tracking-[0.15em] text-paper/80">ZONE {String(index + 1).padStart(2, '0')}</span></span>}
-                  <span className="block p-4">
-                    <span className="flex items-center justify-between gap-2">
-                      <span className="font-cond font-bold uppercase tracking-[0.12em] text-[17px] text-paper">{r2.label}</span>
-                      <span className="font-mono text-[10px] text-dim">{regionMarkers.length} ENTRIES</span>
-                    </span>
-                    <span className="mt-2 block text-[13px] leading-relaxed text-dim">{r2.blurb}</span>
-                    <span className="mt-3 block font-cond uppercase tracking-[0.14em] text-[10px] text-dim/70">{r2.sourced ? 'Official description' : 'Read from official imagery'}</span>
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
-          {visibleRegions.length === 0 && <p className="mt-5 border border-line rounded-sm p-5 text-[13px] text-dim">No named region matches this search. Try Vice City, Keys, Ambrosia, Grassrivers, Mount Kalaga or Port Gellhorn.</p>}
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
-              <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-mint">Feature roundup · named context</p>
-              <ul className="mt-2 space-y-2 text-[12px] leading-relaxed text-dim">
-                {featureBriefs.map.confirmed.map((item) => <li key={item}>• {item}</li>)}
-              </ul>
-            </div>
-            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
-              <p className="font-cond uppercase tracking-[0.16em] text-[10px] text-pink">Map boundary</p>
-              <p className="mt-2 text-[12px] leading-relaxed text-dim">Community reconstructions, inferred county borders, routes and exact marker positions are not shown as Rockstar facts.</p>
-            </div>
-          </div>
-        </section>
-
-      </div>
-
-      {/* mobile bottom sheets */}
-      {sheet && (
-        <div className="lg:hidden fixed inset-0 z-[75]">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setSheet(null)} />
-          <div className="absolute bottom-0 inset-x-0 bg-raised border-t hairline rounded-t-2xl max-h-[72vh] overflow-y-auto p-5 transition-transform duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <span className="font-cond font-bold uppercase tracking-[0.14em] text-[15px] text-paper">{sheet === 'filters' ? 'REGIONS & FILTERS' : 'SELECTED MARKER'}</span>
-              <button type="button" onClick={() => setSheet(null)} aria-label="Close panel" className="w-11 h-11 flex items-center justify-center text-dim hover:text-paper"><X size={18} /></button>
-            </div>
-            {sheet === 'filters' ? FiltersPanel : DetailPanel}
-          </div>
-        </div>
-      )}
+        {results.length === 0 && <div className="mt-5 panel rounded-sm p-8 text-center"><p className="font-cond font-bold uppercase text-[18px] text-paper">No matching place</p><button type="button" onClick={() => { setQuery(''); setRegionFilter('all'); setStatusFilter('all') }} className="mt-3 font-cond uppercase tracking-[0.12em] text-[11px] text-pink">Reset filters</button></div>}
+      </section>
     </div>
   )
 }
 
-// O mapa inteiro vivia dentro do Suspense — obrigatório, porque lê a barra
-// de endereço —, e por isso a página servida era a palavra «LOADING MAP…» e
-// mais nada: sem título, sem um único lugar, sem nada para quem chega por um
-// motor de busca ou sem JavaScript. O cabeçalho e o índice ficam fora dele:
-// são os mesmos dados, servidos de imediato, e o mapa interactivo passa a
-// ser o que sempre devia ter sido — a camada por cima.
+function QueryAwarePlacesDirectory() {
+  const params = useSearchParams()
+  return <PlacesDirectory requested={params.get('loc')} />
+}
+
 function MapHeader() {
+  const exactVisuals = locations.filter((item) => confirmedLocationImage(item)).length
   return (
-    <header className="px-4 sm:px-6 lg:px-8 pt-6">
-      <div className="data-rail">INTERACTIVE MAP · {locations.length} NAMED PLACES · {regions.length} REGIONS</div>
-      <div className="ghost-type mt-3" data-ghost="LEONIDA">
-        <h1 className="chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.85] text-[44px] sm:text-[60px]">
-          THE STATE OF LEONIDA
-        </h1>
-      </div>
-      <p className="mt-3 max-w-[68ch] text-[14px] leading-[1.7] text-dim">
-        Every place Rockstar has named, plotted on the archive’s own map. The arrangement is an
-        index, not an official map: positions are approximate and the coastline is drawn, not
-        surveyed. Each marker takes the colour of its source label.
-      </p>
+    <header className="px-4 sm:px-6 lg:px-8 pt-6 max-w-[1440px] w-full mx-auto">
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Places' }]} />
+      <div className="mt-4"><CategoryHeader title="Leonida Places Directory" image="/media/places/leonida-keys.webp" imageAlt="Official Rockstar Visit Leonida artwork of the Leonida Keys" description="A coordinate-free directory built from official Rockstar artwork and identifiable frames from published GTA VI media. No drawn coastline, reconstructed geography or community map is displayed." count={locations.length} countLabel="places"><div className="mt-4 flex flex-wrap gap-2 font-mono text-[9px] uppercase tracking-[0.13em] text-dim"><span className="rounded-full border border-mint/30 bg-mint/5 px-3 py-1.5">{exactVisuals} exact visuals verified</span><span className="rounded-full border border-violet/30 bg-violet/5 px-3 py-1.5">Official region fallback when needed</span></div></CategoryHeader></div>
     </header>
   )
 }
 
-// O índice completo, por região. Vale por si — é a lista de tudo o que o
-// mapa tem — e é o que fica de pé quando o mapa interactivo não carrega.
-function PlacesIndex() {
-  return (
-    <section id="places-index" className="px-4 sm:px-6 lg:px-8 py-10 max-w-[1280px] w-full mx-auto scroll-mt-20">
-      <div className="data-rail">INDEX · EVERY NAMED PLACE</div>
-      <h2 className="mt-3 font-cond font-bold uppercase tracking-[0.06em] text-[26px] sm:text-[30px] text-paper">All {locations.length} places, by region</h2>
-      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {regions.map((r2) => {
-          const list = locations.filter((l) => l.region === r2.id)
-          if (list.length === 0) return null
-          return (
-            <div key={r2.id}>
-              <h3 className="flex items-center gap-3 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-paper">
-                <Link href={`/map/${r2.id}`} className="hover:text-pink transition-colors">{r2.label}</Link>
-                <span className="font-mono text-[10px] text-dim tabular-nums">{String(list.length).padStart(2, '0')}</span>
-                <span className="flex-1 h-px bg-[rgba(11,15,22,0.12)]" aria-hidden="true" />
-              </h3>
-              <ul className="mt-2 flex flex-col">
-                {list.map((l) => (
-                  <li key={l.slug}>
-                    <Link href={`/map/location/${l.slug}`} className="flex items-center gap-2 py-1.5 border-b border-black/[0.06] text-[13px] text-dim hover:text-paper transition-colors">
-                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: statusColor(l.status) }} aria-hidden="true" />
-                      <span className="flex-1 min-w-0 truncate font-cond uppercase tracking-[0.06em] text-paper">{l.name}</span>
-                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-dim shrink-0">{(STATUS_META[l.status] || {}).label || l.status}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        })}
-      </div>
-    </section>
-  )
-}
-
-function App() {
+export default function App() {
   return (
     <div className="flex-1 flex flex-col">
       <MapHeader />
-      <Suspense fallback={<div className="px-8 py-16 font-cond uppercase tracking-[0.2em] text-dim">LOADING MAP…</div>}>
-        <MapPage />
+      <Suspense fallback={<PlacesDirectory />}>
+        <QueryAwarePlacesDirectory />
       </Suspense>
-      <PlacesIndex />
     </div>
   )
 }
-
-export default App;

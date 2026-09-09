@@ -1,151 +1,88 @@
 'use client'
 
-import { Suspense, useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
-import { GhostBadge, SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { mechanics, characters, featureBriefs, officialCatalog } from '@/lib/content'
-import { Breadcrumb } from '@/components/site/wiki'
+import Image from 'next/image'
+import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ArrowUpRight } from 'lucide-react'
+import { GhostBadge, cx } from '@/components/site/ui'
+import { mechanics, officialCatalog } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
-const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
+const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House, dynamic: Radar }
 const FILTERS = ['all', 'confirmed', 'verified', 'analysis', 'rumour']
 
-// Só este pedaço lê o ?m= da barra de endereço. Está isolado de propósito:
-// `useSearchParams` obriga tudo o que o rodeia a esperar pelo cliente, e
-// com a página inteira lá dentro o servidor devolvia apenas o «LOADING
-// MECHANICS…» — sem título, sem migalhas de pão e sem nada para indexar.
-// Assim, quem fica de fora do render do servidor é uma linha que não
-// desenha nada.
-function SelectedFromQuery({ onFound }) {
-  const params = useSearchParams()
-
-  useEffect(() => {
-    const m = params.get('m')
-    if (m && mechanics.some((x) => x.slug === m)) onFound(m)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return null
-}
-
-function MechanicsPage() {
+export default function MechanicsPage() {
   const [filter, setFilter] = useState('all')
-  const [selectedSlug, setSelectedSlug] = useState('character-switching')
-
   const list = useMemo(() => mechanics.filter((m) => filter === 'all' || m.status === filter), [filter])
-  const selected = mechanics.find((m) => m.slug === selectedSlug) || list[0] || mechanics[0]
-  const confirmedCount = mechanics.filter((m) => m.status === 'confirmed' || m.status === 'verified').length
-
-  // O terceiro contador dizia «04 SYSTEMS» com o número escrito à mão, e o
-  // arquivo tem doze mecânicas. Passa a contar o que se pode contar: quantas
-  // trazem ligação à fonte, que é a promessa desta base.
-  const sourcedCount = mechanics.filter((m) => m.sourceUrl).length
-  const counters = [
-    [String(mechanics.length).padStart(2, '0'), 'MECHANICS'],
-    [String(confirmedCount).padStart(2, '0'), 'VERIFIED+'],
-    [String(sourcedCount).padStart(2, '0'), 'SOURCED'],
-  ]
-
-  const SelIcon = MECH_ICONS[selected.icon] || Repeat2
-  const relatedChars = characters.slice(0, 2)
 
   return (
     <div className="flex-1 flex flex-col">
-      <Suspense fallback={null}>
-        <SelectedFromQuery onFound={setSelectedSlug} />
-      </Suspense>
-      <DbTabs active="mechanics" counters={counters} />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
-        <div className="min-w-0 flex flex-col">
-          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics' }]} />
-          <div className="ghost-type" data-ghost="MECHANICS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">MECHANICS</h1></div>
+      <div className="wiki-index-layout mechanics-index px-4 sm:px-6 lg:px-8 py-6 flex-1">
+        <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics' }]} />
 
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3 order-10">
-            <div className="tech-mask-sm glass-panel border border-mint/30 bg-mint/5 p-4">
-              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">Officially documented delivery details</p>
-              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.mechanics.join(' ')}</p>
-            </div>
-            <div className="tech-mask-sm glass-panel border border-pink/30 bg-pink/5 p-4">
-              <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-pink">Catalogue boundary</p>
-              <p className="mt-2 text-[12px] leading-relaxed text-dim">{officialCatalog.note}</p>
-            </div>
-          </div>
+        <div className="mt-4"><CategoryHeader eyebrow="Gameplay systems" title="Mechanics" image="/media/scenes/ambrosia-drive.webp" imageAlt="Official GTA VI screenshot viewed from inside a vehicle" description="Gameplay systems documented from official footage, separated from analysis and community reports." count={mechanics.length} countLabel="mechanics" /></div>
 
-          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Mechanic status filters">
+        <CollapsibleFilters title="Mechanic filters" count={list.length} activeCount={filter === 'all' ? 0 : 1} summary={`${list.length} of ${mechanics.length} mechanics`}>
+          <div className="wiki-filter-group" role="tablist" aria-label="Mechanic status filters">
             {FILTERS.map((f) => {
               const active = filter === f
               const count = f === 'all' ? mechanics.length : mechanics.filter((m) => m.status === f).length
               return (
                 <button key={f} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f)}
-                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
-                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.toUpperCase()}</span>
+                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-colors duration-150',
+                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f}</span>
                   <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
                 </button>
               )
             })}
           </div>
+        </CollapsibleFilters>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-5">
-            {list.map((m) => {
-              const Icon = MECH_ICONS[m.icon] || Repeat2
-              const active = m.slug === selected.slug
-              return (
-                <button key={m.slug} type="button" onClick={() => setSelectedSlug(m.slug)} aria-pressed={active}
-                  className={cx('spotlight-card tech-mask-sm glass-panel p-4 text-left flex flex-col min-h-[140px] transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
-                  <span className="flex items-start justify-between gap-3">
-                    <span className="flex items-center gap-3">
-                      <Icon size={26} className={active ? 'text-pink' : 'text-dim'} strokeWidth={1.8} aria-hidden="true" />
-                      <span className="font-cond font-bold uppercase text-[19px] text-paper leading-[1.02]">{m.name}</span>
-                    </span>
-                    <span className="shrink-0 min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim" aria-hidden="true">{m.glyph}</span>
-                  </span>
-                  <span className="block text-[12px] text-dim leading-relaxed mt-3">{m.desc}</span>
-                  <span className="mt-auto pt-3"><GhostBadge status={m.status} /></span>
-                </button>
-              )
-            })}
-            {list.length === 0 && (
-              <div className="panel rounded-sm p-8 text-center col-span-full">
-                <p className="font-cond uppercase tracking-[0.14em] text-paper">No mechanics with this status</p>
-              </div>
-            )}
-          </div>
+        <div className="mechanics-card-grid mt-5">
+          {list.map((m) => {
+            const Icon = MECH_ICONS[m.icon] || Repeat2
+            return (
+              <Link key={m.slug} href={`/database/mechanics/${m.slug}`} className="mechanic-card group" aria-label={`Open ${m.name}`}>
+                <figure className="mechanic-card-media">
+                  <Image src={m.image} alt={m.imageAlt} fill sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 25vw" className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
+                  <span className="mechanic-frame-label">{m.imageSeries || 'EXTENDED LOOK'}</span>
+                  <span className="mechanic-prompt" aria-hidden="true">{m.glyph}</span>
+                </figure>
+                <div className="mechanic-card-copy">
+                  <div className="mechanic-card-title-row">
+                    <Icon size={18} className="text-pink shrink-0" strokeWidth={1.8} aria-hidden="true" />
+                    <h2>{m.name}</h2>
+                    <ArrowUpRight size={15} className="mechanic-card-arrow" aria-hidden="true" />
+                  </div>
+                  <p>{m.desc}</p>
+                  <div className="mechanic-card-meta">
+                    <GhostBadge status={m.status} />
+                    <span>{m.frameTime || 'OFFICIAL FOOTAGE'}</span>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+          {list.length === 0 && (
+            <div className="panel rounded-sm p-8 text-center col-span-full">
+              <p className="font-cond uppercase tracking-[0.14em] text-paper">No mechanics with this status</p>
+            </div>
+          )}
         </div>
 
-        <aside className="tech-mask glass-panel p-5 self-start">
-          <div className="flex items-center gap-3">
-            <span className="w-12 h-12 rounded-sm panel2 flex items-center justify-center text-pink" aria-hidden="true"><SelIcon size={24} strokeWidth={1.8} /></span>
-            <div>
-              <h2 className="font-cond font-bold uppercase text-[24px] text-paper leading-none">{selected.name}</h2>
-              <StatusBadge status={selected.status} className="mt-1.5" />
-            </div>
+        <div className="mechanics-source-notes mt-6">
+          <div>
+            <strong>Official delivery details</strong>
+            <p>{officialCatalog.mechanics.join(' ')}</p>
           </div>
-          <p className="text-paper/90 text-[14px] leading-relaxed mt-4">{selected.desc}</p>
-          <p className="text-dim text-[13px] leading-[1.8] mt-3">{selected.long}</p>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <SourceChip name={selected.sourceName} url={selected.sourceUrl} />
-            <span className="font-mono text-[10px] text-dim uppercase">UPDATED {selected.updatedAt}</span>
+          <div>
+            <strong>Catalogue boundary</strong>
+            <p>{officialCatalog.note}</p>
           </div>
-
-          <Link href={`/database/mechanics/${selected.slug}`} className="mt-4 inline-flex items-center gap-2 border border-line rounded-sm px-3 h-10 font-cond font-semibold uppercase tracking-[0.12em] text-[11px] text-paper hover:border-mint hover:text-mint transition-colors">
-            Read full entry <ChevronRight size={13} />
-          </Link>
-          <h3 className="font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim mt-6">LINKED CHARACTERS</h3>
-          <div className="mt-2 flex flex-col gap-2">
-            {relatedChars.map((c) => (
-              <Link key={c.slug} href={`/database/characters/${c.slug}`} className="flex items-center gap-3 border border-line rounded-sm px-3 h-11 group hover:border-black/40 transition-colors">
-                <span className="flex-1 font-cond font-semibold uppercase tracking-[0.08em] text-[14px] text-paper truncate">{c.name}</span>
-                <ChevronRight size={14} className="text-dim group-hover:text-paper" aria-hidden="true" />
-              </Link>
-            ))}
-          </div>
-        </aside>
+        </div>
       </div>
     </div>
   )
 }
-
-export default MechanicsPage;

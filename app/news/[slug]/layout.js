@@ -1,5 +1,6 @@
 import { articles } from '@/lib/content'
 import { JsonLd, breadcrumbJsonLd, entryJsonLd, articleJsonLd } from '@/lib/jsonld'
+import { notFound } from 'next/navigation'
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
@@ -10,12 +11,12 @@ export async function generateMetadata({ params }) {
   const description = item.excerpt
 
   return {
-    title: `${name} — LEONIDA ARCHIVE`,
+    title: `${name} — GTA LORE`,
     description,
     alternates: { canonical: `/news/${slug}` },
     openGraph: {
       type: 'article',
-      title: `${name} — LEONIDA ARCHIVE`,
+      title: `${name} — GTA LORE`,
       description,
       url: `/news/${slug}`,
       images: item.image ? [item.image] : undefined,
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }) {
 export default async function Layout({ children, params }) {
   const { slug } = await params
   const item = articles.find((x) => x.slug === slug)
-  if (!item) return children
+  if (!item) notFound()
 
   const path = `/news/${slug}`
   const dados = articleJsonLd({

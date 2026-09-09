@@ -21,12 +21,16 @@ const ANATOMY = [
     'The same fields as a column on the right, with the images and the source. It is the part meant to be read first and copied out.'],
   [Link2, 'What links here',
     'Every other entry that points at this one, and why. It is the archive read backwards, and the fastest way to find the neighbourhood of a record.'],
+  [Link2, 'Page tools',
+    'Every entry has actions tied to that page: incoming links, related verification changes, page information, citation, print and a canonical permanent link.'],
   [FolderTree, 'Categories',
-    'The last line of the entry, as on any wiki. A category is a drawer, not a claim: filing a rumour under a class does not make it confirmed.'],
+    'The last line of the entry, as on any wiki. Categories form a browsable parent-and-subcategory tree; filing a rumour under a class does not make it confirmed.'],
   [BookMarked, 'References',
     'The numbered source list, with the date it was last checked. Where the source has no public page, the entry says so instead of linking nowhere.'],
   [Quote, 'Cite this page',
     'A ready-made citation with the permanent link and today’s date, for quoting the archive elsewhere. Cite the archive’s source when you can; cite the archive when the arrangement is what you are quoting.'],
+  [Keyboard, 'Two search modes',
+    'Quick search jumps between likely records from anywhere. Full search indexes titles, page text, categories, source labels and address names, and can be narrowed to one branch.'],
 ]
 
 const SHORTCUTS = [
@@ -44,8 +48,6 @@ export default function HelpPage() {
         { label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' },
         { label: 'Special pages', href: '/wiki/special' }, { label: 'Help' },
       ]} />
-
-      <div className="data-rail mt-2">HELP · HOW AN ENTRY IS PUT TOGETHER</div>
 
       <div className="mt-4">
         <CategoryHeader

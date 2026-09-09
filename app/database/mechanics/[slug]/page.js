@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { mechanics, characters } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
@@ -31,19 +31,15 @@ export default function MechanicPage() {
     )
   }
 
-  const Icon = MECH_ICONS[m.icon] || Repeat2
   const related = mechanics.filter((x) => x.slug !== m.slug).slice(0, 4)
   const linkedChars = characters.slice(0, 2)
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="mechanics" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics', href: '/database/mechanics' }, { label: m.name }]} />
 
-        <div className="data-rail mt-2">MECHANIC FILE · SOURCE-BOUND RECORD · ID {m.slug.toUpperCase()}</div>
-
-        <header className="mt-5">
+        <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={m.status} />
             <span className="min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim">{m.glyph}</span>
@@ -54,8 +50,10 @@ export default function MechanicPage() {
           <Hatnote kind="mechanics" slug={m.slug} />
         </header>
 
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-          <div className="min-w-0 order-2 lg:order-1">
+        <PageTools kind="mechanics" slug={m.slug} />
+
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/mechanics/${m.slug}`}>{m.desc}</WikiText></p>
             </WikiSection>
@@ -103,22 +101,18 @@ export default function MechanicPage() {
             <Navbox kind="mechanics" slug={m.slug} />
           </div>
 
-          <div className="hidden lg:block order-3 lg:order-2">
+          <div className="order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />
           </div>
 
-          <div className="order-1 lg:order-3">
-            <InfoboxShell>
-              <div className="flex items-center gap-3">
-                <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">
-                  <Icon size={28} strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0">
-                  <p className="font-cond font-bold uppercase text-[18px] text-paper leading-none truncate">{m.name}</p>
-                  <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-1.5">Button prompt {m.glyph}</p>
+          <div className="order-2 lg:order-3">
+            <InfoboxShell title={m.name} subtitle="Mechanic profile">
+              <figure className="mechanic-infobox-media -mx-5 -mt-5 mb-1 overflow-hidden border-b border-line bg-surface2">
+                <div className="relative aspect-[16/10]">
+                  <Image src={m.image} alt={m.imageAlt} fill sizes="300px" priority className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
                 </div>
-              </div>
-
+                <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{m.imageCaption}</figcaption>
+              </figure>
               <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Status">
                   <StatusBadge status={m.status} />

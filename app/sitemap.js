@@ -1,4 +1,4 @@
-import { ENTRIES } from '@/lib/wiki-graph'
+import { ENTRIES, PORTALS, SPECIAL_LISTS } from '@/lib/wiki-graph'
 import { articles, guides, encyclopediaCategories } from '@/lib/content'
 import { CATEGORIES } from '@/lib/wiki-graph'
 
@@ -12,12 +12,25 @@ const PAGINAS_FIXAS = [
   ['', 1.0],
   ['/wiki', 0.9],
   ['/wiki/special', 0.5],
+  ['/wiki/portals', 0.7],
+  ['/wiki/discover', 0.65],
+  ['/wiki/all', 0.6],
+  ['/wiki/help', 0.4],
+  ['/wiki/glossary', 0.4],
   ['/wiki/categories', 0.6],
   ['/wiki/statistics', 0.5],
   ['/wiki/changes', 0.6],
+  ['/legal', 0.4],
+  ['/legal/terms', 0.3],
+  ['/legal/privacy', 0.3],
+  ['/legal/cookies', 0.3],
+  ['/legal/copyright', 0.3],
+  ['/legal/community', 0.3],
+  ['/legal/disclaimer', 0.3],
   ['/sources', 0.6],
   ['/media', 0.6],
   ['/map', 0.8],
+  ['/vice-city', 0.85],
   ['/news', 0.8],
   ['/guides', 0.7],
   ['/editions', 0.6],
@@ -28,6 +41,7 @@ const PAGINAS_FIXAS = [
   ['/database/characters', 0.8],
   ['/database/radio', 0.7],
   ['/database/mechanics', 0.7],
+  ['/database/world', 0.8],
 ]
 
 export default function sitemap() {
@@ -56,6 +70,20 @@ export default function sitemap() {
     priority: 0.5,
   }))
 
+  const manutencao = SPECIAL_LISTS.map((list) => ({
+    url: `${SITE}/wiki/special/${list.id}`,
+    lastModified: hoje,
+    changeFrequency: 'weekly',
+    priority: 0.35,
+  }))
+
+  const portais = PORTALS.map((portal) => ({
+    url: `${SITE}/wiki/portal/${portal.kind}`,
+    lastModified: hoje,
+    changeFrequency: 'weekly',
+    priority: 0.65,
+  }))
+
   const editoriais = [
     ...articles.map((a) => ({ url: `${SITE}/news/${a.slug}`, lastModified: new Date(a.updatedAt || a.publishedAt), changeFrequency: 'monthly', priority: 0.7 })),
     ...guides.map((g) => ({ url: `${SITE}/guides/${g.slug}`, lastModified: new Date(g.updatedAt || g.publishedAt), changeFrequency: 'monthly', priority: 0.6 })),
@@ -65,7 +93,7 @@ export default function sitemap() {
   // Uma entrada pode chegar por dois caminhos (um artigo está em ENTRIES
   // e em articles); o endereço tem de aparecer uma vez só.
   const vistos = new Set()
-  return [...fixas, ...verbetes, ...categorias, ...editoriais].filter((item) => {
+  return [...fixas, ...verbetes, ...categorias, ...manutencao, ...portais, ...editoriais].filter((item) => {
     if (vistos.has(item.url)) return false
     vistos.add(item.url)
     return true

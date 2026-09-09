@@ -4,9 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 
 const REL_BARS = [
@@ -24,10 +23,13 @@ const SECTIONS = [
 ]
 
 function Portrait({ c, className, sizes = '120px' }) {
-  if (c.image) {
+  const visual = c.image || c.contextImage
+  const contextual = !c.image && Boolean(c.contextImage)
+  if (visual) {
     return (
-      <span className={cx('relative block overflow-hidden bg-surface2', className)}>
-        <Image src={c.image} alt={`Portrait of ${c.name}`} fill sizes={sizes} className="object-cover object-top" />
+      <span className={cx('character-visual relative block overflow-hidden bg-surface2', contextual && 'is-contextual', className)} title={contextual ? c.imageCaption : undefined}>
+        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill sizes={sizes} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
+        {contextual && <span className="character-context-label">Context</span>}
       </span>
     )
   }
@@ -93,15 +95,12 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="characters" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters', href: '/database/characters' }, { label: c.name }]} />
 
-        <div className="data-rail mt-2">CHARACTER FILE · SOURCE-BOUND RECORD · ID {c.slug.toUpperCase()}</div>
-
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
             qualquer largura, como nas fichas das wikis. */}
-        <header className="mt-5">
+        <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
             <StatusBadge status={c.status} />
@@ -115,9 +114,11 @@ function App() {
           <Hatnote kind="characters" slug={c.slug} />
         </header>
 
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <PageTools kind="characters" slug={c.slug} />
+
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
-          <div className="min-w-0 order-2 lg:order-1">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="background" title="Background">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.long}</WikiText></p>
             </WikiSection>
@@ -180,13 +181,13 @@ function App() {
           </div>
 
           {/* Índice */}
-          <div className="hidden lg:block order-3 lg:order-2">
+          <div className="order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />
           </div>
 
           {/* Caixa de dados */}
-          <div className="order-1 lg:order-3">
-            <InfoboxShell>
+          <div className="order-2 lg:order-3">
+            <InfoboxShell title={c.name} subtitle="Character profile">
               <Portrait c={c} className="w-full aspect-[3/4] rounded-sm border border-line" sizes="(max-width:1024px) 100vw, 300px" />
 
               <div className="space-y-3 border-t border-black/10 pt-4">

@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { CircleCheck, Circle, MapPin, Triangle } from 'lucide-react'
 import { easterEggs } from '@/lib/content'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryFooter, CitePage, Navbox, PageInformation, PageTools, References, WhatThisLinks } from '@/components/site/wiki'
 
 function App() {
   const { slug } = useParams()
@@ -28,9 +28,9 @@ function App() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto flex-1">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: 'Secrets' }, { label: egg.name }]} />
 
-      <div className="data-rail mt-2">SECRET INDEX · EVIDENCE RECORD · {egg.region}</div>
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5">
-        <div>
+      <PageTools kind="secrets" slug={egg.slug} />
+      <div id="article-content" className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-6 mt-5 scroll-mt-24">
+        <div className="wiki-article-header">
           <div className="flex items-center gap-2">
             <StatusBadge status={egg.status} />
             <span className="font-cond font-semibold uppercase tracking-[0.16em] text-[11px] text-dim">{egg.region}</span>
@@ -69,18 +69,30 @@ function App() {
         </div>
 
         <div className="corner-brackets tech-mask relative panel overflow-hidden min-h-[320px] lg:min-h-[480px]">
-          <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
+          {egg.image ? (
+            <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-6 text-center">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">NO VERIFIED IMAGE OF THIS SUBJECT</span>
+            </div>
+          )}
         </div>
       </div>
 
       <section className="mt-12" aria-label="More secrets">
         <div className="data-rail">ADJACENT RECORDS · SECRET INDEX</div>
         <h2 className="font-cond font-bold uppercase tracking-[0.1em] text-[20px] text-paper border-b hairline pb-2">MORE SECRETS</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+        <div className="visual-card-grid related-visual-grid mt-4">
           {others.map((e) => (
             <Link key={e.slug} href={`/easter-eggs/${e.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors">
               <div className="relative aspect-[16/8]">
-                <Image src={e.image} alt={e.name} fill sizes="33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
+                {e.image ? (
+                  <Image src={e.image} alt={e.name} fill sizes="33vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-4 text-center">
+                    <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-dim">NO VERIFIED SUBJECT IMAGE</span>
+                  </div>
+                )}
               </div>
               <div className="p-4">
                 <StatusBadge status={e.status} />
@@ -91,6 +103,15 @@ function App() {
           ))}
         </div>
       </section>
+
+      <div className="mt-10 max-w-[820px]">
+        <References items={[{ name: egg.sourceName, url: egg.sourceUrl, retrieved: egg.updatedAt }]} />
+        <WhatThisLinks kind="secrets" slug={egg.slug} />
+        <CategoryFooter kind="secrets" slug={egg.slug} />
+        <CitePage kind="secrets" slug={egg.slug} />
+        <PageInformation kind="secrets" slug={egg.slug} />
+        <Navbox kind="secrets" slug={egg.slug} />
+      </div>
     </div>
   )
 }

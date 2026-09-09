@@ -5,9 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
 import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
 
@@ -74,15 +73,12 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="weapons" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Weapons', href: '/database/weapons' }, { label: w.name }]} />
 
-        <div className="data-rail mt-2">ARSENAL FILE · DOCUMENTED REFERENCE · ID {w.slug.toUpperCase()}</div>
-
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
             qualquer largura, como nas fichas das wikis. */}
-        <header className="mt-5">
+        <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={w.status} />
             <GhostBadge status="confirmed" label={typeLabel} />
@@ -97,9 +93,11 @@ function App() {
           <Hatnote kind="weapons" slug={w.slug} />
         </header>
 
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <PageTools kind="weapons" slug={w.slug} />
+
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
-          <div className="min-w-0 order-2 lg:order-1">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <div className="flex flex-col gap-3">
                 <Attribution label="Associated character / content" value={w.association} accent="border-mint/70" />
@@ -179,13 +177,13 @@ function App() {
           </div>
 
           {/* Índice */}
-          <div className="hidden lg:block order-3 lg:order-2">
+          <div className="order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />
           </div>
 
           {/* Caixa de dados */}
-          <div className="order-1 lg:order-3">
-            <InfoboxShell>
+          <div className="order-2 lg:order-3">
+            <InfoboxShell title={w.name} subtitle="Weapon profile">
               <div>
                 <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">
                   {gallery[slide] ? (

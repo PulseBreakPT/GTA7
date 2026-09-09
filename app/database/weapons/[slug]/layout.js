@@ -1,5 +1,6 @@
 import { weapons } from '@/lib/content'
 import { JsonLd, breadcrumbJsonLd, entryJsonLd, articleJsonLd } from '@/lib/jsonld'
+import { notFound } from 'next/navigation'
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
@@ -7,7 +8,7 @@ export async function generateMetadata({ params }) {
   if (!item) return { title: 'Record not found' }
 
   const name = item.name
-  const description = item.desc || `${item.name}. Source-labelled entry in the LEONIDA ARCHIVE.`
+  const description = item.desc || `${item.name}. Source-labelled entry in the GTA LORE.`
 
   return {
     title: `${name} — GTA VI weapon`,
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }) {
 export default async function Layout({ children, params }) {
   const { slug } = await params
   const item = weapons.find((x) => x.slug === slug)
-  if (!item) return children
+  if (!item) notFound()
 
   const path = `/database/weapons/${slug}`
   const dados = entryJsonLd({

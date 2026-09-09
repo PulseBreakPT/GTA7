@@ -48,8 +48,6 @@ export default function GlossaryPage() {
         { label: 'Special pages', href: '/wiki/special' }, { label: 'Glossary' },
       ]} />
 
-      <div className="data-rail mt-2">GLOSSARY · WHAT EACH LABEL CLAIMS</div>
-
       <div className="mt-4">
         <CategoryHeader
           eyebrow="Reference"
