@@ -7,6 +7,7 @@ import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, Hous
 import { GhostBadge, cx } from '@/components/site/ui'
 import { mechanics, officialCatalog } from '@/lib/content'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House, dynamic: Radar }
 const FILTERS = ['all', 'confirmed', 'verified', 'analysis', 'rumour']
@@ -20,22 +21,24 @@ export default function MechanicsPage() {
       <div className="wiki-index-layout mechanics-index px-4 sm:px-6 lg:px-8 py-6 flex-1">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics' }]} />
 
-        <div className="mt-4"><CategoryHeader eyebrow="Gameplay systems" title="Mechanics" image="/media/scenes/ambrosia-drive.webp" imageAlt="Official GTA VI screenshot viewed from inside a vehicle" description="Gameplay systems documented from official footage, separated from analysis and community reports." count={mechanics.length} countLabel="mechanics" /></div>
+        <div className="mt-4"><CategoryHeader kind="mechanics" eyebrow="Gameplay systems" title="Mechanics" image="/media/scenes/ambrosia-drive.webp" imageAlt="Official GTA VI screenshot viewed from inside a vehicle" description="Gameplay systems documented from official footage, separated from analysis and community reports." count={mechanics.length} countLabel="mechanics" /></div>
 
-        <div className="mt-5 flex flex-wrap gap-1.5" role="tablist" aria-label="Mechanic status filters">
-          {FILTERS.map((f) => {
-            const active = filter === f
-            const count = f === 'all' ? mechanics.length : mechanics.filter((m) => m.status === f).length
-            return (
-              <button key={f} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f)}
-                className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-colors duration-150',
-                  active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
-                <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f}</span>
-                <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
-              </button>
-            )
-          })}
-        </div>
+        <CollapsibleFilters title="Mechanic filters" count={list.length} activeCount={filter === 'all' ? 0 : 1} summary={`${list.length} of ${mechanics.length} mechanics`}>
+          <div className="wiki-filter-group" role="tablist" aria-label="Mechanic status filters">
+            {FILTERS.map((f) => {
+              const active = filter === f
+              const count = f === 'all' ? mechanics.length : mechanics.filter((m) => m.status === f).length
+              return (
+                <button key={f} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f)}
+                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-colors duration-150',
+                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f}</span>
+                  <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
+                </button>
+              )
+            })}
+          </div>
+        </CollapsibleFilters>
 
         <div className="mechanics-card-grid mt-5">
           {list.map((m) => {

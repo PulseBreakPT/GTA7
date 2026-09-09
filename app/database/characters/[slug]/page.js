@@ -3,12 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked, Link2, ExternalLink} from 'lucide-react'
+import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
-import { RecordNotFound } from '@/components/site/wiki-entry'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
-import { identityFor } from '@/lib/entity-identity'
+import { characterIdentity, identityAttributes } from '@/lib/entity-identity'
 
 const REL_BARS = [
   { key: 'trust', label: 'TRUST', color: '#C2185B' },
@@ -18,11 +17,10 @@ const REL_BARS = [
 
 const SECTIONS = [
   { id: 'background', label: 'Background', icon: FileText },
+  { id: 'details', label: 'Details', icon: ListChecks },
   { id: 'relationships', label: 'Relationships', icon: Users },
   { id: 'mechanics', label: 'Associated Mechanics', icon: Zap },
-  { id: 'see-also', label: 'See also', icon: Link2 },
   { id: 'references', label: 'References', icon: BookMarked },
-  { id: 'external-links', label: 'External links', icon: ExternalLink },
 ]
 
 function Portrait({ c, className, sizes = '120px' }) {
@@ -69,51 +67,68 @@ function App() {
 
   if (!c) {
     return (
-      <RecordNotFound backHref="/database/characters" backLabel="BACK TO CHARACTERS" />
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
+        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
+        <Link href="/database/characters" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO CHARACTERS</Link>
+      </div>
     )
   }
 
   const rels = relationships.filter((r) => r.a === c.slug || r.b === c.slug)
+  const identity = characterIdentity(c)
   const mechs = mechanics.slice(0, 4)
   const primaryRel = rels.find((r) => r.primary)
   const primaryOther = primaryRel ? characterBySlug(primaryRel.a === c.slug ? primaryRel.b : primaryRel.a) : null
 
-  // A secção «Details» do corpo repetia a caixa de dados campo por campo —
-  // papel, grupo, estado, ligação principal — e acrescentava metadados que
-  // já estão na informação da página. Saiu inteira: os pares rótulo/valor
-  // vivem na caixa de dados, e o corpo é para o que é prosa.
+  // A mesma grelha de pares rótulo/valor das fichas de veículo e de arma:
+  // o que a caixa de dados diz à direita, dito também no corpo, que é onde
+  // se lê e de onde se copia. Só campos que o registo tem — a uma pessoa
+  // não se inventa uma ficha técnica.
+  const detailRows = [
+    { label: 'Role', value: c.role },
+    { label: 'Group', children: c.group ? <span className="capitalize">{c.group}</span> : null },
+    { label: 'Status', children: <StatusBadge status={c.status} /> },
+    { label: 'Primary bond', children: primaryOther ? <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link> : null },
+    { label: 'Documented relationships', value: String(rels.length) },
+    { label: 'Source', value: c.sourceName },
+    { label: 'First recorded', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.publishedAt}</span> },
+    { label: 'Last updated', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.updatedAt}</span> },
+  ]
+
   return (
     <div className="flex-1 flex flex-col">
-      <div 
-      data-identity={identityFor('characters', c.slug, c) || undefined}
-      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
-    >
+      <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters', href: '/database/characters' }, { label: c.name }]} />
 
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
             qualquer largura, como nas fichas das wikis. */}
         <header className="wiki-article-header mt-5">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
+          <div className="wiki-article-meta flex flex-wrap items-center gap-2 mb-3">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
             <StatusBadge status={c.status} />
           </div>
-          <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px]">{c.name}</h1>
-          <LeadParagraph name={c.name} exclude={`/database/characters/${c.slug}`}>{c.bio}</LeadParagraph>
-          {/* O grupo saiu daqui: já estava no rótulo do topo e outra vez na
-              caixa de dados. A linha curta diz o que o assunto é, e pára. */}
-          <ShortDescription>{c.role} in Grand Theft Auto VI</ShortDescription>
+          <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px]">{c.name}</h1>
+          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.bio}</WikiText></p>
+          <ShortDescription>
+            {c.role} in Grand Theft Auto VI{c.group ? ` · ${c.group}` : ''}
+          </ShortDescription>
           <StubNotice kind="characters" slug={c.slug} />
           <Hatnote kind="characters" slug={c.slug} />
         </header>
 
         <PageTools kind="characters" slug={c.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
-          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
+          <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="background" title="Background">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.long}</WikiText></p>
             </WikiSection>
+
+            <WikiSection id="details" title="Details">
+              <SpecGrid items={detailRows} />
+            </WikiSection>
+
             <WikiSection id="relationships" title="Relationships">
               <div className="space-y-3">
                 {rels.length === 0 && <p className="text-dim text-[13px]">No documented relationships.</p>}
@@ -160,22 +175,20 @@ function App() {
                 ))}
               </div>
             </WikiSection>
-            <SeeAlso kind="characters" slug={c.slug} />
             <References items={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
-            <ExternalLinks kind="characters" slug={c.slug} references={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
-            <Navbox kind="characters" slug={c.slug} />
+            <CategoryFooter kind="characters" slug={c.slug} />
             <CitePage kind="characters" slug={c.slug} />
             <PageInformation kind="characters" slug={c.slug} />
-            <CategoryFooter kind="characters" slug={c.slug} />
-</div>
+            <Navbox kind="characters" slug={c.slug} />
+          </div>
 
           {/* Índice */}
-          <div className="order-1 lg:order-2">
+          <div className="wiki-entry-tertiary order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />
           </div>
 
           {/* Caixa de dados */}
-          <div className="order-2 lg:order-3">
+          <div className="wiki-entry-secondary order-2 lg:order-3">
             <InfoboxShell title={c.name} subtitle="Character profile">
               <Portrait c={c} className="w-full aspect-[3/4] rounded-sm border border-line" sizes="(max-width:1024px) 100vw, 300px" />
 
@@ -192,7 +205,6 @@ function App() {
                     <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link>
                   </InfoRow>
                 )}
-                <InfoRow label="Relationships" value={String(rels.length)} />
               </div>
 
               <div className="border-t border-black/10 pt-4">

@@ -7,6 +7,7 @@ import { FileText, Search } from 'lucide-react'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import { StatusBadge, cx } from '@/components/site/ui'
 import { SEARCH_INDEX, SEARCH_TYPES, exactSearchMatch, searchArchive } from '@/lib/search-index'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const cleanExcerpt = (value, max = 220) => {
   const text = String(value || '').replace(/\s+/g, ' ').trim()
@@ -61,15 +62,17 @@ export default function SearchClient() {
       </div>
 
       {query && (
-        <div className="mt-4 flex flex-wrap gap-1.5" role="group" aria-label="Search namespace">
+        <CollapsibleFilters title="Search filters" count={results.length} activeCount={type === 'all' ? 0 : 1} summary={`${results.length} matches · ${type === 'all' ? 'All namespaces' : type}`}>
+          <div className="wiki-filter-group" role="group" aria-label="Search namespace">
           {[{ id: 'all', label: 'All', count: searchArchive(query).length }, ...SEARCH_TYPES.map((item) => ({ ...item, count: counts.get(item.id) || 0 }))].map((item) => (
             <button key={item.id} type="button" onClick={() => navigate(query, item.id)} disabled={item.count === 0 && item.id !== 'all'} aria-pressed={type === item.id}
-              className={cx('inline-flex items-center gap-1.5 h-9 px-3 border rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[10px] transition-colors',
+              className={cx('filter-chip inline-flex items-center gap-1.5 h-9 px-3 border rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[10px] transition-colors',
                 item.count === 0 && item.id !== 'all' ? 'border-line/40 text-dim/40 cursor-not-allowed' : type === item.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40')}>
               {item.label}<span className="font-mono text-[9px] tabular-nums opacity-70">{item.count}</span>
             </button>
           ))}
-        </div>
+          </div>
+        </CollapsibleFilters>
       )}
 
       {query && exact && type === 'all' && (

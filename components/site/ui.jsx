@@ -22,9 +22,9 @@ export const ACCENT = {
 
 export const STATUS_META = {
   confirmed: { label: 'CONFIRMED', color: ACCENT.mint, Icon: Check },
-  verified: { label: 'VERIFIED', color: ACCENT.mint, Icon: BadgeCheck },
+  verified: { label: 'VERIFIED', color: '#276CBE', Icon: BadgeCheck },
   category: { label: 'CATEGORY CONFIRMED', color: ACCENT.warn, Icon: BadgeCheck },
-  analysis: { label: 'ANALYSIS', color: ACCENT.mint, Icon: Activity },
+  analysis: { label: 'ANALYSIS', color: '#946200', Icon: Activity },
   rumour: { label: 'RUMOUR', color: ACCENT.violet, Icon: HelpCircle },
   official: { label: 'OFFICIAL', color: ACCENT.pink, Icon: Check },
   community: { label: 'COMMUNITY', color: ACCENT.violet, Icon: HelpCircle },
@@ -39,6 +39,7 @@ export function StatusBadge({ status, label, className }) {
   return (
     <span
       className={cx('status-badge inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm', className)}
+      data-status={status || 'analysis'}
       style={{ color: ACCENT.onAccent, backgroundColor: m.color }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />
@@ -53,6 +54,7 @@ export function GhostBadge({ status, label, className }) {
   return (
     <span
       className={cx('ghost-badge inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm border', className)}
+      data-status={status || 'analysis'}
       style={{ color: m.color, borderColor: `${m.color}55`, backgroundColor: `${m.color}0F` }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />

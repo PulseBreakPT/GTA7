@@ -12,14 +12,14 @@ import {
 import { cx } from './ui'
 import { useAuth } from './auth-provider'
 import { OPEN_SEARCH_EVENT } from './home-client'
+import LoreIcon from './lore-icons'
 
 const SearchModal = dynamic(() => import('./search'), { ssr: false })
 
 const TOP = [
-  ['Wiki', '/wiki', Library],
-  ['Places', '/map', MapPin],
-  ['Vice City', '/vice-city', Palmtree],
-  ['Articles', '/news', BookOpen],
+  ['Atlas', '/map', 'place'],
+  ['Articles', '/news', 'news'],
+  ['Database', '/database', 'archive'],
 ]
 
 const DATABASE_LINKS = [
@@ -180,24 +180,33 @@ export default function WikiChrome() {
         </button>
 
         <nav className="wiki-global-topnav" aria-label="Encyclopedia tools">
-          {TOP.map(([label, href, Icon]) => (
-            <Link key={href} href={href} className={cx(activeFor(pathname, href) && 'is-active')} aria-current={activeFor(pathname, href) ? 'page' : undefined}>
-              <Icon size={13} aria-hidden="true" /><span>{label}</span>
-            </Link>
-          ))}
-          <div className={cx('wiki-global-menu', pathname.startsWith('/database') && 'is-active')}>
-            <Link href="/database" aria-current={pathname.startsWith('/database') ? 'page' : undefined}>
-              <FileText size={13} aria-hidden="true" /><span>Database</span><ChevronDown size={11} aria-hidden="true" />
-            </Link>
-            <div className="wiki-global-menu-panel" aria-label="Database sections">
-              <p>Database</p>
-              {DATABASE_LINKS.map(([label, href, Icon]) => (
-                <Link key={href} href={href} className={cx(activeFor(pathname, href) && 'is-active')} aria-current={activeFor(pathname, href) ? 'page' : undefined}>
-                  <Icon size={14} aria-hidden="true" /><span>{label}</span>
-                </Link>
-              ))}
+          <div className={cx('wiki-global-menu wiki-explore-menu', (pathname.startsWith('/wiki') || pathname.startsWith('/vice-city')) && 'is-active')}>
+            <button type="button" className="wiki-explore-trigger" aria-haspopup="true">
+              <LoreIcon name="compass" size={14} /><span>Explore</span><ChevronDown size={11} aria-hidden="true" />
+            </button>
+            <div className="wiki-global-menu-panel wiki-explore-panel" aria-label="Explore GTA Lore">
+              <header><span>Navigate the archive</span><strong>Choose your route</strong><kbd>⌘ K</kbd></header>
+              <div>
+                {GROUPS.map((group, groupIndex) => (
+                  <section key={group.label}>
+                    <p>{group.label}</p>
+                    {group.links.slice(0, groupIndex === 1 ? 6 : 5).map(([label, href]) => (
+                      <Link key={href} href={href} className={cx(activeFor(pathname, href) && 'is-active')}>
+                        <LoreIcon name={href.includes('map') ? 'place' : href.includes('character') ? 'character' : href.includes('vehicle') ? 'vehicle' : href.includes('weapon') ? 'weapon' : href.includes('radio') ? 'radio' : href.includes('mechanic') ? 'mechanic' : href.includes('news') ? 'news' : href.includes('media') ? 'image' : href.includes('source') ? 'evidence' : 'archive'} size={14} />
+                        <span>{label}</span>
+                      </Link>
+                    ))}
+                  </section>
+                ))}
+              </div>
+              <footer><span><i />Archive online</span><button type="button" onClick={() => setSearchOpen(true)}>Search everything <LoreIcon name="search" size={13} /></button></footer>
             </div>
           </div>
+          {TOP.map(([label, href, icon]) => (
+            <Link key={href} href={href} className={cx(activeFor(pathname, href) && 'is-active')} aria-current={activeFor(pathname, href) ? 'page' : undefined}>
+              <LoreIcon name={icon} size={13} /><span>{label}</span>
+            </Link>
+          ))}
           <div ref={accountRef} className={cx('wiki-account-menu', accountOpen && 'is-open', activeFor(pathname, user ? '/account' : '/login') && 'is-active')}>
             <button ref={accountTriggerRef} type="button" className="wiki-account-trigger" onClick={() => { setSearchOpen(false); setAccountOpen((value) => !value) }} onKeyDown={openAccountFromKeyboard} aria-label={user ? `Open account menu for ${user.username}` : 'Open account menu'} aria-expanded={accountOpen} aria-haspopup="menu">
               <span className="wiki-account-avatar">{user ? user.displayName.charAt(0).toUpperCase() : <UserRound size={14} aria-hidden="true" />}</span>

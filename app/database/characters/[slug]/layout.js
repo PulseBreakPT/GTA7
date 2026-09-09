@@ -1,5 +1,6 @@
 import { characters } from '@/lib/content'
 import { JsonLd, breadcrumbJsonLd, entryJsonLd, articleJsonLd } from '@/lib/jsonld'
+import { notFound } from 'next/navigation'
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }) {
 export default async function Layout({ children, params }) {
   const { slug } = await params
   const item = characters.find((x) => x.slug === slug)
-  if (!item) return children
+  if (!item) notFound()
 
   const path = `/database/characters/${slug}`
   const dados = entryJsonLd({

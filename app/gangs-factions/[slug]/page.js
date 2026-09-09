@@ -3,12 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked, Link2, ExternalLink} from 'lucide-react'
+import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
-import { RecordNotFound } from '@/components/site/wiki-entry'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
-import { identityFor } from '@/lib/entity-identity'
+import { factionIdentity, identityAttributes } from '@/lib/entity-identity'
 
 export default function FactionPage() {
   const { slug } = useParams()
@@ -16,47 +15,48 @@ export default function FactionPage() {
 
   if (!f) {
     return (
-      <RecordNotFound backHref="/gangs-factions" backLabel="BACK TO FACTIONS" />
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
+        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
+        <Link href="/gangs-factions" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO FACTIONS</Link>
+      </div>
     )
   }
 
   const related = factions.filter((x) => x.slug !== f.slug).slice(0, 4)
+  const identity = factionIdentity(f)
 
   const sections = [
+    { id: 'overview', label: 'Overview', icon: FileText },
     ...(f.confirmed?.length > 0 ? [{ id: 'confirmed', label: 'Confirmed', icon: BadgeCheck }] : []),
     ...(f.unknown?.length > 0 ? [{ id: 'unknown', label: 'Not Published', icon: HelpCircle }] : []),
     { id: 'related', label: 'Other Factions', icon: Users },
-  { id: 'see-also', label: 'See also', icon: Link2 },
-  { id: 'references', label: 'References', icon: BookMarked },
-  { id: 'external-links', label: 'External links', icon: ExternalLink },
+    { id: 'references', label: 'References', icon: BookMarked },
   ]
 
   return (
-    <div 
-      data-identity={identityFor('gangs', f.slug, f) || undefined}
-      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
-    >
+    <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Factions', href: '/gangs-factions' }, { label: f.name }]} />
 
       <header className="wiki-article-header mt-5">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="wiki-article-meta flex flex-wrap items-center gap-2">
           <StatusBadge status={f.status} />
           <GhostBadge status="confirmed" label={f.kind} />
           <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{f.evidenceStatus}</span>
         </div>
-        <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{f.name}</h1>
-        <LeadParagraph name={f.name} exclude={`/gangs-factions/${f.slug}`}>{f.desc}</LeadParagraph>
-        <ShortDescription>Faction in Grand Theft Auto VI</ShortDescription>
+        <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{f.name}</h1>
+        <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
         <StubNotice kind="factions" slug={f.slug} />
-        <Hatnote kind="factions" slug={f.slug} />
+          <Hatnote kind="factions" slug={f.slug} />
       </header>
 
       <PageTools kind="factions" slug={f.slug} />
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
-        <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
-          {/* A secção «Overview» repetia a abertura e mais nada. O que este
-              verbete tem para dizer está em «Confirmed» e «Not published». */}
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
+          <WikiSection id="overview" title="Overview">
+            <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
+          </WikiSection>
+
           {f.confirmed?.length > 0 && (
             <WikiSection id="confirmed" title="Confirmed">
               <div className="border border-mint/25 bg-mint/[0.03] p-4 rounded-sm">
@@ -91,20 +91,18 @@ export default function FactionPage() {
               ))}
             </div>
           </WikiSection>
-          <SeeAlso kind="factions" slug={f.slug} />
           <References items={[{ name: f.sourceName, url: f.sourceUrl }]} />
-            <ExternalLinks kind="factions" slug={f.slug} references={[{ name: f.sourceName, url: f.sourceUrl }]} />
-          <Navbox kind="factions" slug={f.slug} />
-          <CitePage kind="factions" slug={f.slug} />
-          <PageInformation kind="factions" slug={f.slug} />
           <CategoryFooter kind="factions" slug={f.slug} />
-</div>
+            <CitePage kind="factions" slug={f.slug} />
+            <PageInformation kind="factions" slug={f.slug} />
+            <Navbox kind="factions" slug={f.slug} />
+        </div>
 
-        <div className="order-1 lg:order-2">
+        <div className="wiki-entry-tertiary order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
-        <div className="order-2 lg:order-3">
+        <div className="wiki-entry-secondary order-2 lg:order-3">
           <InfoboxShell title={f.name} subtitle="Faction profile">
             {f.image ? (
               <span className="relative block aspect-[16/10] overflow-hidden rounded-sm border border-line bg-surface2">

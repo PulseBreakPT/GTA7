@@ -7,6 +7,7 @@ import { Heart, BadgeCheck, Eye, ChevronRight, Triangle, Info } from 'lucide-rea
 import { articles, encyclopediaCategories, gtaWikiPageLedger, guides, liveUpdates, sources } from '@/lib/content'
 import { StatusBadge, GhostBadge, cx, fmtDate } from '@/components/site/ui'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const FILTERS = [
   { id: 'all', label: 'ALL' },
@@ -76,23 +77,25 @@ function App() {
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News' }]} />
         <div className="mt-4"><CategoryHeader eyebrow="Leonida reference archive" title="Articles" image="/media/key-art/jason-lucia-pier.webp" imageAlt="Official GTA VI artwork of Jason and Lucia by the water" description="News, official announcements, analysis and community reporting organised by evidence type and publication date." count={articles.length} countLabel="articles"><Link href="/categories" className="mt-4 inline-flex min-h-[44px] items-center gap-2 border border-line px-4 font-cond font-bold uppercase tracking-[0.14em] text-[12px] text-paper hover:border-pink">{encyclopediaCategories.length} categories <ChevronRight size={14} /></Link></CategoryHeader></div>
 
-        <div className="mt-4 inline-flex border border-line rounded-sm overflow-hidden" role="tablist" aria-label="News filters">
-          {FILTERS.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              role="tab"
-              aria-selected={filter === f.id}
-              onClick={() => setFilter(f.id)}
-              className={cx(
-                'font-cond font-semibold uppercase tracking-[0.12em] text-[14px] px-5 h-11 border-r hairline last:border-r-0 transition-colors duration-150',
-                filter === f.id ? 'bg-paper text-ink' : 'text-dim hover:text-paper'
-              )}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+        <CollapsibleFilters title="Article filters" count={filtered.length} activeCount={filter === 'all' ? 0 : 1} summary={`${filtered.length} of ${articles.length} articles`}>
+          <div className="wiki-filter-group" role="tablist" aria-label="News filters">
+            {FILTERS.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                role="tab"
+                aria-selected={filter === f.id}
+                onClick={() => setFilter(f.id)}
+                className={cx(
+                  'font-cond font-semibold uppercase tracking-[0.12em] text-[14px] px-5 h-11 border-r hairline last:border-r-0 transition-colors duration-150',
+                  filter === f.id ? 'bg-paper text-ink' : 'text-dim hover:text-paper'
+                )}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </CollapsibleFilters>
 
         {filter === 'all' ? (
           <>

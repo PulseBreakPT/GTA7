@@ -21,6 +21,7 @@ export default function EasterEggsIndex() {
 
       <div className="mt-4">
         <CategoryHeader
+          kind="secrets"
           eyebrow="Community finds"
           title="Secrets"
           description="Oddities the community has reported and the archive has catalogued separately, so a theory never sits next to a fact as if it were one. Each one carries its label, the clues it rests on, and where it is said to be."

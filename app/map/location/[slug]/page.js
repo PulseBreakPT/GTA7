@@ -2,22 +2,22 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ChevronRight, FileText, Images, Compass, BookMarked, Link2, ExternalLink} from 'lucide-react'
+import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
 import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/content'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph } from '@/components/site/wiki'
-import { RecordNotFound } from '@/components/site/wiki-entry'
-import { identityFor } from '@/lib/entity-identity'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { identityAttributes, regionIdentity } from '@/lib/entity-identity'
 
 export default function LocationPage() {
   const { slug } = useParams()
   const loc = locations.find((item) => item.slug === slug)
 
   if (!loc) {
-    return <RecordNotFound backHref="/map" backLabel="BACK TO THE MAP" />
+    return <div className="px-6 py-20 text-paper">Location not found.</div>
   }
 
   const region = regions.find((r) => r.id === loc.region)
+  const identity = regionIdentity(loc.region, region?.label || 'Leonida')
   const confirmedImage = confirmedLocationImage(loc)
   const categoryLabel = (mapFilters.find((f) => f.id === loc.category) || {}).label || loc.category
   const related = locations.filter((item) => item.region === loc.region && item.slug !== loc.slug)
@@ -25,41 +25,39 @@ export default function LocationPage() {
   // As secções seguem a ficha de sítio das wikis: descrição, imagem, e o
   // que fica à volta. «Nearby» só entra no índice se houver vizinhos.
   const sections = [
+    { id: 'overview', label: 'Overview', icon: FileText },
     { id: 'visual', label: 'Visual Record', icon: Images },
     ...(related.length > 0 && region ? [{ id: 'nearby', label: 'Nearby', icon: Compass }] : []),
-  { id: 'see-also', label: 'See also', icon: Link2 },
-  { id: 'references', label: 'References', icon: BookMarked },
-  { id: 'external-links', label: 'External links', icon: ExternalLink },
+    { id: 'references', label: 'References', icon: BookMarked },
   ]
 
   return (
-    <div 
-      data-identity={identityFor('locations', loc.slug, loc) || undefined}
-      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
-    >
+    <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
 
       <header className="wiki-article-header mt-6">
         <h1 data-ghost="PLACES" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[64px] text-paper">{loc.name}</h1>
-        <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div className="wiki-article-meta mt-3 flex flex-wrap items-center gap-2">
           <StatusBadge status={loc.status} />
           <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{categoryLabel}</span>
           {region && <span className="font-cond uppercase tracking-[0.1em] text-[12px] text-dim">{region.label}</span>}
         </div>
-        {/* A descrição do sítio estava só lá em baixo, na secção Overview:
-            a ficha abria sem dizer do que trata. */}
-        <LeadParagraph name={loc.name} exclude={`/map/location/${loc.slug}`}>{loc.desc}</LeadParagraph>
-        <ShortDescription>Named place in Grand Theft Auto VI</ShortDescription>
+        <ShortDescription>
+            Named place in {region ? region.label : 'Leonida'}{categoryLabel ? ` · ${categoryLabel}` : ''}
+          </ShortDescription>
           <StubNotice kind="locations" slug={loc.slug} />
           <Hatnote kind="locations" slug={loc.slug} />
       </header>
 
       <PageTools kind="locations" slug={loc.slug} />
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         {/* Corpo do artigo */}
-        <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
-          {/* A descrição do sítio está na abertura; aqui repetia-se inteira. */}
+        <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
+          <WikiSection id="overview" title="Overview">
+            <p className="text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]"><WikiText exclude={`/map/location/${loc.slug}`}>{loc.desc}</WikiText></p>
+          </WikiSection>
+
           <WikiSection id="visual" title="Visual Record">
             <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/9] bg-raised">
               <LocationThumb image={confirmedImage} fallbackImage={loc.contextImage || region?.image} name={loc.name} className="w-full h-full" priority />
@@ -82,22 +80,20 @@ export default function LocationPage() {
               </div>
             </WikiSection>
           )}
-          <SeeAlso kind="locations" slug={loc.slug} />
           <References items={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
-            <ExternalLinks kind="locations" slug={loc.slug} references={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
-          <Navbox kind="locations" slug={loc.slug} />
-          <CitePage kind="locations" slug={loc.slug} />
-          <PageInformation kind="locations" slug={loc.slug} />
           <CategoryFooter kind="locations" slug={loc.slug} />
-</div>
+            <CitePage kind="locations" slug={loc.slug} />
+            <PageInformation kind="locations" slug={loc.slug} />
+            <Navbox kind="locations" slug={loc.slug} />
+        </div>
 
         {/* Índice */}
-        <div className="order-1 lg:order-2">
+        <div className="wiki-entry-tertiary order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
         {/* Caixa de dados */}
-        <div className="order-2 lg:order-3">
+        <div className="wiki-entry-secondary order-2 lg:order-3">
           <InfoboxShell title={loc.name} subtitle="Place profile">
             <LocationLocator image={confirmedImage} fallbackImage={loc.contextImage || region?.image} name={loc.name} />
 

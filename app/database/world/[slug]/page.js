@@ -2,10 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ChevronRight, MapPin } from 'lucide-react'
 import { notFound } from 'next/navigation'
-import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
+import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText } from '@/components/site/wiki'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { worldBranches, worldEntries, worldEntryBySlug } from '@/lib/world-content'
-import { identityFor } from '@/lib/entity-identity'
 
 export default async function WorldEntryPage({ params }) {
   const { slug } = await params
@@ -25,14 +24,11 @@ export default async function WorldEntryPage({ params }) {
   ]
 
   return (
-    <div 
-      data-identity={identityFor('world', item.slug, item) || undefined}
-      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
-    >
+    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'World', href: '/database/world' }, { label: item.name }]} />
 
       <header className="wiki-article-header mt-5">
-        <div className="flex flex-wrap items-center gap-2"><StatusBadge status={item.status} /><span className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">{item.type} · {item.branch}</span></div>
+        <div className="wiki-article-meta flex flex-wrap items-center gap-2"><StatusBadge status={item.status} /><span className="font-cond uppercase tracking-[0.14em] text-[10px] text-mint">{item.type} · {item.branch}</span></div>
         <h1 data-ghost="WORLD" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase text-paper tracking-tight leading-[0.88] text-[44px] sm:text-[62px]">{item.name}</h1>
         <p className="mt-4 max-w-[70ch] text-paper/85 text-[16px] sm:text-[17px] leading-relaxed"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p>
         <StubNotice kind="world" slug={item.slug} />
@@ -52,8 +48,8 @@ export default async function WorldEntryPage({ params }) {
         </div>
       </nav>
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
-        <main id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <main id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview"><p className="text-dim text-[15px] leading-[1.85]"><WikiText exclude={`/database/world/${item.slug}`}>{item.summary}</WikiText></p></WikiSection>
           <WikiSection id="record" title="Archive record">
             <ul className="space-y-3 text-[14px] leading-[1.75] text-dim">{item.details.map((detail) => <li key={detail} className="border-l-2 border-mint/50 pl-4"><WikiText exclude={`/database/world/${item.slug}`}>{detail}</WikiText></li>)}</ul>
@@ -62,14 +58,12 @@ export default async function WorldEntryPage({ params }) {
           <WikiSection id="related" title="Related records" className="mb-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{related.map((entry) => <Link key={entry.slug} href={`/database/world/${entry.slug}`} className="panel rounded-sm p-4 flex items-center gap-3 hover:border-black/35 transition-colors"><span className="min-w-0 flex-1"><strong className="block font-cond uppercase text-[16px] text-paper truncate">{entry.name}</strong><small className="block mt-1 font-cond uppercase tracking-[0.12em] text-[9px] text-dim">{entry.type} · {entry.region}</small></span><ChevronRight size={14} className="text-dim" /></Link>)}</div>
           </WikiSection>
-          <SeeAlso kind="world" slug={item.slug} />
           <References items={item.sourceUrl ? [{ name: item.sourceName, url: item.sourceUrl, retrieved: item.updatedAt }] : []} />
-            <ExternalLinks kind="world" slug={item.slug} references={item.sourceUrl ? [{ name: item.sourceName, url: item.sourceUrl, retrieved: item.updatedAt }] : []} />
-          <Navbox kind="world" slug={item.slug} />
+          <CategoryFooter kind="world" slug={item.slug} />
           <CitePage kind="world" slug={item.slug} />
           <PageInformation kind="world" slug={item.slug} />
-          <CategoryFooter kind="world" slug={item.slug} />
-<nav className="mt-7 grid gap-3 border-t border-line pt-5 sm:grid-cols-2" aria-label="Adjacent records">
+          <Navbox kind="world" slug={item.slug} />
+          <nav className="mt-7 grid gap-3 border-t border-line pt-5 sm:grid-cols-2" aria-label="Adjacent records">
             {previous ? (
               <Link href={`/database/world/${previous.slug}`} className="group border border-line bg-white p-4 hover:border-pink">
                 <span className="flex items-center gap-1 font-cond text-[9px] font-bold uppercase tracking-[0.14em] text-dim"><ArrowLeft size={11} /> Previous in {branchMeta?.label}</span>
@@ -85,8 +79,8 @@ export default async function WorldEntryPage({ params }) {
           </nav>
         </main>
 
-        <aside className="order-1 lg:order-2"><TableOfContents sections={sections} /></aside>
-        <aside className="order-2 lg:order-3">
+        <aside className="wiki-entry-tertiary order-1 lg:order-2"><TableOfContents sections={sections} /></aside>
+        <aside className="wiki-entry-secondary order-2 lg:order-3">
           <InfoboxShell title={item.name} subtitle="World record">
             <figure className="-mx-5 -mt-5 mb-1 overflow-hidden border-b border-line bg-surface2">
               <div className="relative aspect-[16/10]"><Image src={item.image} alt={`${item.name} — ${item.imageCaption}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" /></div>

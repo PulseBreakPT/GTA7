@@ -30,6 +30,7 @@ export default function TopicPortalPage({ params }) {
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Portals', href: '/wiki/portals' }, { label: portal.plural }]} />
       <div className="mt-4">
         <CategoryHeader
+          kind={portal.kind}
           eyebrow={`${portal.label} namespace`}
           title={`${portal.plural} portal`}
           description={`A living gateway to every ${portal.label.toLowerCase()} record: where to begin, how the subject is organised and where the archive needs work.`}

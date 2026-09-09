@@ -3,14 +3,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked, Link2, ExternalLink} from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph } from '@/components/site/wiki'
-import { RecordNotFound } from '@/components/site/wiki-entry'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
+import { identityAttributes, vehicleIdentity } from '@/lib/entity-identity'
 import Image from 'next/image'
-import { identityFor } from '@/lib/entity-identity'
 
 // A ordem é a das fichas de veículo das wikis grandes: identificação e
 // imagem primeiro, depois o que a fonte diz, depois desempenho, depois
@@ -21,9 +20,7 @@ const SECTIONS = [
   { id: 'performance', label: 'Performance', icon: Gauge },
   { id: 'specifications', label: 'Specifications', icon: ListChecks },
   { id: 'related', label: 'Related Vehicles', icon: Car },
-  { id: 'see-also', label: 'See also', icon: Link2 },
   { id: 'references', label: 'References', icon: BookMarked },
-  { id: 'external-links', label: 'External links', icon: ExternalLink },
 ]
 
 function Attribution({ label, value, accent, exclude }) {
@@ -48,7 +45,10 @@ function App() {
 
   if (!v) {
     return (
-      <RecordNotFound backHref="/database/vehicles" backLabel="BACK TO GARAGE" />
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
+        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
+        <Link href="/database/vehicles" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO GARAGE</Link>
+      </div>
     )
   }
 
@@ -67,14 +67,22 @@ function App() {
   ]
   const related = vehicles.filter((x) => x.cls === v.cls && x.slug !== v.slug).slice(0, 4)
   const gallery = v.gallery?.length ? v.gallery : [v.image]
+  const identity = vehicleIdentity(v)
   const classLabel = (vehicleClasses.find((c) => c.id === v.cls) || {}).label || v.cls
 
-  // A ficha técnica repetia os sete campos de identificação da caixa de
-  // dados e só depois dizia algo novo. Fica com os quatro campos mecânicos,
-  // que são os que a caixa não tem. O travessão da fonte não é um valor:
-  // passa a nulo, e a grelha di-lo por palavras.
+  // A ficha técnica repete os campos de identificação da caixa de dados —
+  // é o que se lê primeiro numa wiki e o que se copia para fora dela — e
+  // acrescenta os quatro campos mecânicos. O travessão da fonte não é um
+  // valor: passa a nulo, e a grelha di-lo por palavras.
   const spec = (i) => (v.specs?.[i] && v.specs[i] !== '—' ? v.specs[i] : null)
   const specRows = [
+    { label: 'Vehicle class', value: classLabel },
+    { label: 'Manufacturer', value: v.manufacturer },
+    { label: 'Unit', value: v.num },
+    { label: 'Association', value: v.association },
+    v.character ? { label: 'Character', value: v.character } : null,
+    { label: 'Status', children: <StatusBadge status={v.status} /> },
+    { label: 'Evidence', children: <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span> },
     { label: 'Doors', value: spec(0) },
     { label: 'Seats', value: spec(1) },
     { label: 'Drivetrain', value: spec(2) },
@@ -83,46 +91,40 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div 
-      data-identity={identityFor('vehicles', v.slug, v) || undefined}
-      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
-    >
+      <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Vehicles', href: '/database/vehicles' }, { label: v.name }]} />
 
         {/* Cabeçalho fora da grelha: nas fichas de wiki o nome vem sempre
             antes da caixa de dados, mesmo em ecrã estreito. */}
         <header className="wiki-article-header mt-5">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="wiki-article-meta flex flex-wrap items-center gap-2">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{classLabel}</span>
             <StatusBadge status={v.status} />
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
           </div>
-          <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{v.name}</h1>
-          {/* Esta ficha ia do título direto para a caixa de dados: não tinha
-              parágrafo de abertura nenhum. Um verbete abre sempre por uma
-              frase que diz o que o assunto é, e o registo tem-na. */}
-          <LeadParagraph name={v.name} exclude={`/database/vehicles/${v.slug}`}>{v.content || v.association}</LeadParagraph>
-          <ShortDescription>{classLabel} in Grand Theft Auto VI</ShortDescription>
+          <h1 data-ghost="VEHICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{v.name}</h1>
+          <ShortDescription>
+            {classLabel} in Grand Theft Auto VI{v.manufacturer && v.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${v.manufacturer}` : ''} · Unit {v.num}
+          </ShortDescription>
           <StubNotice kind="vehicles" slug={v.slug} />
           <Hatnote kind="vehicles" slug={v.slug} />
         </header>
 
         <PageTools kind="vehicles" slug={v.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
-          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
-            {/* As atribuicoes que a ficha ja tinha na caixa de dados, agora
-                tambem no corpo: quem le o verbete de cima a baixo encontra a
-                marca, a personagem e o conteudo sem ir a caixa. */}
-            <div className="flex flex-col gap-3 mb-6">
-              <Attribution label="Association / content" value={v.association} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
-              <Attribution label="Manufacturer / brand" value={v.manufacturer} accent="border-violet/70" exclude={`/database/vehicles/${v.slug}`} />
-              <Attribution label="Character" value={v.character} accent="border-pink/70" exclude={`/database/vehicles/${v.slug}`} />
-            </div>
-            {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
+          <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
-                <div className="grid gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-3">
+                <Attribution label="Association / content" value={v.association} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
+                <Attribution label="Manufacturer / brand" value={v.manufacturer} accent="border-violet/70" exclude={`/database/vehicles/${v.slug}`} />
+                <Attribution label="Character" value={v.character} accent="border-pink/70" exclude={`/database/vehicles/${v.slug}`} />
+                <Attribution label="Content" value={v.content} accent="border-mint/70" exclude={`/database/vehicles/${v.slug}`} />
+              </div>
+
+              {(v.confirmedDetails?.length > 0 || v.notPublished?.length > 0) && (
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {v.confirmedDetails?.length > 0 && (
                     <div className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm">
                       <h3 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h3>
@@ -136,8 +138,8 @@ function App() {
                     </div>
                   )}
                 </div>
+              )}
             </WikiSection>
-          )}
 
             <WikiSection id="performance" title="Performance">
               {v.unpublished ? (
@@ -180,22 +182,20 @@ function App() {
                 </>
               )}
             </WikiSection>
-            <SeeAlso kind="vehicles" slug={v.slug} />
             <References items={[{ name: v.sourceName, url: v.sourceUrl, retrieved: v.updatedAt }]} />
-            <ExternalLinks kind="vehicles" slug={v.slug} references={[{ name: v.sourceName, url: v.sourceUrl, retrieved: v.updatedAt }]} />
-            <Navbox kind="vehicles" slug={v.slug} />
+            <CategoryFooter kind="vehicles" slug={v.slug} />
             <CitePage kind="vehicles" slug={v.slug} />
             <PageInformation kind="vehicles" slug={v.slug} />
-            <CategoryFooter kind="vehicles" slug={v.slug} />
-</div>
+            <Navbox kind="vehicles" slug={v.slug} />
+          </div>
 
           {/* Índice */}
-          <div className="order-1 lg:order-2">
+          <div className="wiki-entry-tertiary order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />
           </div>
 
           {/* Caixa de dados */}
-          <div className="order-2 lg:order-3">
+          <div className="wiki-entry-secondary order-2 lg:order-3">
             <InfoboxShell title={v.name} subtitle="Vehicle profile">
               <div>
                 <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">

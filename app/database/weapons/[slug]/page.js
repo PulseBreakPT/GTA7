@@ -4,22 +4,18 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked, Link2, ExternalLink} from 'lucide-react'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph } from '@/components/site/wiki'
-import { RecordNotFound } from '@/components/site/wiki-entry'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
-import { identityFor } from '@/lib/entity-identity'
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview', icon: FileText },
   { id: 'performance', label: 'Performance', icon: Gauge },
   { id: 'specifications', label: 'Specifications', icon: ListChecks },
   { id: 'related', label: 'Related Weapons', icon: Crosshair },
-  { id: 'see-also', label: 'See also', icon: Link2 },
   { id: 'references', label: 'References', icon: BookMarked },
-  { id: 'external-links', label: 'External links', icon: ExternalLink },
 ]
 
 function Attribution({ label, value, accent }) {
@@ -39,7 +35,10 @@ function App() {
 
   if (!w) {
     return (
-      <RecordNotFound backHref="/database/weapons" backLabel="BACK TO ARSENAL" />
+      <div className="px-4 sm:px-6 py-20 sm:py-24 text-center">
+        <p className="font-cond font-bold uppercase text-[40px] text-paper">RECORD NOT FOUND</p>
+        <Link href="/database/weapons" className="text-pink font-cond uppercase tracking-[0.14em] text-sm mt-4 inline-block">← BACK TO ARSENAL</Link>
+      </div>
     )
   }
 
@@ -60,9 +59,13 @@ function App() {
   // medida — nenhuma arma tem capacidade, reserva ou peso publicados —, por
   // isso não se imprime como número: o campo fica e diz que não há fonte.
   const num = (n, suffix = '') => (n ? `${n}${suffix}` : null)
-  // Os seis primeiros campos eram a caixa de dados copiada. Ficam os três
-  // que ela não tem.
   const specRows = [
+    { label: 'Weapon type', value: typeLabel },
+    { label: 'Manufacturer', value: w.manufacturer },
+    { label: 'Association', value: w.association },
+    w.character ? { label: 'Character', value: w.character } : null,
+    { label: 'Status', children: <StatusBadge status={w.status} /> },
+    { label: 'Evidence', children: <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span> },
     { label: 'Capacity', value: num(w.stats[4]) },
     { label: 'Reserve', value: num(w.mag) },
     { label: 'Weight', value: num(w.stats[5], ' KG') },
@@ -70,38 +73,41 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div 
-      data-identity={identityFor('weapons', w.slug, w) || undefined}
-      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
-    >
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Weapons', href: '/database/weapons' }, { label: w.name }]} />
 
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
             qualquer largura, como nas fichas das wikis. */}
         <header className="wiki-article-header mt-5">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="wiki-article-meta flex flex-wrap items-center gap-2">
             <StatusBadge status={w.status} />
             <GhostBadge status="confirmed" label={typeLabel} />
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span>
           </div>
-          <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[38px] sm:text-[52px] xl:text-[64px] mt-2">{w.name}</h1>
-          <LeadParagraph name={w.name} exclude={`/database/weapons/${w.slug}`}>{w.desc}</LeadParagraph>
-          <ShortDescription>{typeLabel} in Grand Theft Auto VI</ShortDescription>
+          <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{w.name}</h1>
+          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/weapons/${w.slug}`}>{w.desc}</WikiText></p>
+          <ShortDescription>
+            {typeLabel} in Grand Theft Auto VI{w.manufacturer && w.manufacturer !== 'NOT OFFICIALLY SPECIFIED' ? `, by ${w.manufacturer}` : ''}
+          </ShortDescription>
           <StubNotice kind="weapons" slug={w.slug} />
           <Hatnote kind="weapons" slug={w.slug} />
         </header>
 
         <PageTools kind="weapons" slug={w.slug} />
 
-        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
-          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
-            <div className="flex flex-col gap-3 mb-6">
-              <Attribution label="Associated character / content" value={w.association} accent="border-mint/70" />
-            </div>
-            {(w.confirmedDetails?.length > 0 || w.notPublished?.length > 0) && (
+          <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
-                <div className="grid gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-3">
+                <Attribution label="Associated character / content" value={w.association} accent="border-mint/70" />
+                <Attribution label="Manufacturer / brand" value={w.manufacturer} accent="border-violet/70" />
+                <Attribution label="Character" value={w.character} accent="border-pink/70" />
+                <Attribution label="Content" value={w.content} accent="border-mint/70" />
+              </div>
+
+              {(w.confirmedDetails?.length > 0 || w.notPublished?.length > 0) && (
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {w.confirmedDetails?.length > 0 && (
                     <div className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm">
                       <h3 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h3>
@@ -115,12 +121,12 @@ function App() {
                     </div>
                   )}
                 </div>
+              )}
 
               {/* O «APPEARS IN» dava bairros onde cada arma aparecia, e o default
                   punha Little Haiti e Vice Point em tudo o que não trouxesse
                   lista. Ninguém sabe onde aparece uma arma num jogo por sair. */}
             </WikiSection>
-          )}
 
             <WikiSection id="performance" title="Performance">
               {w.unpublished ? (
@@ -163,22 +169,20 @@ function App() {
                 </>
               )}
             </WikiSection>
-            <SeeAlso kind="weapons" slug={w.slug} />
             <References items={[{ name: w.sourceName, url: w.sourceUrl, retrieved: w.updatedAt }]} />
-            <ExternalLinks kind="weapons" slug={w.slug} references={[{ name: w.sourceName, url: w.sourceUrl, retrieved: w.updatedAt }]} />
-            <Navbox kind="weapons" slug={w.slug} />
+            <CategoryFooter kind="weapons" slug={w.slug} />
             <CitePage kind="weapons" slug={w.slug} />
             <PageInformation kind="weapons" slug={w.slug} />
-            <CategoryFooter kind="weapons" slug={w.slug} />
-</div>
+            <Navbox kind="weapons" slug={w.slug} />
+          </div>
 
           {/* Índice */}
-          <div className="order-1 lg:order-2">
+          <div className="wiki-entry-tertiary order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />
           </div>
 
           {/* Caixa de dados */}
-          <div className="order-2 lg:order-3">
+          <div className="wiki-entry-secondary order-2 lg:order-3">
             <InfoboxShell title={w.name} subtitle="Weapon profile">
               <div>
                 <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">

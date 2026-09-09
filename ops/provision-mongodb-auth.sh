@@ -3,26 +3,6 @@ set -Eeuo pipefail
 umask 077
 
 test "$(id -u)" -eq 0 || { echo 'Run as root.' >&2; exit 1; }
-
-# `systemctl restart` devolve o controlo quando o processo arranca, não
-# quando ele aceita ligações. Testar logo a seguir dava ECONNREFUSED e a
-# configuração era revertida por uma falha que era só pressa: espera-se
-# pelo socket, até meio minuto, antes de dar o arranque por falhado.
-# Um servidor que recusa credenciais está vivo: o que se espera aqui é que
-# ele atenda, não que nos deixe entrar. Só a recusa de ligação conta como
-# «ainda não subiu».
-esperar_mongod() {
-  local tentativa saida
-  for tentativa in $(seq 1 30); do
-    saida="$(mongosh --quiet --eval 'db.runCommand({ ping: 1 })' 2>&1 || true)"
-    case "$saida" in
-      *ECONNREFUSED*|*'connect ETIMEDOUT'*|*'Connection refused'*) ;;
-      *) return 0 ;;
-    esac
-    sleep 1
-  done
-  return 1
-}
 ENV_FILE="${GTALORE_ENV_FILE:-/opt/leonida/.env}"
 MONGO_CONFIG="${GTALORE_MONGO_CONFIG:-/etc/mongod.conf}"
 test -r "$ENV_FILE" && test -f "$MONGO_CONFIG" || { echo 'MongoDB configuration is unavailable.' >&2; exit 1; }
@@ -45,26 +25,11 @@ export GTALORE_APP_PASSWORD="$(openssl rand -base64 36 | tr -d '\n')"
 export GTALORE_ADMIN_PASSWORD="$(openssl rand -base64 42 | tr -d '\n')"
 export GTALORE_DB_NAME="$DB_NAME"
 
-# Criar quando não existe, actualizar a palavra-passe quando existe. Como
-# estava, uma segunda passagem deixava o utilizador com a palavra-passe da
-# primeira e escrevia a nova no ambiente: a autenticação passava a falhar
-# com credenciais que nunca tinham chegado a ser as do servidor. É o que
-# acontece sempre que a primeira passagem não chega ao fim.
 mongosh --quiet "$MONGO_URL" <<'JS' >/dev/null
 const target = db.getSiblingDB(process.env.GTALORE_DB_NAME)
-const appRoles = [{ role: 'readWrite', db: process.env.GTALORE_DB_NAME }]
-if (target.getUser('gtalore_app')) {
-  target.updateUser('gtalore_app', { pwd: process.env.GTALORE_APP_PASSWORD, roles: appRoles })
-} else {
-  target.createUser({ user: 'gtalore_app', pwd: process.env.GTALORE_APP_PASSWORD, roles: appRoles })
-}
+if (!target.getUser('gtalore_app')) target.createUser({ user: 'gtalore_app', pwd: process.env.GTALORE_APP_PASSWORD, roles: [{ role: 'readWrite', db: process.env.GTALORE_DB_NAME }] })
 const admin = db.getSiblingDB('admin')
-const adminRoles = [{ role: 'userAdminAnyDatabase', db: 'admin' }, { role: 'backup', db: 'admin' }, { role: 'restore', db: 'admin' }]
-if (admin.getUser('gtalore_admin')) {
-  admin.updateUser('gtalore_admin', { pwd: process.env.GTALORE_ADMIN_PASSWORD, roles: adminRoles })
-} else {
-  admin.createUser({ user: 'gtalore_admin', pwd: process.env.GTALORE_ADMIN_PASSWORD, roles: adminRoles })
-}
+if (!admin.getUser('gtalore_admin')) admin.createUser({ user: 'gtalore_admin', pwd: process.env.GTALORE_ADMIN_PASSWORD, roles: [{ role: 'userAdminAnyDatabase', db: 'admin' }, { role: 'backup', db: 'admin' }, { role: 'restore', db: 'admin' }] })
 JS
 
 ENV_FILE="$ENV_FILE" node - <<'NODE'
@@ -97,12 +62,6 @@ else
   printf '\nsecurity:\n  authorization: enabled\n' >> "$MONGO_CONFIG"
 fi
 systemctl restart mongod.service
-esperar_mongod || {
-  cp "$MONGO_CONFIG.before-gtalore-auth" "$MONGO_CONFIG"
-  systemctl restart mongod.service
-  echo 'MongoDB did not accept connections after the restart; configuration was rolled back.' >&2
-  exit 1
-}
 
 set -a
 # shellcheck disable=SC1090
@@ -111,7 +70,6 @@ set +a
 if ! mongosh --quiet "$MONGO_URL" --eval 'db.runCommand({ ping: 1 })' >/dev/null; then
   cp "$MONGO_CONFIG.before-gtalore-auth" "$MONGO_CONFIG"
   systemctl restart mongod.service
-  esperar_mongod || true
   echo 'MongoDB authentication test failed; configuration was rolled back.' >&2
   exit 1
 fi

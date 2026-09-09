@@ -8,6 +8,7 @@ import { GhostBadge, SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { radioStations } from '@/lib/content'
 import { gtaViMusic, musicEvidence } from '@/lib/music'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const FILTERS = ['all', 'confirmed', 'rumour']
 const MUSIC_FILTERS = ['all', 'rockstar-credit', 'published-media', 'community-rumour']
@@ -49,28 +50,30 @@ function App() {
       <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio' }]} />
-          <div className="mt-4"><CategoryHeader eyebrow="Broadcast archive" title="Radio stations" image="/media/scenes/ambrosia-night.webp" imageAlt="Official GTA VI night-time view across Leonida" description="Station names, music appearances and community reports organised by the exact strength of their published evidence." count={radioStations.length} countLabel="stations" updatedAt="2026-09-07" /></div>
+          <div className="mt-4"><CategoryHeader kind="radio" eyebrow="Broadcast archive" title="Radio stations" image="/media/scenes/ambrosia-night.webp" imageAlt="Official GTA VI night-time view across Leonida" description="Station names, music appearances and community reports organised by the exact strength of their published evidence." count={radioStations.length} countLabel="stations" updatedAt="2026-09-07" /></div>
 
-          <div className="mt-5 flex flex-wrap gap-1.5" role="tablist" aria-label="Station status filters">
-            {FILTERS.map((f) => {
-              const active = filter === f
-              const count = f === 'all' ? radioStations.length : radioStations.filter((r) => r.status === f).length
-              return (
-                <button key={f} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f)}
-                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
-                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.toUpperCase()}</span>
-                  <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
-                </button>
-              )
-            })}
-          </div>
+          <CollapsibleFilters title="Station filters" count={list.length} activeCount={filter === 'all' ? 0 : 1} summary={`${list.length} of ${radioStations.length} stations`}>
+            <div className="wiki-filter-group" role="tablist" aria-label="Station status filters">
+              {FILTERS.map((f) => {
+                const active = filter === f
+                const count = f === 'all' ? radioStations.length : radioStations.filter((r) => r.status === f).length
+                return (
+                  <button key={f} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f)}
+                    className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                      active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.toUpperCase()}</span>
+                    <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </CollapsibleFilters>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 mt-5">
             {list.map((r) => {
               const active = r.slug === selected.slug
               return (
-                <button key={r.slug} type="button" onClick={() => setSelectedSlug(r.slug)} aria-pressed={active}
+                <Link key={r.slug} href={`/database/radio/${r.slug}`} onMouseEnter={() => setSelectedSlug(r.slug)} aria-current={active ? 'true' : undefined}
                   className={cx('group spotlight-card tech-mask-sm glass-panel overflow-hidden text-left flex flex-col min-h-[220px] transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
                   <EvidenceVisual image={r.image} alt={r.imageAlt} compact />
                   <span className="flex items-start justify-between gap-3 px-4 pt-3">
@@ -79,7 +82,7 @@ function App() {
                   <span className="block font-cond font-bold uppercase text-[16px] text-paper leading-[1.1] mt-2 px-4">{r.name}</span>
                   <span className="block text-[11px] text-dim uppercase tracking-[0.1em] mt-1 px-4">{r.genre}</span>
                   <span className="mt-auto p-4 pt-3"><GhostBadge status={r.status} /></span>
-                </button>
+                </Link>
               )
             })}
             {list.length === 0 && (
@@ -91,7 +94,9 @@ function App() {
         </div>
 
         <aside className="tech-mask glass-panel p-5 self-start">
-          <div className="group -mx-5 -mt-5 mb-5 overflow-hidden"><EvidenceVisual image={selected.image} alt={selected.imageAlt} /></div>
+          <Link href={`/database/radio/${selected.slug}`} className="group -mx-5 -mt-5 mb-5 block overflow-hidden" aria-label={`Open ${selected.name} full entry`}>
+            <EvidenceVisual image={selected.image} alt={selected.imageAlt} />
+          </Link>
           <div className="flex items-center gap-3">
             <span className="w-12 h-12 rounded-sm panel2 flex items-center justify-center text-pink" aria-hidden="true"><Radio size={24} strokeWidth={1.8} /></span>
             <div>
@@ -141,27 +146,30 @@ function App() {
 
       <section className="px-4 sm:px-6 lg:px-8 pb-10" aria-labelledby="music-archive-title">
         <div className="border-t border-line pt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-5 items-end">
+          <div className="grid grid-cols-1 gap-5 items-end">
             <div>
               <div className="flex items-center gap-2 text-pink"><Music2 size={18} aria-hidden="true" /><span className="font-mono text-[10px] uppercase tracking-[0.16em]">Music evidence index</span></div>
               <h2 id="music-archive-title" className="font-cond font-bold uppercase text-paper text-[40px] sm:text-[54px] leading-[0.9] mt-2">Songs heard &amp; reported</h2>
               <p className="text-dim text-[13px] sm:text-[14px] leading-relaxed mt-3 max-w-[76ch]">A song used in Rockstar-published footage is not automatically confirmed for the final soundtrack or an in-game station. The labels below preserve that distinction.</p>
             </div>
-            <label className="control-shell flex items-center gap-3 h-12 px-4">
+          </div>
+
+          <CollapsibleFilters title="Music filters" count={musicList.length} activeCount={Number(Boolean(musicQuery.trim())) + Number(musicFilter !== 'all')} summary={`${musicList.length} of ${gtaViMusic.length} tracks`}>
+            <label className="wiki-filter-search">
               <Search size={17} className="text-dim shrink-0" aria-hidden="true" />
               <span className="sr-only">Search songs or artists</span>
               <input value={musicQuery} onChange={(event) => setMusicQuery(event.target.value)} placeholder="Search song or artist" className="w-full bg-transparent border-0 outline-none text-[14px] text-paper placeholder:text-dim/70" />
             </label>
-          </div>
 
-          <div className="mt-5 flex flex-wrap gap-2" role="tablist" aria-label="Music evidence filters">
-            {MUSIC_FILTERS.map((value) => {
-              const active = musicFilter === value
-              const count = value === 'all' ? gtaViMusic.length : gtaViMusic.filter((item) => item.evidence === value).length
-              const label = value === 'all' ? 'All evidence' : musicEvidence[value].shortLabel
-              return <button key={value} type="button" role="tab" aria-selected={active} onClick={() => setMusicFilter(value)} className={cx('control-button h-10 px-3.5 inline-flex items-center gap-2', active && 'control-button-active')}><span>{label}</span><span className="font-mono text-[9px] opacity-65 tabular-nums">{count}</span></button>
-            })}
-          </div>
+            <div className="wiki-filter-group" role="tablist" aria-label="Music evidence filters">
+              {MUSIC_FILTERS.map((value) => {
+                const active = musicFilter === value
+                const count = value === 'all' ? gtaViMusic.length : gtaViMusic.filter((item) => item.evidence === value).length
+                const label = value === 'all' ? 'All evidence' : musicEvidence[value].shortLabel
+                return <button key={value} type="button" role="tab" aria-selected={active} onClick={() => setMusicFilter(value)} className={cx('control-button h-10 px-3.5 inline-flex items-center gap-2', active && 'control-button-active')}><span>{label}</span><span className="font-mono text-[9px] opacity-65 tabular-nums">{count}</span></button>
+              })}
+            </div>
+          </CollapsibleFilters>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 mt-5">
             {musicList.map((item, index) => {

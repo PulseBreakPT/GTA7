@@ -8,6 +8,7 @@ import { Activity, Bell, Bookmark, BookOpen, CheckCircle2, Clock3, Download, Era
 import { useAuth } from '@/components/site/auth-provider'
 import { cx } from '@/components/site/ui'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const eventLabel = (action) => ({
   'account.created': 'Account created', 'session.login': 'Signed in', 'session.logout': 'Signed out',
@@ -342,7 +343,9 @@ export default function AccountClient({ initialUser, initialSession, initialSect
       {section === 'notifications' && (
         <section className="mt-6 max-w-[860px]">
           <div className="flex flex-wrap items-end justify-between gap-3"><div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Notifications</h2><p className="mt-1 text-[12px] text-dim">Updates to watched pages and your editorial submissions.</p></div>{wiki.notifications.some((item) => item.unread) && <button type="button" disabled={busy === 'notifications-read'} onClick={markNotificationsRead} className="h-10 px-4 border border-mint/40 font-cond font-bold uppercase tracking-[0.12em] text-[10px] text-mint">Mark all read</button>}</div>
-          <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Notification filters">{[['all', 'All'], ['unread', 'Unread'], ['watch', 'Watchlist'], ['contributions', 'Contributions']].map(([id, label]) => <button key={id} type="button" onClick={() => setNotificationFilter(id)} aria-pressed={notificationFilter === id} className={cx('h-8 px-3 border rounded-full font-cond font-bold uppercase tracking-[0.1em] text-[9px]', notificationFilter === id ? 'border-violet text-violet bg-violet/[0.05]' : 'border-line text-dim')}>{label}</button>)}</div>
+          <CollapsibleFilters title="Notification filters" count={visibleNotifications.length} activeCount={notificationFilter === 'all' ? 0 : 1} summary={`${visibleNotifications.length} of ${wiki.notifications.length} notifications`}>
+            <div className="wiki-filter-group" role="group" aria-label="Notification filters">{[['all', 'All'], ['unread', 'Unread'], ['watch', 'Watchlist'], ['contributions', 'Contributions']].map(([id, label]) => <button key={id} type="button" onClick={() => setNotificationFilter(id)} aria-pressed={notificationFilter === id} className={cx('filter-chip h-8 px-3 border rounded-full font-cond font-bold uppercase tracking-[0.1em] text-[9px]', notificationFilter === id ? 'border-violet text-violet bg-violet/[0.05]' : 'border-line text-dim')}>{label}</button>)}</div>
+          </CollapsibleFilters>
           {visibleNotifications.length ? <ol className="mt-4 border border-line divide-y divide-black/[0.08]">{visibleNotifications.map((item) => <li key={item.id} className={cx('px-4 py-3 flex items-center gap-3', item.unread && 'bg-violet/[0.045]')}><span className={cx('w-2 h-2 rounded-full shrink-0', item.unread ? 'bg-pink' : 'bg-black/15')} /><Bell size={13} className="text-violet shrink-0" /><Link href={item.href} className="flex-1 font-cond font-semibold uppercase tracking-[0.05em] text-[12px] text-paper hover:text-pink">{item.title}</Link><span className="font-mono text-[8px] text-dim">{formatDate(item.createdAt)}</span></li>)}</ol> : <EmptyState icon={Bell} title={wiki.notifications.length ? 'No notices in this filter' : 'You are all caught up'} text={wiki.notifications.length ? 'Choose another notification filter.' : 'Watch pages or submit improvements to receive useful notices here.'} />}
         </section>
       )}

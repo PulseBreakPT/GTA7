@@ -13,12 +13,12 @@ import {
   PawPrint,
   Search,
   Shield,
-  SlidersHorizontal,
   Trophy,
   Tv,
   Waves,
   X,
 } from 'lucide-react'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import { StatusBadge } from '@/components/site/ui'
 import { worldBranches, worldEntries } from '@/lib/world-content'
@@ -143,6 +143,7 @@ export default function WorldIndexPage() {
   const filtering = Boolean(query || region !== 'all' || status !== 'all')
   const showOverview = branch === 'overview' && !filtering
   const activeMeta = worldBranches.find((item) => item.id === branch)
+  const activeFilterCount = Number(Boolean(query.trim())) + Number(branch !== 'overview') + Number(region !== 'all') + Number(status !== 'all') + Number(sort !== 'az')
 
   const clearFilters = () => {
     setQuery('')
@@ -156,6 +157,7 @@ export default function WorldIndexPage() {
     <main className="ambient-bloom mx-auto w-full max-w-[1400px] px-4 py-6 pb-24 sm:px-6 md:pb-12 lg:px-8">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'World' }]} />
       <CategoryHeader
+        kind="world"
         eyebrow="World directory"
         title="Leonida World Index"
         description="Explore the world by subject, region or evidence status. Each record combines visual evidence and context in an encyclopedia format."
@@ -164,8 +166,13 @@ export default function WorldIndexPage() {
         imageAlt="Official Rockstar Visit Leonida artwork of Vice City"
       />
 
-      <section className="mt-6" aria-label="Search the world index">
-        <label className="flex min-h-12 items-center gap-3 rounded-sm border border-line bg-white px-4 transition focus-within:border-pink">
+      <CollapsibleFilters
+        title="World filters"
+        count={shown.length}
+        activeCount={activeFilterCount}
+        summary={`${shown.length} of ${worldEntries.length} records · ${branch === 'overview' ? 'Overview' : activeMeta?.label || 'All records'}`}
+      >
+        <label className="wiki-filter-search">
           <Search className="size-5 shrink-0 text-pink" aria-hidden="true" />
           <span className="sr-only">Search the world index</span>
           <input
@@ -184,16 +191,31 @@ export default function WorldIndexPage() {
             </button>
           )}
         </label>
-      </section>
 
-      <nav className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-2 lg:hidden" aria-label="World sections">
-        <button type="button" onClick={() => chooseBranch('overview')} className={`wiki-filter-pill whitespace-nowrap ${branch === 'overview' ? 'is-active' : ''}`}>Overview</button>
-        {subjectBranches.map((item) => (
-          <button key={item.id} type="button" onClick={() => chooseBranch(item.id)} className={`wiki-filter-pill whitespace-nowrap ${branch === item.id ? 'is-active' : ''}`}>
-            {item.label} <span className="opacity-60">{item.count}</span>
+        <div className="wiki-filter-group" role="group" aria-label="World sections">
+          <button type="button" onClick={() => chooseBranch('overview')} className={`wiki-filter-pill ${branch === 'overview' ? 'is-active' : ''}`}>Overview</button>
+          <button type="button" onClick={() => chooseBranch('all')} className={`wiki-filter-pill ${branch === 'all' ? 'is-active' : ''}`}>
+            All records <span className="opacity-60">{worldEntries.length}</span>
           </button>
-        ))}
-      </nav>
+          {subjectBranches.map((item) => (
+            <button key={item.id} type="button" onClick={() => chooseBranch(item.id)} className={`wiki-filter-pill ${branch === item.id ? 'is-active' : ''}`}>
+              {item.label} <span className="opacity-60">{item.count}</span>
+            </button>
+          ))}
+        </div>
+
+        {branch !== 'overview' && (
+          <div className="wiki-filter-grid">
+            <label className="wiki-select-wrap"><span>Region</span><select value={region} onChange={(event) => setRegion(event.target.value)}><option value="all">All regions</option>{regions.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
+            <label className="wiki-select-wrap"><span>Evidence</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option value="all">Any status</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option><option value="analysis">Analysis</option><option value="rumour">Rumour</option></select></label>
+            <label className="wiki-select-wrap"><span>Order</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="type">Type</option></select></label>
+            <div className="flex flex-wrap items-end justify-end gap-2">
+              {filtering || sort !== 'az' ? <button type="button" onClick={clearFilters} className="wiki-button-secondary min-h-10 px-3 text-xs">Clear filters</button> : null}
+              <span className="inline-flex min-h-10 items-center gap-2 rounded-sm border border-line bg-white px-3 text-[10px] font-black uppercase tracking-wider text-dim"><Grid2X2 className="size-4 text-violet" /> Visual grid</span>
+            </div>
+          </div>
+        )}
+      </CollapsibleFilters>
 
       {showOverview ? (
         <section className="mt-8" aria-labelledby="browse-world-heading">
@@ -212,24 +234,31 @@ export default function WorldIndexPage() {
               const Icon = ICONS[item.id] || Landmark
               const meta = META[item.id]
               const samples = worldEntries.filter((entry) => entry.branch === item.id).slice(0, 3)
+              const firstSample = samples[0]
               return (
-                <button key={item.id} type="button" onClick={() => chooseBranch(item.id)} aria-label={`Open ${item.label}, ${item.count} records`} className="world-subject-card group overflow-hidden rounded-sm border border-line bg-white text-left transition-colors hover:border-pink/35 focus-visible:outline-none">
-                  <div className="world-subject-media relative aspect-[16/7] overflow-hidden bg-black/5">
+                <article key={item.id} className="world-subject-card group overflow-hidden rounded-sm border border-line bg-white text-left transition-colors hover:border-pink/35">
+                  <Link href={firstSample ? `/database/world/${firstSample.slug}` : '/database/world?section=all'} className="world-subject-media relative block aspect-[16/7] overflow-hidden bg-black/5" aria-label={`Open ${firstSample ? firstSample.name : item.label} article`}>
                     <Image src={meta.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/10" />
                     <span className="world-subject-count absolute right-3 top-3 inline-flex min-w-9 items-center justify-center rounded-full border border-white/25 bg-black/65 px-2 py-1.5 font-mono text-[11px] font-bold text-white backdrop-blur-sm">{item.count}</span>
                     <div className="absolute inset-x-4 bottom-3 text-white">
                       <h3 className="world-subject-title flex min-w-0 items-center gap-2 font-cond text-[22px] font-black uppercase leading-[.9] tracking-tight"><Icon className="size-5 shrink-0" />{item.label}</h3>
                     </div>
-                  </div>
+                  </Link>
                   <div className="world-subject-body flex flex-1 flex-col p-4">
                     <p className="text-sm leading-6 text-dim">{meta.description}</p>
                     <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Example records">
-                      {samples.map((sample) => <span key={sample.slug} className="max-w-full truncate rounded-md border border-black/[0.05] bg-black/[0.035] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.03em] text-dim">{sample.name}</span>)}
+                      {samples.map((sample) => (
+                        <Link key={sample.slug} href={`/database/world/${sample.slug}`} className="max-w-full truncate rounded-md border border-black/[0.05] bg-black/[0.035] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.03em] text-dim hover:border-pink/35 hover:text-pink">
+                          {sample.name}
+                        </Link>
+                      ))}
                     </div>
-                    <span className="mt-auto flex items-center gap-1 pt-4 text-xs font-black uppercase tracking-wider text-pink">Open section <ChevronRight className="size-4 transition group-hover:translate-x-0.5" /></span>
+                    <button type="button" onClick={() => chooseBranch(item.id)} className="mt-auto flex items-center gap-1 pt-4 text-xs font-black uppercase tracking-wider text-pink">
+                      Open section <ChevronRight className="size-4 transition group-hover:translate-x-0.5" />
+                    </button>
                   </div>
-                </button>
+                </article>
               )
             })}
           </div>
@@ -266,19 +295,6 @@ export default function WorldIndexPage() {
               </div>
               {branch !== 'overview' && <button type="button" onClick={() => chooseBranch('overview')} className="wiki-text-link">Section overview <ArrowRight className="size-4" /></button>}
             </header>
-
-            <div className="mt-4 rounded-sm border border-line bg-white p-3 md:p-4">
-              <div className="mb-3 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-dim"><SlidersHorizontal className="size-4" /> Refine results</div>
-              <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_auto]">
-                <label className="wiki-select-wrap"><span>Region</span><select value={region} onChange={(event) => setRegion(event.target.value)}><option value="all">All regions</option>{regions.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
-                <label className="wiki-select-wrap"><span>Evidence</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option value="all">Any status</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option><option value="analysis">Analysis</option><option value="rumour">Rumour</option></select></label>
-                <label className="wiki-select-wrap"><span>Order</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="type">Type</option></select></label>
-                <div className="flex items-end justify-end gap-2">
-                  {filtering ? <button type="button" onClick={clearFilters} className="min-h-10 px-2 text-xs font-bold text-pink hover:underline">Clear</button> : <span />}
-                  <span className="inline-flex min-h-10 items-center gap-2 rounded-sm border border-line bg-white px-3 text-[10px] font-black uppercase tracking-wider text-dim"><Grid2X2 className="size-4 text-violet" /> Visual grid</span>
-                </div>
-              </div>
-            </div>
 
             {shown.length ? (
               <div className="visual-card-grid world-record-grid mt-5">

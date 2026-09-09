@@ -6,6 +6,7 @@ import { Search, X } from 'lucide-react'
 import { IMG } from '@/lib/content'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import { cx } from '@/components/site/ui'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 // A galeria não tem lista própria: lê o catálogo de imagens do arquivo e
 // agrupa-o pela pasta em que cada ficheiro está. Assim nunca fica
@@ -25,6 +26,18 @@ const GROUPS = [
 // `creators` fica de fora: são retratos de pessoas reais associados aos
 // dossiês de criadores, não material do jogo.
 const EXCLUDED = new Set(['creators'])
+
+// Snapshot of Rockstar's own downloadable media catalogue, checked on
+// 2026-09-09. These totals describe the publisher's library, not the smaller
+// local selection rendered below.
+const ROCKSTAR_MEDIA_SNAPSHOT = [
+  ['Videos', 3],
+  ['Short clips', 9],
+  ['Screenshots', 99],
+  ['Artwork & wallpapers', 22],
+  ['Ultimate Edition images', 51],
+  ['Vintage Vice City images', 12],
+]
 
 const titleFrom = (src) =>
   src.split('/').pop().replace(/\.[a-z0-9]+$/i, '').replace(/-/g, ' ').replace(/^\w/, (ch) => ch.toUpperCase())
@@ -66,8 +79,8 @@ export default function MediaPage() {
           image="/media/key-art/jason-lucia-beach.webp"
           imageAlt="Official GTA VI artwork of Jason and Lucia on Vice Beach"
         >
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <label className="glass-panel tech-mask-sm flex items-center gap-2 h-10 px-3 w-full sm:w-[260px]">
+          <CollapsibleFilters title="Media filters" count={shown.length} activeCount={Number(Boolean(query.trim())) + Number(group !== 'all')} summary={`${shown.length} of ${ITEMS.length} images`}>
+            <label className="wiki-filter-search">
               <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
               <input
                 value={query}
@@ -77,7 +90,7 @@ export default function MediaPage() {
                 className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0"
               />
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="wiki-filter-group">
               {groups.map((g) => (
                 <button
                   key={g.id}
@@ -85,7 +98,7 @@ export default function MediaPage() {
                   onClick={() => setGroup(g.id)}
                   aria-pressed={group === g.id}
                   className={cx(
-                    'inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
+                    'filter-chip inline-flex items-center gap-1.5 h-9 px-3 rounded-sm border font-cond font-semibold uppercase tracking-[0.1em] text-[11px] transition-colors',
                     group === g.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40'
                   )}
                 >
@@ -94,9 +107,20 @@ export default function MediaPage() {
                 </button>
               ))}
             </div>
-          </div>
+          </CollapsibleFilters>
         </CategoryHeader>
       </div>
+
+      <section className="wiki-official-media-record" aria-labelledby="official-media-heading">
+        <header>
+          <span><small>Publisher catalogue · checked 2026-09-09</small><h2 id="official-media-heading">Official Rockstar media record</h2></span>
+          <a href="https://www.rockstargames.com/VI/media" target="_blank" rel="noreferrer">Open Rockstar media</a>
+        </header>
+        <dl>
+          {ROCKSTAR_MEDIA_SNAPSHOT.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
+        </dl>
+        <p>Rockstar states that the August 2026 Extended Look was captured entirely from in-game footage on PlayStation 5. Counts above are a dated snapshot and are kept separate from the locally curated gallery.</p>
+      </section>
 
       {shown.length === 0 ? (
         <div className="py-16 text-center">

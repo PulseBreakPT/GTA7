@@ -8,6 +8,7 @@ import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshak
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief } from '@/lib/content'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
 const REL_BARS = [
@@ -63,49 +64,49 @@ function App() {
   const others = rels.filter((r) => r !== primary)
   const mechList = mechanics.slice(0, 4)
   const selMech = mechanics.find((m) => m.slug === mechSlug) || mechList[0]
+  const activeFilterCount = Number(Boolean(query.trim())) + Number(filter !== 'all') + Number(sort !== 'default')
 
   return (
     <div className="flex-1 flex flex-col">
       <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
           <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters' }]} />
-          <div className="mt-4"><CategoryHeader eyebrow="People of Leonida" title="Characters" image="/media/key-art/cover.webp" imageAlt="Official Grand Theft Auto VI cover artwork featuring the principal cast" imagePosition="center 42%" description="Named protagonists, allies and figures documented from Rockstar-published material, with reported identities kept visibly separate from confirmed records." count={characters.length} countLabel="characters" updatedAt={lastUpdated} /></div>
+          <div className="mt-4"><CategoryHeader kind="characters" eyebrow="People of Leonida" title="Characters" image="/media/key-art/cover.webp" imageAlt="Official Grand Theft Auto VI cover artwork featuring the principal cast" imagePosition="center 42%" description="Named protagonists, allies and figures documented from Rockstar-published material, with reported identities kept visibly separate from confirmed records." count={characters.length} countLabel="characters" updatedAt={lastUpdated} /></div>
 
-          <label className="mt-5 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
-            <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
-          </label>
-
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2">
-              <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
-              <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort characters"
-                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-black/40">
-                <option value="default">Archive order</option>
-                <option value="name">Name A–Z</option>
-                <option value="name-desc">Name Z–A</option>
-                <option value="updated">Recently updated</option>
-              </select>
+          <CollapsibleFilters title="Character filters" count={list.length} activeCount={activeFilterCount} summary={`${list.length} of ${characters.length} entries${lastUpdated ? ` · updated ${lastUpdated}` : ''}`}>
+            <label className="wiki-filter-search">
+              <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
+              <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
             </label>
-            <p className="font-mono text-[11px] text-dim tabular-nums ml-auto">
-              {list.length} of {characters.length} entries{lastUpdated ? ` · updated ${lastUpdated}` : ''}
-            </p>
-          </div>
 
-          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Character filters">
-            {characterFilters.map((f) => {
-              const active = filter === f.id
-              const count = f.id === 'all' ? characters.length : characters.filter((c) => c.group === f.id).length
-              return (
-                <button key={f.id} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
-                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
-                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.label}</span>
-                  <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
-                </button>
-              )
-            })}
-          </div>
+            <div className="wiki-filter-grid">
+              <label className="wiki-select-wrap">
+                <span>Sort</span>
+                <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort characters">
+                  <option value="default">Archive order</option>
+                  <option value="name">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                  <option value="updated">Recently updated</option>
+                </select>
+              </label>
+              <p className="self-end font-mono text-[11px] text-dim tabular-nums">{list.length} of {characters.length} entries</p>
+            </div>
+
+            <div className="wiki-filter-group" role="tablist" aria-label="Character filters">
+              {characterFilters.map((f) => {
+                const active = filter === f.id
+                const count = f.id === 'all' ? characters.length : characters.filter((c) => c.group === f.id).length
+                return (
+                  <button key={f.id} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
+                    className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                      active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.label}</span>
+                    <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </CollapsibleFilters>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4 pb-2" role="listbox" aria-label="Character grid">
             {list.map((c) => {
@@ -161,7 +162,9 @@ function App() {
 
         {/* ASIDE: selected character */}
         <aside className="tech-mask glass-panel p-5 self-start">
-          <Portrait c={selected} className="w-full aspect-[4/5] rounded-sm border border-line text-[26px]" sizes="380px" priority />
+          <Link href={`/database/characters/${selected.slug}`} className="block" aria-label={`Open ${selected.name} full profile`}>
+            <Portrait c={selected} className="w-full aspect-[4/5] rounded-sm border border-line text-[26px]" sizes="380px" priority />
+          </Link>
 
           <h2 className={cx('font-cond font-bold uppercase tracking-tight leading-[0.95] text-[26px] mt-4', selected.slug === 'lucia-caminos' ? 'text-pink' : selected.slug === 'jason-duval' ? 'text-mint' : 'text-paper')}>{selected.name}</h2>
           <div className="flex items-center gap-2 mt-2 flex-wrap">

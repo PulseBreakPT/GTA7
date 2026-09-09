@@ -6,14 +6,14 @@ import Image from 'next/image'
 import { publicSource } from '@/lib/official-links'
 import { ChevronRight, FolderTree, Link2, FileWarning, Quote, Info, Shuffle, Check, Hash, Printer, Copy, Clock3, BookOpen, Bookmark, BookmarkCheck, FolderPlus, PenLine, StickyNote, UserRound } from 'lucide-react'
 import { categoriesFor, backlinksFor, entryFor, entryByName, otherUses, confusableWith, siblingsFor, outgoingFor, KIND_META, ENTRIES, LINK_PATTERN } from '@/lib/wiki-graph'
-import { cx } from './ui'
+import { cx, StatusBadge } from './ui'
 import { useAuth } from './auth-provider'
 
 // Migalhas de pão: dizem em que ramo do arquivo se está e deixam subir um
 // nível. O último elemento é a página actual e não é ligação.
 export function Breadcrumb({ trail }) {
   return (
-    <nav aria-label="Breadcrumb" className="wiki-breadcrumb min-w-0">
+    <nav aria-label="Breadcrumb" data-content-priority="context" className="wiki-breadcrumb min-w-0">
       <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 font-cond uppercase tracking-[0.12em] text-[11px] text-dim">
         {trail.map((step, i) => {
           const last = i === trail.length - 1
@@ -37,9 +37,20 @@ export function Breadcrumb({ trail }) {
 // entradas tem e de quando é a mais recente. A contagem e a data vêm
 // sempre calculadas dos dados — escritas à mão desactualizam-se e passam
 // a mentir sobre o tamanho do arquivo.
-export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, image, imageAlt, imagePosition = 'center', imagePriority = false, children }) {
+export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, image, imageAlt, imagePosition = 'center', imagePriority = false, kind, children }) {
+  const branchEntries = kind ? ENTRIES.filter((entry) => entry.kind === kind) : []
+  const coverage = branchEntries.length ? {
+    sourced: branchEntries.filter((entry) => entry.sourceUrl).length,
+    dated: branchEntries.filter((entry) => entry.updatedAt).length,
+    complete: branchEntries.filter((entry) => !entry.stub).length,
+    categories: new Set(branchEntries.flatMap((entry) => entry.categories.slice(1))).size,
+    statuses: ['confirmed', 'verified', 'category', 'analysis', 'rumour']
+      .map((status) => ({ status, count: branchEntries.filter((entry) => entry.status === status).length }))
+      .filter((item) => item.count),
+  } : null
+
   return (
-    <header className="wiki-category-header border-b hairline pb-5">
+    <header data-content-priority="primary" className="wiki-category-header border-b hairline pb-5">
       <div className="wiki-category-heading-row flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         <div className="min-w-0">
           <h1 className="wiki-category-title mt-1 font-cond font-bold uppercase tracking-tight text-paper">{title}</h1>
@@ -63,6 +74,23 @@ export function CategoryHeader({ eyebrow, title, description, count, countLabel 
         </div>
       )}
       {description && <p className="wiki-category-description mt-4 text-dim">{description}</p>}
+      {coverage && (
+        <section className="wiki-coverage-snapshot" aria-label={`${title} archive coverage`}>
+          <header>
+            <span><strong>Archive coverage</strong><small>Calculated from the records currently published in this branch.</small></span>
+            <Link href={`/wiki/portal/${kind}`}>Open topic portal <ChevronRight size={12} aria-hidden="true" /></Link>
+          </header>
+          <dl>
+            <div><dt>Source linked</dt><dd>{coverage.sourced}<small>of {branchEntries.length}</small></dd></div>
+            <div><dt>Verification dated</dt><dd>{coverage.dated}<small>records</small></dd></div>
+            <div><dt>Substantive entries</dt><dd>{coverage.complete}<small>non-stubs</small></dd></div>
+            <div><dt>Subcategories</dt><dd>{coverage.categories}<small>documented</small></dd></div>
+          </dl>
+          <div className="wiki-coverage-statuses">
+            {coverage.statuses.map((item) => <span key={item.status}><StatusBadge status={item.status} /><b>{item.count}</b></span>)}
+          </div>
+        </section>
+      )}
       {children}
     </header>
   )
@@ -78,10 +106,6 @@ export function CategoryHeader({ eyebrow, title, description, count, countLabel 
 // de ficha tem secções diferentes.
 export function TableOfContents({ sections }) {
   const [activeId, setActiveId] = useState('')
-  // As secções que a página declara mas não chega a render (uma lista vazia,
-  // uma fonte que já era referência) deixavam no índice uma linha que não
-  // levava a lado nenhum. O índice passa a listar o que existe mesmo.
-  const [presentIds, setPresentIds] = useState(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -90,54 +114,38 @@ export function TableOfContents({ sections }) {
       })
     }, { rootMargin: '0px 0px -60% 0px' })
 
-    const nodes = document.querySelectorAll('[data-section]')
-    nodes.forEach((el) => observer.observe(el))
-    setPresentIds(new Set([...nodes].map((el) => el.id).filter(Boolean)))
+    document.querySelectorAll('[data-section]').forEach((el) => observer.observe(el))
     return () => observer.disconnect()
-  }, [sections])
-
-  // A numeração é a da Wikipédia: 1, 2, 3, e 3.1, 3.2 para as subsecções.
-  // Diz quantas secções há e onde se está dentro do artigo — um índice sem
-  // números obriga a contar as linhas para saber o mesmo. Uma secção
-  // declara-se subordinada com `level: 2`; sem isso é de primeiro nível.
-  let major = 0
-  let minor = 0
-  const numbered = (sections || [])
-    .filter(Boolean)
-    .filter((section) => presentIds === null || presentIds.has(section.id))
-    .map((section) => {
-    if (section.level === 2) {
-      minor += 1
-      return { ...section, number: `${major}.${minor}` }
-    }
-    major += 1
-    minor = 0
-    return { ...section, number: String(major) }
-  })
+  }, [])
 
   return (
-    <nav className="wiki-toc-panel sticky top-24 h-fit" aria-label="Contents">
-      <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mb-3">Contents</p>
-      <ul className="space-y-2">
-        {numbered.map(({ id, label, icon: Icon, level, number }) => (
-          <li key={id} className={cx(level === 2 && 'wiki-toc-sub')}>
-            <a
-              href={`#${id}`}
-              className={cx(
-                'wiki-toc-link inline-flex items-baseline gap-2 font-cond uppercase tracking-[0.08em] transition-colors',
-                level === 2 ? 'text-[11px]' : 'text-[12px]',
-                activeId === id ? 'text-pink' : 'text-dim hover:text-paper'
-              )}
-            >
-              <span className="wiki-toc-number font-mono text-[10px] tabular-nums text-dim/70 shrink-0">{number}</span>
-              <span className="inline-flex items-center gap-1.5 min-w-0">
-                {Icon && level !== 2 && <Icon size={12} aria-hidden="true" className="shrink-0" />}
-                {label}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+    <nav data-content-priority="tertiary" className="wiki-toc-panel sticky top-24 h-fit" aria-label="Contents">
+      <details className="wiki-toc-disclosure" open>
+        <summary className="wiki-toc-summary">
+          <span>
+            <strong>Contents</strong>
+            <small>{sections.length} sections</small>
+          </span>
+          <ChevronRight size={15} aria-hidden="true" />
+        </summary>
+        <ol className="wiki-toc-list">
+          {sections.map(({ id, label, icon: Icon }, index) => (
+            <li key={id}>
+              <a
+                href={`#${id}`}
+                className={cx(
+                  'transition-colors',
+                  activeId === id ? 'text-pink' : 'text-dim hover:text-paper'
+                )}
+              >
+                <span className="wiki-toc-number">{String(index + 1).padStart(2, '0')}</span>
+                {Icon && <Icon size={13} aria-hidden="true" />}
+                <span>{label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
     </nav>
   )
 }
@@ -147,7 +155,7 @@ export function TableOfContents({ sections }) {
 // se poder apontar alguém para a secção e não para a entrada inteira.
 export function WikiSection({ id, title, className, children }) {
   return (
-    <section data-section id={id} className={cx('wiki-content-section mb-12 scroll-mt-24', className)}>
+    <section data-section data-content-priority="primary" id={id} className={cx('wiki-content-section mb-12 scroll-mt-24', className)}>
       <h2 className="deco-rule group font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4 flex items-baseline gap-2">
         {title}
         {id && (
@@ -185,7 +193,7 @@ export function Hatnote({ kind, slug }) {
   ))
 
   return (
-    <p className="mt-3 border-l-2 border-warn pl-3 text-[12.5px] leading-relaxed text-dim italic">
+    <p className="wiki-hatnote mt-3 border-l-2 border-warn pl-3 text-[12.5px] leading-relaxed text-dim italic">
       {same.length > 0 ? 'For other records with this name, see ' : 'Not to be confused with '}
       {links}.
     </p>
@@ -197,7 +205,7 @@ export function Hatnote({ kind, slug }) {
 export function ShortDescription({ children, className }) {
   if (!children) return null
   return (
-    <p className={cx('mt-2 font-cond uppercase tracking-[0.1em] text-[12px] text-dim', className)}>{children}</p>
+    <p className={cx('wiki-short-description mt-2 font-cond uppercase tracking-[0.1em] text-[12px] text-dim', className)}>{children}</p>
   )
 }
 
@@ -211,11 +219,6 @@ export function PageTools({ kind, slug }) {
   const [copied, setCopied] = useState(false)
   const [watching, setWatching] = useState(false)
   const [watchBusy, setWatchBusy] = useState(false)
-  // No telemóvel as ferramentas ficam recolhidas. Eram onze blocos de
-  // largura inteira entre o título e o primeiro parágrafo: quem abria uma
-  // ficha percorria uma parede de administração antes de chegar ao que
-  // vinha ler. Em ecrã largo não há botão nenhum — a barra está sempre lá.
-  const [toolsOpen, setToolsOpen] = useState(false)
   const recordedView = useRef('')
 
   useEffect(() => {
@@ -264,19 +267,7 @@ export function PageTools({ kind, slug }) {
   ]
 
   return (
-    <div className="wiki-tools-stack mt-3">
-      <button
-        type="button"
-        className="wiki-tools-toggle"
-        aria-expanded={toolsOpen}
-        aria-controls="wiki-tools-panels"
-        onClick={() => setToolsOpen((open) => !open)}
-      >
-        <span><Info size={13} aria-hidden="true" /> Page tools</span>
-        <ChevronRight size={14} aria-hidden="true" className={cx('wiki-tools-chevron', toolsOpen && 'is-open')} />
-      </button>
-
-      <div id="wiki-tools-panels" className={cx('wiki-tools-panels', toolsOpen && 'is-open')}>
+    <div data-content-priority="tertiary" className="wiki-tools-stack mt-3">
       <nav className="wiki-page-tools flex flex-wrap items-center gap-x-1 gap-y-1 border-y hairline py-1" aria-label="Article tools">
         {links.map(([label, href, Icon]) => (
           <Link key={label} href={href} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
@@ -321,7 +312,6 @@ export function PageTools({ kind, slug }) {
           )}
         </div>
       </nav>
-      </div>
     </div>
   )
 }
@@ -352,7 +342,7 @@ export function CitePage({ kind, slug, title }) {
   }
 
   return (
-    <details id="page-citation" className="wiki-support-panel mt-4 panel rounded-sm scroll-mt-24">
+    <details id="page-citation" data-content-priority="tertiary" className="wiki-support-panel mt-4 panel rounded-sm scroll-mt-24">
       <summary id={`cite-${kind}-${slug}`} className="cursor-pointer list-none px-4 py-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
         <Quote size={13} className="text-mint" aria-hidden="true" /> Cite this page
         <ChevronRight size={12} className="ml-auto text-dim" aria-hidden="true" />
@@ -384,6 +374,15 @@ export function PageInformation({ kind, slug }) {
 
   const incoming = backlinksFor(kind, slug).length
   const outgoing = outgoingFor(entry).length
+  const connected = incoming + outgoing
+  const evidenceCopy = {
+    confirmed: 'The archive treats the identity or claim as confirmed. The linked source remains the authority for its exact scope.',
+    verified: 'The archive verified this identification in published material; that does not imply that every possible detail has been announced.',
+    category: 'The broad category is supported, while the exact model, name or finer identification remains unresolved.',
+    analysis: 'This record contains archive interpretation kept separate from statements made directly by the publisher.',
+    rumour: 'This record is unconfirmed and is preserved only as a traceable community claim, not as established fact.',
+  }[entry.status] || 'Read the source record before treating this entry as established.'
+  const source = publicSource(entry.sourceName, entry.sourceUrl)
   const rows = [
     ['Branch', KIND_META[kind].label],
     ['Page name', entry.name],
@@ -399,20 +398,36 @@ export function PageInformation({ kind, slug }) {
   ]
 
   return (
-    <details id="page-information" className="wiki-support-panel mt-4 panel rounded-sm scroll-mt-24">
-      <summary className="cursor-pointer list-none px-4 py-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
-        <Info size={13} className="text-mint" aria-hidden="true" /> Page information
-        <ChevronRight size={12} className="ml-auto text-dim" aria-hidden="true" />
-      </summary>
-      <dl className="border-t hairline divide-y divide-black/[0.06]">
-        {rows.map(([k, v]) => (
-          <div key={k} className="px-4 py-2 flex items-baseline gap-4">
-            <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim w-[110px] shrink-0">{k}</dt>
-            <dd className="font-mono text-[11px] text-paper break-words min-w-0">{v}</dd>
-          </div>
-        ))}
-      </dl>
-    </details>
+    <section id="page-information" data-content-priority="tertiary" className="wiki-knowledge-record mt-4 panel rounded-sm scroll-mt-24" aria-labelledby={`knowledge-${kind}-${slug}`}>
+      <header>
+        <span><Info size={14} className="text-mint" aria-hidden="true" /><strong id={`knowledge-${kind}-${slug}`}>Knowledge record</strong></span>
+        <StatusBadge status={entry.status} />
+      </header>
+      <div className="wiki-knowledge-body">
+        <p>{evidenceCopy}</p>
+        <dl className="wiki-knowledge-grid">
+          <div><dt>Evidence class</dt><dd>{entry.status}</dd></div>
+          <div><dt>Connections</dt><dd>{connected}<small>{incoming} in · {outgoing} out</small></dd></div>
+          <div><dt>Taxonomy</dt><dd>{entry.categories.length}<small>categories</small></dd></div>
+          <div><dt>Last checked</dt><dd>{entry.updatedAt || 'Not recorded'}</dd></div>
+        </dl>
+        <div className="wiki-knowledge-source">
+          <span><small>Recorded source</small><strong>{source.name}</strong></span>
+          {source.url ? <a href={source.url} target="_blank" rel="noreferrer">Inspect official record <ChevronRight size={12} /></a> : <span>No public source link</span>}
+        </div>
+      </div>
+      <details className="wiki-page-data">
+        <summary><span>Technical page data</span><ChevronRight size={12} aria-hidden="true" /></summary>
+        <dl>
+          {rows.map(([k, v]) => (
+            <div key={k}>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+    </section>
   )
 }
 
@@ -424,7 +439,7 @@ export function Navbox({ kind, slug, title }) {
   if (!entry || siblings.length === 0) return null
 
   return (
-    <nav className="wiki-navbox mt-8 border hairline rounded-sm overflow-hidden" aria-label={`More ${KIND_META[kind].plural.toLowerCase()}`}>
+    <nav data-content-priority="tertiary" className="wiki-navbox mt-8 border hairline rounded-sm overflow-hidden" aria-label={`More ${KIND_META[kind].plural.toLowerCase()}`}>
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2.5 bg-surface2/50 border-b hairline">
         <span className="font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
           {title || `More ${KIND_META[kind].plural.toLowerCase()}`}
@@ -481,7 +496,7 @@ export function SpecGrid({ items }) {
 
 export function InfoboxShell({ children, className, title = 'Article facts', subtitle = 'At a glance' }) {
   return (
-    <aside className={cx('wiki-infobox panel rounded-sm bg-ink/30 lg:sticky lg:top-24 h-fit', className)} aria-label={`${title} facts`}>
+    <aside data-content-priority="secondary" className={cx('wiki-infobox panel rounded-sm bg-ink/30 lg:sticky lg:top-24 h-fit', className)} aria-label={`${title} facts`}>
       <details className="wiki-infobox-disclosure" open>
         <summary className="wiki-infobox-heading">
           <span>
@@ -566,7 +581,7 @@ export function WhatThisLinks({ kind, slug }) {
   if (out.length === 0) return null
 
   return (
-    <section className="mt-6 panel rounded-sm p-4" aria-labelledby={`out-${kind}-${slug}`}>
+    <section data-content-priority="secondary" className="mt-6 panel rounded-sm p-4" aria-labelledby={`out-${kind}-${slug}`}>
       <h2 id={`out-${kind}-${slug}`} className="flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
         <Link2 size={13} className="text-mint" aria-hidden="true" /> What this page links to
         <span className="font-mono text-[10px] text-dim tabular-nums">{out.length}</span>
@@ -594,7 +609,7 @@ export function CategoryFooter({ kind, slug }) {
   if (cats.length === 0) return null
 
   return (
-    <footer className="mt-10 border-t border-black/10 pt-4">
+    <footer data-content-priority="tertiary" className="mt-10 border-t border-black/10 pt-4">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.14em] text-[10px] text-dim shrink-0">
           <FolderTree size={12} aria-hidden="true" /> Categories
@@ -645,138 +660,6 @@ export function WhatLinksHere({ kind, slug }) {
   )
 }
 
-// «Ver também»: a secção que numa wiki fecha o corpo antes das referências.
-// Não é a lista de tudo o que se relaciona — isso é o navbox e o «o que
-// aponta para aqui». São as poucas entradas que quem leu esta quereria ler
-// a seguir: as que este verbete nomeia, e depois irmãs da mesma categoria
-// para completar. Sem isto, o artigo acaba e o leitor fica sem saída.
-export function seeAlsoFor(kind, slug, limit = 6) {
-  const entry = entryFor(kind, slug)
-  if (!entry) return []
-
-  const named = outgoingFor(entry)
-  const siblings = siblingsFor(entry, limit * 2)
-  // Quando o verbete não nomeia ninguém e não partilha subcategoria com
-  // nenhum outro, `siblingsFor` devolve vazio e a secção desaparecia — três
-  // fichas em doze ficavam sem ela. O recurso é o próprio ramo: outras
-  // entradas do mesmo tipo, que é sempre uma leitura seguinte defensável.
-  const sameKind = named.length + siblings.length > 0
-    ? []
-    : ENTRIES.filter((e) => e.kind === entry.kind && e.href !== entry.href).slice(0, limit)
-  const seen = new Set([entry.href])
-  const list = []
-  for (const candidate of [...named, ...siblings, ...sameKind]) {
-    if (seen.has(candidate.href)) continue
-    seen.add(candidate.href)
-    list.push(candidate)
-    if (list.length === limit) break
-  }
-  return list
-}
-
-export function SeeAlso({ kind, slug, limit = 6 }) {
-  const list = seeAlsoFor(kind, slug, limit)
-  if (list.length === 0) return null
-
-  return (
-    <section data-section id="see-also" className="wiki-see-also mb-7 scroll-mt-24">
-      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[17px] text-paper mb-3">See also</h2>
-      <ul className="wiki-see-also-list">
-        {list.map((item) => (
-          <li key={item.href}>
-            <Link href={item.href} className="group inline-flex items-baseline gap-2 text-[13px] leading-relaxed">
-              <span className="text-dim shrink-0" aria-hidden="true">·</span>
-              <span className="min-w-0">
-                <span className="text-pink group-hover:text-paper transition-colors">{item.name}</span>
-                <span className="text-dim"> — {KIND_META[item.kind].label.toLowerCase()}{item.categories[1] ? `, ${item.categories[1].toLowerCase()}` : ''}</span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
-}
-
-// «Ligações externas»: onde uma wiki manda o leitor para fora dela. Aqui é
-// a fonte oficial do verbete e o material do editor do jogo. Fica depois
-// das referências, como manda a ordem — a referência prova o que se
-// escreveu, a ligação externa é para continuar a ler.
-export function externalLinksFor(kind, slug, extra, references) {
-  const entry = entryFor(kind, slug)
-  if (!entry) return []
-  // A fonte aparecia três vezes na mesma página: na caixa de dados, na
-  // referência e outra vez aqui. Uma ligação externa que já é referência
-  // não é uma ligação nova — é a mesma linha repetida mais abaixo.
-  const cited = new Set((references || []).map((r) => r && r.url).filter(Boolean))
-  return [
-    entry.sourceUrl ? { name: entry.sourceName, url: entry.sourceUrl, note: 'Source of record for this entry' } : null,
-    ...(extra || []),
-  ].filter((item) => item && item.url && !cited.has(item.url))
-}
-
-export function ExternalLinks({ kind, slug, extra, references }) {
-  const items = externalLinksFor(kind, slug, extra, references)
-  if (items.length === 0) return null
-
-  return (
-    <section data-section id="external-links" className="wiki-external-links mb-7 scroll-mt-24">
-      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[17px] text-paper mb-3">External links</h2>
-      <ul className="wiki-see-also-list">
-        {items.map((item) => (
-          <li key={item.url}>
-            <a href={item.url} target="_blank" rel="noreferrer" className="group inline-flex items-baseline gap-2 text-[13px] leading-relaxed">
-              <span className="text-dim shrink-0" aria-hidden="true">·</span>
-              <span className="min-w-0">
-                <span className="text-mint group-hover:text-paper transition-colors break-words">{item.name}</span>
-                {item.note && <span className="text-dim"> — {item.note}</span>}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
-}
-
-// A primeira frase de um verbete de wiki repete o nome do assunto a negrito
-// e diz o que ele é. Não é redundância com o título: é o que torna a
-// abertura citável e legível fora da página, e o que distingue um artigo
-// de um cartão com uma legenda.
-export function LeadParagraph({ name, exclude, children, className }) {
-  const text = typeof children === 'string' ? children : null
-  const body = (() => {
-    if (!name || !text) {
-      return text ? <WikiText exclude={exclude}>{text}</WikiText> : children
-    }
-    // O nome quase sempre já abre a frase. Nesse caso destaca-se onde está,
-    // em vez de o prefixar — prefixar às cegas dava «Jason Duval Jason
-    // Duval is...». Só quando o texto não o nomeia é que a frase é aberta
-    // com ele, que é o que uma wiki faz.
-    const at = text.toLowerCase().indexOf(name.toLowerCase())
-    if (at === -1) {
-      return (
-        <>
-          <strong className="wiki-lead-subject">{name}</strong>
-          {' — '}
-          <WikiText exclude={exclude}>{text}</WikiText>
-        </>
-      )
-    }
-    return (
-      <>
-        {at > 0 && <WikiText exclude={exclude}>{text.slice(0, at)}</WikiText>}
-        <strong className="wiki-lead-subject">{text.slice(at, at + name.length)}</strong>
-        <WikiText exclude={exclude}>{text.slice(at + name.length)}</WikiText>
-      </>
-    )
-  })()
-
-  return (
-    <p className={cx('wiki-lead mt-4 text-paper/85 text-[16px] leading-relaxed max-w-[68ch]', className)}>{body}</p>
-  )
-}
-
 // Secção de referências, numerada. É o que separa um arquivo de um blogue:
 // cada afirmação tem de poder ser seguida até à origem.
 export function References({ items }) {
@@ -786,8 +669,8 @@ export function References({ items }) {
   if (list.length === 0) return null
 
   return (
-    <section data-section id="references" className="wiki-references mb-7 scroll-mt-24">
-      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[17px] text-paper mb-3">References</h2>
+    <section data-section data-content-priority="tertiary" id="references" className="wiki-references mb-12 scroll-mt-24">
+      <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">References</h2>
       <ol className="space-y-2.5">
         {list.map((r, i) => (
           <li key={`${r.name}-${i}`} className="flex gap-3 text-[13px] leading-relaxed">
@@ -815,7 +698,7 @@ export function StubNotice({ kind, slug }) {
   if (!entry || !entry.stub) return null
 
   return (
-    <div className="mt-4 flex items-start gap-2.5 border-l-2 border-warn/70 bg-warn/[0.04] px-3 py-2.5">
+    <div className="wiki-stub-notice mt-4 flex items-start gap-2.5 border-l-2 border-warn/70 bg-warn/[0.04] px-3 py-2.5">
       <FileWarning size={14} className="text-warn shrink-0 mt-[2px]" aria-hidden="true" />
       <p className="text-[12px] leading-relaxed text-dim">
         <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px] text-warn">Stub. </span>

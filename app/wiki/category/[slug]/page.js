@@ -30,7 +30,7 @@ export default function CategoryPage() {
   const hero = category.members.find((member) => member.image)?.image
 
   return (
-    <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
+    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Categories', href: '/wiki/categories' }, { label: category.label }]} />
 
       <div className="mt-4">

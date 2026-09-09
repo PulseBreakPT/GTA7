@@ -8,6 +8,7 @@ import { ArrowRight, CheckCircle2, Image as ImageIcon, Search, X } from 'lucide-
 import { confirmedLocationImage, locations, regions } from '@/lib/content'
 import { STATUS_META, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const STATUS_ORDER = ['confirmed', 'verified', 'analysis', 'category', 'rumour']
 const LOCATION_STATUSES = STATUS_ORDER
@@ -39,27 +40,26 @@ function PublishedVisual({ location, region, className, priority = false }) {
   )
 }
 
-function RegionCard({ region, active, onSelect }) {
+function RegionCard({ region, active }) {
   const count = locations.filter((item) => item.region === region.id).length
   return (
-    <button
-      type="button"
-      onClick={() => onSelect(active ? 'all' : region.id)}
-      aria-pressed={active}
+    <article
       className={cx(
         'places-region-card group relative min-h-[210px] overflow-hidden rounded-sm border text-left transition-colors',
         active ? 'border-pink' : 'border-line hover:border-violet/50'
       )}
     >
-      <Image src={region.image} alt={`${region.label} official Rockstar postcard`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.045]" />
-      <span className="absolute inset-0 bg-gradient-to-t from-[#080c1d]/95 via-[#080c1d]/20 to-transparent" />
-      <span className="absolute inset-x-0 bottom-0 p-4 text-white">
-        <span className="block font-cond font-bold uppercase tracking-[0.06em] text-[20px]">{region.label}</span>
-        <span className="mt-1 flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70">
-          <span>Official Rockstar artwork</span><span>{count} places</span>
+      <Link href={`/map/${region.id}`} className="absolute inset-0" aria-label={`Open ${region.label} region article`}>
+        <Image src={region.image} alt={`${region.label} official Rockstar postcard`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.045]" />
+        <span className="absolute inset-0 bg-gradient-to-t from-[#080c1d]/95 via-[#080c1d]/20 to-transparent" />
+        <span className="absolute inset-x-0 bottom-0 p-4 text-white">
+          <span className="block font-cond font-bold uppercase tracking-[0.06em] text-[20px]">{region.label}</span>
+          <span className="mt-1 flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70">
+            <span>Official Rockstar artwork</span><span>{count} places</span>
+          </span>
         </span>
-      </span>
-    </button>
+      </Link>
+    </article>
   )
 }
 
@@ -84,6 +84,7 @@ function PlacesDirectory({ requested = null }) {
         && (!needle || `${item.name} ${item.desc} ${region?.label || ''}`.toLowerCase().includes(needle))
     })
   }, [query, regionFilter, statusFilter])
+  const activeFilterCount = Number(Boolean(query.trim())) + Number(regionFilter !== 'all') + Number(statusFilter !== 'all')
 
   return (
     <div className="places-directory px-4 sm:px-6 lg:px-8 pb-8 max-w-[1440px] w-full mx-auto">
@@ -109,7 +110,7 @@ function PlacesDirectory({ requested = null }) {
           {regionFilter !== 'all' && <button type="button" onClick={() => setRegionFilter('all')} className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-pink"><X size={13} /> Clear region</button>}
         </div>
         <div className="places-region-grid visual-card-grid mt-4">
-          {regions.map((region) => <RegionCard key={region.id} region={region} active={regionFilter === region.id} onSelect={setRegionFilter} />)}
+          {regions.map((region) => <RegionCard key={region.id} region={region} active={regionFilter === region.id} />)}
         </div>
       </section>
 
@@ -124,22 +125,22 @@ function PlacesDirectory({ requested = null }) {
             <span className="font-mono text-[11px] text-dim tabular-nums">{results.length} / {locations.length}</span>
           </div>
 
-          <div className="places-toolbar mt-5">
-            <label className="places-search flex items-center gap-2 h-11 px-3 bg-white/80 border border-line rounded-sm focus-within:border-violet/50">
+          <CollapsibleFilters title="Place filters" count={results.length} activeCount={activeFilterCount} summary={`${results.length} of ${locations.length} places${regionFilter !== 'all' ? ' · region filtered' : ''}`}>
+            <label className="wiki-filter-search places-search">
               <Search size={15} className="text-violet shrink-0" aria-hidden="true" />
               <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search place or region…" aria-label="Search places" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
               {query && <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="text-dim hover:text-paper"><X size={14} /></button>}
             </label>
 
-            <div className="places-status-filters flex flex-wrap gap-2" aria-label="Source status filters">
-              <button type="button" onClick={() => setStatusFilter('all')} aria-pressed={statusFilter === 'all'} className={cx('h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === 'all' ? 'border-violet text-violet bg-violet/5' : 'border-line text-dim')}>All</button>
+            <div className="wiki-filter-group places-status-filters" aria-label="Source status filters">
+              <button type="button" onClick={() => setStatusFilter('all')} aria-pressed={statusFilter === 'all'} className={cx('filter-chip h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === 'all' ? 'border-violet text-violet bg-violet/5' : 'border-line text-dim')}>All</button>
               {LOCATION_STATUSES.map((status) => (
-                <button key={status.id} type="button" onClick={() => setStatusFilter(status.id)} aria-pressed={statusFilter === status.id} className={cx('h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === status.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim')}>
+                <button key={status.id} type="button" onClick={() => setStatusFilter(status.id)} aria-pressed={statusFilter === status.id} className={cx('filter-chip h-8 px-3 rounded-full border font-cond uppercase tracking-[0.1em] text-[10px]', statusFilter === status.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim')}>
                   {status.label} · {status.count}
                 </button>
               ))}
             </div>
-          </div>
+          </CollapsibleFilters>
         </div>
 
         <div className="places-card-grid visual-card-grid mt-5" aria-live="polite">
@@ -181,7 +182,7 @@ function MapHeader() {
   return (
     <header className="px-4 sm:px-6 lg:px-8 pt-6 max-w-[1440px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Places' }]} />
-      <div className="mt-4"><CategoryHeader title="Leonida Places Directory" image="/media/places/leonida-keys.webp" imageAlt="Official Rockstar Visit Leonida artwork of the Leonida Keys" description="A coordinate-free directory built from official Rockstar artwork and identifiable frames from published GTA VI media. No drawn coastline, reconstructed geography or community map is displayed." count={locations.length} countLabel="places"><div className="mt-4 flex flex-wrap gap-2 font-mono text-[9px] uppercase tracking-[0.13em] text-dim"><span className="rounded-full border border-mint/30 bg-mint/5 px-3 py-1.5">{exactVisuals} exact visuals verified</span><span className="rounded-full border border-violet/30 bg-violet/5 px-3 py-1.5">Official region fallback when needed</span></div></CategoryHeader></div>
+      <div className="mt-4"><CategoryHeader kind="locations" title="Leonida Places Directory" image="/media/places/leonida-keys.webp" imageAlt="Official Rockstar Visit Leonida artwork of the Leonida Keys" description="A coordinate-free directory built from official Rockstar artwork and identifiable frames from published GTA VI media. No drawn coastline, reconstructed geography or community map is displayed." count={locations.length} countLabel="places"><div className="mt-4 flex flex-wrap gap-2 font-mono text-[9px] uppercase tracking-[0.13em] text-dim"><span className="rounded-full border border-mint/30 bg-mint/5 px-3 py-1.5">{exactVisuals} exact visuals verified</span><span className="rounded-full border border-violet/30 bg-violet/5 px-3 py-1.5">Official region fallback when needed</span></div></CategoryHeader></div>
     </header>
   )
 }

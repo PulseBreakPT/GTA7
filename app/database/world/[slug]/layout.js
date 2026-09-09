@@ -1,5 +1,6 @@
 import { JsonLd, breadcrumbJsonLd, entryJsonLd } from '@/lib/jsonld'
 import { worldEntries, worldEntryBySlug } from '@/lib/world-content'
+import { notFound } from 'next/navigation'
 
 export function generateStaticParams() {
   return worldEntries.map(({ slug }) => ({ slug }))
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }) {
 export default async function Layout({ children, params }) {
   const { slug } = await params
   const item = worldEntryBySlug(slug)
-  if (!item) return children
+  if (!item) notFound()
   const path = `/database/world/${slug}`
   return <>
     <JsonLd data={breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Wiki', path: '/wiki' }, { name: 'World', path: '/database/world' }, { name: item.name }])} />

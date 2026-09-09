@@ -4,12 +4,11 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle, Link2, BookMarked, ExternalLink} from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
 import { regions, locations, confirmedLocationImage } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox, ShortDescription, Hatnote, WhatThisLinks, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
-import { RecordNotFound } from '@/components/site/wiki-entry'
-import { identityFor } from '@/lib/entity-identity'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox } from '@/components/site/wiki'
+import { identityAttributes, regionIdentity } from '@/lib/entity-identity'
 
 export default function RegionPage() {
   const { slug } = useParams()
@@ -17,10 +16,11 @@ export default function RegionPage() {
   const [slide, setSlide] = useState(0)
 
   if (!region) {
-    return <RecordNotFound backHref="/map" backLabel="BACK TO THE MAP" />
+    return <div className="px-6 py-20 text-paper">Region not found.</div>
   }
 
   const gallery = region.gallery?.length ? region.gallery : [region.image]
+  const identity = regionIdentity(region.id, region.label)
   const entries = locations.filter((item) => item.region === region.id)
 
   const sections = [
@@ -28,16 +28,10 @@ export default function RegionPage() {
     { id: 'gallery', label: 'Gallery', icon: Images },
     ...(entries.length > 0 ? [{ id: 'places', label: 'Named Places', icon: MapPin }] : []),
     ...(region.notPublished?.length > 0 ? [{ id: 'not-published', label: 'Not Published', icon: AlertTriangle }] : []),
-    { id: 'see-also', label: 'See also', icon: Link2 },
-    { id: 'references', label: 'References', icon: BookMarked },
-    { id: 'external-links', label: 'External links', icon: ExternalLink },
   ]
 
   return (
-    <div 
-      data-identity={identityFor('regions', region.id, region) || undefined}
-      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
-    >
+    <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, { label: region.label }]} />
 
       {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
@@ -45,20 +39,18 @@ export default function RegionPage() {
       <header className="wiki-article-header mt-5">
         <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[76px] text-paper">{region.label}</h1>
         <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]"><WikiText exclude={`/map/${region.id}`}>{region.blurb}</WikiText></p>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        <div className="wiki-article-meta mt-4 flex flex-wrap items-center gap-3">
           <GhostBadge status={region.sourced ? 'confirmed' : 'analysis'} label={region.sourced ? 'Officially named' : 'Image-based archive note'} />
           <span className="font-mono text-[11px] text-dim">{entries.length} DOCUMENTED ENTRIES</span>
         </div>
-        <ShortDescription>Region of Leonida in Grand Theft Auto VI</ShortDescription>
         <StubNotice kind="regions" slug={region.id} />
-        <Hatnote kind="regions" slug={region.id} />
       </header>
 
       <PageTools kind="regions" slug={region.id} />
 
-      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
         {/* Corpo do artigo */}
-        <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
+        <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="panel2 rounded-sm p-3">
@@ -130,22 +122,20 @@ export default function RegionPage() {
               </div>
             </WikiSection>
           )}
-          <SeeAlso kind="regions" slug={region.id} />
           <References items={[{ name: 'Rockstar Games · GTA VI Official Site', url: 'https://www.rockstargames.com/VI' }]} />
-            <ExternalLinks kind="regions" slug={region.id} references={[{ name: 'Rockstar Games · GTA VI Official Site', url: 'https://www.rockstargames.com/VI' }]} />
-          <Navbox kind="regions" slug={region.id} />
+          <CategoryFooter kind="regions" slug={region.id} />
           <CitePage kind="regions" slug={region.id} />
           <PageInformation kind="regions" slug={region.id} />
-          <CategoryFooter kind="regions" slug={region.id} />
-</div>
+          <Navbox kind="regions" slug={region.id} />
+        </div>
 
         {/* Índice */}
-        <div className="order-1 lg:order-2">
+        <div className="wiki-entry-tertiary order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
         {/* Caixa de dados */}
-        <div className="order-2 lg:order-3">
+        <div className="wiki-entry-secondary order-2 lg:order-3">
           <InfoboxShell title={region.label} subtitle="Region profile">
             <LocationLocator image={region.image} name={region.label} sourceLabel="OFFICIAL ROCKSTAR REGION ARTWORK" />
 
@@ -165,7 +155,6 @@ export default function RegionPage() {
               <p className="mt-1.5 text-[11px] leading-relaxed text-dim">Only Rockstar-named places are listed. Every visual is published GTA VI media; contextual region images are labelled and never presented as an exact location.</p>
             </div>
             <WhatLinksHere kind="regions" slug={region.id} />
-            <WhatThisLinks kind="regions" slug={region.id} />
           </InfoboxShell>
         </div>
       </div>
