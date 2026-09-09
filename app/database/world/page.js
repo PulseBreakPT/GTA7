@@ -7,13 +7,14 @@ import {
   ArrowRight,
   Building2,
   ChevronRight,
+  Clapperboard,
   Grid2X2,
   Landmark,
-  List,
   PawPrint,
   Search,
   Shield,
   SlidersHorizontal,
+  Trophy,
   Tv,
   Waves,
   X,
@@ -28,6 +29,8 @@ const ICONS = {
   establishments: Building2,
   safehouses: Landmark,
   geography: Waves,
+  activities: Trophy,
+  missions: Clapperboard,
   businesses: Building2,
   television: Tv,
 }
@@ -42,7 +45,7 @@ const META = {
     description: 'Police forces, gangs, teams and other organizations operating across Leonida.',
   },
   establishments: {
-    image: '/media/places/vice-city.webp',
+    image: '/media/scenes/keys-street.webp',
     description: 'Hotels, bars, shops, restaurants and buildings identified throughout the game world.',
   },
   safehouses: {
@@ -50,11 +53,19 @@ const META = {
     description: 'Story-related locations where Lucia, Jason and their allies find shelter.',
   },
   geography: {
-    image: '/media/places/leonida-keys.webp',
+    image: '/media/scenes/swamp-airboat.webp',
     description: 'Islands, beaches, wetlands, rivers and other natural features across Leonida.',
   },
+  activities: {
+    image: '/media/vehicles/wiki/kayak.webp',
+    description: 'Sports, recreation and side activities separated by evidence level and published gameplay detail.',
+  },
+  missions: {
+    image: '/media/key-art/jason-lucia-robbery.webp',
+    description: 'Story sequences indexed with descriptive working labels until Rockstar publishes official mission names.',
+  },
   businesses: {
-    image: '/media/editions/stock-305.webp',
+    image: '/media/vehicles/rideout-customs.webp',
     description: 'Fictional brands, services, products and companies documented in official material.',
   },
   television: {
@@ -80,7 +91,6 @@ export default function WorldIndexPage() {
   const [region, setRegion] = useState('all')
   const [status, setStatus] = useState('all')
   const [sort, setSort] = useState('az')
-  const [view, setView] = useState('grid')
   const [limit, setLimit] = useState(PAGE_SIZE)
 
   useEffect(() => {
@@ -197,27 +207,27 @@ export default function WorldIndexPage() {
             </button>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="visual-card-grid world-subject-grid">
             {subjectBranches.map((item) => {
               const Icon = ICONS[item.id] || Landmark
               const meta = META[item.id]
               const samples = worldEntries.filter((entry) => entry.branch === item.id).slice(0, 3)
               return (
-                <button key={item.id} type="button" onClick={() => chooseBranch(item.id)} className="group overflow-hidden rounded-sm border border-line bg-white text-left transition-colors hover:border-pink/35 focus-visible:outline-none">
-                  <div className="relative aspect-[16/7] overflow-hidden bg-black/5">
+                <button key={item.id} type="button" onClick={() => chooseBranch(item.id)} aria-label={`Open ${item.label}, ${item.count} records`} className="world-subject-card group overflow-hidden rounded-sm border border-line bg-white text-left transition-colors hover:border-pink/35 focus-visible:outline-none">
+                  <div className="world-subject-media relative aspect-[16/7] overflow-hidden bg-black/5">
                     <Image src={meta.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                    <div className="absolute inset-x-4 bottom-3 flex items-end justify-between text-white">
-                      <span className="flex items-center gap-2 text-xl font-black uppercase tracking-tight"><Icon className="size-5" />{item.label}</span>
-                      <span className="rounded-full bg-white/90 px-2.5 py-1 text-xs font-bold text-paper">{item.count}</span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/10" />
+                    <span className="world-subject-count absolute right-3 top-3 inline-flex min-w-9 items-center justify-center rounded-full border border-white/25 bg-black/65 px-2 py-1.5 font-mono text-[11px] font-bold text-white backdrop-blur-sm">{item.count}</span>
+                    <div className="absolute inset-x-4 bottom-3 text-white">
+                      <h3 className="world-subject-title flex min-w-0 items-center gap-2 font-cond text-[22px] font-black uppercase leading-[.9] tracking-tight"><Icon className="size-5 shrink-0" />{item.label}</h3>
                     </div>
                   </div>
-                  <div className="p-4">
+                  <div className="world-subject-body flex flex-1 flex-col p-4">
                     <p className="text-sm leading-6 text-dim">{meta.description}</p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {samples.map((sample) => <span key={sample.slug} className="rounded-md bg-black/[0.045] px-2 py-1 text-[11px] font-semibold text-dim">{sample.name}</span>)}
+                    <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Example records">
+                      {samples.map((sample) => <span key={sample.slug} className="max-w-full truncate rounded-md border border-black/[0.05] bg-black/[0.035] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.03em] text-dim">{sample.name}</span>)}
                     </div>
-                    <span className="mt-4 flex items-center gap-1 text-xs font-black uppercase tracking-wider text-pink">Open section <ChevronRight className="size-4 transition group-hover:translate-x-0.5" /></span>
+                    <span className="mt-auto flex items-center gap-1 pt-4 text-xs font-black uppercase tracking-wider text-pink">Open section <ChevronRight className="size-4 transition group-hover:translate-x-0.5" /></span>
                   </div>
                 </button>
               )
@@ -263,33 +273,29 @@ export default function WorldIndexPage() {
                 <label className="wiki-select-wrap"><span>Region</span><select value={region} onChange={(event) => setRegion(event.target.value)}><option value="all">All regions</option>{regions.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
                 <label className="wiki-select-wrap"><span>Evidence</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option value="all">Any status</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option><option value="analysis">Analysis</option><option value="rumour">Rumour</option></select></label>
                 <label className="wiki-select-wrap"><span>Order</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="type">Type</option></select></label>
-                <div className="flex items-end justify-between gap-2">
+                <div className="flex items-end justify-end gap-2">
                   {filtering ? <button type="button" onClick={clearFilters} className="min-h-10 px-2 text-xs font-bold text-pink hover:underline">Clear</button> : <span />}
-                  <div className="flex rounded-sm border border-line bg-white p-1" aria-label="Display mode">
-                    <button type="button" onClick={() => setView('grid')} className={`rounded-md p-2 ${view === 'grid' ? 'bg-paper text-ink' : 'text-dim hover:text-paper'}`} aria-label="Grid view"><Grid2X2 className="size-4" /></button>
-                    <button type="button" onClick={() => setView('list')} className={`rounded-md p-2 ${view === 'list' ? 'bg-paper text-ink' : 'text-dim hover:text-paper'}`} aria-label="List view"><List className="size-4" /></button>
-                  </div>
+                  <span className="inline-flex min-h-10 items-center gap-2 rounded-sm border border-line bg-white px-3 text-[10px] font-black uppercase tracking-wider text-dim"><Grid2X2 className="size-4 text-violet" /> Visual grid</span>
                 </div>
               </div>
             </div>
 
             {shown.length ? (
-              <div className={view === 'grid' ? 'mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3' : 'mt-5 divide-y divide-line overflow-hidden rounded-sm border border-line bg-white'}>
+              <div className="visual-card-grid world-record-grid mt-5">
                 {shown.slice(0, limit).map((entry) => (
-                  <Link key={entry.slug} href={`/database/world/${entry.slug}`} className={view === 'grid' ? 'group overflow-hidden rounded-sm border border-line bg-white transition-colors hover:border-pink/30' : 'group grid grid-cols-[88px_minmax(0,1fr)_auto] items-center gap-3 p-3 transition-colors hover:bg-pink/[0.035] md:grid-cols-[112px_minmax(0,1fr)_auto]'}>
-                    <div className={view === 'grid' ? 'relative aspect-[16/9] overflow-hidden bg-black/5' : 'relative aspect-[4/3] overflow-hidden rounded-sm bg-black/5'}>
-                      <Image src={entry.image} alt="" fill sizes={view === 'grid' ? '(max-width: 768px) 100vw, 33vw' : '112px'} className="object-cover transition duration-500 group-hover:scale-[1.035]" />
+                  <Link key={entry.slug} href={`/database/world/${entry.slug}`} className="group overflow-hidden rounded-sm border border-line bg-white transition-colors hover:border-pink/30">
+                    <div className="relative aspect-[16/9] overflow-hidden bg-black/5">
+                      <Image src={entry.image} alt="" fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.035]" />
                     </div>
-                    <div className={view === 'grid' ? 'p-4' : 'min-w-0 py-1'}>
+                    <div className="p-3 sm:p-4">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[10px] font-black uppercase tracking-wider text-pink">{entry.type}</span>
                         <StatusBadge status={entry.status} />
                       </div>
                       <h3 className="mt-1 truncate text-base font-black uppercase tracking-tight text-paper group-hover:text-pink">{entry.name}</h3>
-                      <p className={`mt-1 text-sm leading-5 text-dim ${view === 'grid' ? 'line-clamp-2' : 'truncate'}`}>{entry.summary}</p>
+                      <p className="mt-1 line-clamp-2 text-sm leading-5 text-dim">{entry.summary}</p>
                       <p className="mt-2 text-[11px] font-semibold text-dim/75">{entry.region}</p>
                     </div>
-                    {view === 'list' && <ChevronRight className="mr-2 size-5 text-dim/45 transition group-hover:translate-x-0.5 group-hover:text-pink" />}
                   </Link>
                 ))}
               </div>

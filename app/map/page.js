@@ -16,7 +16,8 @@ const LOCATION_STATUSES = STATUS_ORDER
 
 function PublishedVisual({ location, region, className, priority = false }) {
   const exactImage = confirmedLocationImage(location)
-  const src = exactImage || region?.image
+  const contextualImage = location.contextImage || region?.image
+  const src = exactImage || contextualImage
   if (!src) return null
 
   return (
@@ -25,7 +26,7 @@ function PublishedVisual({ location, region, className, priority = false }) {
         src={src}
         alt={exactImage
           ? `${location.name} in published GTA VI media`
-          : `${region?.label || 'Leonida'} official artwork — regional context for ${location.name}, not the exact place`}
+          : `Official GTA VI visual context for ${location.name}, not an exact-place identification`}
         fill
         priority={priority}
         sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 360px"
@@ -107,7 +108,7 @@ function PlacesDirectory({ requested = null }) {
           </div>
           {regionFilter !== 'all' && <button type="button" onClick={() => setRegionFilter('all')} className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-pink"><X size={13} /> Clear region</button>}
         </div>
-        <div className="places-region-grid mt-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="places-region-grid visual-card-grid mt-4">
           {regions.map((region) => <RegionCard key={region.id} region={region} active={regionFilter === region.id} onSelect={setRegionFilter} />)}
         </div>
       </section>
@@ -141,7 +142,7 @@ function PlacesDirectory({ requested = null }) {
           </div>
         </div>
 
-        <div className="places-card-grid mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" aria-live="polite">
+        <div className="places-card-grid visual-card-grid mt-5" aria-live="polite">
           {results.map((location) => {
             const region = regions.find((item) => item.id === location.region)
             const exact = Boolean(confirmedLocationImage(location))

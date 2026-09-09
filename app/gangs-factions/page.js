@@ -11,7 +11,7 @@ export default function GangsFactionsPage() {
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Factions' }]} />
       <div className="mt-4"><CategoryHeader eyebrow="Organised groups index" title="Gangs & Factions" image="/media/factions/vice-city-group.jpeg" imageAlt="Official GTA VI image of a group in Vice City" description="Official Rockstar information only. Named groups are kept separate from groups Rockstar describes but has not formally named; trailer identifications, leaks and rumours are excluded." count={factions.length} countLabel="factions" /></div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <div className="visual-card-grid two-up-visual-grid mt-6">
         {factions.map((faction) => (
           <article key={faction.slug} className="panel rounded-sm p-5 border border-line">
             {faction.image && <div className="relative mb-5 aspect-[16/8] overflow-hidden rounded-sm border border-line"><Image src={faction.image} alt={`${faction.name} official media`} fill sizes="(max-width: 768px) 100vw, 520px" className="object-cover" /></div>}

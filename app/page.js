@@ -70,6 +70,30 @@ function Section({ id, eyebrow, title, href, linkLabel, children, className }) {
   )
 }
 
+function HomeStoryCard({ item, kind }) {
+  const isGuide = kind === 'guide'
+  const href = isGuide ? `/guides/${item.slug}` : `/news/${item.slug}`
+  const meta = isGuide ? `${item.readTime} min · ${item.steps.length} steps` : `${fmt(item.publishedAt)} · ${item.readTime} min`
+
+  return (
+    <Link href={href} className="home-story-card panel group overflow-hidden transition-colors hover:border-pink/55">
+      <span className="relative block aspect-[16/9] overflow-hidden bg-surface2">
+        <Image src={item.image} alt={item.title} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover transition-transform duration-300 group-hover:scale-[1.035]" />
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col p-3">
+        <span className="flex flex-wrap items-center gap-2">
+          {isGuide ? <GhostBadge status={item.status} /> : <StatusBadge status={item.status} />}
+          <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-dim">{meta}</span>
+        </span>
+        <strong className="mt-2 line-clamp-2 font-cond text-[16px] font-bold uppercase leading-[1.05] text-paper sm:text-[18px]">{item.title}</strong>
+        <span className="mt-auto flex items-center justify-between gap-2 pt-3 font-cond text-[10px] font-bold uppercase tracking-[0.12em] text-pink">
+          {isGuide ? 'Open guide' : 'Read article'} <ChevronRight size={13} aria-hidden="true" />
+        </span>
+      </span>
+    </Link>
+  )
+}
+
 // Tudo o que o arquivo indexa, contado a partir das próprias listas. É o
 // número que o campo de pesquisa promete, e por isso não pode ser escrito
 // à mão: uma entrada nova tem de o mexer sozinha.
@@ -223,7 +247,7 @@ function App() {
         {/* Cada ramo mostra a contagem por cima da imagem e, por baixo, a
             faixa que diz que tudo o que lá está traz fonte. É a promessa do
             arquivo repetida à entrada de cada porta. */}
-        <div className="home-branch-grid mt-5">
+        <div className="home-branch-grid visual-card-grid mt-5">
           {BRANCHES.map((branch) => {
             const Icon = branch.icon
             return (
@@ -309,7 +333,7 @@ function App() {
 
       {/* ===== 5. MAP AND REGIONS ===== */}
       <Section eyebrow="The state of Leonida" title="Map and regions" href="/map" linkLabel="Open the map">
-        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="home-region-grid visual-card-grid mt-5">
           {sourcedRegions.map((r) => (
             <Link key={r.id} href={`/map/${r.id}`} className="panel rounded-sm overflow-hidden group hover:border-mint/60 transition-colors">
               <span className="relative block aspect-[16/8]">
@@ -348,52 +372,23 @@ function App() {
 
       {/* ===== 7. NEWS AND GUIDES ===== */}
       <Section eyebrow="From the archive" title="News and guides" href="/news" linkLabel="All news">
-        <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
+        <div className="home-editorial-grids mt-5">
+          <section>
             <h3 className="flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">
               <Newspaper size={13} aria-hidden="true" /> Latest news
             </h3>
-            {/* Era uma lista de linhas com uma miniatura de 92px encostada à
-                esquerda: a imagem não se via e a coluna corria pelo ecrã
-                abaixo. Passa a azulejo, como os ramos e as regiões. */}
-            <div className="home-feed-grid mt-3 grid grid-cols-2 gap-3">
-              {latestNews.map((a) => (
-                <Link key={a.slug} href={`/news/${a.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors">
-                  <span className="relative block aspect-[16/9] overflow-hidden">
-                    <Image src={a.image} alt="" fill sizes="(max-width:640px) 50vw, 25vw" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
-                  </span>
-                  <span className="block p-3">
-                    <span className="flex items-center gap-2">
-                      <StatusBadge status={a.status} />
-                      <span className="font-mono text-[10px] text-dim tabular-nums">{fmt(a.publishedAt)}</span>
-                    </span>
-                    <span className="block font-cond font-bold uppercase text-[15px] leading-[1.1] text-paper mt-1.5 clamp-2">{a.title}</span>
-                  </span>
-                </Link>
-              ))}
+            <div className="home-story-grid visual-card-grid mt-3">
+              {latestNews.map((item) => <HomeStoryCard key={item.slug} item={item} kind="news" />)}
             </div>
-          </div>
-          <div>
+          </section>
+          <section>
             <h3 className="flex items-center gap-2 font-cond font-semibold uppercase tracking-[0.16em] text-[12px] text-dim">
               <BookOpen size={13} aria-hidden="true" /> Guides
             </h3>
-            <div className="home-feed-grid mt-3 grid grid-cols-2 gap-3">
-              {latestGuides.map((g) => (
-                <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors">
-                  <span className="relative block aspect-[16/9] overflow-hidden">
-                    <Image src={g.image} alt="" fill sizes="(max-width:640px) 50vw, 25vw" className="object-cover group-hover:scale-[1.05] transition-transform duration-300" />
-                  </span>
-                  <span className="block p-3">
-                    <span className="flex items-center gap-2">
-                      <GhostBadge status={g.status} />
-                      <span className="font-mono text-[10px] text-dim tabular-nums">{g.readTime} min</span>
-                    </span>
-                    <span className="block font-cond font-bold uppercase text-[15px] leading-[1.1] text-paper mt-1.5 clamp-2">{g.title}</span>
-                  </span>
-                </Link>
-              ))}
+            <div className="home-story-grid visual-card-grid mt-3">
+              {latestGuides.map((item) => <HomeStoryCard key={item.slug} item={item} kind="guide" />)}
             </div>
-          </div>
+          </section>
         </div>
       </Section>
 

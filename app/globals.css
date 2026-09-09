@@ -2228,7 +2228,7 @@ body > main, body > footer { position: relative; z-index: 1; }
 }
 
 @media (max-width: 767px) {
-  .wiki-entry-grid { gap: 1rem !important; }
+  .wiki-entry-grid { gap: 1.35rem !important; }
   .wiki-entry-grid > :nth-child(3) { margin-bottom: .35rem; }
   .wiki-category-header > div:first-child { align-items: stretch; }
   .wiki-category-header dl {
@@ -2556,7 +2556,7 @@ main :is(h1, h2, h3) {
   font-size: .7rem !important;
   line-height: 1.15 !important;
 }
-.wiki-user-actions { padding: .5rem !important; gap: .5rem !important; }
+.wiki-user-actions { padding: .75rem !important; gap: .75rem !important; }
 .wiki-user-actions-label > span { font-size: .75rem !important; }
 .wiki-user-actions-label small {
   font-size: .675rem !important;
@@ -2611,7 +2611,7 @@ main [role="button"] { min-height: 40px; }
   font-size: clamp(.875rem, .15vw + .84rem, .975rem) !important;
   line-height: 1.65 !important;
 }
-.wiki-entry-grid { row-gap: clamp(.85rem, 2vw, 1.35rem) !important; }
+.wiki-entry-grid { row-gap: clamp(1.25rem, 3vw, 2rem) !important; }
 .wiki-index-layout { gap: clamp(1.25rem, 2.5vw, 2.25rem) !important; }
 
 @media (min-width: 1024px) {
@@ -2658,7 +2658,7 @@ main [role="button"] { min-height: 40px; }
     padding-top: .8rem;
     border-top: 1px solid rgba(23,33,75,.1);
   }
-  .wiki-article-header { padding: 1.5rem 1rem 1rem !important; }
+  .wiki-article-header { padding: 2.35rem 1.1rem 1.35rem !important; }
   .wiki-article-body,
   .wiki-news-paper {
     margin-inline: 0;
@@ -4113,7 +4113,7 @@ main [class*="aspect-"].overflow-hidden { border-radius: 2px; }
 .wiki-button-secondary:hover { border-color: var(--vice-pink); color: var(--vice-pink); }
 
 @media (max-width: 1023px) {
-  .wiki-entry-grid { gap: .85rem !important; }
+  .wiki-entry-grid { gap: 1rem !important; }
   .wiki-entry-grid .wiki-toc-panel {
     padding: 10px !important;
     overflow: hidden;
@@ -5457,7 +5457,7 @@ time { font-family: var(--type-code); font-variant-numeric: tabular-nums slashed
     max-height: 235px;
     aspect-ratio: 16 / 8;
   }
-  .wiki-article-header { padding: 1rem .85rem !important; }
+  .wiki-article-header { padding: 1.25rem 1rem !important; }
   .wiki-article-header .aspect-\[21\/8\],
   .wiki-news-article > .aspect-\[21\/9\] {
     min-height: 210px;
@@ -5779,30 +5779,158 @@ time { font-family: var(--type-code); font-variant-numeric: tabular-nums slashed
 }
 
 /* ========================================================================== */
-/* GRELHAS DE ENTRADA                                                         */
-/* Onde havia listas com miniatura encostada, ha agora azulejos: a imagem     */
-/* e a prova, e numa lista de linhas ela nao se ve. As grelhas de doze        */
-/* colunas do ecra largo nao servem no telemovel — tres cartoes lado a lado   */
-/* em 360px nao sao cartoes, sao selos.                                       */
+/* VISUAL CATALOGUE GRID                                                      */
+/* Any repeated record led by an image uses the same responsive card matrix.  */
+/* Text indexes, references, changelogs and the A–Z page intentionally remain */
+/* lists because sequential scanning is more useful there.                    */
 /* ========================================================================== */
-@media (max-width: 767px) {
-  .home-branch-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: .6rem;
-  }
-  .home-branch-card,
-  .home-branch-card:nth-child(1),
-  .home-branch-card:nth-child(2) { grid-column: span 1; }
-  .home-branch-card .font-cond.text-\[22px\] { font-size: 17px; }
+.visual-card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: stretch;
+  gap: clamp(.65rem, 1.35vw, 1rem) !important;
+}
+.visual-card-grid > * { min-width: 0; height: 100%; }
+
+.home-branch-grid .home-branch-card,
+.home-branch-grid .home-branch-card:nth-child(1),
+.home-branch-grid .home-branch-card:nth-child(2) { grid-column: auto !important; }
+.home-branch-card { display: flex; flex-direction: column; }
+.home-branch-card > span:first-child { aspect-ratio: 16 / 9; }
+
+.home-editorial-grids { display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); }
+.home-story-card,
+.news-grid-card { display: flex; min-height: 100%; flex-direction: column; }
+.home-story-card > span:last-child,
+.news-grid-card > div:last-child { flex: 1; }
+
+.home-region-grid > a,
+.guides-card-grid > a,
+.category-card-grid > a,
+.category-article-grid > a,
+.two-up-visual-grid > *,
+.related-visual-grid > *,
+.edition-item-grid > *,
+.world-subject-grid > *,
+.world-record-grid > * { min-height: 100%; }
+
+.world-subject-grid,
+.world-record-grid { grid-template-columns: minmax(0, 1fr) !important; }
+.world-subject-card { display: flex; flex-direction: column; }
+.world-subject-card .world-subject-title {
+  max-width: calc(100% - 2.7rem);
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
 }
 
-@media (max-width: 419px) {
-  .home-branch-grid { grid-template-columns: minmax(0, 1fr); }
-  .home-feed-grid { grid-template-columns: minmax(0, 1fr); }
+.character-visual.is-contextual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(9, 10, 16, .5), transparent 42%);
+}
+.character-context-label {
+  position: absolute;
+  z-index: 2;
+  right: .35rem;
+  bottom: .35rem;
+  max-width: calc(100% - .7rem);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 999px;
+  background: rgba(8, 9, 15, .72);
+  padding: .18rem .4rem;
+  color: white;
+  font-family: var(--font-mono), monospace;
+  font-size: .42rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .1em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  backdrop-filter: blur(5px);
 }
 
-/* Acima dos 1400px a coluna de noticias e a de guias ganham uma terceira
-   casa: os cartoes deixam de esticar em banners. */
-@media (min-width: 1400px) {
-  .home-feed-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.focus-grid > a { margin-top: 0 !important; }
+.places-region-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+.places-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+
+@media (min-width: 640px) {
+  .home-branch-grid,
+  .home-region-grid,
+  .home-story-grid,
+  .guides-card-grid,
+  .category-card-grid,
+  .related-visual-grid,
+  .edition-item-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .world-subject-grid,
+  .world-record-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .news-card-grid,
+  .category-article-grid,
+  .two-up-visual-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .places-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+}
+
+@media (min-width: 1100px) {
+  .home-branch-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .world-subject-grid,
+  .world-record-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .places-region-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .places-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+
+@media (max-width: 520px) {
+  .visual-card-grid { gap: .55rem !important; }
+  .home-branch-card > span:nth-child(2),
+  .home-region-grid > a > span:last-child { padding: .7rem !important; }
+  .home-branch-card > span:nth-child(2) span,
+  .home-region-grid > a > span:last-child > span:first-child { font-size: .95rem !important; }
+  .home-branch-card > span:nth-child(2) > span:last-child { font-size: 1rem !important; }
+  .home-branch-card > span:last-child { padding: .4rem .7rem .65rem !important; }
+  .home-region-grid > a > span:last-child > span:last-child { display: none; }
+  .home-story-card > span:last-child { padding: .65rem !important; }
+  .home-story-card .status-badge,
+  .news-grid-card .status-badge { font-size: .5rem !important; }
+  .news-grid-card > div:last-child,
+  .guides-card-grid > a > div:last-child,
+  .category-card-grid > a > div:last-child,
+  .category-article-grid > a > div:last-child,
+  .two-up-visual-grid > article > div:last-child { padding: .7rem !important; }
+  .news-grid-card p,
+  .guides-card-grid > a p,
+  .category-article-grid > a p { -webkit-line-clamp: 2; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; }
+  .news-grid-card > div:last-child > div:last-child,
+  .guides-card-grid > a > div:last-child > div:last-child { gap: .35rem; font-size: .58rem; }
+  .category-article-grid h2 { margin-top: .75rem !important; font-size: 1rem !important; }
+  .category-article-grid [class*="w-9"] { display: none; }
+  .places-region-card { min-height: 145px !important; }
+  .places-region-card > span:last-child { padding: .7rem !important; }
+  .places-region-card > span:last-child > span:first-child { font-size: .95rem !important; }
+  .places-region-card > span:last-child > span:last-child > span:first-child { display: none; }
+  .places-card > span:last-child { padding: .7rem !important; }
+  .places-card > span:last-child > span:last-child { font-size: .5rem !important; }
+  .edition-item-grid > article > div:last-child { padding: .7rem !important; }
+  .edition-item-grid p { font-size: .68rem !important; line-height: 1.45 !important; }
+  .world-subject-grid button > div:last-child,
+  .world-record-grid a > div:last-child { padding: .7rem !important; }
+  .world-record-grid a > div:last-child > p:first-of-type { display: none; }
+  .world-subject-media { aspect-ratio: 16 / 6 !important; }
+  .world-subject-card .world-subject-title { font-size: 1.35rem !important; }
+}
+
+@media (max-width: 560px) {
+  /* Rich cards need a readable minimum on the narrowest supported screens. */
+  .news-card-grid,
+  .guides-card-grid,
+  .category-card-grid,
+  .category-article-grid,
+  .two-up-visual-grid,
+  .edition-item-grid,
+  .world-subject-grid,
+  .world-record-grid,
+  .places-region-grid,
+  .places-card-grid { grid-template-columns: 1fr !important; }
 }

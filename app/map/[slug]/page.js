@@ -38,9 +38,9 @@ export default function RegionPage() {
 
       {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
           qualquer largura, como nas fichas das wikis. */}
-      <header className="wiki-article-header mt-4">
-        <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[38px] sm:text-[52px] xl:text-[64px] text-paper">{region.label}</h1>
-        <LeadParagraph name={region.label} exclude={`/map/${region.id}`}>{region.blurb}</LeadParagraph>
+      <header className="wiki-article-header mt-5">
+        <h1 data-ghost="LEONIDA" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[76px] text-paper">{region.label}</h1>
+        <p className="mt-5 text-[16px] leading-relaxed text-paper/85 max-w-[68ch]"><WikiText exclude={`/map/${region.id}`}>{region.blurb}</WikiText></p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <GhostBadge status={region.sourced ? 'confirmed' : 'analysis'} label={region.sourced ? 'Officially named' : 'Image-based archive note'} />
           <span className="font-mono text-[11px] text-dim">{entries.length} DOCUMENTED ENTRIES</span>
@@ -52,7 +52,7 @@ export default function RegionPage() {
 
       <PageTools kind="regions" slug={region.id} />
 
-      <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
         {/* Corpo do artigo */}
         <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">

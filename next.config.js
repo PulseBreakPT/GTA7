@@ -77,6 +77,10 @@ const nextConfig = {
         // a poder embeber esta e recolher cliques por cima dela.
         source: "/(.*)",
         headers: [
+          // HTML must be revalidated after a release. Fingerprinted Next.js
+          // assets remain immutable at nginx, but route documents cannot be
+          // allowed to survive a deployment in a browser/CDN cache.
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Content-Security-Policy", value: contentSecurityPolicy },
           { key: "X-Content-Type-Options", value: "nosniff" },

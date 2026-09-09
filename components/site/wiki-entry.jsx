@@ -53,6 +53,8 @@ export function WikiEntryLayout({
   meta,
   sections,
   infobox,
+  infoboxTitle,
+  infoboxSubtitle,
   infoboxLinks = true,
   references,
   seeAlso = true,
@@ -76,10 +78,10 @@ export function WikiEntryLayout({
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={trail} />
 
-        <header className="wiki-article-header mt-4">
+        <header className="wiki-article-header mt-5">
           {eyebrow && <div className="flex flex-wrap items-center gap-2 mb-3">{eyebrow}</div>}
           <h1
             data-ghost={ghost}
@@ -102,7 +104,7 @@ export function WikiEntryLayout({
 
         {kind && <PageTools kind={kind} slug={slug} />}
 
-        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
           {/* A ordem do fim de um artigo de wiki não é arbitrária, e era a
               que aqui estava trocada: ver também, depois referências,
               depois ligações externas, depois as caixas de navegação, e as
@@ -110,7 +112,7 @@ export function WikiEntryLayout({
               arquivo fecha a página. A citação e os metadados da página são
               aparato deste arquivo e ficam entre a navegação e as
               categorias. */}
-          <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             {children}
             {footer && kind && seeAlso && <SeeAlso kind={kind} slug={slug} />}
             {references && references.length > 0 && <References items={references} />}
@@ -130,7 +132,14 @@ export function WikiEntryLayout({
           </div>
 
           <div className="order-2 lg:order-3">
-            <InfoboxShell>
+            {/* A caixa de dados passa a dizer de quem é e o que é, como nas
+                wikis grandes: o nome do registo por título e a natureza da
+                ficha por antetítulo. Sem eles ficava «Article facts / At a
+                glance» em todas as páginas do arquivo. */}
+            <InfoboxShell
+              title={infoboxTitle || (typeof title === 'string' ? title : undefined)}
+              subtitle={infoboxSubtitle}
+            >
               {infobox}
               {infoboxLinks && kind && (
                 <>

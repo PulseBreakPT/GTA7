@@ -13,7 +13,7 @@ export default function CategoriesPage() {
     <main className="px-4 sm:px-6 lg:px-8 py-7 lg:py-10 max-w-[1280px] mx-auto w-full">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Categories' }]} />
       <div className="mt-4"><CategoryHeader eyebrow="Leonida Archive · Browse" title="Categories" image="/media/key-art/cover.webp" imageAlt="Official Grand Theft Auto VI cover artwork" description="Browse the archive as a reference work. Each category groups articles by subject, while source badges remain attached to the individual record." count={encyclopediaCategories.length} countLabel="top-level categories"><span className="mt-4 inline-flex items-center gap-2 panel2 px-3 py-2 font-cond uppercase tracking-[0.14em] text-[12px] text-paper"><FolderTree size={15} className="text-pink" /> Subject-led navigation</span></CategoryHeader></div>
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="visual-card-grid category-card-grid mt-6">
         {encyclopediaCategories.map((category, index) => {
           const count = category.articles.filter((slug) => articles.some((article) => article.slug === slug)).length
           return <Link key={category.slug} href={`/categories/${category.slug}`} className={`spotlight-card tech-mask panel overflow-hidden group border ${tone[category.color]}`}>

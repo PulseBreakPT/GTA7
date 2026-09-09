@@ -30,16 +30,15 @@ export default function MechanicPage() {
     )
   }
 
-  const Icon = MECH_ICONS[m.icon] || Repeat2
   const related = mechanics.filter((x) => x.slug !== m.slug).slice(0, 4)
   const linkedChars = characters.slice(0, 2)
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics', href: '/database/mechanics' }, { label: m.name }]} />
 
-        <header className="wiki-article-header mt-4">
+        <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={m.status} />
             <span className="min-w-[26px] h-[22px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[11px] text-dim">{m.glyph}</span>
@@ -53,8 +52,8 @@ export default function MechanicPage() {
 
         <PageTools kind="mechanics" slug={m.slug} />
 
-        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
-          <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             {/* O «Overview» era o mesmo parágrafo que a abertura, palavra
                 por palavra. Ficou o texto longo, que é o que a secção tem
                 de novo para dizer. */}
@@ -108,23 +107,13 @@ export default function MechanicPage() {
           </div>
 
           <div className="order-2 lg:order-3">
-            <InfoboxShell>
+            <InfoboxShell title={m.name} subtitle="Mechanic profile">
               <figure className="mechanic-infobox-media -mx-5 -mt-5 mb-1 overflow-hidden border-b border-line bg-surface2">
                 <div className="relative aspect-[16/10]">
                   <Image src={m.image} alt={m.imageAlt} fill sizes="300px" priority className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
                 </div>
                 <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{m.imageCaption}</figcaption>
               </figure>
-              <div className="flex items-center gap-3">
-                <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">
-                  <Icon size={28} strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0">
-                  <p className="font-cond font-bold uppercase text-[18px] text-paper leading-none truncate">{m.name}</p>
-                  <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-1.5">Button prompt {m.glyph}</p>
-                </div>
-              </div>
-
               <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Status">
                   <StatusBadge status={m.status} />

@@ -25,10 +25,13 @@ const SECTIONS = [
 ]
 
 function Portrait({ c, className, sizes = '120px' }) {
-  if (c.image) {
+  const visual = c.image || c.contextImage
+  const contextual = !c.image && Boolean(c.contextImage)
+  if (visual) {
     return (
-      <span className={cx('relative block overflow-hidden bg-surface2', className)}>
-        <Image src={c.image} alt={`Portrait of ${c.name}`} fill sizes={sizes} className="object-cover object-top" />
+      <span className={cx('character-visual relative block overflow-hidden bg-surface2', contextual && 'is-contextual', className)} title={contextual ? c.imageCaption : undefined}>
+        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill sizes={sizes} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
+        {contextual && <span className="character-context-label">Context</span>}
       </span>
     )
   }
@@ -80,12 +83,12 @@ function App() {
   // vivem na caixa de dados, e o corpo é para o que é prosa.
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters', href: '/database/characters' }, { label: c.name }]} />
 
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
             qualquer largura, como nas fichas das wikis. */}
-        <header className="wiki-article-header mt-4">
+        <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2 mb-3">
             <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
             <StatusBadge status={c.status} />
@@ -101,7 +104,7 @@ function App() {
 
         <PageTools kind="characters" slug={c.slug} />
 
-        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
           {/* Corpo do artigo */}
           <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="background" title="Background">

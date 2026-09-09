@@ -18,10 +18,13 @@ const REL_BARS = [
 
 export function Portrait({ c, className, sizes = '120px', priority = false }) {
   const pos = className && className.includes('absolute') ? '' : 'relative'
-  if (c.image) {
+  const visual = c.image || c.contextImage
+  const contextual = !c.image && Boolean(c.contextImage)
+  if (visual) {
     return (
-      <span className={cx(pos, 'block overflow-hidden bg-surface2', className)}>
-        <Image src={c.image} alt={`Portrait of ${c.name}`} fill priority={priority} sizes={sizes} className="object-cover object-top" />
+      <span className={cx(pos, 'character-visual block overflow-hidden bg-surface2', contextual && 'is-contextual', className)} title={contextual ? c.imageCaption : undefined}>
+        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill priority={priority} sizes={sizes} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
+        {contextual && <span className="character-context-label">Context</span>}
       </span>
     )
   }

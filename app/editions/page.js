@@ -164,7 +164,7 @@ function App() {
           it comes in.
         </SectionHead>
 
-        <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="visual-card-grid two-up-visual-grid mt-5">
           {[standard, ultimate].map((tier) => {
             const isUltimate = tier.id === 'ultimate'
             return (
@@ -282,7 +282,7 @@ function App() {
               <span className="font-mono text-[10px] text-dim tabular-nums">{String(group.items.length).padStart(2, '0')}</span>
               <span className="flex-1 h-px bg-[rgba(11,15,22,0.12)]" aria-hidden="true" />
             </h3>
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="visual-card-grid edition-item-grid mt-3">
               {group.items.map(([name, kind, desc, imageKey]) => (
                 <article key={name} className="panel rounded-sm overflow-hidden flex flex-col">
                   {imageKey && IMG[imageKey] ? (

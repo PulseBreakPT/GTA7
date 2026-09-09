@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ArrowUpRight, Gauge, Radio } from 'lucide-react'
-import { cx } from './ui'
 import siteVersion from '@/site-version.json'
+import { cx } from './ui'
 
 // O rodapé segue a mesma lógica do menu: cada grupo tem a sua cor, e o
 // destaque de passagem é um véu nessa cor em vez do cinzento comum. Os

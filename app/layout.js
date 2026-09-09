@@ -1,4 +1,5 @@
 import './globals.css'
+import './design-system.css'
 import localFont from 'next/font/local'
 import { Providers } from './providers'
 import TabBar from '@/components/site/tabbar'
@@ -56,7 +57,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${cond.variable} ${inter.variable} ${mono.variable} gta-lore-fx-root font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
+      <body className={`${cond.variable} ${inter.variable} ${mono.variable} lore-design gta-lore-fx-root font-sans bg-ink text-paper grain min-h-screen flex flex-col`}>
         <Providers>
           {/* Atalho para saltar direito ao conteúdo. Fica fora de vista
               até receber foco pelo teclado. É o primeiro controlo da página,

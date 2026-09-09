@@ -23,13 +23,13 @@ const SUMMARY = [
 
 function ArticleCard({ a }) {
   return (
-    <Link href={`/news/${a.slug}`} className="panel rounded-sm p-4 flex gap-4 group hover:border-black/30 transition-colors">
-      <div className="relative w-[38%] min-w-[120px] shrink-0 overflow-hidden rounded-sm border border-line">
-        <Image src={a.image} alt={a.title} fill sizes="(max-width:1024px) 40vw, 18vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
+    <Link href={`/news/${a.slug}`} className="news-grid-card panel overflow-hidden group hover:border-black/30 transition-colors">
+      <div className="relative aspect-[16/9] overflow-hidden bg-surface2">
+        <Image src={a.image} alt={a.title} fill sizes="(max-width:640px) 50vw, (max-width:1024px) 40vw, 18vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
       </div>
-      <div className="flex-1 min-w-0 flex flex-col py-1">
+      <div className="flex-1 min-w-0 flex flex-col p-3 sm:p-4">
         <div><StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} /></div>
-        <h3 className="font-cond font-bold uppercase text-paper text-[22px] leading-[1.02] tracking-tight mt-2.5">{a.title}</h3>
+        <h3 className="font-cond font-bold uppercase text-paper text-[16px] sm:text-[21px] leading-[1.02] tracking-tight mt-2.5 line-clamp-2">{a.title}</h3>
         <p className="text-dim text-[12px] leading-relaxed mt-2 clamp-2">{a.excerpt}</p>
         <div className="mt-auto pt-3 flex items-center justify-between">
           <span className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN</span>
@@ -126,7 +126,7 @@ function App() {
               </div>
             </Link>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="visual-card-grid news-card-grid mt-4">
               {support.map((a) => <ArticleCard key={a.slug} a={a} />)}
             </div>
             <section className="mt-7" aria-labelledby="feature-roundup-heading">
@@ -137,7 +137,7 @@ function App() {
                 </div>
                 <Link href="/guides/feature-roundup-source-guide" className="font-cond uppercase tracking-[0.12em] text-[12px] text-dim hover:text-paper">How we label sources</Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div className="visual-card-grid news-card-grid mt-4">
                 {featureRoundup.map((a) => <ArticleCard key={a.slug} a={a} />)}
               </div>
             </section>
@@ -150,13 +150,13 @@ function App() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Extracted {gtaWikiPageLedger.extractedAt}</span>
               </div>
               <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-dim">{gtaWikiPageLedger.caution}</p>
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="visual-card-grid news-card-grid mt-4">
                 {wikiExtraction.map((a) => <ArticleCard key={a.slug} a={a} />)}
               </div>
             </section>
           </>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+          <div className="visual-card-grid news-card-grid mt-5">
             {filtered.map((a) => <ArticleCard key={a.slug} a={a} />)}
             {filtered.length === 0 && (
               <div className="panel rounded-sm p-8 text-center col-span-full">

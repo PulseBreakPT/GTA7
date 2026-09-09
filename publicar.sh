@@ -18,6 +18,27 @@ cd "$RAIZ"
 # previously installed vulnerable framework version.
 yarn check --integrity
 
+# Every successful publication advances the repository version. Failed builds
+# restore the previous number, so versions describe deployed releases only.
+VERSION_FILE="$RAIZ/site-version.json"
+VERSION_BACKUP="$(mktemp)"
+cp -- "$VERSION_FILE" "$VERSION_BACKUP"
+RELEASE_COMMITTED=0
+
+cleanup_release() {
+    exit_code=$?
+    if [ "$RELEASE_COMMITTED" -ne 1 ]; then
+        cp -- "$VERSION_BACKUP" "$VERSION_FILE"
+    fi
+    rm -f -- "$VERSION_BACKUP"
+    trap - EXIT
+    exit "$exit_code"
+}
+trap cleanup_release EXIT
+
+RELEASE_VERSION="$(node "$RAIZ/scripts/bump-site-version.mjs" --next)"
+echo "a preparar a publicação v$RELEASE_VERSION"
+
 NODE_OPTIONS=--max-old-space-size=3072 yarn build
 
 # O modo standalone não copia os estáticos nem o public: é preciso fazê-lo
@@ -46,6 +67,9 @@ else
     exit 1
 fi
 
+sudo install -o root -g gtalore -m 0640 "$VERSION_FILE" "$DESTINO/site-version.json"
+RELEASE_COMMITTED=1
+
 # The application can read its bundle and secrets but cannot alter either.
 sudo install -d -o root -g gtalore -m 0750 "$DESTINO/ops"
 sudo install -o root -g gtalore -m 0550 scripts/migrate-sensitive-data.mjs "$DESTINO/ops/migrate-sensitive-data.mjs"
@@ -60,7 +84,7 @@ sudo -u gtalore /usr/bin/node --env-file="$DESTINO/.env" "$DESTINO/ops/migrate-s
 
 sudo systemctl restart leonida.service
 sleep 3
-systemctl is-active --quiet leonida.service && echo "publicado a partir de $RAIZ" || {
+systemctl is-active --quiet leonida.service && echo "publicado v$RELEASE_VERSION a partir de $RAIZ" || {
     echo "ERRO: o serviço não subiu" >&2
     journalctl -u leonida.service -n 15 --no-pager >&2
     exit 1

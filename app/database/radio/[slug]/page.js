@@ -33,10 +33,10 @@ export default function RadioStationPage() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
+      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio', href: '/database/radio' }, { label: s.name }]} />
 
-        <header className="wiki-article-header mt-4">
+        <header className="wiki-article-header mt-5">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={s.status} />
             <GhostBadge status="confirmed" label={s.genre} />
@@ -51,10 +51,8 @@ export default function RadioStationPage() {
 
         <PageTools kind="radio" slug={s.slug} />
 
-        <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
-          <div className="wiki-article-body min-w-0 order-3 lg:order-1">
-            {/* Saiu daqui o parágrafo que era cópia da abertura. Fica o que
-                a secção acrescenta: como é que a estação está documentada. */}
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+          <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <div className="border-l-2 border-mint/70 pl-3">
                 <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">How it is documented</p>
@@ -109,22 +107,12 @@ export default function RadioStationPage() {
           </div>
 
           <div className="order-2 lg:order-3">
-            <InfoboxShell>
+            <InfoboxShell title={s.name} subtitle="Radio profile">
               <div className="-mx-4 -mt-4 mb-4">
                 <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-surface2/60">
                   {s.image ? <Image src={s.image} alt={s.imageAlt || ''} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover" /> : <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim"><RadioIcon size={26} strokeWidth={1.4} aria-hidden="true" /><span className="font-mono text-[8px] uppercase tracking-[0.14em]">No official image</span></div>}
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">
-                  <RadioIcon size={28} strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0">
-                  <p className="font-cond font-bold uppercase text-[18px] text-paper leading-none truncate">{s.name}</p>
-                  <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-1.5 truncate">{s.genre}</p>
-                </div>
-              </div>
-
               <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Genre" value={s.genre} />
                 <InfoRow label="Status">

@@ -29,7 +29,7 @@ export default function EasterEggsIndex() {
         />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="visual-card-grid two-up-visual-grid mt-6">
         {easterEggs.map((egg) => {
           const found = egg.clues.filter((c) => c.found).length
           const place = locations.find((l) => l.slug === egg.location)

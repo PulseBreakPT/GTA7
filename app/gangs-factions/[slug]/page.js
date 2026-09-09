@@ -34,7 +34,7 @@ export default function FactionPage() {
     <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Factions', href: '/gangs-factions' }, { label: f.name }]} />
 
-      <header className="wiki-article-header mt-4">
+      <header className="wiki-article-header mt-5">
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge status={f.status} />
           <GhostBadge status="confirmed" label={f.kind} />
@@ -49,8 +49,8 @@ export default function FactionPage() {
 
       <PageTools kind="factions" slug={f.slug} />
 
-      <div className="wiki-entry-grid mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-5">
-        <div className="wiki-article-body min-w-0 order-3 lg:order-1">
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_200px_300px] gap-8">
+        <div id="article-content" className="wiki-article-body min-w-0 order-3 lg:order-1">
           {/* A secção «Overview» repetia a abertura e mais nada. O que este
               verbete tem para dizer está em «Confirmed» e «Not published». */}
           {f.confirmed?.length > 0 && (
@@ -101,7 +101,7 @@ export default function FactionPage() {
         </div>
 
         <div className="order-2 lg:order-3">
-          <InfoboxShell>
+          <InfoboxShell title={f.name} subtitle="Faction profile">
             {f.image ? (
               <span className="relative block aspect-[16/10] overflow-hidden rounded-sm border border-line bg-surface2">
                 <Image src={f.image} alt={f.name} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
