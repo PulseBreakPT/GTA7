@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ChevronRight, MapPin } from 'lucide-react'
 import { notFound } from 'next/navigation'
-import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoGrid, EntityHero, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText } from '@/components/site/wiki'
+import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText } from '@/components/site/wiki'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { worldBranches, worldEntries, worldEntryBySlug } from '@/lib/world-content'
 
@@ -35,12 +35,15 @@ export default async function WorldEntryPage({ params }) {
         <Hatnote kind="world" slug={item.slug} />
       </header>
 
-      <EntityHero>
-        <figure className="overflow-hidden bg-surface2">
-          <div className="relative aspect-[16/10]"><Image src={item.image} alt={`${item.name} — ${item.imageCaption}`} fill priority sizes="(max-width: 640px) 100vw, 560px" className="object-cover" /></div>
-          <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{item.imageCaption}</figcaption>
-        </figure>
-      </EntityHero>
+      <div className="wiki-entry-lede">
+        <EntityHero>
+          <figure className="overflow-hidden bg-surface2">
+            <div className="relative aspect-[16/10]"><Image src={item.image} alt={`${item.name} — ${item.imageCaption}`} fill priority sizes="(max-width: 640px) 100vw, 560px" className="object-cover" /></div>
+            <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{item.imageCaption}</figcaption>
+          </figure>
+        </EntityHero>
+        <UserActions kind="world" slug={item.slug} />
+      </div>
 
       <PageTools kind="world" slug={item.slug} />
 

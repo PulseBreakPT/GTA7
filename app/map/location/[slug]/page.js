@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
 import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/content'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import { identityAttributes, regionIdentity } from '@/lib/entity-identity'
 
 export default function LocationPage() {
@@ -49,9 +49,12 @@ export default function LocationPage() {
           <Hatnote kind="locations" slug={loc.slug} />
       </header>
 
-      <EntityHero>
-        <LocationLocator image={confirmedImage} fallbackImage={loc.contextImage || region?.image} name={loc.name} />
-      </EntityHero>
+      <div className="wiki-entry-lede">
+        <EntityHero>
+          <LocationLocator image={confirmedImage} fallbackImage={loc.contextImage || region?.image} name={loc.name} />
+        </EntityHero>
+        <UserActions kind="locations" slug={loc.slug} />
+      </div>
 
       <PageTools kind="locations" slug={loc.slug} />
 

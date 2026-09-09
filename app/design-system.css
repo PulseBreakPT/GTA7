@@ -4941,3 +4941,61 @@
   border-top: 1px solid var(--surface-border) !important;
   background: #fffdfb;
 }
+
+/* ── A imagem e o que se faz com ela, no mesmo relance ────────────────────
+   O «Your wiki» era um rodapé de ferramentas: quem chegava via a imagem,
+   via o artigo, e só ao rolar descobria que podia seguir a página. Passa
+   para o lado da imagem — à esquerda o que a coisa é, à direita o que se
+   pode fazer com ela. */
+.lore-design .wiki-entry-lede {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: .9rem;
+  align-items: stretch;
+  margin-top: 1.15rem;
+}
+
+.lore-design .wiki-entry-lede .wiki-entry-hero { margin-top: 0; }
+
+/* Numa coluna estreita o painel deixa de ser barra: o rótulo em cima, os
+   botões por baixo, e não uma fila que só cabe deitada. */
+.lore-design .wiki-entry-lede .wiki-user-actions {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: start;
+  gap: .55rem !important;
+  padding: .6rem !important;
+  border-radius: var(--surface-radius) !important;
+}
+
+.lore-design .wiki-entry-lede .wiki-user-actions-label {
+  display: grid;
+  gap: .1rem;
+  padding-inline: .2rem;
+}
+
+.lore-design .wiki-entry-lede .wiki-user-actions-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 165px), 1fr));
+  gap: .35rem !important;
+}
+
+.lore-design .wiki-entry-lede .wiki-user-action {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.lore-design .wiki-entry-lede .wiki-user-signin { grid-column: 1 / -1; }
+
+/* Onde a imagem já ocupa a largura toda não sobra lado nenhum. */
+@media (max-width: 720px) {
+  .lore-design .wiki-entry-lede { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Onde a imagem já vive numa coluna sua, as acções encostam-lhe por baixo
+   em vez de abrirem uma segunda coluna dentro da primeira. */
+.lore-design .wiki-entry-lede.is-stacked {
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 0;
+  align-content: start;
+}

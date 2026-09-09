@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
 import { regions, locations, confirmedLocationImage } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox } from '@/components/site/wiki'
 import { identityAttributes, regionIdentity } from '@/lib/entity-identity'
 
 export default function RegionPage() {
@@ -46,9 +46,12 @@ export default function RegionPage() {
         <StubNotice kind="regions" slug={region.id} />
       </header>
 
-      <EntityHero>
-        <LocationLocator image={region.image} name={region.label} sourceLabel="OFFICIAL ROCKSTAR REGION ARTWORK" />
-      </EntityHero>
+      <div className="wiki-entry-lede">
+        <EntityHero>
+          <LocationLocator image={region.image} name={region.label} sourceLabel="OFFICIAL ROCKSTAR REGION ARTWORK" />
+        </EntityHero>
+        <UserActions kind="regions" slug={region.id} />
+      </div>
 
       <PageTools kind="regions" slug={region.id} />
 

@@ -209,33 +209,27 @@ export function ShortDescription({ children, className }) {
   )
 }
 
-// Ações relacionadas com a página, separadas da navegação global. MediaWiki
-// chama-lhes page tabs/toolbox: não mudam de assunto, operam sobre o verbete
-// actual. Aqui só aparecem ações reais — leitura, relações, verificação,
-// metadados, citação, impressão e ligação canónica.
-export function PageTools({ kind, slug }) {
+// O que o leitor faz com o verbete — seguir, guardar, anotar, sugerir uma
+// correcção — deixa de ser um rodapé de ferramentas e passa para o lado da
+// imagem. É a mesma leitura de relance: à esquerda o que a coisa é, à
+// direita o que se pode fazer com ela, sem rolar para descobrir que se
+// podia fazer alguma.
+export function UserActions({ kind, slug, className }) {
   const entry = entryFor(kind, slug)
   const { user, request } = useAuth()
-  const [copied, setCopied] = useState(false)
   const [watching, setWatching] = useState(false)
   const [watchBusy, setWatchBusy] = useState(false)
-  const recordedView = useRef('')
 
   useEffect(() => {
     if (!entry || !user) {
       setWatching(false)
       return
     }
-    const key = `${user.id}:${kind}:${slug}`
     fetch(`/api/auth/wiki-state?kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`, { credentials: 'same-origin', cache: 'no-store' })
       .then((response) => response.ok ? response.json() : null)
       .then((data) => { if (data) setWatching(Boolean(data.watching)) })
       .catch(() => {})
-    if (recordedView.current !== key) {
-      recordedView.current = key
-      request('page-view', { body: { kind, slug } }).catch(() => {})
-    }
-  }, [entry, user, kind, slug, request])
+  }, [entry, user, kind, slug])
 
   if (!entry) return null
 
@@ -248,6 +242,60 @@ export function PageTools({ kind, slug }) {
     } catch { /* mantém o estado anterior se a rede falhar */ }
     finally { setWatchBusy(false) }
   }
+
+  return (
+    <nav data-content-priority="tertiary" className={cx('wiki-user-actions', className)} aria-label="Your personal wiki actions">
+      <div className="wiki-user-actions-label">
+        <span><UserRound size={13} aria-hidden="true" /> Your wiki</span>
+        <small>{user ? `Personal tools for @${user.username}` : 'Save and contribute with an account'}</small>
+      </div>
+      <div className="wiki-user-actions-buttons">
+        {user ? (
+          <>
+            <button type="button" onClick={toggleWatch} disabled={watchBusy} aria-pressed={watching} className={cx('wiki-user-action', watching && 'is-active')}>
+              {watching ? <BookmarkCheck size={14} aria-hidden="true" /> : <Bookmark size={14} aria-hidden="true" />}
+              <span>{watching ? 'Watching' : 'Watch page'}</span>
+            </button>
+            <Link href={`/account?section=collections&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+              <FolderPlus size={14} aria-hidden="true" /><span>Add to collection</span>
+            </Link>
+            <Link href={`/account?section=notes&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+              <StickyNote size={14} aria-hidden="true" /><span>Private note</span>
+            </Link>
+            <Link href={`/account?section=contributions&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+              <PenLine size={14} aria-hidden="true" /><span>Suggest edit</span>
+            </Link>
+          </>
+        ) : (
+          <Link href={`/login?next=${encodeURIComponent(entry.href)}`} className="wiki-user-action wiki-user-signin">
+            <UserRound size={14} aria-hidden="true" /><span>Sign in for personal tools</span>
+          </Link>
+        )}
+      </div>
+    </nav>
+  )
+}
+
+// Ações relacionadas com a página, separadas da navegação global. MediaWiki
+// chama-lhes page tabs/toolbox: não mudam de assunto, operam sobre o verbete
+// actual. Aqui só aparecem ações reais — leitura, relações, verificação,
+// metadados, citação, impressão e ligação canónica.
+export function PageTools({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  const { user, request } = useAuth()
+  const [copied, setCopied] = useState(false)
+  const recordedView = useRef('')
+
+  useEffect(() => {
+    if (!entry || !user) return
+    const key = `${user.id}:${kind}:${slug}`
+    if (recordedView.current !== key) {
+      recordedView.current = key
+      request('page-view', { body: { kind, slug } }).catch(() => {})
+    }
+  }, [entry, user, kind, slug, request])
+
+  if (!entry) return null
 
   const copyPermanentLink = async () => {
     try {
@@ -281,36 +329,6 @@ export function PageTools({ kind, slug }) {
           {copied ? <Check size={12} className="text-mint" aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}
           {copied ? 'Link copied' : 'Permanent link'}
         </button>
-      </nav>
-
-      <nav className="wiki-user-actions" aria-label="Your personal wiki actions">
-        <div className="wiki-user-actions-label">
-          <span><UserRound size={13} aria-hidden="true" /> Your wiki</span>
-          <small>{user ? `Personal tools for @${user.username}` : 'Save and contribute with an account'}</small>
-        </div>
-        <div className="wiki-user-actions-buttons">
-          {user ? (
-            <>
-              <button type="button" onClick={toggleWatch} disabled={watchBusy} aria-pressed={watching} className={cx('wiki-user-action', watching && 'is-active')}>
-                {watching ? <BookmarkCheck size={14} aria-hidden="true" /> : <Bookmark size={14} aria-hidden="true" />}
-                <span>{watching ? 'Watching' : 'Watch page'}</span>
-              </button>
-              <Link href={`/account?section=collections&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
-                <FolderPlus size={14} aria-hidden="true" /><span>Add to collection</span>
-              </Link>
-              <Link href={`/account?section=notes&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
-                <StickyNote size={14} aria-hidden="true" /><span>Private note</span>
-              </Link>
-              <Link href={`/account?section=contributions&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
-                <PenLine size={14} aria-hidden="true" /><span>Suggest edit</span>
-              </Link>
-            </>
-          ) : (
-            <Link href={`/login?next=${encodeURIComponent(entry.href)}`} className="wiki-user-action wiki-user-signin">
-              <UserRound size={14} aria-hidden="true" /><span>Sign in for personal tools</span>
-            </Link>
-          )}
-        </div>
       </nav>
     </div>
   )

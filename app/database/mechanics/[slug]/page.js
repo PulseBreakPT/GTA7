@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { mechanics, characters } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
@@ -50,14 +50,17 @@ export default function MechanicPage() {
           <Hatnote kind="mechanics" slug={m.slug} />
         </header>
 
-        <EntityHero>
-          <figure className="mechanic-infobox-media overflow-hidden bg-surface2">
-            <div className="relative aspect-[16/10]">
-              <Image src={m.image} alt={m.imageAlt} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
-            </div>
-            <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{m.imageCaption}</figcaption>
-          </figure>
-        </EntityHero>
+        <div className="wiki-entry-lede">
+          <EntityHero>
+            <figure className="mechanic-infobox-media overflow-hidden bg-surface2">
+              <div className="relative aspect-[16/10]">
+                <Image src={m.image} alt={m.imageAlt} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
+              </div>
+              <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{m.imageCaption}</figcaption>
+            </figure>
+          </EntityHero>
+          <UserActions kind="mechanics" slug={m.slug} />
+        </div>
 
         <PageTools kind="mechanics" slug={m.slug} />
 

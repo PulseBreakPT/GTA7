@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
 
 export default function RadioStationPage() {
@@ -48,11 +48,14 @@ export default function RadioStationPage() {
           <Hatnote kind="radio" slug={s.slug} />
         </header>
 
-        <EntityHero>
-          <div className="relative aspect-[16/9] overflow-hidden bg-surface2/60">
-            {s.image ? <Image src={s.image} alt={s.imageAlt || ''} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" /> : <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim"><RadioIcon size={26} strokeWidth={1.4} aria-hidden="true" /><span className="font-mono text-[8px] uppercase tracking-[0.14em]">No official image</span></div>}
-          </div>
-        </EntityHero>
+        <div className="wiki-entry-lede">
+          <EntityHero>
+            <div className="relative aspect-[16/9] overflow-hidden bg-surface2/60">
+              {s.image ? <Image src={s.image} alt={s.imageAlt || ''} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" /> : <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim"><RadioIcon size={26} strokeWidth={1.4} aria-hidden="true" /><span className="font-mono text-[8px] uppercase tracking-[0.14em]">No official image</span></div>}
+            </div>
+          </EntityHero>
+          <UserActions kind="radio" slug={s.slug} />
+        </div>
 
         <PageTools kind="radio" slug={s.slug} />
 

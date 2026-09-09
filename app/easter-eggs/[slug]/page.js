@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import { CircleCheck, Circle, MapPin, Triangle } from 'lucide-react'
 import { easterEggs } from '@/lib/content'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, CategoryFooter, CitePage, Navbox, PageInformation, PageTools, References, WhatThisLinks } from '@/components/site/wiki'
+import { Breadcrumb, CategoryFooter, CitePage, Navbox, PageInformation, PageTools, UserActions, References, WhatThisLinks } from '@/components/site/wiki'
 
 function App() {
   const { slug } = useParams()
@@ -68,14 +68,17 @@ function App() {
           <p className="font-mono text-[10px] text-dim uppercase mt-3">UPDATED {egg.updatedAt}</p>
         </div>
 
-        <div className="corner-brackets tech-mask relative panel overflow-hidden min-h-[320px] lg:min-h-[480px]">
-          {egg.image ? (
-            <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-6 text-center">
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">NO VERIFIED IMAGE OF THIS SUBJECT</span>
-            </div>
-          )}
+        <div className="wiki-entry-lede is-stacked">
+          <div className="corner-brackets tech-mask relative panel overflow-hidden min-h-[320px] lg:min-h-[480px]">
+            {egg.image ? (
+              <Image src={egg.image} alt={`${egg.name} reference imagery`} fill priority sizes="(max-width:1024px) 100vw, 55vw" className="object-cover" />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center bg-surface2/70 px-6 text-center">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">NO VERIFIED IMAGE OF THIS SUBJECT</span>
+              </div>
+            )}
+          </div>
+          <UserActions kind="secrets" slug={egg.slug} />
         </div>
       </div>
 

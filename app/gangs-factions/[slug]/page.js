@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
 import { factionIdentity, identityAttributes } from '@/lib/entity-identity'
 
@@ -49,18 +49,21 @@ export default function FactionPage() {
           <Hatnote kind="factions" slug={f.slug} />
       </header>
 
-      <EntityHero>
-        {f.image ? (
-          <span className="relative block aspect-[16/10] overflow-hidden bg-surface2">
-            <Image src={f.image} alt={f.name} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" />
-          </span>
-        ) : (
-          <span className="flex flex-col items-center justify-center gap-2 aspect-[16/10] bg-surface2/60 text-dim" role="img" aria-label={`${f.name}: visual pending`}>
-            <Users size={28} aria-hidden="true" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.2em]">AWAITING VISUAL</span>
-          </span>
-        )}
-      </EntityHero>
+      <div className="wiki-entry-lede">
+        <EntityHero>
+          {f.image ? (
+            <span className="relative block aspect-[16/10] overflow-hidden bg-surface2">
+              <Image src={f.image} alt={f.name} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" />
+            </span>
+          ) : (
+            <span className="flex flex-col items-center justify-center gap-2 aspect-[16/10] bg-surface2/60 text-dim" role="img" aria-label={`${f.name}: visual pending`}>
+              <Users size={28} aria-hidden="true" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em]">AWAITING VISUAL</span>
+            </span>
+          )}
+        </EntityHero>
+        <UserActions kind="factions" slug={f.slug} />
+      </div>
 
       <PageTools kind="factions" slug={f.slug} />
 

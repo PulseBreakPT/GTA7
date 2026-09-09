@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 import { characterIdentity, identityAttributes } from '@/lib/entity-identity'
 
@@ -116,9 +116,12 @@ function App() {
           <Hatnote kind="characters" slug={c.slug} />
         </header>
 
-        <EntityHero shape="portrait">
-          <Portrait c={c} className="w-full aspect-[3/4]" sizes="(max-width: 640px) 220px, 268px" priority />
-        </EntityHero>
+        <div className="wiki-entry-lede">
+          <EntityHero shape="portrait">
+            <Portrait c={c} className="w-full aspect-[3/4]" sizes="(max-width: 640px) 220px, 268px" priority />
+          </EntityHero>
+          <UserActions kind="characters" slug={c.slug} />
+        </div>
 
         <PageTools kind="characters" slug={c.slug} />
 

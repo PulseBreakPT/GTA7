@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, UserActions, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
 
@@ -93,37 +93,40 @@ function App() {
           <Hatnote kind="weapons" slug={w.slug} />
         </header>
 
-        <EntityHero>
-          <div>
-            <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/10]">
-              {gallery[slide] ? (
-                <>
-                  <Image src={gallery[slide]} alt={`${w.name} image ${slide + 1}`} fill priority sizes="(max-width: 640px) 100vw, 560px" className="object-cover" />
-                </>
-              ) : (
-                <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
-                  <Crosshair size={32} aria-hidden="true" />
-                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-center px-2">CLASSIFIED — VISUAL PENDING</span>
-                </span>
-              )}
+        <div className="wiki-entry-lede">
+          <EntityHero>
+            <div>
+              <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/10]">
+                {gallery[slide] ? (
+                  <>
+                    <Image src={gallery[slide]} alt={`${w.name} image ${slide + 1}`} fill priority sizes="(max-width: 640px) 100vw, 560px" className="object-cover" />
+                  </>
+                ) : (
+                  <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
+                    <Crosshair size={32} aria-hidden="true" />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-center px-2">CLASSIFIED — VISUAL PENDING</span>
+                  </span>
+                )}
+                {gallery.length > 1 && (
+                  <>
+                    <button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous weapon image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button>
+                    <button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next weapon image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button>
+                  </>
+                )}
+              </div>
               {gallery.length > 1 && (
-                <>
-                  <button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous weapon image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button>
-                  <button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next weapon image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button>
-                </>
+                <div className="wiki-entry-hero-thumbs flex gap-2 overflow-x-auto">
+                  {gallery.map((src, i) => (
+                    <button key={src} type="button" onClick={() => setSlide(i)} aria-label={`Show image ${i + 1}`} className={cx('relative w-16 h-10 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}>
+                      <Image src={src} alt="" fill sizes="64px" className="object-cover" />
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
-            {gallery.length > 1 && (
-              <div className="wiki-entry-hero-thumbs flex gap-2 overflow-x-auto">
-                {gallery.map((src, i) => (
-                  <button key={src} type="button" onClick={() => setSlide(i)} aria-label={`Show image ${i + 1}`} className={cx('relative w-16 h-10 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}>
-                    <Image src={src} alt="" fill sizes="64px" className="object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </EntityHero>
+          </EntityHero>
+          <UserActions kind="weapons" slug={w.slug} />
+        </div>
 
         <PageTools kind="weapons" slug={w.slug} />
 
