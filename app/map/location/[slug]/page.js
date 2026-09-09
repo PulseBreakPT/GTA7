@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { ChevronRight, FileText, Images, Compass, BookMarked } from 'lucide-react'
 import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/content'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import { identityAttributes, regionIdentity } from '@/lib/entity-identity'
 
 export default function LocationPage() {
@@ -48,6 +48,10 @@ export default function LocationPage() {
           <StubNotice kind="locations" slug={loc.slug} />
           <Hatnote kind="locations" slug={loc.slug} />
       </header>
+
+      <EntityHero>
+        <LocationLocator image={confirmedImage} fallbackImage={loc.contextImage || region?.image} name={loc.name} />
+      </EntityHero>
 
       <PageTools kind="locations" slug={loc.slug} />
 
@@ -95,9 +99,7 @@ export default function LocationPage() {
         {/* Caixa de dados */}
         <div className="wiki-entry-secondary order-2 lg:order-3">
           <InfoboxShell title={loc.name} subtitle="Place profile">
-            <LocationLocator image={confirmedImage} fallbackImage={loc.contextImage || region?.image} name={loc.name} />
-
-            <div className="space-y-3 border-t border-black/10 pt-4">
+            <InfoGrid className="border-t border-black/10 pt-4">
               <InfoRow label="Region">
                 {region ? (
                   <Link href={`/map/${region.id}`} className="text-pink hover:text-paper transition-colors">{region.label}</Link>
@@ -110,7 +112,7 @@ export default function LocationPage() {
               <InfoRow label="Visual directory">
                 <Link href={`/map?loc=${loc.slug}`} className="text-mint hover:text-paper transition-colors">Open in places directory</Link>
               </InfoRow>
-            </div>
+            </InfoGrid>
 
             <div className="border-t border-black/10 pt-4">
               <SourceChip name={loc.sourceName} url={loc.sourceUrl} prefix={null} />

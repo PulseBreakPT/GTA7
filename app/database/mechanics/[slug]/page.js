@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Repeat2, HeartHandshake, Glasses, Backpack, Siren, Radar, Package, House, ChevronRight, FileText, Layers, Users, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { mechanics, characters } from '@/lib/content'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
@@ -49,6 +49,15 @@ export default function MechanicPage() {
           <StubNotice kind="mechanics" slug={m.slug} />
           <Hatnote kind="mechanics" slug={m.slug} />
         </header>
+
+        <EntityHero>
+          <figure className="mechanic-infobox-media overflow-hidden bg-surface2">
+            <div className="relative aspect-[16/10]">
+              <Image src={m.image} alt={m.imageAlt} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
+            </div>
+            <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{m.imageCaption}</figcaption>
+          </figure>
+        </EntityHero>
 
         <PageTools kind="mechanics" slug={m.slug} />
 
@@ -107,13 +116,7 @@ export default function MechanicPage() {
 
           <div className="wiki-entry-secondary order-2 lg:order-3">
             <InfoboxShell title={m.name} subtitle="Mechanic profile">
-              <figure className="mechanic-infobox-media -mx-5 -mt-5 mb-1 overflow-hidden border-b border-line bg-surface2">
-                <div className="relative aspect-[16/10]">
-                  <Image src={m.image} alt={m.imageAlt} fill sizes="300px" priority className="object-cover" style={{ objectPosition: m.imagePosition || 'center' }} referrerPolicy="no-referrer" />
-                </div>
-                <figcaption className="px-4 py-2.5 font-mono text-[9px] leading-relaxed text-dim">{m.imageCaption}</figcaption>
-              </figure>
-              <div className="space-y-3 border-t border-black/10 pt-4">
+              <InfoGrid className="border-t border-black/10 pt-4">
                 <InfoRow label="Status">
                   <StatusBadge status={m.status} />
                 </InfoRow>
@@ -122,7 +125,7 @@ export default function MechanicPage() {
                 <InfoRow label="In the index">
                   <Link href={`/database/mechanics?m=${m.slug}`} className="text-mint hover:text-paper transition-colors">Open in the mechanics list</Link>
                 </InfoRow>
-              </div>
+              </InfoGrid>
 
               <div className="border-t border-black/10 pt-4">
                 <SourceChip name={m.sourceName} url={m.sourceUrl} />

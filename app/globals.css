@@ -538,7 +538,9 @@ main::before {
     grid-column: 2 !important;
     grid-row: 1 / span 2 !important;
   }
-  .wiki-infobox { position: sticky !important; top: 6rem !important; }
+  /* A caixa de dados acompanhava a rolagem e tapava o artigo ao lado.
+     Fica onde foi escrita: é uma ficha, não uma barra de navegação. */
+  .wiki-infobox { position: static !important; top: auto !important; }
 }
 
 @media (max-width: 767px) {
@@ -5519,7 +5521,9 @@ time { font-family: var(--type-code); font-variant-numeric: tabular-nums slashed
   .wiki-entry-grid > :first-child { grid-column: 1 !important; grid-row: 2 !important; }
   .wiki-entry-grid > :nth-child(2) { display: block !important; grid-column: 1 !important; grid-row: 1 !important; }
   .wiki-entry-grid > :nth-child(3) { grid-column: 2 !important; grid-row: 1 / span 2 !important; }
-  .wiki-infobox { position: sticky !important; top: 6rem !important; }
+  /* A caixa de dados acompanhava a rolagem e tapava o artigo ao lado.
+     Fica onde foi escrita: é uma ficha, não uma barra de navegação. */
+  .wiki-infobox { position: static !important; top: auto !important; }
 }
 @media (max-width: 767px) {
   .wiki-article-header { padding: 1rem 0 1.15rem !important; }

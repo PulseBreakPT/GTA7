@@ -473,6 +473,30 @@ export function InfoRow({ label, value, children }) {
   )
 }
 
+// Os campos de identificação da caixa de dados — o papel, o grupo, o estado —
+// são pares curtos, e uma fila vertical de pares curtos gasta a altura toda
+// da caixa a dizer muito pouco. Postos em grelha, lêem-se de relance e o
+// rótulo fica por cima do valor, que é como uma ficha se lê e não como uma
+// lista se percorre.
+export function InfoGrid({ children, className }) {
+  return <div className={cx('wiki-info-grid', className)}>{children}</div>
+}
+
+// A imagem de um verbete é a primeira coisa que se procura ao abri-lo, e
+// estava a viver dentro da caixa de dados — à direita, a meio da página e
+// abaixo da dobra em qualquer ecrã que não fosse largo. Passa para o topo,
+// logo a seguir ao título: vê-se ao chegar, sem rolar e sem procurar.
+// «shape» só existe porque um retrato a toda a largura não é uma imagem de
+// topo, é um cartaz.
+export function EntityHero({ children, shape = 'landscape', className }) {
+  if (!children) return null
+  return (
+    <div data-shape={shape} className={cx('wiki-entry-hero', className)}>
+      {children}
+    </div>
+  )
+}
+
 // A ficha técnica de uma wiki é uma grelha de pares rótulo/valor, e não uma
 // fila de valores soltos: «—» sozinho não diz de que campo é. Cada célula
 // leva o rótulo por cima, e o campo sem fonte publicada aparece na mesma,
@@ -496,7 +520,7 @@ export function SpecGrid({ items }) {
 
 export function InfoboxShell({ children, className, title = 'Article facts', subtitle = 'At a glance' }) {
   return (
-    <aside data-content-priority="secondary" className={cx('wiki-infobox panel rounded-sm bg-ink/30 lg:sticky lg:top-24 h-fit', className)} aria-label={`${title} facts`}>
+    <aside data-content-priority="secondary" className={cx('wiki-infobox panel rounded-sm bg-ink/30 h-fit', className)} aria-label={`${title} facts`}>
       <details className="wiki-infobox-disclosure" open>
         <summary className="wiki-infobox-heading">
           <span>

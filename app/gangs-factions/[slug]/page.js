@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
 import { factionIdentity, identityAttributes } from '@/lib/entity-identity'
 
@@ -48,6 +48,19 @@ export default function FactionPage() {
         <StubNotice kind="factions" slug={f.slug} />
           <Hatnote kind="factions" slug={f.slug} />
       </header>
+
+      <EntityHero>
+        {f.image ? (
+          <span className="relative block aspect-[16/10] overflow-hidden bg-surface2">
+            <Image src={f.image} alt={f.name} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" />
+          </span>
+        ) : (
+          <span className="flex flex-col items-center justify-center gap-2 aspect-[16/10] bg-surface2/60 text-dim" role="img" aria-label={`${f.name}: visual pending`}>
+            <Users size={28} aria-hidden="true" />
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em]">AWAITING VISUAL</span>
+          </span>
+        )}
+      </EntityHero>
 
       <PageTools kind="factions" slug={f.slug} />
 
@@ -104,18 +117,7 @@ export default function FactionPage() {
 
         <div className="wiki-entry-secondary order-2 lg:order-3">
           <InfoboxShell title={f.name} subtitle="Faction profile">
-            {f.image ? (
-              <span className="relative block aspect-[16/10] overflow-hidden rounded-sm border border-line bg-surface2">
-                <Image src={f.image} alt={f.name} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
-              </span>
-            ) : (
-              <span className="flex flex-col items-center justify-center gap-2 aspect-[16/10] rounded-sm border border-line bg-surface2/60 text-dim" role="img" aria-label={`${f.name}: visual pending`}>
-                <Users size={28} aria-hidden="true" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em]">AWAITING VISUAL</span>
-              </span>
-            )}
-
-            <div className="space-y-3 border-t border-black/10 pt-4">
+            <InfoGrid className="border-t border-black/10 pt-4">
               <InfoRow label="Type" value={f.kind} />
               <InfoRow label="Region">
                 <span className="inline-flex items-center gap-1.5">
@@ -129,7 +131,7 @@ export default function FactionPage() {
               <InfoRow label="Evidence">
                 <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{f.evidenceStatus}</span>
               </InfoRow>
-            </div>
+            </InfoGrid>
 
             <div className="border-t border-black/10 pt-4">
               <SourceChip name={f.sourceName} url={f.sourceUrl} />

@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ChevronRight, Image as ImageIcon, FileText, Images, MapPin, AlertTriangle } from 'lucide-react'
 import { regions, locations, confirmedLocationImage } from '@/lib/content'
 import { GhostBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, PageTools, CitePage, PageInformation, Navbox } from '@/components/site/wiki'
 import { identityAttributes, regionIdentity } from '@/lib/entity-identity'
 
 export default function RegionPage() {
@@ -45,6 +45,10 @@ export default function RegionPage() {
         </div>
         <StubNotice kind="regions" slug={region.id} />
       </header>
+
+      <EntityHero>
+        <LocationLocator image={region.image} name={region.label} sourceLabel="OFFICIAL ROCKSTAR REGION ARTWORK" />
+      </EntityHero>
 
       <PageTools kind="regions" slug={region.id} />
 
@@ -137,9 +141,7 @@ export default function RegionPage() {
         {/* Caixa de dados */}
         <div className="wiki-entry-secondary order-2 lg:order-3">
           <InfoboxShell title={region.label} subtitle="Region profile">
-            <LocationLocator image={region.image} name={region.label} sourceLabel="OFFICIAL ROCKSTAR REGION ARTWORK" />
-
-            <div className="space-y-3 border-t border-black/10 pt-4">
+            <InfoGrid className="border-t border-black/10 pt-4">
               <InfoRow label="Official type" value={region.officialType} />
               <InfoRow label="Environment" value={region.environment} />
               <InfoRow label="Official theme" value={region.theme} />
@@ -148,7 +150,7 @@ export default function RegionPage() {
               <InfoRow label="Visual directory">
                 <Link href="/map" className="text-mint hover:text-paper transition-colors">Open places directory</Link>
               </InfoRow>
-            </div>
+            </InfoGrid>
 
             <div className="border-t border-black/10 pt-4">
               <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Source note</p>

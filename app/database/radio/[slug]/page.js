@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
 import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
 
 export default function RadioStationPage() {
@@ -47,6 +47,12 @@ export default function RadioStationPage() {
           <StubNotice kind="radio" slug={s.slug} />
           <Hatnote kind="radio" slug={s.slug} />
         </header>
+
+        <EntityHero>
+          <div className="relative aspect-[16/9] overflow-hidden bg-surface2/60">
+            {s.image ? <Image src={s.image} alt={s.imageAlt || ''} fill sizes="(max-width: 640px) 100vw, 560px" priority className="object-cover" /> : <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim"><RadioIcon size={26} strokeWidth={1.4} aria-hidden="true" /><span className="font-mono text-[8px] uppercase tracking-[0.14em]">No official image</span></div>}
+          </div>
+        </EntityHero>
 
         <PageTools kind="radio" slug={s.slug} />
 
@@ -106,12 +112,7 @@ export default function RadioStationPage() {
 
           <div className="wiki-entry-secondary order-2 lg:order-3">
             <InfoboxShell title={s.name} subtitle="Radio profile">
-              <div className="-mx-4 -mt-4 mb-4">
-                <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-surface2/60">
-                  {s.image ? <Image src={s.image} alt={s.imageAlt || ''} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover" /> : <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim"><RadioIcon size={26} strokeWidth={1.4} aria-hidden="true" /><span className="font-mono text-[8px] uppercase tracking-[0.14em]">No official image</span></div>}
-                </div>
-              </div>
-              <div className="space-y-3 border-t border-black/10 pt-4">
+              <InfoGrid className="border-t border-black/10 pt-4">
                 <InfoRow label="Genre" value={s.genre} />
                 <InfoRow label="Status">
                   <StatusBadge status={s.status} />
@@ -120,7 +121,7 @@ export default function RadioStationPage() {
                   <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
                 </InfoRow>
                 <InfoRow label="Documented tracks" value={String(s.tracks?.length || 0)} />
-              </div>
+              </InfoGrid>
 
               <div className="border-t border-black/10 pt-4">
                 <SourceChip name={s.sourceName} url={s.sourceUrl} />

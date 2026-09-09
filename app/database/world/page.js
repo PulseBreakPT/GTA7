@@ -240,7 +240,6 @@ export default function WorldIndexPage() {
                   <Link href={firstSample ? `/database/world/${firstSample.slug}` : '/database/world?section=all'} className="world-subject-media relative block aspect-[16/7] overflow-hidden bg-black/5" aria-label={`Open ${firstSample ? firstSample.name : item.label} article`}>
                     <Image src={meta.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/10" />
-                    <span className="world-subject-count absolute right-3 top-3 inline-flex min-w-9 items-center justify-center rounded-full border border-white/25 bg-black/65 px-2 py-1.5 font-mono text-[11px] font-bold text-white backdrop-blur-sm">{item.count}</span>
                     <div className="absolute inset-x-4 bottom-3 text-white">
                       <h3 className="world-subject-title flex min-w-0 items-center gap-2 font-cond text-[22px] font-black uppercase leading-[.9] tracking-tight"><Icon className="size-5 shrink-0" />{item.label}</h3>
                     </div>
@@ -254,8 +253,8 @@ export default function WorldIndexPage() {
                         </Link>
                       ))}
                     </div>
-                    <button type="button" onClick={() => chooseBranch(item.id)} className="mt-auto flex items-center gap-1 pt-4 text-xs font-black uppercase tracking-wider text-pink">
-                      Open section <ChevronRight className="size-4 transition group-hover:translate-x-0.5" />
+                    <button type="button" onClick={() => chooseBranch(item.id)} className="world-subject-open mt-auto flex w-full items-center justify-center gap-1.5 pt-4 text-[11px] font-bold uppercase tracking-[0.08em] text-pink">
+                      Open section <ChevronRight className="size-3.5 transition group-hover:translate-x-0.5" />
                     </button>
                   </div>
                 </article>

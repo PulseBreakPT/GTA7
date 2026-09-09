@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
 import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
 import { characterIdentity, identityAttributes } from '@/lib/entity-identity'
 
@@ -23,13 +23,13 @@ const SECTIONS = [
   { id: 'references', label: 'References', icon: BookMarked },
 ]
 
-function Portrait({ c, className, sizes = '120px' }) {
+function Portrait({ c, className, sizes = '120px', priority = false }) {
   const visual = c.image || c.contextImage
   const contextual = !c.image && Boolean(c.contextImage)
   if (visual) {
     return (
       <span className={cx('character-visual relative block overflow-hidden bg-surface2', contextual && 'is-contextual', className)} title={contextual ? c.imageCaption : undefined}>
-        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill sizes={sizes} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
+        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill sizes={sizes} priority={priority} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
         {contextual && <span className="character-context-label">Context</span>}
       </span>
     )
@@ -116,6 +116,10 @@ function App() {
           <Hatnote kind="characters" slug={c.slug} />
         </header>
 
+        <EntityHero shape="portrait">
+          <Portrait c={c} className="w-full aspect-[3/4]" sizes="(max-width: 640px) 220px, 268px" priority />
+        </EntityHero>
+
         <PageTools kind="characters" slug={c.slug} />
 
         <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -190,9 +194,7 @@ function App() {
           {/* Caixa de dados */}
           <div className="wiki-entry-secondary order-2 lg:order-3">
             <InfoboxShell title={c.name} subtitle="Character profile">
-              <Portrait c={c} className="w-full aspect-[3/4] rounded-sm border border-line" sizes="(max-width:1024px) 100vw, 300px" />
-
-              <div className="space-y-3 border-t border-black/10 pt-4">
+              <InfoGrid className="border-t border-black/10 pt-4">
                 <InfoRow label="Role" value={c.role} />
                 <InfoRow label="Group">
                   <span className="capitalize">{c.group || 'Unspecified'}</span>
@@ -205,7 +207,7 @@ function App() {
                     <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link>
                   </InfoRow>
                 )}
-              </div>
+              </InfoGrid>
 
               <div className="border-t border-black/10 pt-4">
                 <SourceChip name={c.sourceName} url={c.sourceUrl} prefix={null} />

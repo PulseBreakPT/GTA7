@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Heart, Zap, Eye, CircleDot, FileText, Gauge, ListChecks, Car, BookMarked } from 'lucide-react'
 import { SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoGrid, EntityHero, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, References, WikiText, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import { identityAttributes, vehicleIdentity } from '@/lib/entity-identity'
@@ -110,6 +110,36 @@ function App() {
           <Hatnote kind="vehicles" slug={v.slug} />
         </header>
 
+        <EntityHero>
+          <div>
+            <div className="corner-brackets tech-mask relative overflow-hidden aspect-[16/10]">
+              {gallery[slide] ? (
+                <Image src={gallery[slide]} alt={`${v.name} image ${slide + 1}`} fill priority sizes="(max-width: 640px) 100vw, 560px" className="object-cover" />
+              ) : (
+                <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
+                  <Car size={32} aria-hidden="true" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.24em]">AWAITING VISUAL</span>
+                </span>
+              )}
+              {gallery.length > 1 && (
+                <>
+                  <button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous vehicle image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button>
+                  <button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next vehicle image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button>
+                </>
+              )}
+            </div>
+            {gallery.length > 1 && (
+              <div className="wiki-entry-hero-thumbs flex gap-2 overflow-x-auto">
+                {gallery.map((src, i) => (
+                  <button key={src} type="button" onClick={() => setSlide(i)} aria-label={`Show image ${i + 1}`} className={cx('relative w-16 h-10 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}>
+                    <Image src={src} alt="" fill sizes="64px" className="object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </EntityHero>
+
         <PageTools kind="vehicles" slug={v.slug} />
 
         <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
@@ -197,35 +227,7 @@ function App() {
           {/* Caixa de dados */}
           <div className="wiki-entry-secondary order-2 lg:order-3">
             <InfoboxShell title={v.name} subtitle="Vehicle profile">
-              <div>
-                <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">
-                  {gallery[slide] ? (
-                    <Image src={gallery[slide]} alt={`${v.name} image ${slide + 1}`} fill priority sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
-                  ) : (
-                    <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-dim">
-                      <Car size={32} aria-hidden="true" />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.24em]">AWAITING VISUAL</span>
-                    </span>
-                  )}
-                  {gallery.length > 1 && (
-                    <>
-                      <button type="button" onClick={() => setSlide((slide - 1 + gallery.length) % gallery.length)} aria-label="Previous vehicle image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button>
-                      <button type="button" onClick={() => setSlide((slide + 1) % gallery.length)} aria-label="Next vehicle image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button>
-                    </>
-                  )}
-                </div>
-                {gallery.length > 1 && (
-                  <div className="mt-2 flex gap-2 overflow-x-auto">
-                    {gallery.map((src, i) => (
-                      <button key={src} type="button" onClick={() => setSlide(i)} aria-label={`Show image ${i + 1}`} className={cx('relative w-16 h-10 shrink-0 overflow-hidden border', i === slide ? 'border-pink' : 'border-line')}>
-                        <Image src={src} alt="" fill sizes="64px" className="object-cover" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-3 border-t border-black/10 pt-4">
+              <InfoGrid className="border-t border-black/10 pt-4">
                 <InfoRow label="Vehicle class" value={classLabel} />
                 <InfoRow label="Manufacturer" value={v.manufacturer} />
                 <InfoRow label="Unit" value={v.num} />
@@ -237,7 +239,7 @@ function App() {
                 <InfoRow label="Evidence">
                   <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{v.evidenceStatus}</span>
                 </InfoRow>
-              </div>
+              </InfoGrid>
 
               <div className="border-t border-black/10 pt-4">
                 <button type="button" onClick={toggleFav} aria-pressed={isFav} className={cx('w-full inline-flex items-center justify-center gap-2 border h-11 px-4 font-cond font-semibold uppercase tracking-[0.14em] text-[13px] transition-colors', isFav ? 'border-pink text-pink' : 'border-line text-paper hover:border-black/50')}>
