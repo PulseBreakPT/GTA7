@@ -1,5 +1,6 @@
 import './globals.css'
 import './design-system.css'
+import './entity-identity.css'
 import localFont from 'next/font/local'
 import { Providers } from './providers'
 import TabBar from '@/components/site/tabbar'

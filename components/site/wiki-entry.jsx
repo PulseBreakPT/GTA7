@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { BookMarked, ExternalLink, Link2 } from 'lucide-react'
 import { cx } from './ui'
+import { identityFor } from '@/lib/entity-identity'
 import {
   Breadcrumb,
   CategoryFooter,
@@ -55,6 +56,7 @@ export function WikiEntryLayout({
   infobox,
   infoboxTitle,
   infoboxSubtitle,
+  record,
   infoboxLinks = true,
   references,
   seeAlso = true,
@@ -76,9 +78,17 @@ export function WikiEntryLayout({
     showExternal ? { id: 'external-links', label: 'External links', icon: ExternalLink } : null,
   ].filter(Boolean)
 
+  // A pele da entidade. Vai no invólucro do conteúdo e não no corpo da
+  // página, para a barra do topo e a navegação ficarem de fora — o arquivo
+  // continua a ser o mesmo sítio, é o verbete que muda de tom.
+  const identity = identityFor(kind, slug, record)
+
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div
+        data-identity={identity || undefined}
+        className={cx('ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto', identity && 'entity-skin')}
+      >
         <Breadcrumb trail={trail} />
 
         <header className="wiki-article-header mt-5">

@@ -8,6 +8,7 @@ import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
+import { identityFor } from '@/lib/entity-identity'
 
 const REL_BARS = [
   { key: 'trust', label: 'TRUST', color: '#C2185B' },
@@ -83,7 +84,10 @@ function App() {
   // vivem na caixa de dados, e o corpo é para o que é prosa.
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div 
+      data-identity={identityFor('characters', c.slug, c) || undefined}
+      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
+    >
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters', href: '/database/characters' }, { label: c.name }]} />
 
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em

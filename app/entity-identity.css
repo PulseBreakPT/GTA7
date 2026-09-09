@@ -1,0 +1,327 @@
+/* Entity Identity Engine — a pele de cada verbete.
+   Ver `lib/entity-identity.js` para saber quem recebe qual pele.
+
+   A regra do sistema está na primeira secção: as fichas declaram tokens, e só
+   estas regras os consomem. Uma pele que quisesse mexer na barra do topo, na
+   grelha, nos espaçamentos ou nos componentes não teria por onde — não há
+   token para isso, e a folha nunca sai de dentro de `.entity-skin[data-identity]`. É o que
+   mantém as páginas todas dentro do mesmo arquivo enquanto cada uma soa a
+   quem é. */
+
+.entity-skin {
+  /* O arquivo tal como ele é. Uma pele só redefine o que lhe interessa; o
+     resto cai aqui, e é por isso que nenhuma pele precisa de estar completa. */
+  --eid-accent: var(--vice-pink, #C12E70);
+  --eid-accent-2: var(--vice-violet, #6F3FC4);
+  --eid-wash: transparent;
+  --eid-surface: transparent;
+  --eid-rule: rgba(56, 35, 46, .16);
+  --eid-texture: none;
+  --eid-texture-opacity: 0;
+  --eid-media: none;
+  --eid-title-weight: 700;
+  --eid-title-tracking: -.02em;
+  --eid-corner: var(--surface-radius, 14px);
+  --eid-motion: 220ms;
+  --eid-ease: cubic-bezier(.2, .7, .3, 1);
+  --eid-rail-transform: none;
+}
+
+/* Sem identidade resolvida a classe não pinta nada: as regras que se seguem
+   exigem todas o atributo. É o que deixa aplicá-la sem risco a uma página que
+   o motor ainda não conheça. */
+.entity-skin[data-identity] {
+  position: relative;
+  background-color: var(--eid-wash);
+}
+
+/* A textura vive numa camada própria, atrás do conteúdo e sem apanhar o rato,
+   para nenhuma pele conseguir tapar um botão. */
+.entity-skin[data-identity]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--eid-texture);
+  opacity: var(--eid-texture-opacity);
+  pointer-events: none;
+}
+.entity-skin[data-identity] > * { position: relative; z-index: 1; }
+
+/* ---- O que a pele pode pintar ---- */
+
+.entity-skin[data-identity] .wiki-article-header h1 {
+  font-weight: var(--eid-title-weight) !important;
+  letter-spacing: var(--eid-title-tracking) !important;
+}
+
+.entity-skin[data-identity] :is(.panel, .panel2, .wiki-infobox) {
+  border-color: var(--eid-rule);
+  border-radius: var(--eid-corner);
+  background-color: var(--eid-surface);
+  transition: border-color var(--eid-motion) var(--eid-ease),
+              box-shadow var(--eid-motion) var(--eid-ease),
+              transform var(--eid-motion) var(--eid-ease);
+}
+.entity-skin[data-identity] :is(a.panel, button.panel):hover { border-color: var(--eid-accent); }
+
+/* O tratamento das imagens é da entidade: a mesma fotografia num sítio quente
+   e num sítio frio não é a mesma fotografia. */
+.entity-skin[data-identity] :is(.tech-mask, .corner-brackets, .wiki-infobox) img { filter: var(--eid-media); }
+.entity-skin[data-identity] img { transition: transform var(--eid-motion) var(--eid-ease), filter var(--eid-motion) var(--eid-ease); }
+
+/* As réguas, os cantos e a linha fina do arquivo passam à cor da entidade. */
+.entity-skin[data-identity] .data-rail {
+  color: var(--eid-accent);
+  transform: var(--eid-rail-transform);
+}
+.entity-skin[data-identity] :is(hr, .hairline) { border-color: var(--eid-rule); }
+.entity-skin[data-identity] .corner-brackets::before,
+.entity-skin[data-identity] .corner-brackets::after { border-color: var(--eid-accent); }
+.entity-skin[data-identity] .chromatic-title { text-shadow: none; }
+.entity-skin[data-identity] .ghost-type::before { color: color-mix(in srgb, var(--eid-accent) 12%, transparent); }
+
+/* O título de secção e o índice acompanham, para o corpo do artigo não ficar
+   a apontar para a paleta antiga. */
+.entity-skin[data-identity] .wiki-section-title { color: var(--eid-accent); }
+.entity-skin[data-identity] .wiki-toc-list a:hover { border-color: var(--eid-rule); }
+.entity-skin[data-identity] .wiki-toc-panel a:hover::before { background: var(--eid-accent); }
+
+/* ---- As peles ---- */
+
+/* JASON. As Keys ao fim da tarde: creme queimado, verde militar, ferrugem.
+   Papel gasto por textura, imagem puxada para o quente, e tudo mais lento —
+   é a página de quem não tem pressa nenhuma. */
+.entity-skin[data-identity='jason'] {
+  --eid-accent: #7A6A3A;
+  --eid-accent-2: #9C5A2E;
+  --eid-wash: #FBF4E8;
+  --eid-surface: #FDF9F0;
+  --eid-rule: rgba(97, 82, 44, .26);
+  --eid-texture: repeating-linear-gradient(102deg, rgba(140, 116, 66, .05) 0 2px, transparent 2px 5px),
+                 radial-gradient(120% 90% at 78% 8%, rgba(214, 154, 74, .22), transparent 62%);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.88) sepia(.16) contrast(1.03);
+  --eid-title-weight: 850;
+  --eid-title-tracking: -.035em;
+  --eid-corner: 8px;
+  --eid-motion: 420ms;
+  --eid-ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* LUCIA. Fria e tensa: branco sujo, cinzento de estabelecimento prisional,
+   vermelho fundo. Linhas verticais como as de uma ficha, cantos rectos e
+   movimento curto — nesta página nada se demora. */
+.entity-skin[data-identity='lucia'] {
+  --eid-accent: #9B1C2E;
+  --eid-accent-2: #4A4F57;
+  --eid-wash: #F4F3F1;
+  --eid-surface: #FBFAF9;
+  --eid-rule: rgba(52, 56, 62, .3);
+  --eid-texture: repeating-linear-gradient(90deg, rgba(60, 64, 71, .07) 0 1px, transparent 1px 34px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.7) contrast(1.1) brightness(.98);
+  --eid-title-weight: 800;
+  --eid-title-tracking: .005em;
+  --eid-corner: 2px;
+  --eid-motion: 130ms;
+  --eid-ease: cubic-bezier(.2, 0, 0, 1);
+}
+/* O pormenor de ficha: a régua ganha o filete à esquerda dos documentos. */
+.entity-skin[data-identity='lucia'] .data-rail {
+  border-left: 3px solid var(--eid-accent);
+  padding-left: 9px;
+}
+
+/* VICE CITY. Neon sobre vidro: rosa e azul, reflexos, e a fluidez que a
+   cidade tem e o resto do estado não tem. */
+.entity-skin[data-identity='vice-city'] {
+  --eid-accent: #D6246F;
+  --eid-accent-2: #2C7BD6;
+  --eid-wash: #FDF6FA;
+  --eid-surface: rgba(255, 255, 255, .78);
+  --eid-rule: rgba(120, 40, 110, .22);
+  --eid-texture: linear-gradient(168deg, rgba(214, 36, 111, .12), transparent 42%),
+                 linear-gradient(12deg, rgba(44, 123, 214, .12), transparent 46%);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(1.16) contrast(1.04);
+  --eid-corner: 16px;
+  --eid-motion: 300ms;
+  --eid-ease: cubic-bezier(.16, 1, .3, 1);
+}
+.entity-skin[data-identity='vice-city'] :is(.panel, .wiki-infobox) { backdrop-filter: blur(6px); }
+
+/* LEONIDA KEYS. Sol, areia, água e madeira. */
+.entity-skin[data-identity='leonida-keys'] {
+  --eid-accent: #0E8C86;
+  --eid-accent-2: #E0932F;
+  --eid-wash: #FDF8EC;
+  --eid-surface: #FFFCF4;
+  --eid-rule: rgba(24, 116, 112, .24);
+  --eid-texture: radial-gradient(100% 80% at 12% 0%, rgba(224, 147, 47, .2), transparent 58%),
+                 radial-gradient(90% 70% at 92% 100%, rgba(14, 140, 134, .16), transparent 60%);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(1.12) brightness(1.03);
+  --eid-corner: 18px;
+  --eid-motion: 280ms;
+}
+
+/* PORT GELLHORN. Industrial: metal, ferrugem e amarelo sujo de estaleiro. */
+.entity-skin[data-identity='port-gellhorn'] {
+  --eid-accent: #B8791A;
+  --eid-accent-2: #6B4636;
+  --eid-wash: #F7F4EF;
+  --eid-surface: #FCFAF6;
+  --eid-rule: rgba(88, 68, 50, .32);
+  --eid-texture: repeating-linear-gradient(45deg, rgba(120, 92, 60, .07) 0 6px, transparent 6px 13px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.82) contrast(1.07);
+  --eid-title-weight: 850;
+  --eid-corner: 3px;
+  --eid-motion: 190ms;
+}
+
+/* GRASSRIVERS. O pântano: água parada, verde fundo, luz filtrada. */
+.entity-skin[data-identity='grassrivers'] {
+  --eid-accent: #3D7A44;
+  --eid-accent-2: #7A6B2E;
+  --eid-wash: #F4F7EF;
+  --eid-surface: #FBFDF7;
+  --eid-rule: rgba(52, 88, 56, .26);
+  --eid-texture: radial-gradient(120% 100% at 50% 0%, rgba(61, 122, 68, .16), transparent 64%);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(1.04) hue-rotate(-4deg);
+  --eid-corner: 12px;
+  --eid-motion: 340ms;
+}
+
+/* MOUNT KALAGA. Serra: pedra, floresta e ar frio. */
+.entity-skin[data-identity='mount-kalaga'] {
+  --eid-accent: #3F6470;
+  --eid-accent-2: #5A6B4A;
+  --eid-wash: #F2F5F6;
+  --eid-surface: #FAFCFC;
+  --eid-rule: rgba(50, 74, 82, .26);
+  --eid-texture: repeating-linear-gradient(160deg, rgba(63, 100, 112, .06) 0 3px, transparent 3px 9px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.9) brightness(1.02) contrast(1.03);
+  --eid-corner: 6px;
+  --eid-motion: 300ms;
+}
+
+/* AMBROSIA e os clubes de motards. Couro, cromado e gasolina. */
+.entity-skin[data-identity='ambrosia'],
+.entity-skin[data-identity='outlaw-mc'] {
+  --eid-accent: #8C2F24;
+  --eid-accent-2: #3A3A3C;
+  --eid-wash: #F6F2EE;
+  --eid-surface: #FCFAF8;
+  --eid-rule: rgba(58, 46, 42, .34);
+  --eid-texture: repeating-linear-gradient(75deg, rgba(58, 46, 42, .06) 0 4px, transparent 4px 11px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.86) contrast(1.09);
+  --eid-title-weight: 850;
+  --eid-title-tracking: -.03em;
+  --eid-corner: 4px;
+  --eid-motion: 240ms;
+}
+
+/* As gangues de rua. Contraste alto e cantos rectos. */
+.entity-skin[data-identity='street-gang'] {
+  --eid-accent: #C0392B;
+  --eid-accent-2: #1F6F8B;
+  --eid-wash: #F7F5F3;
+  --eid-surface: #FDFCFB;
+  --eid-rule: rgba(40, 40, 44, .3);
+  --eid-texture: repeating-linear-gradient(0deg, rgba(40, 40, 44, .05) 0 1px, transparent 1px 6px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(1.1) contrast(1.08);
+  --eid-title-weight: 850;
+  --eid-corner: 2px;
+  --eid-motion: 160ms;
+}
+
+/* O aparato do estado. Azul institucional, grelha e ar de terminal. */
+.entity-skin[data-identity='police'] {
+  --eid-accent: #1F4E8C;
+  --eid-accent-2: #2A6E4F;
+  --eid-wash: #F1F4F8;
+  --eid-surface: #FBFCFE;
+  --eid-rule: rgba(31, 78, 140, .28);
+  --eid-texture: repeating-linear-gradient(0deg, rgba(31, 78, 140, .06) 0 1px, transparent 1px 22px),
+                 repeating-linear-gradient(90deg, rgba(31, 78, 140, .06) 0 1px, transparent 1px 22px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.8) contrast(1.06);
+  --eid-title-tracking: .01em;
+  --eid-corner: 2px;
+  --eid-motion: 120ms;
+  --eid-ease: linear;
+}
+/* A régua passa a etiqueta de terminal, que é como estes registos se leem. */
+.entity-skin[data-identity='police'] .data-rail {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  letter-spacing: .18em;
+}
+
+/* Os veículos, por classe. */
+.entity-skin[data-identity='vehicle-exotic'] {
+  --eid-accent: #B01050;
+  --eid-accent-2: #1D6FB8;
+  --eid-wash: #FBF5F8;
+  --eid-surface: #FFFDFE;
+  --eid-rule: rgba(120, 24, 70, .22);
+  --eid-texture: linear-gradient(112deg, rgba(176, 16, 80, .12), transparent 48%);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(1.14) contrast(1.05);
+  --eid-corner: 14px;
+  --eid-motion: 170ms;
+  --eid-ease: cubic-bezier(.16, 1, .3, 1);
+}
+.entity-skin[data-identity='vehicle-muscle'] {
+  --eid-accent: #A33A1E;
+  --eid-accent-2: #4A4033;
+  --eid-wash: #FAF5F0;
+  --eid-surface: #FEFCFA;
+  --eid-rule: rgba(90, 58, 40, .3);
+  --eid-texture: repeating-linear-gradient(90deg, rgba(90, 58, 40, .05) 0 2px, transparent 2px 14px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(1.02) contrast(1.07);
+  --eid-title-weight: 850;
+  --eid-corner: 5px;
+  --eid-motion: 260ms;
+}
+.entity-skin[data-identity='vehicle-utility'] {
+  --eid-accent: #8A6A12;
+  --eid-accent-2: #4F5A4A;
+  --eid-wash: #F7F6F0;
+  --eid-surface: #FDFCF8;
+  --eid-rule: rgba(78, 70, 40, .3);
+  --eid-texture: repeating-linear-gradient(45deg, rgba(120, 100, 40, .07) 0 7px, transparent 7px 15px);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.88) contrast(1.04);
+  --eid-corner: 3px;
+  --eid-motion: 210ms;
+}
+.entity-skin[data-identity='vehicle-air'] {
+  --eid-accent: #2A6FA8;
+  --eid-accent-2: #6E7B86;
+  --eid-wash: #F2F7FB;
+  --eid-surface: #FBFDFF;
+  --eid-rule: rgba(42, 111, 168, .24);
+  --eid-texture: linear-gradient(180deg, rgba(42, 111, 168, .14), transparent 46%);
+  --eid-texture-opacity: 1;
+  --eid-media: saturate(.96) brightness(1.04);
+  --eid-corner: 12px;
+  --eid-motion: 320ms;
+  --eid-ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* Quem pediu menos movimento fica com a pele e sem o ritmo dela: as cores, a
+   textura e o tratamento das imagens não são movimento e mantêm-se. */
+@media (prefers-reduced-motion: reduce) {
+  .entity-skin {
+    --eid-motion: 1ms;
+    --eid-ease: linear;
+  }
+  .entity-skin[data-identity] img { transition: none; }
+}

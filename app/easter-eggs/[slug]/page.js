@@ -45,6 +45,7 @@ function App() {
       trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Secrets', href: '/easter-eggs' }, { label: egg.name }]}
       kind="secrets"
       slug={egg.slug}
+      record={egg}
       ghost="CLASSIFIED"
       title={egg.name}
       eyebrow={

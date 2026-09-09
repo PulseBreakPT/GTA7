@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { Breadcrumb, CategoryFooter, CitePage, Hatnote, InfoRow, InfoboxShell, Navbox, PageInformation, PageTools, References, StubNotice, TableOfContents, WhatLinksHere, WhatThisLinks, WikiSection, WikiText, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { worldBranches, worldEntries, worldEntryBySlug } from '@/lib/world-content'
+import { identityFor } from '@/lib/entity-identity'
 
 export default async function WorldEntryPage({ params }) {
   const { slug } = await params
@@ -24,7 +25,10 @@ export default async function WorldEntryPage({ params }) {
   ]
 
   return (
-    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+    <div 
+      data-identity={identityFor('world', item.slug, item) || undefined}
+      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
+    >
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'World', href: '/database/world' }, { label: item.name }]} />
 
       <header className="wiki-article-header mt-5">

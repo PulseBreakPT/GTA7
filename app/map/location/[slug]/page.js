@@ -7,6 +7,7 @@ import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/co
 import { SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, SeeAlso, ExternalLinks, LeadParagraph } from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
+import { identityFor } from '@/lib/entity-identity'
 
 export default function LocationPage() {
   const { slug } = useParams()
@@ -32,7 +33,10 @@ export default function LocationPage() {
   ]
 
   return (
-    <div className="ambient-bloom px-3 sm:px-5 lg:px-6 py-4 max-w-[1400px] w-full mx-auto">
+    <div 
+      data-identity={identityFor('locations', loc.slug, loc) || undefined}
+      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
+    >
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
 
       <header className="wiki-article-header mt-6">

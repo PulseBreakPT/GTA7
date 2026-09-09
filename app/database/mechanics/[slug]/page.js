@@ -8,6 +8,7 @@ import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
 import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools, ShortDescription, SeeAlso, ExternalLinks, LeadParagraph} from '@/components/site/wiki'
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import { mechanics, characters } from '@/lib/content'
+import { identityFor } from '@/lib/entity-identity'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House }
 
@@ -35,7 +36,10 @@ export default function MechanicPage() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div 
+      data-identity={identityFor('mechanics', m.slug, m) || undefined}
+      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
+    >
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Mechanics', href: '/database/mechanics' }, { label: m.name }]} />
 
         <header className="wiki-article-header mt-5">

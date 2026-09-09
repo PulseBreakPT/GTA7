@@ -10,6 +10,7 @@ import { RecordNotFound } from '@/components/site/wiki-entry'
 import VehicleVisual from '@/components/site/vehicle-visual'
 import { vehicles, vehicleClasses } from '@/lib/content'
 import Image from 'next/image'
+import { identityFor } from '@/lib/entity-identity'
 
 // A ordem é a das fichas de veículo das wikis grandes: identificação e
 // imagem primeiro, depois o que a fonte diz, depois desempenho, depois
@@ -82,7 +83,10 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div 
+      data-identity={identityFor('vehicles', v.slug, v) || undefined}
+      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
+    >
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Vehicles', href: '/database/vehicles' }, { label: v.name }]} />
 
         {/* Cabeçalho fora da grelha: nas fichas de wiki o nome vem sempre

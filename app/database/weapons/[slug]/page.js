@@ -10,6 +10,7 @@ import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGr
 import { RecordNotFound } from '@/components/site/wiki-entry'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
+import { identityFor } from '@/lib/entity-identity'
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview', icon: FileText },
@@ -69,7 +70,10 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div 
+      data-identity={identityFor('weapons', w.slug, w) || undefined}
+      className="entity-skin ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto"
+    >
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Weapons', href: '/database/weapons' }, { label: w.name }]} />
 
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
