@@ -7,9 +7,10 @@ import {
   ArrowRight, Car, ChevronLeft, ChevronRight, Clock3, Dices, Headphones,
   MapPin, MoonStar, Palmtree, Search, Sparkles, Sun, Sunrise, Users, X,
 } from 'lucide-react'
-import { characters, locations, radioStations, regions, vehicles } from '@/lib/content'
+import { characters, extendedLookBrief, locations, radioStations, regions, vehicles } from '@/lib/content'
 import { Breadcrumb } from '@/components/site/wiki'
 import { StatusBadge, cx } from '@/components/site/ui'
+import { ReleaseCountdown } from '@/components/site/home-client'
 
 const CITY_ZONE = 'America/New_York'
 const CITY_PLACES = locations.filter((item) => item.region === 'vice-city')
@@ -121,6 +122,7 @@ export default function ViceCityHub() {
           <Feature number={1} icon={Clock3} title="Vice City time" description="A live clock using the city’s Eastern time zone." className="vice-feature-compact">
             <time className="vice-live-time" aria-live="off">{clock.time}</time>
             <span className="vice-live-date">{clock.date}</span>
+            <ReleaseCountdown releaseDate={extendedLookBrief.releaseDate} variant="full" className="vice-countdown" />
           </Feature>
 
           <Feature number={2} icon={ActivePhaseIcon} title="City phase" description="The desk changes its cue with the local hour." className="vice-feature-compact">

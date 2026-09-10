@@ -2,10 +2,11 @@
 
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
-import { Search, X } from 'lucide-react'
-import { IMG } from '@/lib/content'
+import Link from 'next/link'
+import { ArrowUpRight, Search, X } from 'lucide-react'
+import { IMG, characters, locations, mechanics, vehicles, weapons } from '@/lib/content'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
-import { cx } from '@/components/site/ui'
+import { GhostBadge, SourceChip, cx } from '@/components/site/ui'
 import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 // A galeria não tem lista própria: lê o catálogo de imagens do arquivo e
@@ -42,9 +43,43 @@ const ROCKSTAR_MEDIA_SNAPSHOT = [
 const titleFrom = (src) =>
   src.split('/').pop().replace(/\.[a-z0-9]+$/i, '').replace(/-/g, ' ').replace(/^\w/, (ch) => ch.toUpperCase())
 
+// The archive already knows the source of most of its own pictures — every
+// database record cites one. This just points the gallery at that existing
+// citation instead of inventing captions from filenames.
+//
+// An image an entry reuses as generic context (a mechanic illustrated with
+// the same key art as three others) has no single owner, so it is left with
+// its filename caption rather than credited to whichever entry happened to
+// be indexed last.
+function buildSourceIndex() {
+  const seen = {}
+  const add = (item, kind, hrefBase) => {
+    if (!item?.image) return
+    (seen[item.image] ||= []).push({
+      kind, name: item.name, status: item.status,
+      sourceName: item.sourceName, sourceUrl: item.sourceUrl,
+      spotted: (item.association || '').split('·')[0].trim() || null,
+      href: `${hrefBase}/${item.slug}`,
+    })
+  }
+  vehicles.forEach((v) => add(v, 'vehicle', '/database/vehicles'))
+  characters.forEach((c) => add(c, 'character', '/database/characters'))
+  weapons.forEach((w) => add(w, 'weapon', '/database/weapons'))
+  mechanics.forEach((m) => add(m, 'mechanic', '/database/mechanics'))
+  locations.forEach((l) => add(l, 'location', '/map/location'))
+
+  const index = {}
+  for (const [src, matches] of Object.entries(seen)) if (matches.length === 1) index[src] = matches[0]
+  return index
+}
+const SOURCE_INDEX = buildSourceIndex()
+
 const ITEMS = Object.values(IMG)
   .filter((src, i, all) => all.indexOf(src) === i)
-  .map((src) => ({ src, group: src.split('/')[2], title: titleFrom(src) }))
+  .map((src) => {
+    const sourced = SOURCE_INDEX[src]
+    return { src, group: src.split('/')[2], title: sourced?.name || titleFrom(src), sourced }
+  })
   .filter((item) => item.group && !EXCLUDED.has(item.group))
 
 export default function MediaPage() {
@@ -138,10 +173,15 @@ export default function MediaPage() {
             >
               <span className="relative block aspect-[16/10] bg-surface2">
                 <Image src={item.src} alt={item.title} fill sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+                {item.sourced && (
+                  <span className="absolute top-1.5 left-1.5 rounded-sm bg-ink/70 backdrop-blur-sm p-0.5 leading-none">
+                    <GhostBadge status={item.sourced.status} />
+                  </span>
+                )}
               </span>
               <span className="block p-2.5">
                 <span className="block font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-paper truncate">{item.title}</span>
-                <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5">{item.group.replace(/-/g, ' ')}</span>
+                <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5 truncate">{item.sourced?.spotted || item.group.replace(/-/g, ' ')}</span>
               </span>
             </button>
           ))}
@@ -158,7 +198,16 @@ export default function MediaPage() {
             <div className="mt-3 flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <p className="font-cond font-bold uppercase tracking-[0.06em] text-[16px] text-paper truncate">{zoom.title}</p>
-                <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim mt-0.5">{zoom.group.replace(/-/g, ' ')}</p>
+                <p className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim mt-0.5">{zoom.sourced?.spotted || zoom.group.replace(/-/g, ' ')}</p>
+                {zoom.sourced && (
+                  <div className="flex flex-wrap items-center gap-2 mt-2.5">
+                    <GhostBadge status={zoom.sourced.status} />
+                    <SourceChip name={zoom.sourced.sourceName} url={zoom.sourced.sourceUrl} />
+                    <Link href={zoom.sourced.href} className="inline-flex items-center gap-1 font-cond uppercase tracking-[0.1em] text-[11px] text-paper hover:text-pink transition-colors">
+                      View full entry <ArrowUpRight size={12} />
+                    </Link>
+                  </div>
+                )}
               </div>
               <button type="button" onClick={() => setZoom(null)} className="shrink-0 w-10 h-10 flex items-center justify-center border border-line text-paper hover:border-black/50 transition-colors" aria-label="Close image">
                 <X size={18} />

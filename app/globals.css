@@ -5203,6 +5203,15 @@ time { font-family: var(--type-code); font-variant-numeric: tabular-nums slashed
 
 .vice-live-time { color: var(--vice-hub-ink); font: 600 clamp(2.4rem, 5vw, 4.2rem)/.9 var(--type-code); letter-spacing: -.06em; }
 .vice-live-date { margin-top: .7rem; color: var(--vice-hub-dim); font: 700 .7rem/1.35 var(--type-interface); letter-spacing: .08em; text-transform: uppercase; }
+
+/* Paired with the live clock above it, not a feature of its own: one says
+   what time it is here, this says how long until it's real. Same card, same
+   border-top divider language as the rest of the hub. */
+.vice-countdown { display: flex; gap: .85rem; margin-top: .85rem; padding-top: .85rem; border-top: 1px solid var(--surface-border); }
+.vice-countdown-unit { display: flex; flex-direction: column; align-items: flex-start; padding-left: .85rem; border-left: 1px solid var(--surface-border); }
+.vice-countdown-unit:first-child { padding-left: 0; border-left: 0; }
+.vice-countdown-unit b { color: var(--vice-pink); font: 700 1.3rem/1 var(--type-code); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.vice-countdown-unit small { margin-top: .25rem; color: var(--vice-hub-dim); font: 700 .58rem/1 var(--type-interface); letter-spacing: .1em; text-transform: uppercase; }
 .vice-phase { display: flex; align-items: center; gap: .9rem; color: var(--vice-violet); }
 .vice-phase div { min-width: 0; }
 .vice-phase strong { display: block; color: var(--vice-hub-ink); font: 700 1.4rem/1 var(--type-display); text-transform: uppercase; }
