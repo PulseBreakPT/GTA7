@@ -7,8 +7,15 @@ import { useRouter } from 'next/navigation'
 import { Activity, Bell, Bookmark, BookOpen, CheckCircle2, Clock3, Download, Eraser, Eye, FolderPlus, Globe2, History, KeyRound, Laptop, ListChecks, LogOut, MailCheck, PenLine, Pin, PinOff, Save, Settings2, ShieldCheck, Smartphone, Sparkles, StickyNote, Trash2, Trophy, UserRound } from 'lucide-react'
 import { useAuth } from '@/components/site/auth-provider'
 import { cx } from '@/components/site/ui'
-import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
-import CollapsibleFilters from '@/components/site/collapsible-filters'
+
+// ---------------------------------------------------------------------------
+// THE ARCHIVE DESK
+//
+// The account page now speaks the front page's language: a dark plate carrying
+// the identity, a white slab of destinations riding its lower edge, numbered
+// section heads on a rule, and white record cards. Only the presentation
+// changed — every action, request and guard below is the one that was here.
+// ---------------------------------------------------------------------------
 
 const eventLabel = (action) => ({
   'account.created': 'Account created', 'session.login': 'Signed in', 'session.logout': 'Signed out',
@@ -24,6 +31,22 @@ const eventLabel = (action) => ({
 }[action] || action.replaceAll('.', ' '))
 
 const formatDate = (value) => value ? new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) : '—'
+const formatDay = (value) => value ? new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' }).format(new Date(value)) : '—'
+
+// Each destination carries its own index and standfirst, so every section of
+// the desk opens the way a section of the front page opens.
+const SECTIONS = {
+  overview: { index: 1, tone: 'pink', kicker: 'Identity', title: 'Who you are here', copy: 'Your public identity in the archive, the record the server keeps of it, and what you have earned reading it.' },
+  watchlist: { index: 2, tone: 'pink', kicker: 'Following', title: 'Watchlist and trail', copy: 'The pages you chose to follow, and the private trail of what you have read.' },
+  collections: { index: 3, tone: 'violet', kicker: 'Dossiers', title: 'Personal collections', copy: 'Group entries into research dossiers that belong only to you. A page can sit in several at once.' },
+  notes: { index: 4, tone: 'cyan', kicker: 'Marginalia', title: 'Private notes', copy: 'Your own research layer on top of the archive. Notes are never public and never reach an editor.' },
+  contributions: { index: 5, tone: 'violet', kicker: 'Editorial', title: 'Contributions', copy: 'Suggestions enter a moderated queue. Nothing you submit overwrites a sourced article directly.' },
+  notifications: { index: 6, tone: 'sun', kicker: 'Signal', title: 'Notices', copy: 'Changes to pages you watch, and decisions on what you submitted.' },
+  preferences: { index: 7, tone: 'cyan', kicker: 'Controls', title: 'Preferences', copy: 'Settings that change how the archive behaves for this account, applied the moment you save them.' },
+  security: { index: 8, tone: 'pink', kicker: 'Credentials', title: 'Password and deletion', copy: 'The two irreversible controls on this account, kept apart from everything else.' },
+  sessions: { index: 9, tone: 'violet', kicker: 'Devices', title: 'Active sessions', copy: 'Only opaque session records are stored. Revoke anything you do not recognise.' },
+  activity: { index: 10, tone: 'sun', kicker: 'Audit', title: 'Security activity', copy: 'A privacy-reduced trail kept for 180 days. Raw IP addresses are never stored.' },
+}
 
 export default function AccountClient({ initialUser, initialSession, initialSection = 'overview', initialTarget = null }) {
   const router = useRouter()
@@ -209,13 +232,35 @@ export default function AccountClient({ initialUser, initialSession, initialSect
     if (data) await loadWiki()
   }
 
-  const tabs = useMemo(() => [
-    ['overview', 'Identity', UserRound], ['watchlist', 'Watchlist', Bookmark],
-    ['collections', 'Collections', FolderPlus], ['notes', 'Notes', StickyNote],
-    ['contributions', 'Contributions', PenLine], ['notifications', 'Notices', Bell],
-    ['preferences', 'Preferences', Settings2], ['security', 'Password', KeyRound],
-    ['sessions', 'Sessions', Laptop], ['activity', 'Security log', Activity],
+  const groups = useMemo(() => [
+    {
+      label: 'Your archive',
+      items: [
+        ['overview', 'Identity', UserRound],
+        ['watchlist', 'Watchlist', Bookmark],
+        ['collections', 'Collections', FolderPlus],
+        ['notes', 'Notes', StickyNote],
+      ],
+    },
+    {
+      label: 'Editorial',
+      items: [
+        ['contributions', 'Contributions', PenLine],
+        ['notifications', 'Notices', Bell],
+      ],
+    },
+    {
+      label: 'Account',
+      items: [
+        ['preferences', 'Preferences', Settings2],
+        ['security', 'Password', KeyRound],
+        ['sessions', 'Sessions', Laptop],
+        ['activity', 'Security log', Activity],
+      ],
+    },
   ], [])
+
+  const unreadCount = wiki.notifications.filter((item) => item.unread).length
 
   const visibleNotifications = wiki.notifications.filter((item) => (
     notificationFilter === 'all'
@@ -224,206 +269,553 @@ export default function AccountClient({ initialUser, initialSession, initialSect
       || (notificationFilter === 'contributions' && item.type.startsWith('suggestion.'))
   ))
 
+  const meta = SECTIONS[section] || SECTIONS.overview
+
   return (
-    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1240px] w-full mx-auto flex-1">
-      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Account' }]} />
-      <div className="mt-4">
-        <CategoryHeader eyebrow={`Account · ${user.role}`} title={user.displayName} description={`@${user.username} · Member since ${formatDate(user.createdAt)}`} count={sessions.length} countLabel="active sessions">
-          <div className="mt-4 flex flex-wrap gap-2">
-            <span className={cx('inline-flex items-center gap-1.5 border rounded-sm px-2.5 h-8 font-cond font-semibold uppercase tracking-[0.1em] text-[10px]', user.emailVerified ? 'border-mint/40 text-mint' : 'border-warn/40 text-warn')}>
-              {user.emailVerified ? <CheckCircle2 size={12} /> : <MailCheck size={12} />} {user.emailVerified ? 'Verified email' : 'Email pending'}
-            </span>
-            <span className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 h-8 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim"><ShieldCheck size={12} /> Role: {user.role}</span>
-          </div>
-        </CategoryHeader>
-      </div>
-
-      <div className="mt-5 flex gap-1 overflow-x-auto border-b hairline" role="tablist" aria-label="Account sections">
-        {tabs.map(([id, label, Icon]) => <button key={id} type="button" role="tab" aria-selected={section === id} onClick={() => { setSection(id); setMessage(''); setError('') }} className={cx('shrink-0 min-h-[42px] inline-flex items-center gap-2 px-3 border-b-2 font-cond font-bold uppercase tracking-[0.12em] text-[11px]', section === id ? 'border-pink text-pink' : 'border-transparent text-dim hover:text-paper')}><Icon size={13} />{label}</button>)}
-        <button type="button" onClick={logout} className="ml-auto shrink-0 min-h-[42px] inline-flex items-center gap-2 px-3 font-cond font-bold uppercase tracking-[0.12em] text-[11px] text-dim hover:text-pink"><LogOut size={13} />Sign out</button>
-      </div>
-
-      {(message || error) && <p role={error ? 'alert' : 'status'} className={cx('mt-4 border-l-2 px-3 py-2 text-[12px] text-paper', error ? 'border-pink bg-pink/[0.05]' : 'border-mint bg-mint/[0.05]')}>{error || message}</p>}
-
-      {section === 'overview' && (
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-6 items-start">
-          <form onSubmit={saveProfile} className="panel rounded-sm p-5 sm:p-6 space-y-4">
-            <h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Public identity</h2>
-            <AccountField label="Display name" value={profile.displayName} onChange={(event) => setProfile({ ...profile, displayName: event.target.value })} minLength={2} maxLength={50} required />
-            <AccountField label="Username" value={profile.username} onChange={(event) => setProfile({ ...profile, username: event.target.value })} minLength={3} maxLength={30} pattern="[A-Za-z0-9_-]+" required hint="Letters, numbers, _ and -" />
-            <label className="block"><span className="font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim">Bio <small className="font-mono normal-case tracking-normal">{profile.bio.length}/240</small></span><textarea value={profile.bio} onChange={(event) => setProfile({ ...profile, bio: event.target.value })} maxLength={240} rows={4} className="mt-1.5 w-full border border-line rounded-sm p-3 bg-white/70 outline-none text-[13px] text-paper resize-y" /></label>
-            <button disabled={busy === 'profile'} className="h-11 px-5 inline-flex items-center gap-2 bg-paper text-ink font-cond font-bold uppercase tracking-[0.14em] text-[11px] disabled:opacity-50"><Save size={13} />{busy === 'profile' ? 'Saving…' : 'Save profile'}</button>
-          </form>
-          <aside className="panel rounded-sm p-5">
-            <h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[15px] text-paper">Account record</h2>
-            <dl className="mt-4 divide-y divide-black/[0.07]">
-              {[['Email', user.email], ['Email status', user.emailVerified ? 'Verified' : 'Pending'], ['Role', user.role], ['Account ID', user.id]].map(([label, value]) => <div key={label} className="py-2.5"><dt className="font-cond uppercase tracking-[0.12em] text-[9px] text-dim">{label}</dt><dd className="mt-1 font-mono text-[10px] text-paper break-all">{value}</dd></div>)}
-            </dl>
-            {!user.emailVerified && capabilities.emailDelivery && <button disabled={busy === 'verify'} onClick={() => act('verify', () => request('resend-verification'))} className="mt-4 w-full h-10 border border-mint/40 font-cond font-bold uppercase tracking-[0.12em] text-[10px] text-mint hover:border-mint disabled:opacity-50">Send verification email</button>}
-            {!user.emailVerified && !capabilities.emailDelivery && <p className="mt-4 border-l-2 border-warn pl-3 text-[10px] leading-relaxed text-dim">Email verification is ready but delivery awaits server configuration.</p>}
-            {preferences.publicProfile && <Link href={`/users/${encodeURIComponent(user.username)}`} className="mt-4 w-full h-10 border border-violet/35 inline-flex items-center justify-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-[10px] text-violet hover:border-violet"><Globe2 size={13} />View public user page</Link>}
-            <div className="mt-4 grid grid-cols-3 gap-2">
-              {[[wiki.metrics.watched || 0, 'Watched'], [wiki.metrics.read || 0, 'Read'], [wiki.metrics.totalViews || 0, 'Views'], [wiki.metrics.collections || 0, 'Collections'], [wiki.metrics.notes || 0, 'Notes'], [wiki.metrics.accepted || 0, 'Accepted']].map(([value, label]) => <div key={label} className="bg-surface2/60 border border-line p-2 text-center"><strong className="block font-cond text-[20px] text-paper">{value}</strong><span className="font-mono uppercase text-[7px] tracking-[0.1em] text-dim">{label}</span></div>)}
+    <div className="acc-desk">
+      {/* ---- Identity header ------------------------------------------------
+          The front page's editorial construction on paper: a coloured kicker,
+          the name at display size, a rule, and a rail of real counts. */}
+      <section className="acc-plate" aria-labelledby="acc-name">
+        <div className="acc-plate-body">
+          <div className="acc-lockup">
+            <span className="acc-monogram" aria-hidden="true">{user.displayName.charAt(0).toUpperCase()}</span>
+            <div>
+              <p className="acc-plate-kicker"><i aria-hidden="true" />Archive desk<span>·</span>{user.role}</p>
+              <h1 id="acc-name">{user.displayName}</h1>
+              <p className="acc-plate-sub">@{user.username}<span>·</span>Member since {formatDay(user.createdAt)}</p>
             </div>
-          </aside>
-          <section className="lg:col-span-2 panel rounded-sm p-5 sm:p-6">
-            <div className="flex items-center gap-2"><Trophy size={16} className="text-pink" /><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[17px] text-paper">Archive achievements</h2><span className="ml-auto font-mono text-[9px] text-dim">{wiki.achievements.filter((item) => item.unlocked).length}/{wiki.achievements.length}</span></div>
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">{wiki.achievements.map((item) => <div key={item.id} className={cx('border rounded-sm p-3', item.unlocked ? 'border-violet/35 bg-gradient-to-br from-violet/[0.07] to-pink/[0.05]' : 'border-line opacity-55')}><Sparkles size={14} className={item.unlocked ? 'text-pink' : 'text-dim'} /><strong className="mt-2 block font-cond font-bold uppercase text-[12px] text-paper">{item.label}</strong><span className="mt-1 block text-[9px] leading-relaxed text-dim">{item.description}</span></div>)}</div>
-          </section>
-        </div>
-      )}
-
-      {section === 'watchlist' && (
-        <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
-          <section className="panel rounded-sm p-5 sm:p-6">
-            <div className="flex items-center gap-3"><Bookmark size={16} className="text-pink" /><div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Watchlist</h2><p className="text-[11px] text-dim">Pages you chose to follow.</p></div><span className="ml-auto font-mono text-[10px] text-dim">{wiki.watchlist.length}</span></div>
-            {wiki.watchlist.length ? <ul className="mt-4 divide-y divide-black/[0.08] border-t hairline">{wiki.watchlist.map((item) => <li key={item.key} className={cx('py-3 flex items-center gap-3', item.pinned && 'bg-violet/[0.035]')}><button type="button" disabled={busy === `pin-${item.key}`} onClick={() => togglePin(item)} aria-label={item.pinned ? `Unpin ${item.title}` : `Pin ${item.title}`} className={cx('w-8 h-8 grid place-items-center border shrink-0', item.pinned ? 'border-violet/40 text-violet' : 'border-line text-dim hover:text-violet')}>{item.pinned ? <PinOff size={12} /> : <Pin size={12} />}</button><Link href={item.href} className="flex-1 min-w-0 font-cond font-semibold uppercase tracking-[0.05em] text-[13px] text-paper hover:text-pink truncate">{item.title}</Link><span className="hidden sm:block font-mono text-[8px] uppercase text-dim">{item.pinned ? 'Pinned' : `Since ${formatDate(item.createdAt)}`}</span><button type="button" disabled={busy === `watch-${item.key}`} onClick={() => removeWatch(item)} aria-label={`Stop watching ${item.title}`} className="w-8 h-8 grid place-items-center border border-line text-dim hover:text-pink"><Trash2 size={12} /></button></li>)}</ul> : <EmptyState icon={Bookmark} title="Nothing watched yet" text="Open an encyclopedia entry and choose Watch in its page tools." />}
-          </section>
-          <section className="panel rounded-sm p-5 sm:p-6">
-            <div className="flex items-center gap-3"><History size={16} className="text-violet" /><div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Reading history</h2><p className="text-[11px] text-dim">Private to your account and controlled in Preferences.</p></div>{wiki.history.length > 0 && <button type="button" disabled={busy === 'history-clear'} onClick={clearHistory} className="ml-auto h-8 px-2.5 inline-flex items-center gap-1.5 border border-line font-cond font-bold uppercase text-[9px] text-dim hover:text-pink"><Eraser size={11} />Clear</button>}</div>
-            {wiki.history.length ? <ol className="mt-4 divide-y divide-black/[0.08] border-t hairline">{wiki.history.map((item) => <li key={item.key} className="py-3 flex items-center gap-3"><Eye size={13} className="text-dim shrink-0" /><Link href={item.href} className="flex-1 min-w-0 font-cond font-semibold uppercase tracking-[0.05em] text-[13px] text-paper hover:text-violet truncate">{item.title}</Link><span className="font-mono text-[8px] text-dim">{item.viewCount}× · {formatDate(item.lastViewedAt)}</span></li>)}</ol> : <EmptyState icon={History} title={preferences.recordHistory ? 'No reading history yet' : 'History is disabled'} text={preferences.recordHistory ? 'Visited wiki entries will appear here.' : 'Enable it in Preferences if you want a private reading trail.'} />}
-          </section>
-        </div>
-      )}
-
-      {section === 'collections' && (
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-6 items-start">
-          <section>
-            <div className="flex items-end justify-between gap-3"><div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Personal collections</h2><p className="mt-1 text-[12px] text-dim">Organise entries into research dossiers that belong only to you.</p></div><span className="font-mono text-[10px] text-dim">{wiki.collections.length}/50</span></div>
-            {initialTarget && <div className="mt-4 panel rounded-sm p-4 border-violet/25"><span className="font-cond uppercase tracking-[0.12em] text-[9px] text-dim">Adding page</span><Link href={initialTarget.href} className="mt-1 block font-cond font-bold uppercase text-[15px] text-paper hover:text-violet">{initialTarget.title}</Link><p className="mt-2 text-[10px] text-dim">Choose a collection below. A page can belong to several collections.</p></div>}
-            {wiki.collections.length ? <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">{wiki.collections.map((collection) => {
-              const items = wiki.collectionItems.filter((item) => item.collectionId === collection.id)
-              const targetKey = initialTarget && `${initialTarget.kind}:${initialTarget.slug}`
-              const containsTarget = Boolean(targetKey && items.some((item) => item.key === targetKey))
-              return <article key={collection.id} className="panel rounded-sm overflow-hidden"><div className={cx('h-1', collectionTone(collection.color))} /><div className="p-4"><div className="flex items-start gap-3"><FolderPlus size={15} className="mt-0.5 text-violet" /><div className="flex-1 min-w-0"><h3 className="font-cond font-bold uppercase text-[15px] text-paper truncate">{collection.name}</h3><p className="mt-1 text-[10px] leading-relaxed text-dim">{collection.description || 'Private wiki collection'}</p></div><button type="button" disabled={busy === `collection-${collection.id}`} onClick={() => deleteCollection(collection.id)} aria-label={`Delete ${collection.name}`} className="w-8 h-8 grid place-items-center border border-line text-dim hover:text-pink"><Trash2 size={12} /></button></div>{initialTarget && <button type="button" disabled={busy === `collection-item-${collection.id}`} onClick={() => toggleCollectionItem(collection)} className={cx('mt-3 w-full h-9 border font-cond font-bold uppercase tracking-[0.1em] text-[9px]', containsTarget ? 'border-pink/40 text-pink' : 'border-violet/40 text-violet')}>{containsTarget ? 'Remove current page' : 'Add current page'}</button>}<ul className="mt-3 divide-y divide-black/[0.06]">{items.slice(0, 6).map((item) => <li key={item.key}><Link href={item.href} className="py-2 flex items-center gap-2 font-cond font-semibold uppercase text-[11px] text-dim hover:text-paper"><Bookmark size={10} />{item.title}</Link></li>)}</ul><span className="mt-2 block font-mono text-[8px] uppercase text-dim">{items.length} {items.length === 1 ? 'page' : 'pages'}</span></div></article>
-            })}</div> : <EmptyState icon={FolderPlus} title="No collections yet" text="Create a dossier for characters, vehicles, theories, sources or anything you are researching." />}
-          </section>
-          <form onSubmit={createCollection} className="panel rounded-sm p-5 lg:sticky lg:top-24">
-            <h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[16px] text-paper">New collection</h2>
-            <div className="mt-4 space-y-4"><AccountField label="Name" value={collectionForm.name} onChange={(event) => setCollectionForm({ ...collectionForm, name: event.target.value })} minLength={2} maxLength={40} required /><AccountField label="Description" value={collectionForm.description} onChange={(event) => setCollectionForm({ ...collectionForm, description: event.target.value })} maxLength={160} hint={`${collectionForm.description.length}/160`} /><label className="block"><span className="font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim">Colour</span><select value={collectionForm.color} onChange={(event) => setCollectionForm({ ...collectionForm, color: event.target.value })} className="mt-1.5 w-full h-11 border border-line rounded-sm px-3 bg-white/70 text-[13px] text-paper"><option value="violet">Vice violet</option><option value="pink">Neon pink</option><option value="mint">Ocean mint</option><option value="sunset">Sunset</option><option value="ocean">Deep ocean</option></select></label></div>
-            <button disabled={busy === 'collection-create'} className="mt-5 h-11 w-full inline-flex items-center justify-center gap-2 bg-paper text-ink font-cond font-bold uppercase tracking-[0.14em] text-[11px] disabled:opacity-50"><FolderPlus size={13} />{busy === 'collection-create' ? 'Creating…' : 'Create collection'}</button>
-          </form>
-        </div>
-      )}
-
-      {section === 'notes' && (
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6 items-start">
-          <section className="panel rounded-sm p-5 sm:p-6">
-            <div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Private article note</h2><p className="mt-1 text-[12px] text-dim">Your personal research layer. Notes are never public or sent to editors.</p></div>
-            {initialTarget ? <form onSubmit={saveNote} className="mt-5"><div className="border-l-2 border-mint bg-mint/[0.04] px-3 py-2"><span className="font-cond uppercase tracking-[0.12em] text-[9px] text-dim">Page</span><Link href={initialTarget.href} className="block mt-1 font-cond font-bold uppercase text-[14px] text-paper hover:text-mint">{initialTarget.title}</Link></div><label className="mt-4 block"><span className="font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim">Note <small className="font-mono normal-case tracking-normal">{noteBody.length}/3000</small></span><textarea value={noteBody} onChange={(event) => setNoteBody(event.target.value)} maxLength={3000} rows={12} placeholder="Connections, questions, source leads…" className="mt-1.5 w-full border border-line rounded-sm p-3 bg-white/70 outline-none text-[13px] leading-relaxed text-paper resize-y" /></label><button disabled={busy === 'note'} className="mt-4 h-11 px-5 inline-flex items-center gap-2 bg-paper text-ink font-cond font-bold uppercase tracking-[0.14em] text-[11px] disabled:opacity-50"><Save size={13} />{busy === 'note' ? 'Saving…' : noteBody.trim() ? 'Save private note' : 'Delete note'}</button></form> : <EmptyState icon={StickyNote} title="Choose an article first" text="Open an entry and select Private note in its page tools." action={<Link href="/wiki" className="font-cond font-bold uppercase tracking-[0.12em] text-[10px] text-pink">Browse the wiki</Link>} />}
-          </section>
-          <aside className="panel rounded-sm p-5">
-            <div className="flex items-center gap-2"><StickyNote size={15} className="text-mint" /><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[16px] text-paper">Recent notes</h2><span className="ml-auto font-mono text-[9px] text-dim">{wiki.notes.length}</span></div>
-            {wiki.notes.length ? <ol className="mt-4 divide-y divide-black/[0.08]">{wiki.notes.map((item) => <li key={item.key} className="py-3"><div className="flex items-start gap-2"><Link href={`/account?section=notes&kind=${encodeURIComponent(item.kind)}&slug=${encodeURIComponent(item.slug)}`} className="flex-1 font-cond font-bold uppercase text-[12px] text-paper hover:text-mint">{item.title}</Link><button type="button" disabled={busy === `note-${item.key}`} onClick={() => deleteNote(item)} aria-label={`Delete note for ${item.title}`} className="w-7 h-7 grid place-items-center border border-line text-dim hover:text-pink"><Trash2 size={11} /></button></div><p className="mt-1 text-[10px] leading-relaxed text-dim line-clamp-3">{item.body}</p><span className="mt-1 block font-mono text-[8px] text-dim">Updated {formatDate(item.updatedAt)}</span></li>)}</ol> : <p className="mt-4 text-[12px] text-dim">No private notes yet.</p>}
-          </aside>
-        </div>
-      )}
-
-      {section === 'contributions' && (
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6 items-start">
-          <section className="panel rounded-sm p-5 sm:p-6">
-            <div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Suggest an improvement</h2><p className="mt-1 text-[12px] leading-relaxed text-dim">Changes enter a moderated editorial queue. They never overwrite a sourced article directly.</p></div>
-            {initialTarget ? <form onSubmit={submitSuggestion} className="mt-5 space-y-4">
-              <div className="border-l-2 border-mint bg-mint/[0.04] px-3 py-2"><span className="font-cond uppercase tracking-[0.12em] text-[9px] text-dim">Target page</span><Link href={initialTarget.href} className="block mt-1 font-cond font-bold uppercase text-[14px] text-paper hover:text-mint">{initialTarget.title}</Link></div>
-              <label className="block"><span className="font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim">Suggestion type</span><select value={suggestion.type} onChange={(event) => setSuggestion({ ...suggestion, type: event.target.value })} className="mt-1.5 w-full h-11 border border-line rounded-sm px-3 bg-white/70 text-[13px] text-paper"><option value="correction">Factual correction</option><option value="source">Better source</option><option value="expansion">Sourced expansion</option><option value="typo">Typo or formatting</option></select></label>
-              <AccountField label="Summary" value={suggestion.summary} onChange={(event) => setSuggestion({ ...suggestion, summary: event.target.value })} minLength={8} maxLength={160} required hint={`${suggestion.summary.length}/160`} />
-              <label className="block"><span className="font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim">Proposed change <small className="font-mono normal-case tracking-normal">{suggestion.details.length}/4000</small></span><textarea value={suggestion.details} onChange={(event) => setSuggestion({ ...suggestion, details: event.target.value })} minLength={20} maxLength={4000} rows={7} required className="mt-1.5 w-full border border-line rounded-sm p-3 bg-white/70 outline-none text-[13px] text-paper resize-y" /></label>
-              <AccountField label="Rockstar source URL" type="url" value={suggestion.sourceUrl} onChange={(event) => setSuggestion({ ...suggestion, sourceUrl: event.target.value })} required={suggestion.type !== 'typo'} maxLength={800} hint={suggestion.type === 'typo' ? 'Optional for typos' : 'Official rockstargames.com evidence required'} />
-              <button disabled={busy === 'suggestion'} className="h-11 px-5 inline-flex items-center gap-2 bg-paper text-ink font-cond font-bold uppercase tracking-[0.14em] text-[11px] disabled:opacity-50"><PenLine size={13} />{busy === 'suggestion' ? 'Submitting…' : 'Submit for review'}</button>
-            </form> : <EmptyState icon={PenLine} title="Choose an article first" text="Open any character, vehicle, weapon, location or other entry and select Suggest edit in its page tools." action={<Link href="/wiki" className="font-cond font-bold uppercase tracking-[0.12em] text-[10px] text-pink">Browse the wiki</Link>} />}
-          </section>
-          <aside className="panel rounded-sm p-5">
-            <div className="flex items-center gap-2"><ListChecks size={15} className="text-mint" /><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[16px] text-paper">Your submissions</h2><span className="ml-auto font-mono text-[10px] text-dim">{wiki.suggestions.length}</span></div>
-            {wiki.suggestions.length ? <ol className="mt-4 divide-y divide-black/[0.08]">{wiki.suggestions.map((item) => <li key={item.id} className="py-3"><div className="flex items-start gap-2"><Link href={item.href} className="flex-1 font-cond font-semibold uppercase text-[12px] text-paper hover:text-mint">{item.title}</Link><StatusPill value={item.status} /></div><p className="mt-1 text-[11px] leading-relaxed text-dim">{item.summary}</p><span className="mt-1 block font-mono text-[8px] uppercase text-dim">{item.type} · {formatDate(item.createdAt)}</span></li>)}</ol> : <p className="mt-4 text-[12px] text-dim">No suggestions submitted.</p>}
-            {wiki.reviewQueue.length > 0 && <div className="mt-6 border-t hairline pt-5"><div className="flex items-center gap-2"><ShieldCheck size={14} className="text-violet" /><h3 className="font-cond font-bold uppercase tracking-[0.08em] text-[14px] text-paper">Editorial queue</h3><span className="ml-auto font-mono text-[9px] text-dim">{wiki.reviewQueue.length}</span></div><ol className="mt-3 divide-y divide-black/[0.08]">{wiki.reviewQueue.map((item) => <li key={item.id} className="py-3"><Link href={item.href} className="font-cond font-bold uppercase text-[12px] text-paper hover:text-mint">{item.title}</Link><p className="mt-1 text-[11px] text-dim">{item.summary}</p>{isRockstarUrl(item.sourceUrl) && <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="mt-1 block font-mono text-[8px] text-violet break-all">Rockstar source ↗</a>}<div className="mt-2 flex gap-2"><button type="button" disabled={busy === `review-${item.id}`} onClick={() => reviewSuggestion(item.id, 'accepted')} className="h-8 px-3 border border-mint/40 font-cond font-bold uppercase text-[9px] text-mint">Accept</button><button type="button" disabled={busy === `review-${item.id}`} onClick={() => reviewSuggestion(item.id, 'rejected')} className="h-8 px-3 border border-pink/40 font-cond font-bold uppercase text-[9px] text-pink">Reject</button></div></li>)}</ol></div>}
-          </aside>
-        </div>
-      )}
-
-      {section === 'notifications' && (
-        <section className="mt-6 max-w-[860px]">
-          <div className="flex flex-wrap items-end justify-between gap-3"><div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Notifications</h2><p className="mt-1 text-[12px] text-dim">Updates to watched pages and your editorial submissions.</p></div>{wiki.notifications.some((item) => item.unread) && <button type="button" disabled={busy === 'notifications-read'} onClick={markNotificationsRead} className="h-10 px-4 border border-mint/40 font-cond font-bold uppercase tracking-[0.12em] text-[10px] text-mint">Mark all read</button>}</div>
-          <CollapsibleFilters title="Notification filters" count={visibleNotifications.length} activeCount={notificationFilter === 'all' ? 0 : 1} summary={`${visibleNotifications.length} of ${wiki.notifications.length} notifications`}>
-            <div className="wiki-filter-group" role="group" aria-label="Notification filters">{[['all', 'All'], ['unread', 'Unread'], ['watch', 'Watchlist'], ['contributions', 'Contributions']].map(([id, label]) => <button key={id} type="button" onClick={() => setNotificationFilter(id)} aria-pressed={notificationFilter === id} className={cx('filter-chip h-8 px-3 border rounded-full font-cond font-bold uppercase tracking-[0.1em] text-[9px]', notificationFilter === id ? 'border-violet text-violet bg-violet/[0.05]' : 'border-line text-dim')}>{label}</button>)}</div>
-          </CollapsibleFilters>
-          {visibleNotifications.length ? <ol className="mt-4 border border-line divide-y divide-black/[0.08]">{visibleNotifications.map((item) => <li key={item.id} className={cx('px-4 py-3 flex items-center gap-3', item.unread && 'bg-violet/[0.045]')}><span className={cx('w-2 h-2 rounded-full shrink-0', item.unread ? 'bg-pink' : 'bg-black/15')} /><Bell size={13} className="text-violet shrink-0" /><Link href={item.href} className="flex-1 font-cond font-semibold uppercase tracking-[0.05em] text-[12px] text-paper hover:text-pink">{item.title}</Link><span className="font-mono text-[8px] text-dim">{formatDate(item.createdAt)}</span></li>)}</ol> : <EmptyState icon={Bell} title={wiki.notifications.length ? 'No notices in this filter' : 'You are all caught up'} text={wiki.notifications.length ? 'Choose another notification filter.' : 'Watch pages or submit improvements to receive useful notices here.'} />}
-        </section>
-      )}
-
-      {section === 'preferences' && (
-        <form onSubmit={savePreferences} className="mt-6 max-w-[760px] panel rounded-sm p-5 sm:p-6">
-          <h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Wiki preferences</h2>
-          <p className="mt-1 text-[12px] text-dim">Controls that change account behaviour immediately.</p>
-          <div className="mt-5 divide-y divide-black/[0.08] border-y hairline">
-            <PreferenceToggle icon={Globe2} title="Public user page" text="Let readers see your display name, bio and accepted contribution count." checked={preferences.publicProfile} onChange={(value) => setPreferences({ ...preferences, publicProfile: value })} />
-            <PreferenceToggle icon={History} title="Private reading history" text="Remember recently opened encyclopedia entries. Turning this off deletes the stored history." checked={preferences.recordHistory} onChange={(value) => setPreferences({ ...preferences, recordHistory: value })} />
-            <PreferenceToggle icon={BookOpen} title="Compact reading density" text="Reduce spacing in wiki article sections and support panels on this account." checked={preferences.compactMode} onChange={(value) => setPreferences({ ...preferences, compactMode: value })} />
           </div>
-          <div className="mt-5 flex flex-wrap gap-3"><button disabled={busy === 'preferences'} className="h-11 px-5 inline-flex items-center gap-2 bg-paper text-ink font-cond font-bold uppercase tracking-[0.14em] text-[11px] disabled:opacity-50"><Save size={13} />{busy === 'preferences' ? 'Saving…' : 'Save preferences'}</button><a href="/api/auth/export" download className="h-11 px-5 inline-flex items-center gap-2 border border-violet/40 text-violet font-cond font-bold uppercase tracking-[0.14em] text-[11px] hover:border-violet"><Download size={13} />Export my wiki data</a></div>
-        </form>
-      )}
 
-      {section === 'security' && (
-        <div className="mt-6 space-y-6 max-w-[680px]">
-          <form onSubmit={changePassword} className="panel rounded-sm p-5 sm:p-6 space-y-4">
-            <div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Change password</h2><p className="mt-2 text-[12px] leading-relaxed text-dim">Requires the current password. A successful change closes every other device session.</p></div>
-            <AccountField label="Current password" type="password" autoComplete="current-password" value={password.currentPassword} onChange={(event) => setPassword({ ...password, currentPassword: event.target.value })} required />
-            <AccountField label="New password" type="password" autoComplete="new-password" minLength={15} maxLength={128} value={password.password} onChange={(event) => setPassword({ ...password, password: event.target.value })} required hint="15–128 characters" />
-            <AccountField label="Confirm new password" type="password" autoComplete="new-password" minLength={15} maxLength={128} value={password.confirm} onChange={(event) => setPassword({ ...password, confirm: event.target.value })} required />
-            <button disabled={busy === 'password'} className="h-11 px-5 inline-flex items-center gap-2 bg-paper text-ink font-cond font-bold uppercase tracking-[0.14em] text-[11px] disabled:opacity-50"><KeyRound size={13} />{busy === 'password' ? 'Securing…' : 'Change password'}</button>
-          </form>
+          <div className="acc-plate-chips">
+            <span className={cx('acc-chip', user.emailVerified ? 'is-good' : 'is-pending')}>
+              {user.emailVerified ? <CheckCircle2 size={12} /> : <MailCheck size={12} />}
+              {user.emailVerified ? 'Verified email' : 'Email pending'}
+            </span>
+            <span className="acc-chip"><ShieldCheck size={12} />Role · {user.role}</span>
+            <span className="acc-chip"><Laptop size={12} />{sessions.length} active {sessions.length === 1 ? 'session' : 'sessions'}</span>
+            {preferences.publicProfile && (
+              <Link href={`/users/${encodeURIComponent(user.username)}`} className="acc-chip is-link"><Globe2 size={12} />View public page</Link>
+            )}
+          </div>
 
-          <form onSubmit={deleteAccount} className="panel rounded-sm p-5 sm:p-6 space-y-4 border-pink/30">
-            <div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-pink">Delete account</h2><p className="mt-2 text-[12px] leading-relaxed text-dim">Permanently removes the identity, tokens and every active session. This cannot be undone.</p></div>
-            <AccountField label="Current password" type="password" autoComplete="current-password" maxLength={128} value={deletion.currentPassword} onChange={(event) => setDeletion({ ...deletion, currentPassword: event.target.value })} required />
-            <AccountField label="Type DELETE" value={deletion.confirmation} onChange={(event) => setDeletion({ ...deletion, confirmation: event.target.value })} pattern="DELETE" required />
-            <button disabled={busy === 'delete-account' || deletion.confirmation !== 'DELETE'} className="h-11 px-5 inline-flex items-center gap-2 border border-pink text-pink font-cond font-bold uppercase tracking-[0.14em] text-[11px] disabled:opacity-40"><Trash2 size={13} />{busy === 'delete-account' ? 'Deleting…' : 'Delete permanently'}</button>
-          </form>
+          <dl className="acc-plate-meta">
+            {[
+              ['Watched', wiki.metrics.watched || 0],
+              ['Read', wiki.metrics.read || 0],
+              ['Collections', wiki.metrics.collections || 0],
+              ['Notes', wiki.metrics.notes || 0],
+              ['Accepted', wiki.metrics.accepted || 0],
+            ].map(([label, value]) => (
+              <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
+            ))}
+          </dl>
         </div>
-      )}
+      </section>
 
-      {section === 'sessions' && (
-        <section className="mt-6">
-          <div className="flex flex-wrap items-end justify-between gap-3"><div><h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Active sessions</h2><p className="mt-1 text-[12px] text-dim">Only opaque session records are stored. Revoke any device you do not recognise.</p></div><button disabled={busy === 'logout-all'} onClick={closeAll} className="h-10 px-4 border border-pink/40 inline-flex items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-[10px] text-pink hover:border-pink disabled:opacity-50"><LogOut size={13} />Close all sessions</button></div>
-          <ul className="mt-4 border border-line divide-y divide-black/[0.08]">
-            {sessions.map((session) => <li key={session.id} className="px-4 py-3 flex flex-wrap items-center gap-3"><span className="w-9 h-9 rounded-full border border-line flex items-center justify-center text-mint">{session.device.includes('Mobile') ? <Smartphone size={15} /> : <Laptop size={15} />}</span><span className="flex-1 min-w-[190px]"><strong className="block font-cond uppercase tracking-[0.08em] text-[13px] text-paper">{session.device} {session.current && <span className="text-mint">· This device</span>}</strong><span className="mt-1 block font-mono text-[9px] text-dim">Last active {formatDate(session.lastSeenAt)} · expires {formatDate(session.expiresAt)}</span></span><button disabled={busy === `session-${session.id}`} onClick={() => revoke(session.id)} aria-label={`Revoke ${session.device}`} className="w-9 h-9 flex items-center justify-center border border-line text-dim hover:text-pink hover:border-pink"><Trash2 size={14} /></button></li>)}
-          </ul>
-        </section>
-      )}
+      {/* ---- Destinations --------------------------------------------------
+          The white slab that rides the plate's lower edge, exactly as the
+          front page's action bar rides the hero. */}
+      <div className="acc-layout">
+        {/* Not a tablist: these are ten separate views of the desk, with no tab
+            panels and no arrow-key contract. A navigation list with aria-current
+            is what a screen reader is actually being told here. */}
+        <nav className="acc-nav" aria-label="Account desk sections">
+          {groups.map((group) => (
+            <section key={group.label}>
+              <p className="acc-nav-label">{group.label}</p>
+              <ul>
+                {group.items.map(([id, label, Icon]) => (
+                  <li key={id}>
+                    <button
+                      type="button"
+                      aria-current={section === id ? 'page' : undefined}
+                      onClick={() => { setSection(id); setMessage(''); setError('') }}
+                      className={cx('acc-nav-item', section === id && 'is-active')}
+                    >
+                      <Icon size={15} aria-hidden="true" />
+                      <span>{label}</span>
+                      {id === 'notifications' && unreadCount > 0 && <b>{unreadCount}</b>}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+          <footer>
+            <button type="button" onClick={logout} className="acc-nav-out"><LogOut size={15} aria-hidden="true" />Sign out</button>
+          </footer>
+        </nav>
 
-      {section === 'activity' && (
-        <section className="mt-6">
-          <h2 className="font-cond font-bold uppercase tracking-[0.08em] text-[18px] text-paper">Security activity</h2>
-          <p className="mt-1 text-[12px] text-dim">A privacy-reduced audit trail retained for 180 days. Raw IP addresses are never stored.</p>
-          {events.length ? <ol className="mt-4 border border-line divide-y divide-black/[0.08]">{events.map((event) => <li key={event.id} className="px-4 py-3 flex items-center gap-3"><Clock3 size={13} className={event.outcome === 'failure' ? 'text-pink' : 'text-mint'} /><span className="flex-1 font-cond font-semibold uppercase tracking-[0.08em] text-[12px] text-paper">{eventLabel(event.action)}</span><span className="font-mono text-[9px] text-dim">{event.device} · {formatDate(event.createdAt)}</span></li>)}</ol> : <p className="mt-4 panel rounded-sm p-5 text-[13px] text-dim">No security events recorded yet.</p>}
-        </section>
-      )}
+        <div className="acc-body">
+        <SectionHead {...meta} />
+
+        {(message || error) && (
+          <p role={error ? 'alert' : 'status'} className={cx('acc-flash', error ? 'is-error' : 'is-ok')}>{error || message}</p>
+        )}
+
+        {section === 'overview' && (
+          <div className="acc-split">
+            <form onSubmit={saveProfile} className="acc-card">
+              <div className="acc-card-head">
+                <UserRound size={16} />
+                <div><h3>Public identity</h3><p>What other readers see when your profile is public.</p></div>
+              </div>
+              <div className="acc-form">
+                <AccountField label="Display name" value={profile.displayName} onChange={(event) => setProfile({ ...profile, displayName: event.target.value })} minLength={2} maxLength={50} required />
+                <AccountField label="Username" value={profile.username} onChange={(event) => setProfile({ ...profile, username: event.target.value })} minLength={3} maxLength={30} pattern="[A-Za-z0-9_-]+" required hint="Letters, numbers, _ and -" />
+                <label className="acc-label">
+                  <span><span>Bio</span><small>{profile.bio.length}/240</small></span>
+                  <textarea value={profile.bio} onChange={(event) => setProfile({ ...profile, bio: event.target.value })} maxLength={240} rows={4} />
+                </label>
+                <button disabled={busy === 'profile'} className="acc-btn is-primary"><Save size={13} />{busy === 'profile' ? 'Saving…' : 'Save profile'}</button>
+              </div>
+            </form>
+
+            <aside className="acc-card">
+              <div className="acc-card-head">
+                <ShieldCheck size={16} />
+                <div><h3>Account record</h3><p>What the server stores about this identity.</p></div>
+              </div>
+              <dl className="acc-facts">
+                {[['Email', user.email], ['Email status', user.emailVerified ? 'Verified' : 'Pending'], ['Role', user.role], ['Account ID', user.id]].map(([label, value]) => (
+                  <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
+                ))}
+              </dl>
+              {!user.emailVerified && capabilities.emailDelivery && (
+                <button disabled={busy === 'verify'} onClick={() => act('verify', () => request('resend-verification'))} className="acc-btn is-cyan is-block">Send verification email</button>
+              )}
+              {!user.emailVerified && !capabilities.emailDelivery && (
+                <p className="acc-note is-sun">Email verification is ready but delivery awaits server configuration.</p>
+              )}
+            </aside>
+
+            <section className="acc-card acc-span">
+              <div className="acc-card-head">
+                <Trophy size={16} />
+                <div><h3>Archive achievements</h3><p>Earned by reading, following and contributing.</p></div>
+                <b>{wiki.achievements.filter((item) => item.unlocked).length}/{wiki.achievements.length}</b>
+              </div>
+              <div className="acc-trophies">
+                {wiki.achievements.map((item) => (
+                  <div key={item.id} className={cx('acc-trophy', item.unlocked && 'is-on')}>
+                    <Sparkles size={14} />
+                    <strong>{item.label}</strong>
+                    <span>{item.description}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        )}
+
+        {section === 'watchlist' && (
+          <div className="acc-duo">
+            <section className="acc-card">
+              <div className="acc-card-head">
+                <Bookmark size={16} />
+                <div><h3>Watchlist</h3><p>Pages you chose to follow.</p></div>
+                <b>{wiki.watchlist.length}</b>
+              </div>
+              {wiki.watchlist.length ? (
+                <ul className="acc-list">
+                  {wiki.watchlist.map((item) => (
+                    <li key={item.key} className={cx('acc-row', item.pinned && 'is-pinned')}>
+                      <button type="button" disabled={busy === `pin-${item.key}`} onClick={() => togglePin(item)} aria-label={item.pinned ? `Unpin ${item.title}` : `Pin ${item.title}`} className={cx('acc-icon-btn', item.pinned && 'is-on')}>
+                        {item.pinned ? <PinOff size={13} /> : <Pin size={13} />}
+                      </button>
+                      <Link href={item.href} className="acc-row-title">{item.title}</Link>
+                      <span className="acc-row-meta">{item.pinned ? 'Pinned' : `Since ${formatDay(item.createdAt)}`}</span>
+                      <button type="button" disabled={busy === `watch-${item.key}`} onClick={() => removeWatch(item)} aria-label={`Stop watching ${item.title}`} className="acc-icon-btn is-danger"><Trash2 size={13} /></button>
+                    </li>
+                  ))}
+                </ul>
+              ) : <EmptyState icon={Bookmark} title="Nothing watched yet" text="Open an encyclopedia entry and choose Watch in its page tools." />}
+            </section>
+
+            <section className="acc-card">
+              <div className="acc-card-head">
+                <History size={16} />
+                <div><h3>Reading history</h3><p>Private to your account, controlled in Preferences.</p></div>
+                {wiki.history.length > 0 && (
+                  <button type="button" disabled={busy === 'history-clear'} onClick={clearHistory} className="acc-btn is-small"><Eraser size={11} />Clear</button>
+                )}
+              </div>
+              {wiki.history.length ? (
+                <ol className="acc-list">
+                  {wiki.history.map((item) => (
+                    <li key={item.key} className="acc-row">
+                      <span className="acc-row-glyph"><Eye size={13} /></span>
+                      <Link href={item.href} className="acc-row-title">{item.title}</Link>
+                      <span className="acc-row-meta">{item.viewCount}× · {formatDay(item.lastViewedAt)}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : <EmptyState icon={History} title={preferences.recordHistory ? 'No reading history yet' : 'History is disabled'} text={preferences.recordHistory ? 'Visited wiki entries will appear here.' : 'Enable it in Preferences if you want a private reading trail.'} />}
+            </section>
+          </div>
+        )}
+
+        {section === 'collections' && (
+          <section className="acc-plain">
+            {initialTarget && (
+              <div className="acc-target">
+                <span>Adding page</span>
+                <Link href={initialTarget.href}>{initialTarget.title}</Link>
+                <p>Choose a collection below. A page can belong to several collections.</p>
+              </div>
+            )}
+
+            {/* The form is the last cell of the same grid, not a sidebar: a
+                350px column beside the dossiers left them one-across, and a
+                form placed first pushed the dossiers below the fold. */}
+            <div className="acc-collections">
+              {wiki.collections.map((collection) => {
+                const items = wiki.collectionItems.filter((item) => item.collectionId === collection.id)
+                const targetKey = initialTarget && `${initialTarget.kind}:${initialTarget.slug}`
+                const containsTarget = Boolean(targetKey && items.some((item) => item.key === targetKey))
+                return (
+                  <article key={collection.id} className="acc-card acc-collection" data-tone={collection.color}>
+                    <span className="acc-collection-band" aria-hidden="true" />
+                    <div className="acc-card-head">
+                      <FolderPlus size={16} />
+                      <div><h3>{collection.name}</h3><p>{collection.description || 'Private wiki collection'}</p></div>
+                      <button type="button" disabled={busy === `collection-${collection.id}`} onClick={() => deleteCollection(collection.id)} aria-label={`Delete ${collection.name}`} className="acc-icon-btn is-danger"><Trash2 size={13} /></button>
+                    </div>
+                    {initialTarget && (
+                      <button type="button" disabled={busy === `collection-item-${collection.id}`} onClick={() => toggleCollectionItem(collection)} className={cx('acc-btn is-block', containsTarget ? 'is-pink' : 'is-violet')}>
+                        {containsTarget ? 'Remove current page' : 'Add current page'}
+                      </button>
+                    )}
+                    {items.length ? (
+                      <ul className="acc-minilist">
+                        {items.slice(0, 6).map((item) => (
+                          <li key={item.key}><Link href={item.href}><Bookmark size={10} />{item.title}</Link></li>
+                        ))}
+                      </ul>
+                    ) : <p className="acc-quiet">Nothing filed here yet.</p>}
+                    <span className="acc-count">{items.length} {items.length === 1 ? 'page' : 'pages'}</span>
+                  </article>
+                )
+              })}
+
+              <form onSubmit={createCollection} className="acc-card acc-collection is-new">
+                <div className="acc-card-head">
+                  <FolderPlus size={16} />
+                  <div><h3>New collection</h3><p>{wiki.collections.length}/50 used.</p></div>
+                </div>
+                <div className="acc-form">
+                  <AccountField label="Name" value={collectionForm.name} onChange={(event) => setCollectionForm({ ...collectionForm, name: event.target.value })} minLength={2} maxLength={40} required />
+                  <AccountField label="Description" value={collectionForm.description} onChange={(event) => setCollectionForm({ ...collectionForm, description: event.target.value })} maxLength={160} hint={`${collectionForm.description.length}/160`} />
+                  <label className="acc-label">
+                    <span><span>Colour</span></span>
+                    <select value={collectionForm.color} onChange={(event) => setCollectionForm({ ...collectionForm, color: event.target.value })}>
+                      <option value="violet">Vice violet</option>
+                      <option value="pink">Neon pink</option>
+                      <option value="mint">Ocean mint</option>
+                      <option value="sunset">Sunset</option>
+                      <option value="ocean">Deep ocean</option>
+                    </select>
+                  </label>
+                  <button disabled={busy === 'collection-create'} className="acc-btn is-primary is-block"><FolderPlus size={13} />{busy === 'collection-create' ? 'Creating…' : 'Create collection'}</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        )}
+
+        {section === 'notes' && (
+          <div className="acc-split">
+            <section className="acc-card">
+              <div className="acc-card-head">
+                <StickyNote size={16} />
+                <div><h3>Private article note</h3><p>Never public, never sent to editors.</p></div>
+              </div>
+              {initialTarget ? (
+                <form onSubmit={saveNote} className="acc-form">
+                  <div className="acc-target is-cyan">
+                    <span>Page</span>
+                    <Link href={initialTarget.href}>{initialTarget.title}</Link>
+                  </div>
+                  <label className="acc-label">
+                    <span><span>Note</span><small>{noteBody.length}/3000</small></span>
+                    <textarea value={noteBody} onChange={(event) => setNoteBody(event.target.value)} maxLength={3000} rows={12} placeholder="Connections, questions, source leads…" />
+                  </label>
+                  <button disabled={busy === 'note'} className="acc-btn is-primary"><Save size={13} />{busy === 'note' ? 'Saving…' : noteBody.trim() ? 'Save private note' : 'Delete note'}</button>
+                </form>
+              ) : <EmptyState icon={StickyNote} title="Choose an article first" text="Open an entry and select Private note in its page tools." action={<Link href="/wiki" className="acc-btn is-ghost">Browse the wiki</Link>} />}
+            </section>
+
+            <aside className="acc-card">
+              <div className="acc-card-head">
+                <StickyNote size={16} />
+                <div><h3>Recent notes</h3><p>Every page you have annotated.</p></div>
+                <b>{wiki.notes.length}</b>
+              </div>
+              {wiki.notes.length ? (
+                <ol className="acc-list">
+                  {wiki.notes.map((item) => (
+                    <li key={item.key} className="acc-stack">
+                      <div>
+                        <Link href={`/account?section=notes&kind=${encodeURIComponent(item.kind)}&slug=${encodeURIComponent(item.slug)}`} className="acc-row-title">{item.title}</Link>
+                        <button type="button" disabled={busy === `note-${item.key}`} onClick={() => deleteNote(item)} aria-label={`Delete note for ${item.title}`} className="acc-icon-btn is-danger"><Trash2 size={12} /></button>
+                      </div>
+                      <p>{item.body}</p>
+                      <span className="acc-row-meta">Updated {formatDay(item.updatedAt)}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : <p className="acc-quiet">No private notes yet.</p>}
+            </aside>
+          </div>
+        )}
+
+        {section === 'contributions' && (
+          <div className="acc-split">
+            <section className="acc-card">
+              <div className="acc-card-head">
+                <PenLine size={16} />
+                <div><h3>Suggest an improvement</h3><p>Moderated queue. Sourced articles are never overwritten directly.</p></div>
+              </div>
+              {initialTarget ? (
+                <form onSubmit={submitSuggestion} className="acc-form">
+                  <div className="acc-target is-cyan">
+                    <span>Target page</span>
+                    <Link href={initialTarget.href}>{initialTarget.title}</Link>
+                  </div>
+                  <label className="acc-label">
+                    <span><span>Suggestion type</span></span>
+                    <select value={suggestion.type} onChange={(event) => setSuggestion({ ...suggestion, type: event.target.value })}>
+                      <option value="correction">Factual correction</option>
+                      <option value="source">Better source</option>
+                      <option value="expansion">Sourced expansion</option>
+                      <option value="typo">Typo or formatting</option>
+                    </select>
+                  </label>
+                  <AccountField label="Summary" value={suggestion.summary} onChange={(event) => setSuggestion({ ...suggestion, summary: event.target.value })} minLength={8} maxLength={160} required hint={`${suggestion.summary.length}/160`} />
+                  <label className="acc-label">
+                    <span><span>Proposed change</span><small>{suggestion.details.length}/4000</small></span>
+                    <textarea value={suggestion.details} onChange={(event) => setSuggestion({ ...suggestion, details: event.target.value })} minLength={20} maxLength={4000} rows={7} required />
+                  </label>
+                  <AccountField label="Rockstar source URL" type="url" value={suggestion.sourceUrl} onChange={(event) => setSuggestion({ ...suggestion, sourceUrl: event.target.value })} required={suggestion.type !== 'typo'} maxLength={800} hint={suggestion.type === 'typo' ? 'Optional for typos' : 'Official rockstargames.com evidence required'} />
+                  <button disabled={busy === 'suggestion'} className="acc-btn is-primary"><PenLine size={13} />{busy === 'suggestion' ? 'Submitting…' : 'Submit for review'}</button>
+                </form>
+              ) : <EmptyState icon={PenLine} title="Choose an article first" text="Open any character, vehicle, weapon, location or other entry and select Suggest edit in its page tools." action={<Link href="/wiki" className="acc-btn is-ghost">Browse the wiki</Link>} />}
+            </section>
+
+            <aside className="acc-plain">
+              <div className="acc-card">
+                <div className="acc-card-head">
+                  <ListChecks size={16} />
+                  <div><h3>Your submissions</h3><p>Everything you have sent for review.</p></div>
+                  <b>{wiki.suggestions.length}</b>
+                </div>
+                {wiki.suggestions.length ? (
+                  <ol className="acc-list">
+                    {wiki.suggestions.map((item) => (
+                      <li key={item.id} className="acc-stack">
+                        <div>
+                          <Link href={item.href} className="acc-row-title">{item.title}</Link>
+                          <StatusPill value={item.status} />
+                        </div>
+                        <p>{item.summary}</p>
+                        <span className="acc-row-meta">{item.type} · {formatDay(item.createdAt)}</span>
+                      </li>
+                    ))}
+                  </ol>
+                ) : <p className="acc-quiet">No suggestions submitted.</p>}
+              </div>
+
+              {wiki.reviewQueue.length > 0 && (
+                <div className="acc-card">
+                  <div className="acc-card-head">
+                    <ShieldCheck size={16} />
+                    <div><h3>Editorial queue</h3><p>Waiting on your decision.</p></div>
+                    <b>{wiki.reviewQueue.length}</b>
+                  </div>
+                  <ol className="acc-list">
+                    {wiki.reviewQueue.map((item) => (
+                      <li key={item.id} className="acc-stack">
+                        <div><Link href={item.href} className="acc-row-title">{item.title}</Link></div>
+                        <p>{item.summary}</p>
+                        {isRockstarUrl(item.sourceUrl) && <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="acc-source">Rockstar source ↗</a>}
+                        <div className="acc-actions">
+                          <button type="button" disabled={busy === `review-${item.id}`} onClick={() => reviewSuggestion(item.id, 'accepted')} className="acc-btn is-small is-cyan">Accept</button>
+                          <button type="button" disabled={busy === `review-${item.id}`} onClick={() => reviewSuggestion(item.id, 'rejected')} className="acc-btn is-small is-pink">Reject</button>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+            </aside>
+          </div>
+        )}
+
+        {section === 'notifications' && (
+          <section className="acc-narrow">
+            <div className="acc-toolbar" role="group" aria-label="Notification filters">
+              {[['all', 'All'], ['unread', 'Unread'], ['watch', 'Watchlist'], ['contributions', 'Contributions']].map(([id, label]) => (
+                <button key={id} type="button" onClick={() => setNotificationFilter(id)} aria-pressed={notificationFilter === id} className={cx('acc-filter', notificationFilter === id && 'is-on')}>{label}</button>
+              ))}
+              <span className="acc-toolbar-count">{visibleNotifications.length} of {wiki.notifications.length}</span>
+              {unreadCount > 0 && (
+                <button type="button" disabled={busy === 'notifications-read'} onClick={markNotificationsRead} className="acc-btn is-small is-cyan">Mark all read</button>
+              )}
+            </div>
+            {visibleNotifications.length ? (
+              <ol className="acc-card acc-flush">
+                {visibleNotifications.map((item) => (
+                  <li key={item.id} className={cx('acc-row', item.unread && 'is-unread')}>
+                    <span className={cx('acc-dot', item.unread && 'is-on')} aria-hidden="true" />
+                    <span className="acc-row-glyph"><Bell size={13} /></span>
+                    <Link href={item.href} className="acc-row-title">{item.title}</Link>
+                    <span className="acc-row-meta">{formatDate(item.createdAt)}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : <EmptyState icon={Bell} title={wiki.notifications.length ? 'No notices in this filter' : 'You are all caught up'} text={wiki.notifications.length ? 'Choose another notification filter.' : 'Watch pages or submit improvements to receive useful notices here.'} />}
+          </section>
+        )}
+
+        {section === 'preferences' && (
+          <form onSubmit={savePreferences} className="acc-card acc-narrow">
+            <div className="acc-card-head">
+              <Settings2 size={16} />
+              <div><h3>Wiki preferences</h3><p>Applied to this account the moment you save.</p></div>
+            </div>
+            <div className="acc-toggles">
+              <PreferenceToggle icon={Globe2} title="Public user page" text="Let readers see your display name, bio and accepted contribution count." checked={preferences.publicProfile} onChange={(value) => setPreferences({ ...preferences, publicProfile: value })} />
+              <PreferenceToggle icon={History} title="Private reading history" text="Remember recently opened encyclopedia entries. Turning this off deletes the stored history." checked={preferences.recordHistory} onChange={(value) => setPreferences({ ...preferences, recordHistory: value })} />
+              <PreferenceToggle icon={BookOpen} title="Compact reading density" text="Reduce spacing in wiki article sections and support panels on this account." checked={preferences.compactMode} onChange={(value) => setPreferences({ ...preferences, compactMode: value })} />
+            </div>
+            <div className="acc-actions">
+              <button disabled={busy === 'preferences'} className="acc-btn is-primary"><Save size={13} />{busy === 'preferences' ? 'Saving…' : 'Save preferences'}</button>
+              <a href="/api/auth/export" download className="acc-btn is-violet"><Download size={13} />Export my wiki data</a>
+            </div>
+          </form>
+        )}
+
+        {section === 'security' && (
+          <div className="acc-narrow acc-stackcards">
+            <form onSubmit={changePassword} className="acc-card">
+              <div className="acc-card-head">
+                <KeyRound size={16} />
+                <div><h3>Change password</h3><p>A successful change closes every other device session.</p></div>
+              </div>
+              <div className="acc-form">
+                <AccountField label="Current password" type="password" autoComplete="current-password" value={password.currentPassword} onChange={(event) => setPassword({ ...password, currentPassword: event.target.value })} required />
+                <AccountField label="New password" type="password" autoComplete="new-password" minLength={15} maxLength={128} value={password.password} onChange={(event) => setPassword({ ...password, password: event.target.value })} required hint="15–128 characters" />
+                <AccountField label="Confirm new password" type="password" autoComplete="new-password" minLength={15} maxLength={128} value={password.confirm} onChange={(event) => setPassword({ ...password, confirm: event.target.value })} required />
+                <button disabled={busy === 'password'} className="acc-btn is-primary"><KeyRound size={13} />{busy === 'password' ? 'Securing…' : 'Change password'}</button>
+              </div>
+            </form>
+
+            <form onSubmit={deleteAccount} className="acc-card is-danger">
+              <div className="acc-card-head">
+                <Trash2 size={16} />
+                <div><h3>Delete account</h3><p>Permanently removes the identity, tokens and every active session. This cannot be undone.</p></div>
+              </div>
+              <div className="acc-form">
+                <AccountField label="Current password" type="password" autoComplete="current-password" maxLength={128} value={deletion.currentPassword} onChange={(event) => setDeletion({ ...deletion, currentPassword: event.target.value })} required />
+                <AccountField label="Type DELETE" value={deletion.confirmation} onChange={(event) => setDeletion({ ...deletion, confirmation: event.target.value })} pattern="DELETE" required />
+                <button disabled={busy === 'delete-account' || deletion.confirmation !== 'DELETE'} className="acc-btn is-pink"><Trash2 size={13} />{busy === 'delete-account' ? 'Deleting…' : 'Delete permanently'}</button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {section === 'sessions' && (
+          <section className="acc-narrow">
+            <div className="acc-toolbar">
+              <span className="acc-toolbar-count">{sessions.length} {sessions.length === 1 ? 'device' : 'devices'}</span>
+              <button disabled={busy === 'logout-all'} onClick={closeAll} className="acc-btn is-small is-pink"><LogOut size={12} />Close all sessions</button>
+            </div>
+            <ul className="acc-card acc-flush">
+              {sessions.map((session) => (
+                <li key={session.id} className="acc-row">
+                  <span className="acc-row-glyph is-round">{session.device.includes('Mobile') ? <Smartphone size={15} /> : <Laptop size={15} />}</span>
+                  <span className="acc-row-body">
+                    <strong>{session.device}{session.current && <em> · This device</em>}</strong>
+                    <small>Last active {formatDate(session.lastSeenAt)} · expires {formatDate(session.expiresAt)}</small>
+                  </span>
+                  <button disabled={busy === `session-${session.id}`} onClick={() => revoke(session.id)} aria-label={`Revoke ${session.device}`} className="acc-icon-btn is-danger"><Trash2 size={14} /></button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {section === 'activity' && (
+          <section className="acc-narrow">
+            {events.length ? (
+              <ol className="acc-card acc-flush">
+                {events.map((event) => (
+                  <li key={event.id} className="acc-row">
+                    <span className={cx('acc-row-glyph', event.outcome === 'failure' ? 'is-bad' : 'is-good')}><Clock3 size={13} /></span>
+                    <span className="acc-row-title as-static">{eventLabel(event.action)}</span>
+                    <span className="acc-row-meta">{event.device} · {formatDate(event.createdAt)}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : <EmptyState icon={Activity} title="No security events yet" text="Signing in, changing a password or revoking a device will be recorded here." />}
+            </section>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
 
+// The front page's section head, reused verbatim in structure: an index, a
+// coloured kicker, a display-size title and a standfirst, sitting on a rule.
+function SectionHead({ index, kicker, title, copy, tone }) {
+  return (
+    <header className="acc-head" data-tone={tone}>
+      <span className="acc-head-index">{String(index).padStart(2, '0')}</span>
+      <div>
+        <p>{kicker}</p>
+        <h2>{title}</h2>
+        {copy && <span>{copy}</span>}
+      </div>
+    </header>
+  )
+}
+
 function AccountField({ label, hint, ...props }) {
-  return <label className="block"><span className="flex items-center justify-between gap-3 font-cond font-semibold uppercase tracking-[0.12em] text-[10px] text-dim"><span>{label}</span>{hint && <small className="font-mono normal-case tracking-normal text-[8px]">{hint}</small>}</span><input {...props} className="mt-1.5 w-full h-11 border border-line rounded-sm px-3 bg-white/70 outline-none text-[13px] text-paper" /></label>
+  return (
+    <label className="acc-label">
+      <span><span>{label}</span>{hint && <small>{hint}</small>}</span>
+      <input {...props} />
+    </label>
+  )
 }
 
 function EmptyState({ icon: Icon, title, text, action }) {
-  return <div className="mt-5 border border-dashed border-line rounded-sm p-6 text-center"><Icon size={18} className="mx-auto text-dim" /><p className="mt-2 font-cond font-bold uppercase tracking-[0.08em] text-[14px] text-paper">{title}</p><p className="mt-1 text-[11px] leading-relaxed text-dim">{text}</p>{action && <div className="mt-3">{action}</div>}</div>
+  return (
+    <div className="acc-empty">
+      <Icon size={20} aria-hidden="true" />
+      <strong>{title}</strong>
+      <p>{text}</p>
+      {action}
+    </div>
+  )
 }
 
 function StatusPill({ value }) {
-  return <span className={cx('shrink-0 border rounded-full px-2 py-1 font-mono uppercase tracking-[0.1em] text-[7px]', value === 'accepted' ? 'border-mint/40 text-mint' : value === 'rejected' ? 'border-pink/40 text-pink' : 'border-violet/40 text-violet')}>{value}</span>
-}
-
-function collectionTone(color) {
-  return ({
-    mint: 'bg-gradient-to-r from-mint to-cyan-300',
-    violet: 'bg-gradient-to-r from-violet to-purple-400',
-    pink: 'bg-gradient-to-r from-pink to-rose-400',
-    sunset: 'bg-gradient-to-r from-amber-300 via-orange-400 to-pink',
-    ocean: 'bg-gradient-to-r from-cyan-400 to-blue-600',
-  })[color] || 'bg-violet'
+  return <span className="acc-pill" data-state={value}>{value}</span>
 }
 
 function PreferenceToggle({ icon: Icon, title, text, checked, onChange }) {
-  return <label className="py-4 flex items-center gap-4 cursor-pointer"><span className="w-9 h-9 grid place-items-center rounded-full border border-line text-violet shrink-0"><Icon size={14} /></span><span className="flex-1"><strong className="block font-cond font-bold uppercase tracking-[0.06em] text-[13px] text-paper">{title}</strong><span className="mt-1 block text-[11px] leading-relaxed text-dim">{text}</span></span><input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} className="sr-only peer" /><span aria-hidden="true" className="relative w-11 h-6 rounded-full border border-line bg-black/[0.06] peer-checked:bg-violet peer-checked:border-violet transition-colors after:absolute after:w-4 after:h-4 after:top-[3px] after:left-[3px] after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:after:translate-x-5" /></label>
+  return (
+    <label className="acc-toggle">
+      <span className="acc-toggle-glyph"><Icon size={14} /></span>
+      <span className="acc-toggle-copy">
+        <strong>{title}</strong>
+        <span>{text}</span>
+      </span>
+      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} className="sr-only peer" />
+      <span aria-hidden="true" className="acc-switch" />
+    </label>
+  )
 }
