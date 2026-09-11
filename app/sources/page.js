@@ -18,7 +18,7 @@ export default function SourcesPage() {
         <CategoryHeader
           eyebrow="Provenance"
           title="Sources"
-          description="Official Rockstar sources cited by this archive, with every linked entry grouped beneath its origin."
+          description="The official Rockstar documents this archive cites — one entry per document, however many labels the archive used to reach it. Readings made here are listed under the document they read, never as sources of their own."
           count={SOURCES.length}
           countLabel="sources"
         />
@@ -31,7 +31,7 @@ export default function SourcesPage() {
 
       <div className="mt-6 grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
         {SOURCES.map((source) => (
-          <section key={source.name} className="panel rounded-sm p-5">
+          <section key={source.key} className="panel rounded-sm p-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="min-w-0">
                 <h2 className="font-cond font-bold uppercase tracking-tight text-[22px] text-paper leading-tight">{source.name}</h2>
@@ -39,6 +39,19 @@ export default function SourcesPage() {
                   <a href={source.url} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1.5 font-mono text-[11px] text-mint hover:text-paper transition-colors break-all">
                     {source.url} <ExternalLink size={11} className="shrink-0" />
                   </a>
+                )}
+                {/* O mesmo documento era contado tantas vezes quantos os
+                    nomes por que foi citado. Agora é uma fonte só, e os
+                    outros nomes dizem-se pelo que são: contextos de uso. */}
+                {source.contexts.length > 1 && (
+                  <p className="mt-2 font-mono text-[10px] leading-relaxed text-dim">
+                    Also cited here as: {source.contexts.slice(1).join(' · ')}
+                  </p>
+                )}
+                {source.editorialContexts.length > 0 && (
+                  <p className="mt-1 font-mono text-[10px] leading-relaxed text-dim">
+                    Read by this archive as: {source.editorialContexts.join(' · ')} — an editorial reading of the document above, not a source of its own.
+                  </p>
                 )}
               </div>
               <div className="shrink-0 text-right">

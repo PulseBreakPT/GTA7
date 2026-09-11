@@ -29,7 +29,14 @@ function ArticleCard({ a }) {
         <Image src={a.image} alt={a.title} fill sizes="(max-width:640px) 50vw, (max-width:1024px) 40vw, 18vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-300" />
       </div>
       <div className="flex-1 min-w-0 flex flex-col p-3 sm:p-4">
-        <div><StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} /></div>
+        {/* O badge de evidência é o mesmo em todo o sítio: sai de `status`.
+            Isto desenhava-o a partir de `category`, que é o tipo de artigo —
+            e por isso o mesmo artigo aparecia «Verified» na entrada e
+            «Community» aqui. O tipo continua a ver-se, ao lado e como tipo. */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <StatusBadge status={a.status} />
+          <GhostBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} />
+        </div>
         <h3 className="font-cond font-bold uppercase text-paper text-[16px] sm:text-[21px] leading-[1.02] tracking-tight mt-2.5 line-clamp-2">{a.title}</h3>
         <p className="text-dim text-[12px] leading-relaxed mt-2 clamp-2">{a.excerpt}</p>
         <div className="mt-auto pt-3 flex items-center justify-between">

@@ -207,7 +207,7 @@ export default function WorldIndexPage() {
         {branch !== 'overview' && (
           <div className="wiki-filter-grid">
             <label className="wiki-select-wrap"><span>Region</span><select value={region} onChange={(event) => setRegion(event.target.value)}><option value="all">All regions</option>{regions.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
-            <label className="wiki-select-wrap"><span>Evidence</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option value="all">Any status</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option><option value="analysis">Analysis</option><option value="rumour">Rumour</option></select></label>
+            <label className="wiki-select-wrap"><span>Evidence</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option value="all">Any status</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option><option value="category">Category confirmed</option><option value="analysis">Analysis</option><option value="rumour">Rumour</option></select></label>
             <label className="wiki-select-wrap"><span>Order</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="type">Type</option></select></label>
             <div className="flex flex-wrap items-end justify-end gap-2">
               {filtering || sort !== 'az' ? <button type="button" onClick={clearFilters} className="wiki-button-secondary min-h-10 px-3 text-xs">Clear filters</button> : null}

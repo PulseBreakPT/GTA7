@@ -146,7 +146,7 @@ export default function Footer() {
         <aside className="footer-v3-assurance" aria-label="Archive standards">
           <div className="footer-v3-assurance-copy">
             <span><LoreIcon name="verified" size={19} /></span>
-            <p><strong>Evidence-first by design.</strong> Every claim should show whether it is confirmed, verified, analysis or rumour.</p>
+            <p><strong>Evidence-first by design.</strong> Every claim should show whether it is confirmed, verified, category confirmed, analysis or rumour.</p>
           </div>
           <nav aria-label="Archive utilities">
             <Link href="/sources">Source policy <LoreIcon name="arrow" size={13} /></Link>

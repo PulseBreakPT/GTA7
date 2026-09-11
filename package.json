@@ -8,6 +8,7 @@
         "dev:webpack": "next dev --hostname 0.0.0.0 --port 3000",
         "build": "next build",
         "start": "next start",
+        "verificar-provas": "node scripts/validar-provas.mjs",
         "security:local": "bash scripts/security-check.sh",
         "security:audit": "yarn audit --groups dependencies --level high",
         "security:check": "yarn security:local && yarn security:audit"

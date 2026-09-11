@@ -10,7 +10,10 @@ import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack, wanted: Siren, events: Radar, cargo: Package, safehouse: House, dynamic: Radar }
-const FILTERS = ['all', 'confirmed', 'verified', 'analysis', 'rumour']
+// Os cinco rótulos de prova, e não quatro: «category» existe no glossário,
+// nas estatísticas e no mapa, e uma lista que o omita esconde as entradas
+// que o usam em vez de as filtrar.
+const FILTERS = ['all', 'confirmed', 'verified', 'category', 'analysis', 'rumour']
 
 export default function MechanicsPage() {
   const [filter, setFilter] = useState('all')
@@ -72,11 +75,11 @@ export default function MechanicsPage() {
           )}
         </div>
 
+        {/* O bloco «Official delivery details» saiu daqui: era o texto das
+            edições — itens da Ultimate Edition, upgrade da Standard e a data
+            de pré-carregamento —, que pertence às Editions e não ao catálogo
+            de mecânicas. Fica a nota de fronteira, que é sobre o catálogo. */}
         <div className="mechanics-source-notes mt-6">
-          <div>
-            <strong>Official delivery details</strong>
-            <p>{officialCatalog.mechanics.join(' ')}</p>
-          </div>
           <div>
             <strong>Catalogue boundary</strong>
             <p>{officialCatalog.note}</p>

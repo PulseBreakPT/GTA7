@@ -31,8 +31,12 @@ export default function MechanicPage() {
     )
   }
 
-  const related = mechanics.filter((x) => x.slug !== m.slug).slice(0, 4)
-  const linkedChars = characters.slice(0, 2)
+  // Relações declaradas na ficha, e só essas. Isto era
+  // `mechanics.filter(...).slice(0, 4)` e `characters.slice(0, 2)` — as
+  // primeiras da lista, apresentadas como se fossem relações reais, e
+  // invisíveis para o grafo, que dizia «0 in · 0 out» na mesma página.
+  const related = (m.related || []).map((slug) => mechanics.find((x) => x.slug === slug)).filter(Boolean)
+  const linkedChars = (m.characters || []).map((slug) => characters.find((x) => x.slug === slug)).filter(Boolean)
 
   return (
     <div className="flex-1 flex flex-col">
@@ -75,6 +79,9 @@ export default function MechanicPage() {
             </WikiSection>
 
             <WikiSection id="related" title="Related Mechanics">
+              {related.length === 0 && (
+                <p className="text-dim text-[13px] leading-relaxed">No related mechanic is declared on this record. The archive links what a record states, not what happens to sit next to it in the list.</p>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {related.map((r) => {
                   const RIcon = MECH_ICONS[r.icon] || Repeat2
@@ -96,6 +103,9 @@ export default function MechanicPage() {
             </WikiSection>
 
             <WikiSection id="characters" title="Linked Characters" className="mb-0">
+              {linkedChars.length === 0 && (
+                <p className="text-dim text-[13px] leading-relaxed">No character is declared on this record.</p>
+              )}
               <div className="flex flex-col gap-2">
                 {linkedChars.map((c) => (
                   <Link key={c.slug} href={`/database/characters/${c.slug}`} className="flex items-center gap-3 border border-line rounded-sm px-3 h-12 group hover:border-black/40 transition-colors">

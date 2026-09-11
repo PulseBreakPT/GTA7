@@ -13,16 +13,22 @@ import CollapsibleFilters from '@/components/site/collapsible-filters'
 // agrupa-o pela pasta em que cada ficheiro está. Assim nunca fica
 // desalinhada do que existe — uma imagem nova aparece aqui sozinha, e uma
 // que saia deixa de aparecer sem ninguém ter de a apagar em dois sítios.
-const GROUPS = [
-  { id: 'all', label: 'ALL' },
-  { id: 'key-art', label: 'KEY ART' },
-  { id: 'places', label: 'PLACES' },
-  { id: 'scenes', label: 'SCENES' },
-  { id: 'characters', label: 'CHARACTERS' },
-  { id: 'vehicles', label: 'VEHICLES' },
-  { id: 'gear', label: 'GEAR' },
-  { id: 'editions', label: 'EDITIONS' },
-]
+// Isto era a lista dos grupos. Uma imagem numa pasta que não constasse
+// daqui entrava na contagem total e não entrava em filtro nenhum: a galeria
+// dizia 90 imagens e os filtros somavam 89. Passa a ser apenas a ordem e os
+// rótulos bonitos — os grupos saem das imagens, e por construção a soma dos
+// filtros é igual ao total.
+const GROUP_LABELS = {
+  'key-art': 'KEY ART',
+  places: 'PLACES',
+  scenes: 'SCENES',
+  characters: 'CHARACTERS',
+  vehicles: 'VEHICLES',
+  gear: 'GEAR',
+  editions: 'EDITIONS',
+}
+const GROUP_ORDER = Object.keys(GROUP_LABELS)
+const labelFor = (id) => GROUP_LABELS[id] || id.replace(/-/g, ' ').toUpperCase()
 
 // `creators` fica de fora: são retratos de pessoas reais associados aos
 // dossiês de criadores, não material do jogo.
@@ -98,7 +104,17 @@ export default function MediaPage() {
     return ITEMS.filter((item) => (group === 'all' || item.group === group) && (!q || item.title.toLowerCase().includes(q)))
   }, [group, query])
 
-  const groups = GROUPS.filter((g) => counts[g.id])
+  // Derivado das imagens, não de uma lista paralela: todo o grupo que exista
+  // aparece, com rótulo conhecido quando há um e o nome da pasta quando não há.
+  const groups = useMemo(() => {
+    const posicao = (id) => {
+      const i = GROUP_ORDER.indexOf(id)
+      return i < 0 ? GROUP_ORDER.length : i
+    }
+    const ids = [...new Set(ITEMS.map((item) => item.group))]
+      .sort((a, b) => posicao(a) - posicao(b) || a.localeCompare(b))
+    return [{ id: 'all', label: 'ALL' }, ...ids.map((id) => ({ id, label: labelFor(id) }))]
+  }, [])
 
   return (
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
