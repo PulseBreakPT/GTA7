@@ -73,7 +73,7 @@
         "zod": "3.25.67"
     },
     "devDependencies": {
-        "@types/lodash": "4.17.24",
+        "@types/lodash": "4.17.25",
         "autoprefixer": "10.4.19",
         "globals": "16.2.0",
         "postcss": "8",
