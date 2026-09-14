@@ -1,47 +1,60 @@
+const path = require('path')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './lib/**/*.{js,jsx}',
-  ],
+  // Caminhos absolutos, a partir da pasta deste ficheiro: relativos, o
+  // Tailwind resolvia-os pela pasta de onde o build corria, e um build lançado
+  // de outra pasta gerava CSS sem utilitários — que a cache do Next depois
+  // reaproveitava na publicação.
+  content: ['pages', 'components', 'app', 'lib'].map((dir) => path.join(__dirname, dir, '**/*.{js,jsx}')),
   prefix: "",
   theme: {
     container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
     extend: {
+      // Paleta extraída da key art oficial de Jason e Lucia. Os tons mais
+      // escuros são derivados acessíveis das mesmas cores, para texto e
+      // controlos manterem contraste sobre o papel quente.
       colors: {
-        ink: '#0B0F16',
-        raised: '#111722',
-        surface2: '#18202D',
-        paper: '#F2F4F7',
-        dim: '#B0B7C3',
-        line: 'rgba(255,255,255,0.22)',
-        pink: '#F1A3C3',
-        mint: '#65DCCB',
-        violet: '#9B83F4',
-        warn: '#E6D658',
-        danger: '#C92A35',
-        border: 'rgba(255,255,255,0.22)',
-        input: 'rgba(255,255,255,0.22)',
-        ring: '#F1A3C3',
-        background: '#0B0F16',
-        foreground: '#F5F4F0',
-        primary: { DEFAULT: '#F2F4F7', foreground: '#0B0F16' },
-        secondary: { DEFAULT: '#18202D', foreground: '#F2F4F7' },
-        destructive: { DEFAULT: '#C92A35', foreground: '#F5F4F0' },
-        muted: { DEFAULT: '#18202D', foreground: '#B0B7C3' },
-        accent: { DEFAULT: '#F1A3C3', foreground: '#0B0F16' },
-        popover: { DEFAULT: '#111722', foreground: '#F2F4F7' },
-        card: { DEFAULT: '#111722', foreground: '#F2F4F7' },
+        ink: '#FFF5E8',
+        raised: '#FFF9F2',
+        surface2: '#F3EEE8',
+        paper: '#2B2230',
+        // #716872 = --gta6-muted-ink. O cinzento puro da paleta (#746B75) mede
+        // 4.44 sobre concrete e 4.38 sobre véus coloridos: abaixo de AA. Fica
+        // em HEX literal porque text-dim/70 precisa de HEX, não de var().
+        dim: '#716872',
+        line: 'rgba(43,34,48,0.16)',
+        pink: '#C2185B',
+        mint: '#22C7B7',
+        violet: '#7B4DE3',
+        warn: '#E8B84A',
+        danger: '#E13535',
+        border: 'rgba(43,34,48,0.16)',
+        input: 'rgba(43,34,48,0.16)',
+        ring: '#4FA3FF',
+        background: '#FFF5E8',
+        foreground: '#2B2230',
+        primary: { DEFAULT: '#2B2230', foreground: '#FFF5E8' },
+        secondary: { DEFAULT: '#F3EEE8', foreground: '#2B2230' },
+        destructive: { DEFAULT: '#E13535', foreground: '#FFF5E8' },
+        muted: { DEFAULT: '#F3EEE8', foreground: '#716872' },
+        accent: { DEFAULT: '#C2185B', foreground: '#FFF5E8' },
+        popover: { DEFAULT: '#FFF9F2', foreground: '#2B2230' },
+        card: { DEFAULT: '#FFF9F2', foreground: '#2B2230' },
       },
       fontFamily: {
         cond: ['var(--font-cond)', 'Arial Narrow', 'sans-serif'],
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
-      borderRadius: { lg: '0.75rem', md: '0.375rem', sm: '0.125rem' },
+      // A escala de raios do Streamline Moderne. Os 2px do `sm` eram um
+      // canto recto disfarçado — a 192 utilizações no projecto, era o
+      // que mantinha botões, etiquetas e campos com ar de formulário
+      // enquanto o resto do sítio curvava. Sobem os três, mantendo a
+      // proporção entre eles: uma etiqueta de 20px de altura não pode
+      // levar o mesmo raio de uma carta de 300px.
+      borderRadius: { lg: '1.25rem', md: '0.75rem', sm: '0.375rem' },
       letterSpacing: { wide2: '0.08em', wide3: '0.14em' },
     },
   },

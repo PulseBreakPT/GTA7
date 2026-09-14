@@ -2,57 +2,141 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ArrowUpRight, Gauge, Radio } from 'lucide-react'
-import { PadGlyph } from './ui'
+import LoreIcon from '@/components/site/lore-icons'
+import siteVersion from '@/site-version.json'
+import { NAV_COLUMNS } from '@/lib/navigation'
 
-const INDEX = [
-  { label: 'Explore', links: [['Articles', '/news'], ['Categories', '/categories'], ['Leonida Map', '/map'], ['Guides', '/guides']] },
-  { label: 'Database', links: [['Characters', '/database/characters'], ['Vehicles', '/database/vehicles'], ['Weapons', '/database/weapons'], ['Mechanics', '/database/mechanics']] },
-  { label: 'Archive', links: [['Creator records', '/categories/creator-preview-records'], ['Secrets index', '/map?filter=secrets'], ['Source policy', '/guides/feature-roundup-source-guide']] },
-]
+// As colunas vêm do mapa de navegação partilhado (lib/navigation), o
+// mesmo do cabeçalho e da barra do telemóvel: nenhuma rota fica de fora.
+const DIRECTORY = NAV_COLUMNS.map((group) => ({ ...group, links: group.links.filter((link) => link.href !== '/') }))
+
+const ALL_DIRECTORY_LINKS = DIRECTORY.flatMap((group) => group.links)
 
 function currentSection(pathname) {
-  if (pathname === '/') return 'ARCHIVE INDEX'
-  if (pathname.startsWith('/news')) return 'ARTICLE RECORDS'
-  if (pathname.startsWith('/categories')) return 'CATEGORY INDEX'
-  if (pathname.startsWith('/map')) return 'LEONIDA FIELD GUIDE'
-  if (pathname.startsWith('/database')) return 'DATABASE RECORDS'
-  if (pathname.startsWith('/guides')) return 'REFERENCE GUIDES'
-  if (pathname.startsWith('/easter-eggs')) return 'SECRET INDEX'
-  return 'ARCHIVE'
+  if (pathname === '/') return 'Main archive'
+  if (pathname.startsWith('/news')) return 'News desk'
+  if (pathname.startsWith('/categories')) return 'Category index'
+  if (pathname.startsWith('/map')) return 'Leonida field guide'
+  if (pathname.startsWith('/database/characters')) return 'Character records'
+  if (pathname.startsWith('/database/vehicles')) return 'Vehicle records'
+  if (pathname.startsWith('/database/weapons')) return 'Weapon records'
+  if (pathname.startsWith('/database/mechanics')) return 'Mechanic records'
+  if (pathname.startsWith('/database/radio')) return 'Radio archive'
+  if (pathname.startsWith('/database/world')) return 'World index'
+  if (pathname.startsWith('/database')) return 'Database records'
+  if (pathname.startsWith('/gangs-factions')) return 'Faction records'
+  if (pathname.startsWith('/guides')) return 'Reference guides'
+  if (pathname.startsWith('/easter-eggs')) return 'Secret index'
+  if (pathname.startsWith('/wiki')) return 'Encyclopedia'
+  if (pathname.startsWith('/sources')) return 'Provenance desk'
+  if (pathname.startsWith('/media')) return 'Visual archive'
+  if (pathname.startsWith('/legal')) return 'Legal desk'
+  if (pathname.startsWith('/account')) return 'Reader account'
+  if (pathname.startsWith('/directory')) return 'Site directory'
+  if (pathname.startsWith('/vice-city')) return 'Vice City hub'
+  if (pathname.startsWith('/editions')) return 'Editions'
+  if (pathname.startsWith('/users')) return 'Reader profile'
+  return 'Public archive'
+}
+
+function closestDirectoryPath(pathname) {
+  return ALL_DIRECTORY_LINKS
+    .map(({ href }) => href)
+    .filter((href) => pathname === href || pathname.startsWith(`${href}/`))
+    .sort((a, b) => b.length - a.length)[0]
 }
 
 export default function Footer() {
   const pathname = usePathname() || '/'
   const section = currentSection(pathname)
+  const activeHref = closestDirectoryPath(pathname)
+
   return (
-    <footer className="relative overflow-hidden border-t hairline bg-ink" aria-label="Leonida Archive footer">
-      <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px)', backgroundSize: '46px 46px', maskImage: 'linear-gradient(90deg, black, transparent 75%)' }} />
-      <div className="relative max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-4">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.9fr)] gap-7 lg:gap-12">
-          <section className="max-w-[430px]">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-mint">Independent fan reference</p>
-            <h2 className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase tracking-tight leading-[.82] text-[40px] sm:text-[52px] text-paper" data-ghost="LUSORAE">LEONIDA<br />ARCHIVE</h2>
-            <p className="mt-3 text-[13px] leading-[1.55] text-dim">A navigable GTA VI fan archive built around source labels, official material and clearly marked community reporting.</p>
-            <div className="data-rail mt-4">LUSORAE · INDEX 01 · {section}</div>
+    <footer className="gta-lore-footer compact-footer footer-v3" aria-label="GTA Lore footer">
+      <div className="footer-v3-shell">
+        <div className="footer-v3-primary">
+          <section className="footer-v3-brand" aria-labelledby="footer-brand-name">
+            <Link href="/" className="footer-v3-lockup" aria-label="GTA Lore home">
+              {/* Same rule as the masthead: the name is the artwork, not Barlow
+                  standing in for it. The <strong> stays as the block's
+                  accessible name and is never painted. */}
+              <span>
+                <small>Independent GTA VI archive</small>
+                <img className="footer-v3-lockup-art" src="/brand/gta-lore-lockup-compact.svg" alt="" width="190" height="52" decoding="async" loading="lazy" />
+                <strong id="footer-brand-name">GTA LORE</strong>
+              </span>
+            </Link>
+            <p>Official material, documented sightings and community reporting — separated by evidence, never blended together.</p>
+            <div className="footer-v3-context" aria-label={`Current section: ${section}`}>
+              <span><i aria-hidden="true" /> Archive online</span>
+              <span>{section}</span>
+            </div>
           </section>
-          <nav className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-6" aria-label="Footer navigation">
-            {INDEX.map((group) => (
-              <section key={group.label}>
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-pink">{group.label}</p>
-                <ul className="mt-2.5 space-y-1.5">
-                  {group.links.map(([label, href]) => (
-                    <li key={href}><Link href={href} className="group inline-flex items-center gap-1.5 font-cond font-semibold uppercase tracking-[0.1em] text-[14px] text-dim transition-colors hover:text-paper"><span>{label}</span><ArrowUpRight size={12} className="opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0" /></Link></li>
-                  ))}
+
+          <nav className="footer-v3-directory" aria-label="Archive directory">
+            {DIRECTORY.map((group) => (
+              <section key={group.label} className="footer-v3-group" data-tint={group.tint}>
+                <header>
+                  <span className="footer-v3-group-icon"><LoreIcon name={group.icon} size={18} /></span>
+                  <span>
+                    <strong>{group.label}</strong>
+                    <small>{group.note}</small>
+                  </span>
+                  <b>{String(group.links.length).padStart(2, '0')}</b>
+                </header>
+                <ul>
+                  {group.links.map(({ label, href }) => {
+                    const active = activeHref === href
+                    return (
+                      <li key={href}>
+                        <Link
+                          href={href}
+                          className={active ? 'is-active' : undefined}
+                          aria-current={active ? (pathname === href ? 'page' : 'location') : undefined}
+                        >
+                          <span>{label}</span>
+                          <LoreIcon name="arrow" size={13} />
+                        </Link>
+                      </li>
+                    )
+                  })}
                 </ul>
               </section>
             ))}
           </nav>
         </div>
-        <div className="mt-7 pt-3 border-t hairline flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <div className="flex items-center gap-2 text-dim" aria-hidden="true"><PadGlyph shape="cross" size={15} /><PadGlyph shape="circle" size={15} /><PadGlyph shape="triangle" size={15} /><PadGlyph shape="square" size={15} /></div>
-          <p className="max-w-[660px] text-[11px] leading-relaxed text-dim sm:text-center">Independent fan project. Not affiliated with Rockstar Games, Take-Two Interactive, or their subsidiaries. Game details can change; individual records identify their source status.</p>
-          <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-dim"><Radio size={13} className="text-mint" aria-hidden="true" /><span>ARCHIVE ONLINE</span><Gauge size={14} className="text-pink" aria-hidden="true" /></div>
+
+        <aside className="footer-v3-assurance" aria-label="Archive standards">
+          <div className="footer-v3-assurance-copy">
+            <span><LoreIcon name="verified" size={19} /></span>
+            <p><strong>Evidence-first by design.</strong> Every claim should show whether it is confirmed, verified, category confirmed, analysis or rumour.</p>
+          </div>
+          <nav aria-label="Archive utilities">
+            <Link href="/directory">Site directory <LoreIcon name="arrow" size={13} /></Link>
+            <Link href="/sources">Source policy <LoreIcon name="arrow" size={13} /></Link>
+            <Link href="/wiki/changes">Recent changes <LoreIcon name="changes" size={14} /></Link>
+            <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              Back to top <LoreIcon name="arrow" size={13} className="footer-v3-arrow-up" />
+            </button>
+          </nav>
+        </aside>
+
+        <div className="footer-v3-bottom">
+          <div className="footer-v3-legal">
+            <p>Independent fan project. Not affiliated with Rockstar Games, Take-Two Interactive, or their subsidiaries.</p>
+            <nav aria-label="Legal policies">
+              <Link href="/legal">Legal</Link>
+              <Link href="/legal/terms">Terms</Link>
+              <Link href="/legal/privacy">Privacy</Link>
+              <Link href="/legal/cookies">Cookies</Link>
+              <Link href="/legal/copyright">Copyright</Link>
+              <Link href="/legal/community">Community</Link>
+            </nav>
+          </div>
+          <div className="footer-v3-release" aria-label={`Site version ${siteVersion.version}`}>
+            <span>Public build</span>
+            <strong>v{siteVersion.version}</strong>
+          </div>
         </div>
       </div>
     </footer>
