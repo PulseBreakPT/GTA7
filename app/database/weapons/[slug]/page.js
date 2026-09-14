@@ -4,15 +4,37 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
-import { GhostBadge, SourceChip, StatBar, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription } from '@/components/site/wiki'
+import { ArrowLeft, ArrowRight, Heart, Zap, Eye, Target, Crosshair, FileText, Gauge, ListChecks, BookMarked, ShieldCheck, Package, Wrench } from 'lucide-react'
+import { GhostBadge, SourceChip, StatBar, StatusBadge, cx, TypeChip } from '@/components/site/ui'
+import { ReportedNotes, Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
 import WeaponVisual from '@/components/site/weapon-visual'
 import { weapons, weaponTypes } from '@/lib/content'
+import { reportedFor, REPORTED_SOURCE } from '@/lib/reported'
+import { weaponBible } from '@/lib/weapon-bible'
+
+// Campos seguidos com o mesmo valor mostram-se uma só vez, com os rótulos
+// juntos — «Not published for this model» três vezes seguidas é ruído.
+const mergeSameValues = (rows) => rows.reduce((list, [label, value]) => {
+  const same = list.find((row) => row[1] === value)
+  if (same) same[0] = `${same[0]} · ${label}`
+  else list.push([label, value])
+  return list
+}, [])
+
+// Uma frase de ausência não é um valor. Estes campos chegam do «bible» em
+// prosa — «Not published for this weapon.», «Seller, price and unlock
+// conditions are not published…» — e eram desenhados como dados, enchendo
+// secções inteiras de linhas que não dizem nada. Não se apagam, porque o
+// glossário do arquivo defende que a ausência se declara em vez de se
+// esconder; juntam-se numa linha só que nomeia os campos em falta.
+const ausente = (value) => !value || /not (?:published|recorded|officially specified)|^—$|^unknown$/i.test(String(value).trim())
+
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview', icon: FileText },
+  { id: 'evidence', label: 'Evidence & identity', icon: ShieldCheck },
+  { id: 'systems', label: 'Carry & storage', icon: Package },
+  { id: 'customisation', label: 'Variants & appearances', icon: Wrench },
   { id: 'performance', label: 'Performance', icon: Gauge },
   { id: 'specifications', label: 'Specifications', icon: ListChecks },
   { id: 'related', label: 'Related Weapons', icon: Crosshair },
@@ -48,12 +70,13 @@ function App() {
   const typeLabel = weaponTypes.find((t) => t.id === w.type)?.label || w.type.toUpperCase()
   const bars = [
     { icon: Heart, label: 'DAMAGE', value: w.stats[0], color: '#C2185B' },
-    { icon: Zap, label: 'FIRE RATE', value: w.stats[1], color: '#0E7C6B' },
-    { icon: Eye, label: 'ACCURACY', value: w.stats[2], color: '#5B3FD6' },
-    { icon: Target, label: 'RANGE', value: w.stats[3], color: '#334155' },
+    { icon: Zap, label: 'FIRE RATE', value: w.stats[1], color: '#1B7773' },
+    { icon: Eye, label: 'ACCURACY', value: w.stats[2], color: '#386BAA' },
+    { icon: Target, label: 'RANGE', value: w.stats[3], color: '#2B2230' },
   ]
   const related = weapons.filter((x) => x.type === w.type && x.slug !== w.slug).slice(0, 4)
   const gallery = w.gallery?.length ? w.gallery : [w.image]
+  const bible = weaponBible(w)
 
   // A ficha técnica segue a dos veículos: pares rótulo/valor, começando pelos
   // campos de identificação da caixa de dados. O zero do registo não é uma
@@ -61,12 +84,6 @@ function App() {
   // isso não se imprime como número: o campo fica e diz que não há fonte.
   const num = (n, suffix = '') => (n ? `${n}${suffix}` : null)
   const specRows = [
-    { label: 'Weapon type', value: typeLabel },
-    { label: 'Manufacturer', value: w.manufacturer },
-    { label: 'Association', value: w.association },
-    w.character ? { label: 'Character', value: w.character } : null,
-    { label: 'Status', children: <StatusBadge status={w.status} /> },
-    { label: 'Evidence', children: <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span> },
     { label: 'Capacity', value: num(w.stats[4]) },
     { label: 'Reserve', value: num(w.mag) },
     { label: 'Weight', value: num(w.stats[5], ' KG') },
@@ -74,19 +91,15 @@ function App() {
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="weapons" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Weapons', href: '/database/weapons' }, { label: w.name }]} />
 
-        <div className="data-rail mt-2">ARSENAL FILE · DOCUMENTED REFERENCE · ID {w.slug.toUpperCase()}</div>
-
         {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
             qualquer largura, como nas fichas das wikis. */}
-        <header className="mt-5">
-          <div className="flex flex-wrap items-center gap-2">
+        <header className="wiki-article-header mt-5">
+          <div className="wiki-article-meta flex flex-wrap items-center gap-2">
             <StatusBadge status={w.status} />
-            <GhostBadge status="confirmed" label={typeLabel} />
-            <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span>
+            <TypeChip>{typeLabel}</TypeChip>
           </div>
           <h1 data-ghost="WEAPONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] mt-2">{w.name}</h1>
           <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/weapons/${w.slug}`}>{w.desc}</WikiText></p>
@@ -97,14 +110,13 @@ function App() {
           <Hatnote kind="weapons" slug={w.slug} />
         </header>
 
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <PageTools kind="weapons" slug={w.slug} />
+
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
           {/* Corpo do artigo */}
-          <div className="min-w-0 order-2 lg:order-1">
+          <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <div className="flex flex-col gap-3">
-                <Attribution label="Associated character / content" value={w.association} accent="border-mint/70" />
-                <Attribution label="Manufacturer / brand" value={w.manufacturer} accent="border-violet/70" />
-                <Attribution label="Character" value={w.character} accent="border-pink/70" />
                 <Attribution label="Content" value={w.content} accent="border-mint/70" />
               </div>
 
@@ -112,7 +124,9 @@ function App() {
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {w.confirmedDetails?.length > 0 && (
                     <div className="border border-mint/25 bg-mint/[0.03] p-3 rounded-sm">
-                      <h3 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">Officially confirmed</h3>
+                      {/* Ver os veículos: o cabeçalho não pode afirmar mais
+                          do que o rótulo de prova da própria ficha. */}
+                      <h3 className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-mint">What the source establishes</h3>
                       <ul className="mt-2 space-y-1.5 text-[12px] leading-relaxed text-dim">{w.confirmedDetails.map((detail) => <li key={detail}>• {detail}</li>)}</ul>
                     </div>
                   )}
@@ -130,21 +144,88 @@ function App() {
                   lista. Ninguém sabe onde aparece uma arma num jogo por sair. */}
             </WikiSection>
 
-            <WikiSection id="performance" title="Performance">
-              {w.unpublished ? (
-                <div className="border border-line rounded-sm p-4">
-                  <p className="font-cond font-semibold uppercase tracking-[0.14em] text-[11px] text-pink">Performance not published</p>
-                  <p className="mt-1.5 text-[12px] leading-relaxed text-dim">Rockstar has confirmed this item but has not released damage, fire-rate, accuracy or range figures.</p>
+            <WikiSection id="evidence" title="Evidence & identity">
+              <div className="weapon-bible-fact-grid">
+                <article className="weapon-bible-tier-card">
+                  <ShieldCheck size={18} aria-hidden="true" />
+                  <span>Archive evidence tier</span>
+                  <strong>{bible.evidenceLevel}</strong>
+                  <p>{bible.evidenceMeaning}</p>
+                </article>
+                <dl>
+                  <div><dt>GTA name</dt><dd>{bible.nameState}</dd></div>
+                  <div><dt>Owner / character</dt><dd>{bible.owner}</dd></div>
+                  <div><dt>Real-world inspiration</dt><dd>{bible.realWorldInspiration}</dd></div>
+                </dl>
+              </div>
+              <div className="weapon-evidence-strip" aria-label="Appearance evidence strip">
+                <div className="weapon-evidence-strip-heading"><span>Appearance evidence strip</span><small>Source path, not a confidence shortcut</small></div>
+                <div className="weapon-evidence-strip-items">
+                  {bible.appearances.map(([label, detail, level]) => <div key={`${label}-${detail}`}><b>{label}</b><p>{detail}</p><span data-level={level}>{level}</span></div>)}
                 </div>
+              </div>
+              <p className="weapon-bible-disclaimer">An official appearance does not automatically establish an official GTA name. Readable markings, community firearm comparisons and development material remain separate fields.</p>
+            </WikiSection>
+
+            <WikiSection id="systems" title="Carry, storage & combat systems">
+              {(() => {
+                const linhas = mergeSameValues([
+                  ['Concealability', bible.concealability],
+                  ['Carry slot', bible.carrySlot],
+                  ['NPC reaction', bible.npcReaction],
+                  ['Ammunition', bible.ammunition],
+                  ['Storage', bible.storage],
+                  ['Sellers / unlocks', bible.sellers],
+                  ['Illegal availability', bible.illegalAvailability],
+                ])
+                const conhecidas = linhas.filter(([, value]) => !ausente(value))
+                const ausentes = linhas.filter(([, value]) => ausente(value))
+                return (
+                  <>
+                    {conhecidas.length > 0 && (
+                      <dl className="weapon-bible-data-grid">
+                        {conhecidas.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
+                      </dl>
+                    )}
+                    {ausentes.length > 0 && (
+                      <p className={`text-[12px] leading-relaxed text-dim ${conhecidas.length > 0 ? 'mt-3' : ''}`}>
+                        <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Not published by Rockstar:</span>{' '}
+                        {ausentes.map(([label]) => label).join(' · ')}
+                      </p>
+                    )}
+                  </>
+                )
+              })()}
+              <div className="weapon-bible-system-note"><Package size={17} aria-hidden="true" /><p><strong>System context:</strong> {bible.systemNote}</p></div>
+            </WikiSection>
+
+            <WikiSection id="customisation" title="Variants, owners & appearances">
+              <dl className="weapon-bible-data-grid weapon-bible-data-grid-wide">
+                <div><dt>Known variant</dt><dd>{bible.variant}</dd></div>
+                <div><dt>Customisation</dt><dd>{bible.customisation}</dd></div>
+              </dl>
+            </WikiSection>
+
+            {/* Desempenho e ficha técnica eram duas secções a dizer a mesma
+                ausência: «Performance not published», e logo abaixo Capacity,
+                Reserve e Weight, cada um numa caixa a dizer NOT PUBLISHED.
+                Passam a uma secção só — os números que existem mostram-se, e
+                os que não existem dizem-se numa linha. */}
+            <WikiSection id="performance" title="Performance &amp; specs">
+              {w.unpublished ? (
+                <p className="text-[13px] leading-relaxed text-dim">
+                  {bible?.nameState === 'GTA name published'
+                    ? 'Rockstar names this weapon but has not released damage, fire-rate, accuracy or range figures.'
+                    : 'Rockstar has shown this weapon but has not published its GTA name or any performance figures.'}
+                </p>
               ) : (
                 <div className="flex flex-col gap-3">
                   {bars.map((b) => <StatBar key={b.label} {...b} right={b.value} />)}
                 </div>
               )}
-            </WikiSection>
-
-            <WikiSection id="specifications" title="Specifications">
-              <SpecGrid items={specRows} />
+              <div className="mt-4">
+                <SpecGrid items={specRows} />
+              </div>
             </WikiSection>
 
             <WikiSection id="related" title="Related Weapons" className="mb-0">
@@ -171,6 +252,7 @@ function App() {
                 </>
               )}
             </WikiSection>
+            <ReportedNotes items={reportedFor('weapon', w.slug)} source={REPORTED_SOURCE} />
             <References items={[{ name: w.sourceName, url: w.sourceUrl, retrieved: w.updatedAt }]} />
             <CategoryFooter kind="weapons" slug={w.slug} />
             <CitePage kind="weapons" slug={w.slug} />
@@ -179,13 +261,13 @@ function App() {
           </div>
 
           {/* Índice */}
-          <div className="hidden lg:block order-3 lg:order-2">
+          <div className="wiki-entry-tertiary order-1 lg:order-2">
             <TableOfContents sections={SECTIONS} />
           </div>
 
           {/* Caixa de dados */}
-          <div className="order-1 lg:order-3">
-            <InfoboxShell>
+          <div className="wiki-entry-secondary order-2 lg:order-3">
+            <InfoboxShell title={w.name} subtitle="Weapon profile">
               <div>
                 <div className="corner-brackets tech-mask relative panel overflow-hidden aspect-[16/10]">
                   {gallery[slide] ? (
@@ -221,17 +303,13 @@ function App() {
                 <InfoRow label="Manufacturer" value={w.manufacturer} />
                 <InfoRow label="Association" value={w.association} />
                 <InfoRow label="Character" value={w.character} />
-                <InfoRow label="Status">
-                  <StatusBadge status={w.status} />
-                </InfoRow>
-                <InfoRow label="Evidence">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{w.evidenceStatus}</span>
-                </InfoRow>
               </div>
 
               <div className="border-t border-black/10 pt-4">
-                <SourceChip name={w.sourceName} url={w.sourceUrl} />
-                <p className="font-mono text-[9px] text-dim mt-2">Updated {w.updatedAt}</p>
+                {/* A data saiu daqui. É o mesmo `updatedAt` que o registo de
+                    conhecimento dá como «Last checked» e que as referências
+                    dão como «Retrieved»: um campo servido quatro vezes com
+                    quatro nomes diferentes em todas as fichas do arquivo. */}
               </div>
               <WhatLinksHere kind="weapons" slug={w.slug} />
               <WhatThisLinks kind="weapons" slug={w.slug} />

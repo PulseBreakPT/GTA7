@@ -1,17 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ChevronRight, FolderTree, Link2, FileWarning, Quote, Info, Shuffle, Check, Hash } from 'lucide-react'
+import Image from 'next/image'
+import { publicSource } from '@/lib/official-links'
+import { ChevronRight, FolderTree, Link2, FileWarning, Quote, Info, Shuffle, Check, Hash, Printer, Copy, Clock3, BookOpen, Bookmark, BookmarkCheck, FolderPlus, PenLine, StickyNote, UserRound } from 'lucide-react'
 import { categoriesFor, backlinksFor, entryFor, entryByName, otherUses, confusableWith, siblingsFor, outgoingFor, KIND_META, ENTRIES, LINK_PATTERN } from '@/lib/wiki-graph'
-import MapTerrain, { MAP_VBW, MAP_VBH } from './map-terrain'
-import { cx } from './ui'
+import { cx, StatusBadge } from './ui'
+import { useAuth } from './auth-provider'
 
 // Migalhas de pão: dizem em que ramo do arquivo se está e deixam subir um
 // nível. O último elemento é a página actual e não é ligação.
 export function Breadcrumb({ trail }) {
   return (
-    <nav aria-label="Breadcrumb" className="min-w-0">
+    <nav aria-label="Breadcrumb" data-content-priority="context" className="wiki-breadcrumb min-w-0">
       <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 font-cond uppercase tracking-[0.12em] text-[11px] text-dim">
         {trail.map((step, i) => {
           const last = i === trail.length - 1
@@ -35,16 +37,25 @@ export function Breadcrumb({ trail }) {
 // entradas tem e de quando é a mais recente. A contagem e a data vêm
 // sempre calculadas dos dados — escritas à mão desactualizam-se e passam
 // a mentir sobre o tamanho do arquivo.
-export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, children }) {
+export function CategoryHeader({ eyebrow, title, description, count, countLabel = 'entries', updatedAt, image, imageAlt, imagePosition = 'center', imagePriority = false, kind, children }) {
+  const branchEntries = kind ? ENTRIES.filter((entry) => entry.kind === kind) : []
+  const coverage = branchEntries.length ? {
+    sourced: branchEntries.filter((entry) => entry.sourceUrl).length,
+    dated: branchEntries.filter((entry) => entry.updatedAt).length,
+    complete: branchEntries.filter((entry) => !entry.stub).length,
+    categories: new Set(branchEntries.flatMap((entry) => entry.categories.slice(1))).size,
+    statuses: ['confirmed', 'verified', 'category', 'analysis', 'rumour']
+      .map((status) => ({ status, count: branchEntries.filter((entry) => entry.status === status).length }))
+      .filter((item) => item.count),
+  } : null
+
   return (
-    <header className="border-b hairline pb-4">
-      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+    <header data-content-priority="primary" className="wiki-category-header border-b hairline pb-5">
+      <div className="wiki-category-heading-row flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         <div className="min-w-0">
-          {eyebrow && <p className="font-cond uppercase tracking-[0.18em] text-[11px] text-mint">{eyebrow}</p>}
-          <h1 className="mt-1 font-cond font-bold uppercase tracking-tight text-[34px] sm:text-[44px] leading-[0.95] text-paper">{title}</h1>
-          {description && <p className="mt-2 text-[13px] leading-relaxed text-dim max-w-[68ch]">{description}</p>}
+          <h1 className="wiki-category-title mt-1 font-cond font-bold uppercase tracking-tight text-paper">{title}</h1>
         </div>
-        <dl className="flex items-center gap-5 shrink-0">
+        {(count != null || updatedAt) && <dl className="wiki-category-facts flex items-center gap-5 shrink-0">
           <div>
             <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{countLabel}</dt>
             <dd className="font-cond font-bold text-[22px] text-paper tabular-nums leading-none mt-1">{count}</dd>
@@ -55,8 +66,32 @@ export function CategoryHeader({ eyebrow, title, description, count, countLabel 
               <dd className="font-mono text-[12px] text-paper tabular-nums leading-none mt-1.5">{updatedAt}</dd>
             </div>
           )}
-        </dl>
+        </dl>}
       </div>
+      {image && (
+        <div className="wiki-category-hero-media relative mt-5 overflow-hidden border border-line bg-surface2">
+          <Image src={image} alt={imageAlt || ''} fill priority={imagePriority} sizes="(max-width: 1400px) 100vw, 1320px" className="object-cover" style={{ objectPosition: imagePosition }} />
+        </div>
+      )}
+      {description && <p className="wiki-category-description mt-4 text-dim">{description}</p>}
+      {coverage && (
+        <details className="wiki-coverage-snapshot" aria-label={`${title} archive coverage`}>
+          <summary className="archive-coverage-toggle">Archive coverage <span>{branchEntries.length} records · view source breakdown</span></summary>
+          <header>
+            <span><strong>Archive coverage</strong><small>Calculated from the records currently published in this branch.</small></span>
+            <Link href={`/wiki/portal/${kind}`}>Open topic portal <ChevronRight size={12} aria-hidden="true" /></Link>
+          </header>
+          <dl>
+            <div><dt>Source linked</dt><dd>{coverage.sourced}<small>of {branchEntries.length}</small></dd></div>
+            <div><dt>Verification dated</dt><dd>{coverage.dated}<small>records</small></dd></div>
+            <div><dt>Substantive entries</dt><dd>{coverage.complete}<small>non-stubs</small></dd></div>
+            <div><dt>Subcategories</dt><dd>{coverage.categories}<small>documented</small></dd></div>
+          </dl>
+          <div className="wiki-coverage-statuses">
+            {coverage.statuses.map((item) => <span key={item.status}><StatusBadge status={item.status} /><b>{item.count}</b></span>)}
+          </div>
+        </details>
+      )}
       {children}
     </header>
   )
@@ -76,7 +111,7 @@ export function TableOfContents({ sections }) {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) setActiveId(entry.id)
+        if (entry.isIntersecting) setActiveId(entry.target.id)
       })
     }, { rootMargin: '0px 0px -60% 0px' })
 
@@ -85,24 +120,33 @@ export function TableOfContents({ sections }) {
   }, [])
 
   return (
-    <nav className="sticky top-24 h-fit" aria-label="Contents">
-      <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mb-3">Contents</p>
-      <ul className="space-y-2">
-        {sections.map(({ id, label, icon: Icon }) => (
-          <li key={id}>
-            <a
-              href={`#${id}`}
-              className={cx(
-                'inline-flex items-center gap-2 font-cond uppercase tracking-[0.08em] text-[12px] transition-colors',
-                activeId === id ? 'text-pink' : 'text-dim hover:text-paper'
-              )}
-            >
-              {Icon && <Icon size={12} aria-hidden="true" />}
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
+    <nav data-content-priority="tertiary" className="wiki-toc-panel sticky top-24 h-fit" aria-label="Contents">
+      <details className="wiki-toc-disclosure" open>
+        <summary className="wiki-toc-summary">
+          <span>
+            <strong>Contents</strong>
+            <small>{sections.length} sections</small>
+          </span>
+          <ChevronRight size={15} aria-hidden="true" />
+        </summary>
+        <ol className="wiki-toc-list">
+          {sections.map(({ id, label, icon: Icon }, index) => (
+            <li key={id}>
+              <a
+                href={`#${id}`}
+                className={cx(
+                  'transition-colors',
+                  activeId === id ? 'text-pink' : 'text-dim hover:text-paper'
+                )}
+              >
+                <span className="wiki-toc-number">{String(index + 1).padStart(2, '0')}</span>
+                {Icon && <Icon size={13} aria-hidden="true" />}
+                <span>{label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
     </nav>
   )
 }
@@ -112,7 +156,7 @@ export function TableOfContents({ sections }) {
 // se poder apontar alguém para a secção e não para a entrada inteira.
 export function WikiSection({ id, title, className, children }) {
   return (
-    <section data-section id={id} className={cx('mb-12 scroll-mt-24', className)}>
+    <section data-section data-content-priority="primary" id={id} className={cx('wiki-content-section mb-12 scroll-mt-24', className)}>
       <h2 className="deco-rule group font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4 flex items-baseline gap-2">
         {title}
         {id && (
@@ -150,7 +194,7 @@ export function Hatnote({ kind, slug }) {
   ))
 
   return (
-    <p className="mt-3 border-l-2 border-warn pl-3 text-[12.5px] leading-relaxed text-dim italic">
+    <p className="wiki-hatnote mt-3 border-l-2 border-warn pl-3 text-[12.5px] leading-relaxed text-dim italic">
       {same.length > 0 ? 'For other records with this name, see ' : 'Not to be confused with '}
       {links}.
     </p>
@@ -162,7 +206,116 @@ export function Hatnote({ kind, slug }) {
 export function ShortDescription({ children, className }) {
   if (!children) return null
   return (
-    <p className={cx('mt-2 font-cond uppercase tracking-[0.1em] text-[12px] text-dim', className)}>{children}</p>
+    <p className={cx('wiki-short-description mt-2 font-cond uppercase tracking-[0.1em] text-[12px] text-dim', className)}>{children}</p>
+  )
+}
+
+// Ações relacionadas com a página, separadas da navegação global. MediaWiki
+// chama-lhes page tabs/toolbox: não mudam de assunto, operam sobre o verbete
+// actual. Aqui só aparecem ações reais — leitura, relações, verificação,
+// metadados, citação, impressão e ligação canónica.
+export function PageTools({ kind, slug }) {
+  const entry = entryFor(kind, slug)
+  const { user, request } = useAuth()
+  const [copied, setCopied] = useState(false)
+  const [watching, setWatching] = useState(false)
+  const [watchBusy, setWatchBusy] = useState(false)
+  const recordedView = useRef('')
+
+  useEffect(() => {
+    if (!entry || !user) {
+      setWatching(false)
+      return
+    }
+    const key = `${user.id}:${kind}:${slug}`
+    fetch(`/api/auth/wiki-state?kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`, { credentials: 'same-origin', cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => { if (data) setWatching(Boolean(data.watching)) })
+      .catch(() => {})
+    if (recordedView.current !== key) {
+      recordedView.current = key
+      request('page-view', { body: { kind, slug } }).catch(() => {})
+    }
+  }, [entry, user, kind, slug, request])
+
+  if (!entry) return null
+
+  const toggleWatch = async () => {
+    if (!user || watchBusy) return
+    setWatchBusy(true)
+    try {
+      const result = await request('watch', { body: { kind, slug, watching: !watching } })
+      setWatching(Boolean(result.watching))
+    } catch { /* mantém o estado anterior se a rede falhar */ }
+    finally { setWatchBusy(false) }
+  }
+
+  const copyPermanentLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}${entry.href}`)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch { /* o endereço canónico continua disponível na barra do browser */ }
+  }
+
+  const related = encodeURIComponent(`${kind}:${slug}`)
+  const links = [
+    ['Read', '#article-content', BookOpen],
+    ['What links here', `/wiki/what-links-here?kind=${kind}&slug=${slug}`, Link2],
+    ['Related changes', `/wiki/changes?related=${related}`, Clock3],
+    ['Page information', '#page-information', Info],
+    ['Cite', '#page-citation', Quote],
+  ]
+
+  return (
+    <div data-content-priority="tertiary" className="wiki-tools-stack mt-3">
+      <details className="archive-page-toolbox">
+      <summary>Article tools <span>Sources, links, citation & print</span></summary>
+      <nav className="wiki-page-tools flex flex-wrap items-center gap-x-1 gap-y-1 border-y hairline py-1" aria-label="Article tools">
+        {links.map(([label, href, Icon]) => (
+          <Link key={label} href={href} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
+            <Icon size={12} aria-hidden="true" /> {label}
+          </Link>
+        ))}
+        <button type="button" onClick={() => window.print()} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
+          <Printer size={12} aria-hidden="true" /> Print
+        </button>
+        <button type="button" onClick={copyPermanentLink} className="inline-flex min-h-[34px] items-center gap-1.5 px-2.5 font-cond font-semibold uppercase tracking-[0.1em] text-[10px] text-dim hover:text-pink hover:bg-surface2/50 transition-colors">
+          {copied ? <Check size={12} className="text-mint" aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}
+          {copied ? 'Link copied' : 'Permanent link'}
+        </button>
+      </nav>
+      </details>
+
+      <nav className="wiki-user-actions" aria-label="Page actions">
+        <div className="wiki-user-actions-label">
+          <span><UserRound size={13} aria-hidden="true" /> Page actions</span>
+        </div>
+        <div className="wiki-user-actions-buttons">
+          {user ? (
+            <>
+              <button type="button" onClick={toggleWatch} disabled={watchBusy} aria-pressed={watching} className={cx('wiki-user-action', watching && 'is-active')}>
+                {watching ? <BookmarkCheck size={14} aria-hidden="true" /> : <Bookmark size={14} aria-hidden="true" />}
+                <span>{watching ? 'Watching' : 'Watch page'}</span>
+              </button>
+              <Link href={`/account?section=collections&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+                <FolderPlus size={14} aria-hidden="true" /><span>Add to collection</span>
+              </Link>
+              <Link href={`/account?section=notes&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+                <StickyNote size={14} aria-hidden="true" /><span>Private note</span>
+              </Link>
+              <Link href={`/account?section=contributions&kind=${encodeURIComponent(kind)}&slug=${encodeURIComponent(slug)}`} className="wiki-user-action">
+                <PenLine size={14} aria-hidden="true" /><span>Suggest edit</span>
+              </Link>
+            </>
+          ) : (
+            <Link href={`/login?next=${encodeURIComponent(entry.href)}`} className="wiki-user-action wiki-user-signin">
+              <UserRound size={14} aria-hidden="true" /><span>Sign in for personal tools</span>
+            </Link>
+          )}
+        </div>
+      </nav>
+    </div>
   )
 }
 
@@ -181,7 +334,15 @@ export function CitePage({ kind, slug, title }) {
 
   if (!entry) return null
 
-  const citation = `LEONIDA ARCHIVE. “${title || entry.name}.” Leonida Archive${entry.sourceName ? `, citing ${entry.sourceName}` : ''}${entry.updatedAt ? `, last checked ${entry.updatedAt}` : ''}. ${url}${today ? ` (retrieved ${today})` : ''}.`
+  // Monta-se por segmentos e só o fim leva ponto. Antes o texto era
+  // `… . ${url}.`, e uma entrada sem endereço — ou antes de o `useEffect`
+  // o preencher — ficava com «last checked 2026-06-14. .» ou «Official
+  // Site. ..». Um campo opcional vazio nunca pode deixar pontuação atrás.
+  const credito = ['GTA Lore']
+  if (entry.sourceName) credito.push(`citing ${entry.sourceName}`)
+  if (entry.updatedAt) credito.push(`last checked ${entry.updatedAt}`)
+  const localizacao = [url, today ? `(retrieved ${today})` : ''].filter(Boolean).join(' ')
+  const citation = `GTA LORE. “${title || entry.name}.” ${[credito.join(', '), localizacao].filter(Boolean).join('. ')}.`
 
   const copy = async () => {
     try {
@@ -192,24 +353,27 @@ export function CitePage({ kind, slug, title }) {
   }
 
   return (
-    <section className="mt-10 panel rounded-sm p-4" aria-labelledby={`cite-${kind}-${slug}`}>
-      <h2 id={`cite-${kind}-${slug}`} className="flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
+    <details id="page-citation" data-content-priority="tertiary" className="wiki-support-panel mt-4 panel rounded-sm scroll-mt-24">
+      <summary id={`cite-${kind}-${slug}`} className="cursor-pointer list-none px-4 py-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
         <Quote size={13} className="text-mint" aria-hidden="true" /> Cite this page
-      </h2>
-      <p className="mt-2.5 font-mono text-[11px] leading-[1.7] text-dim break-words select-all">{citation}</p>
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={copy}
-          className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors"
-        >
-          {copied ? <><Check size={12} className="text-mint" aria-hidden="true" /> Copied</> : 'Copy citation'}
-        </button>
-        <span className="font-mono text-[10px] text-dim">
-          Cite the source itself where you can; cite the archive when the arrangement is what you are quoting.
-        </span>
+        <ChevronRight size={12} className="ml-auto text-dim" aria-hidden="true" />
+      </summary>
+      <div className="border-t hairline px-4 pb-4">
+        <p className="mt-3 font-mono text-[11px] leading-[1.7] text-dim break-words select-all">{citation}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={copy}
+            className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors"
+          >
+            {copied ? <><Check size={12} className="text-mint" aria-hidden="true" /> Copied</> : 'Copy citation'}
+          </button>
+          <span className="font-mono text-[10px] text-dim">
+            Cite the source itself where you can; cite the archive when the arrangement is what you are quoting.
+          </span>
+        </div>
       </div>
-    </section>
+    </details>
   )
 }
 
@@ -221,35 +385,50 @@ export function PageInformation({ kind, slug }) {
 
   const incoming = backlinksFor(kind, slug).length
   const outgoing = outgoingFor(entry).length
+  const connected = incoming + outgoing
+  const evidenceCopy = {
+    confirmed: 'The archive treats the identity or claim as confirmed. The linked source remains the authority for its exact scope.',
+    verified: 'The archive verified this identification in published material; that does not imply that every possible detail has been announced.',
+    category: 'The broad category is supported, while the exact model, name or finer identification remains unresolved.',
+    analysis: 'This record contains archive interpretation kept separate from statements made directly by the publisher.',
+    rumour: 'This record is unconfirmed and is preserved only as a traceable community claim, not as established fact.',
+  }[entry.status] || 'Read the source record before treating this entry as established.'
   const rows = [
     ['Branch', KIND_META[kind].label],
-    ['Page name', entry.name],
     ['Identifier', slug],
-    ['Source label', entry.status],
-    ['Categories', String(entry.categories.length)],
-    ['Links in', String(incoming)],
-    ['Links out', String(outgoing)],
     ['Body length', `${entry.bodyLength} characters`],
     ['Marked as stub', entry.stub ? 'yes' : 'no'],
-    ['Last checked', entry.updatedAt || 'not recorded'],
-    ['Source', entry.sourceName || 'none named'],
   ]
 
   return (
-    <details className="mt-4 panel rounded-sm">
-      <summary className="cursor-pointer list-none px-4 py-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
-        <Info size={13} className="text-mint" aria-hidden="true" /> Page information
-        <ChevronRight size={12} className="ml-auto text-dim" aria-hidden="true" />
-      </summary>
-      <dl className="border-t hairline divide-y divide-black/[0.06]">
-        {rows.map(([k, v]) => (
-          <div key={k} className="px-4 py-2 flex items-baseline gap-4">
-            <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim w-[110px] shrink-0">{k}</dt>
-            <dd className="font-mono text-[11px] text-paper break-words min-w-0">{v}</dd>
-          </div>
-        ))}
-      </dl>
-    </details>
+    <section id="page-information" data-content-priority="tertiary" className="wiki-knowledge-record mt-4 panel rounded-sm scroll-mt-24" aria-labelledby={`knowledge-${kind}-${slug}`}>
+      <header>
+        <span><Info size={14} className="text-mint" aria-hidden="true" /><strong id={`knowledge-${kind}-${slug}`}>Knowledge record</strong></span>
+      </header>
+      <div className="wiki-knowledge-body">
+        <p>{evidenceCopy}</p>
+        <dl className="wiki-knowledge-grid">
+          {/* O total e a repartição ficavam encostados um ao outro sem
+              separador: uma região com 90 backlinks e nenhuma ligação de
+              saída lia-se «9090 in». A repartição continua a existir, nas
+              linhas de dados técnicos aqui em baixo. */}
+          <div><dt>Connections</dt><dd>{connected}<small>connections</small></dd></div>
+          <div><dt>Taxonomy</dt><dd>{entry.categories.length}<small>categories</small></dd></div>
+          <div><dt>Last checked</dt><dd>{entry.updatedAt || 'Not recorded'}</dd></div>
+        </dl>
+      </div>
+      <details className="wiki-page-data">
+        <summary><span>Technical page data</span><ChevronRight size={12} aria-hidden="true" /></summary>
+        <dl>
+          {rows.map(([k, v]) => (
+            <div key={k}>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+    </section>
   )
 }
 
@@ -261,7 +440,7 @@ export function Navbox({ kind, slug, title }) {
   if (!entry || siblings.length === 0) return null
 
   return (
-    <nav className="mt-8 border hairline rounded-sm overflow-hidden" aria-label={`More ${KIND_META[kind].plural.toLowerCase()}`}>
+    <nav data-content-priority="tertiary" className="wiki-navbox mt-8 border hairline rounded-sm overflow-hidden" aria-label={`More ${KIND_META[kind].plural.toLowerCase()}`}>
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2.5 bg-surface2/50 border-b hairline">
         <span className="font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
           {title || `More ${KIND_META[kind].plural.toLowerCase()}`}
@@ -288,9 +467,9 @@ export function Navbox({ kind, slug, title }) {
 export function InfoRow({ label, value, children }) {
   if (!children && (value == null || value === '')) return null
   return (
-    <div>
-      <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{label}</span>
-      <div className="font-cond font-semibold text-[13px] text-paper mt-1">{children || value}</div>
+    <div className="wiki-info-row">
+      <span className="wiki-info-label">{label}</span>
+      <div className="wiki-info-value">{children || value}</div>
     </div>
   )
 }
@@ -299,99 +478,125 @@ export function InfoRow({ label, value, children }) {
 // fila de valores soltos: «—» sozinho não diz de que campo é. Cada célula
 // leva o rótulo por cima, e o campo sem fonte publicada aparece na mesma,
 // dito por extenso — num arquivo preso à fonte, a ausência é informação.
+// Uma frase de ausência não é um dado. Os «bibles» escrevem o que não se
+// sabe em prosa — «Not published for this weapon.», «Region not published
+// for this vehicle.» — e, por serem texto verdadeiro, apareciam desenhados
+// como se fossem conteúdo: secções inteiras de caixas a dizer que não há
+// nada a dizer.
+//
+// O arquivo não esconde a ausência, e é uma posição declarada no glossário:
+// um campo vazio lê-se como dado em falta, e isto não é dado em falta — é
+// dado que ainda não existe. Por isso não se apaga: condensa-se. Os campos
+// conhecidos ficam na grelha; os desconhecidos passam a uma linha só que
+// diz quais são. A informação mantém-se, o ruído desaparece.
+const SEM_DADO = /^(—|-|n\/?a|unknown|none|not published|not recorded|not officially specified)\b|\b(?:is|are|was|were)? ?not (?:published|recorded|officially specified)\b|^no .+ (?:published|recorded)/i
+
+const semConteudo = ({ value, children }) => {
+  if (children) return false
+  if (value == null || value === '') return true
+  return SEM_DADO.test(String(value).trim())
+}
+
 export function SpecGrid({ items }) {
   const rows = items.filter(Boolean)
   if (rows.length === 0) return null
+  const conhecidos = rows.filter((row) => !semConteudo(row))
+  const desconhecidos = rows.filter((row) => semConteudo(row))
+
   return (
-    <dl className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      {rows.map(({ label, value, children }) => (
-        <div key={label} className="panel2 rounded-sm px-3 py-2.5 min-w-0">
-          <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{label}</dt>
-          <dd className="mt-1 font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper leading-snug break-words">
-            {children || value || <span className="font-normal tracking-[0.1em] text-[11px] text-dim">NOT PUBLISHED</span>}
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <>
+      {conhecidos.length > 0 && (
+        <dl className="wiki-spec-grid grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {conhecidos.map(({ label, value, children }) => (
+            <div key={label} className="panel2 rounded-sm px-3 py-2.5 min-w-0">
+              <dt className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">{label}</dt>
+              <dd className="mt-1 font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper leading-snug break-words">
+                {children || value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {desconhecidos.length > 0 && (
+        <p className={`text-[12px] leading-relaxed text-dim ${conhecidos.length > 0 ? 'mt-2.5' : ''}`}>
+          <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim">Not published by Rockstar:</span>{' '}
+          {desconhecidos.map((row) => row.label).join(' · ')}
+        </p>
+      )}
+    </>
   )
 }
 
-export function InfoboxShell({ children, className }) {
+export function InfoboxShell({ children, className, title = 'Article facts', subtitle = 'At a glance' }) {
   return (
-    <aside className={cx('panel rounded-sm p-5 bg-ink/30 lg:sticky lg:top-24 h-fit', className)}>
-      <div className="space-y-4">{children}</div>
+    <aside data-content-priority="secondary" className={cx('wiki-infobox panel rounded-sm bg-ink/30 lg:sticky lg:top-24 h-fit', className)} aria-label={`${title} facts`}>
+      <details className="wiki-infobox-disclosure" open>
+        <summary className="wiki-infobox-heading">
+          {/* O nome já está no título da ficha; aqui diz-se só o que a caixa é. */}
+          <span>
+            <strong>{subtitle}</strong>
+          </span>
+          <ChevronRight size={16} aria-hidden="true" />
+        </summary>
+        <div className="wiki-infobox-body space-y-4">{children}</div>
+      </details>
     </aside>
   )
 }
 
 export function InfoboxSource({ sourceName, sourceUrl, updatedAt }) {
+  const source = publicSource(sourceName, sourceUrl)
   return (
     <div className="border-t border-black/10 pt-4">
-      <a href={sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
-        {sourceName ? sourceName.toUpperCase() : 'SOURCE'}
-      </a>
+      {source.url ? (
+        <a href={source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-paper hover:border-black/40 transition-colors">
+          {source.name.toUpperCase()}
+        </a>
+      ) : (
+        <span className="inline-flex items-center border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px] text-dim">
+          {source.name.toUpperCase()} · NO EXTERNAL LINK
+        </span>
+      )}
       {updatedAt && <p className="font-mono text-[9px] text-dim mt-2">Updated {updatedAt}</p>}
     </div>
   )
 }
 
-// Um lugar sem fotografia oficial ficava com um pino cinzento igual ao dos
-// outros trinta e sete. Passa a levar um recorte do mapa do arquivo centrado
-// nas suas coordenadas: é uma imagem própria de cada sítio, distinta das
-// restantes, e desenhada só com dados que o arquivo tem. Não é uma vista do
-// local — é o mapa —, e por isso vem rotulada como tal em vez de se fazer
-// passar por captura do jogo.
-export function LocationThumb({ x, y, name, label = 'ARCHIVE MAP', className }) {
-  // O recorte é uma janela de 300×170 do mapa de 1000×620, encostada às
-  // bordas quando o ponto está perto delas — sem isto, um sítio no canto
-  // apareceria centrado em água fora do mapa.
-  const W = 300
-  const H = 170
-  const vx = Math.min(Math.max(x, W / 2), MAP_VBW - W / 2)
-  const vy = Math.min(Math.max(y, H / 2), MAP_VBH - H / 2)
-
+// A visual record is always raster media captured from Rockstar material.
+// When the exact place has no dedicated frame, the region artwork is used as
+// context and labelled explicitly so it cannot be mistaken for proof of the
+// exact building or street.
+export function LocationThumb({ image, fallbackImage, name, label, className, priority = false, showLabel = true }) {
+  const src = image || fallbackImage
+  if (!src) return null
+  const contextual = !image
   return (
-    <span className={cx('relative block overflow-hidden bg-[#DCE6EF]', className)}>
-      <svg
-        viewBox={`${vx - W / 2} ${vy - H / 2} ${W} ${H}`}
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 w-full h-full"
-        role="img"
-        aria-label={`${name} on the archive map of Leonida — no official image published`}
-      >
-        <rect x={vx - W / 2} y={vy - H / 2} width={W} height={H} fill="#DCE6EF" />
-        <MapTerrain labels={false} />
-        <g transform={`translate(${x},${y})`}>
-          <circle r="26" fill="none" stroke="#C2185B" strokeWidth="2" opacity="0.45" />
-          <circle r="13" fill="none" stroke="#FFFFFF" strokeWidth="2.5" />
-          <circle r="7" fill="#FFFFFF" stroke="#C2185B" strokeWidth="3.5" />
-          <circle r="2.5" fill="#C2185B" />
-        </g>
-      </svg>
-      <span className="absolute left-0 bottom-0 px-1.5 py-[2px] bg-ink/80 font-mono text-[8px] uppercase tracking-[0.16em] text-mint">
-        {label}
-      </span>
+    <span className={cx('relative block overflow-hidden bg-surface2', className)}>
+      <Image
+        src={src}
+        alt={contextual ? `${name} — official imagery of the surrounding region, not this exact place` : `${name} in published GTA VI media`}
+        fill
+        priority={priority}
+        sizes="(max-width: 768px) 100vw, 420px"
+        className="object-cover"
+      />
+      {showLabel && <span className="absolute inset-x-0 bottom-0 px-2 py-1.5 bg-gradient-to-t from-black/85 to-black/10 font-mono text-[8px] uppercase tracking-[0.13em] text-white">
+        {label || (contextual ? 'OFFICIAL REGION CONTEXT · NOT THIS EXACT PLACE' : 'PUBLISHED GTA VI IMAGE')}
+      </span>}
     </span>
   )
 }
 
-// Mapa de localização da ficha de um local: o mesmo terreno do mapa
-// interactivo, sem interacção nenhuma, com um alvo no ponto. É a peça que
-// nas wikis grandes aparece sempre no topo da caixa de dados de um sítio.
-export function LocationLocator({ x, y, name }) {
+export function LocationLocator({ image, fallbackImage, name, sourceLabel }) {
   return (
-    <span className="relative block overflow-hidden rounded-sm border border-line bg-[#DCE6EF]">
-      <svg viewBox={`0 0 ${MAP_VBW} ${MAP_VBH}`} className="w-full h-auto" role="img" aria-label={`${name} marked on the map of Leonida`}>
-        <rect width={MAP_VBW} height={MAP_VBH} fill="#DCE6EF" />
-        <MapTerrain />
-        <g transform={`translate(${x},${y})`}>
-          <circle r="42" fill="none" stroke="#C2185B" strokeWidth="3" opacity="0.5" />
-          <circle r="22" fill="none" stroke="#FFFFFF" strokeWidth="3" />
-          <circle r="11" fill="#FFFFFF" stroke="#C2185B" strokeWidth="5" />
-          <circle r="4" fill="#C2185B" />
-        </g>
-      </svg>
-    </span>
+    <LocationThumb
+      image={image}
+      fallbackImage={fallbackImage}
+      name={name}
+      label={sourceLabel}
+      className="aspect-[16/10] w-full rounded-sm border border-line"
+      priority
+    />
   )
 }
 
@@ -409,7 +614,7 @@ export function WhatThisLinks({ kind, slug }) {
   if (out.length === 0) return null
 
   return (
-    <section className="mt-6 panel rounded-sm p-4" aria-labelledby={`out-${kind}-${slug}`}>
+    <section data-content-priority="secondary" className="mt-6 panel rounded-sm p-4" aria-labelledby={`out-${kind}-${slug}`}>
       <h2 id={`out-${kind}-${slug}`} className="flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px] text-paper">
         <Link2 size={13} className="text-mint" aria-hidden="true" /> What this page links to
         <span className="font-mono text-[10px] text-dim tabular-nums">{out.length}</span>
@@ -428,18 +633,6 @@ export function WhatThisLinks({ kind, slug }) {
   )
 }
 
-// A posição no mapa do arquivo, para os lugares. Não são coordenadas do
-// jogo — a Rockstar não publicou nenhumas —, são as deste mapa, e é isso
-// que a linha diz.
-export function ArchiveCoordinates({ x, y, className }) {
-  if (x == null || y == null) return null
-  return (
-    <p className={cx('font-mono text-[10px] uppercase tracking-[0.14em] text-dim', className)}>
-      Archive map position {x}, {y} · not official game coordinates
-    </p>
-  )
-}
-
 // Rodapé de categorias. Nas wikis é a última linha de qualquer artigo, e
 // é por ali que se anda de um assunto para o vizinho sem passar pela
 // pesquisa.
@@ -449,7 +642,7 @@ export function CategoryFooter({ kind, slug }) {
   if (cats.length === 0) return null
 
   return (
-    <footer className="mt-10 border-t border-black/10 pt-4">
+    <footer data-content-priority="tertiary" className="mt-10 border-t border-black/10 pt-4">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1.5 font-cond uppercase tracking-[0.14em] text-[10px] text-dim shrink-0">
           <FolderTree size={12} aria-hidden="true" /> Categories
@@ -503,16 +696,24 @@ export function WhatLinksHere({ kind, slug }) {
 // Secção de referências, numerada. É o que separa um arquivo de um blogue:
 // cada afirmação tem de poder ser seguida até à origem.
 export function References({ items }) {
-  const list = (items || []).filter((r) => r && r.name)
+  const list = (items || [])
+    .filter((r) => r && r.name)
+    .map((r) => ({ ...r, ...publicSource(r.name, r.url) }))
   if (list.length === 0) return null
 
   return (
-    <section data-section id="references" className="mb-12 scroll-mt-24">
+    <section data-section data-content-priority="tertiary" id="references" className="wiki-references mb-12 scroll-mt-24">
       <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[18px] text-paper mb-4">References</h2>
       <ol className="space-y-2.5">
         {list.map((r, i) => (
-          <li key={`${r.name}-${i}`} className="flex gap-3 text-[13px] leading-relaxed">
-            <span className="font-mono text-[11px] text-mint tabular-nums shrink-0 pt-[2px]">[{i + 1}]</span>
+          // Âncora própria e caminho de volta: o `[n]` do texto salta para
+          // aqui, e o `^` daqui devolve o leitor à frase que o mandou cá —
+          // sem isso, seguir uma citação era uma viagem só de ida.
+          <li key={`${r.name}-${i}`} id={`ref-${i + 1}`} className="flex gap-3 text-[13px] leading-relaxed scroll-mt-24 target:bg-mint/[0.07]">
+            <a href={`#cite-${i + 1}`} aria-label={`Back to citation ${i + 1} in the text`}
+              className="font-mono text-[11px] text-mint tabular-nums shrink-0 pt-[2px] hover:text-paper transition-colors">
+              ^ [{i + 1}]
+            </a>
             <span className="min-w-0 text-dim">
               {r.url ? (
                 <a href={r.url} target="_blank" rel="noreferrer" className="text-paper hover:text-mint transition-colors break-words">{r.name}</a>
@@ -529,6 +730,28 @@ export function References({ items }) {
   )
 }
 
+// A marca de citação no corpo do texto: «…Leonida Penitentiary.[1]».
+//
+// É a peça que separa um arquivo de uma enciclopédia — a afirmação e a prova
+// ficam à distância de um clique uma da outra, em vez de a prova viver sozinha
+// no fundo da página sem dizer o que sustenta.
+//
+// A regra de uso é a mesma que governa o resto do sítio: só se cita o que os
+// dados conseguem provar. Sem fonte no registo não se desenha marca nenhuma —
+// 497 dos 558 registos não têm fonte, e inventar-lhes uma proveniência seria
+// pior do que não citar de todo. Por isso `n` só é passado por quem sabe que
+// a referência existe, e a âncora de retorno vive na lista de referências.
+export function Cite({ n = 1, label }) {
+  return (
+    <sup id={`cite-${n}`} className="wiki-cite scroll-mt-24">
+      <a href={`#ref-${n}`} title={label || `Reference ${n}`}
+        className="ml-[1px] font-mono text-[10px] text-mint hover:text-paper transition-colors no-underline">
+        [{n}]
+      </a>
+    </sup>
+  )
+}
+
 // Aviso de esboço: diz de frente que a entrada está incompleta, em vez de
 // a deixar passar por acabada.
 export function StubNotice({ kind, slug }) {
@@ -536,7 +759,7 @@ export function StubNotice({ kind, slug }) {
   if (!entry || !entry.stub) return null
 
   return (
-    <div className="mt-4 flex items-start gap-2.5 border-l-2 border-warn/70 bg-warn/[0.04] px-3 py-2.5">
+    <div className="wiki-stub-notice mt-4 flex items-start gap-2.5 border-l-2 border-warn/70 bg-warn/[0.04] px-3 py-2.5">
       <FileWarning size={14} className="text-warn shrink-0 mt-[2px]" aria-hidden="true" />
       <p className="text-[12px] leading-relaxed text-dim">
         <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px] text-warn">Stub. </span>
@@ -581,4 +804,18 @@ export function WikiText({ children, exclude }) {
   if (last === 0) return text
   if (last < text.length) out.push(text.slice(last))
   return <>{out}</>
+}
+
+// Community-reported details, kept out of the sourced text and under their own
+// heading so a reader never takes them as confirmed by the record's source.
+export function ReportedNotes({ items, source }) {
+  if (!items?.length) return null
+  return (
+    <WikiSection id="reported" title="Reported in community summaries">
+      <div className="reported-notes">
+        <p>Not confirmed by Rockstar. These details come from {source}; they sit apart from the sourced text above and do not change this record’s status.</p>
+        <ul>{items.map((item) => <li key={item}>{item}</li>)}</ul>
+      </div>
+    </WikiSection>
+  )
 }

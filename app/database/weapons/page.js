@@ -1,21 +1,44 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, Triangle, ArrowLeft, ArrowRight } from 'lucide-react'
-import DbTabs, { WeaponGlyph } from '@/components/site/dbtabs'
-import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
+import { WeaponGlyph } from '@/components/site/dbtabs'
+import { SourceChip, StatusBadge, cx, TypeChip } from '@/components/site/ui'
 import WeaponVisual from '@/components/site/weapon-visual'
-import { weapons, weaponTypes, weaponCounters, featureBriefs, officialCatalog } from '@/lib/content'
+import { weapons, weaponTypes, featureBriefs, officialCatalog } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
+import { useUrlState } from '@/components/site/use-url-state'
 
 const pad = (n) => String(n).padStart(2, '0')
 
+// A vista por omissão numa tabela só: o contador de filtros activos compara-se
+// com ela, e deixa de poder ficar desactualizado quando um filtro muda de nome.
+const VISTA_OMISSA = { type: 'all', sort: 'default', q: '' }
+
 function App() {
   const router = useRouter()
-  const [type, setType] = useState('all')
+
+  // Tipo, ordenação e pesquisa vivem na URL: a vista sobrevive a abrir uma
+  // arma e voltar atrás, e `?type=melee` passa a ser um endereço partilhável.
+  const [vista, definirVista] = useUrlState(VISTA_OMISSA)
+  const { type, sort } = vista
+  const setType = (valor) => definirVista({ type: valor })
+  const setSort = (valor) => definirVista({ sort: valor })
+
+  // Filtra a cada tecla, escreve na URL só quando o leitor pára de escrever.
   const [query, setQuery] = useState('')
-  const [sort, setSort] = useState('default')
+  useEffect(() => { setQuery(vista.q) }, [vista.q])
+  useEffect(() => {
+    if (query === vista.q) return undefined
+    const id = setTimeout(() => definirVista({ q: query }), 250)
+    return () => clearTimeout(id)
+  }, [query, vista.q, definirVista])
+
+  const limparFiltros = () => { definirVista(VISTA_OMISSA); setQuery('') }
+
   const [selectedSlug, setSelectedSlug] = useState('morgan-revolvers')
   const [gallerySlide, setGallerySlide] = useState(0)
   const availableTypes = useMemo(() => weaponTypes.filter((t) => weapons.some((w) => w.type === t.id)), [])
@@ -31,84 +54,99 @@ function App() {
     if (sort === 'name-desc') return [...out].sort((a, b) => byName(b, a))
     if (sort === 'updated') return [...out].sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || '') || byName(a, b))
     return out
-  }, [type, query])
+  }, [type, query, sort])
 
   const selected = list.find((w) => w.slug === selectedSlug) || list[0] || weapons[0]
   const selectedGallery = selected?.gallery?.length ? selected.gallery : [selected?.image]
   const displaySelected = selected ? { ...selected, image: selectedGallery[gallerySlide] || selected.image } : selected
+  const activeFilterCount = Object.keys(VISTA_OMISSA)
+    .filter((chave) => (chave === 'q' ? query.trim() !== '' : vista[chave] !== VISTA_OMISSA[chave]))
+    .length
 
   const barStats = selected ? [
     { icon: Heart, label: 'DAMAGE', value: selected.stats[0], color: '#C2185B' },
-    { icon: Zap, label: 'FIRE RATE', value: selected.stats[1], color: '#0E7C6B' },
-    { icon: Eye, label: 'ACCURACY', value: selected.stats[2], color: '#5B3FD6' },
+    { icon: Zap, label: 'FIRE RATE', value: selected.stats[1], color: '#1B7773' },
+    { icon: Eye, label: 'ACCURACY', value: selected.stats[2], color: '#386BAA' },
   ] : []
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="weapons" counters={weaponCounters} />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <div className="ghost-type" data-ghost="WEAPONS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">WEAPONS</h1></div>
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Weapons' }]} />
+          <div className="mt-4"><CategoryHeader kind="weapons" eyebrow="Equipment catalogue" title="Weapons" image="/media/gear/morgan-revolvers.webp" imageAlt="Official GTA VI image of the Morgan revolvers" description="Weapons and equipment documented across official GTA VI material and clearly labelled community reporting, with unknown performance values left unknown instead of being inferred. Each entry carries the label its evidence earns — read it before trusting it." count={weapons.length} countLabel="weapons" updatedAt={lastUpdated} /></div>
 
-          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
-            <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
-          </label>
-
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2">
-              <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
-              <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort weapons"
-                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-black/40">
-                <option value="default">Catalogue order</option>
-                <option value="name">Name A–Z</option>
-                <option value="name-desc">Name Z–A</option>
-                <option value="updated">Recently updated</option>
-              </select>
+          <CollapsibleFilters title="Weapon filters" count={list.length} activeCount={activeFilterCount} summary={`${list.length} of ${weapons.length} entries${lastUpdated ? ` · updated ${lastUpdated}` : ''}`}>
+            <label className="wiki-filter-search">
+              <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
+              <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search weapon…" aria-label="Search weapon" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
             </label>
-            <p className="font-mono text-[11px] text-dim tabular-nums ml-auto">
-              {list.length} of {weapons.length} entries{lastUpdated ? ` · updated ${lastUpdated}` : ''}
-            </p>
-          </div>
 
-          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Weapon types">
-            <button type="button" role="tab" aria-selected={type === 'all'} onClick={() => { setType('all'); setQuery('') }}
-              className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                type === 'all' ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
-              <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">ALL</span>
-              <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(weapons.length)}</span>
-            </button>
-            {availableTypes.map((t) => {
-              const active = t.id === type
-              const count = weapons.filter((w) => w.type === t.id).length
-              return (
-                <button key={t.id} type="button" role="tab" aria-selected={active} onClick={() => { setType(t.id); setQuery('') }}
-                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
-                  <WeaponGlyph type={t.id} size={15} className={active ? 'text-pink' : 'text-dim'} />
-                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{t.label}</span>
-                  <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(count)}</span>
-                </button>
-              )
-            })}
-          </div>
+            <div className="wiki-filter-grid">
+              <label className="wiki-select-wrap">
+                <span>Sort</span>
+                <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort weapons">
+                  <option value="default">Catalogue order</option>
+                  <option value="name">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                  <option value="updated">Recently updated</option>
+                </select>
+              </label>
+              <p className="self-end font-mono text-[11px] text-dim tabular-nums">{list.length} of {weapons.length} entries</p>
+            </div>
+
+            <div className="wiki-filter-group" role="tablist" aria-label="Weapon types">
+              <button type="button" role="tab" aria-selected={type === 'all'} onClick={() => setType('all')}
+                className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                  type === 'all' ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">ALL</span>
+                <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(weapons.length)}</span>
+              </button>
+              {availableTypes.map((t) => {
+                const active = t.id === type
+                const count = weapons.filter((w) => w.type === t.id).length
+                return (
+                  <button key={t.id} type="button" role="tab" aria-selected={active} onClick={() => setType(t.id)}
+                    className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                      active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    <WeaponGlyph type={t.id} size={15} className={active ? 'text-pink' : 'text-dim'} />
+                    <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{t.label}</span>
+                    <span className="font-mono text-[10px] tabular-nums opacity-70">{pad(count)}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </CollapsibleFilters>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4 pb-2" role="listbox" aria-label="Weapon grid">
             {list.map((w) => {
               const active = selected && w.slug === selected.slug
               return (
-                <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/weapons/${w.slug}`)} onMouseEnter={() => setSelectedSlug(w.slug)}
+                <button key={w.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/weapons/${w.slug}`)} onMouseEnter={() => setSelectedSlug(w.slug)} onFocus={() => setSelectedSlug(w.slug)}
                   className={cx('w-full panel rounded-sm p-2 flex flex-col transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
                   <WeaponVisual w={w} className="h-[84px] w-full rounded-[2px]" sizes="164px" />
                   <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[13px] text-paper mt-2 truncate text-center">{w.name}</span>
-                  <span className="font-mono text-[11px] text-dim tabular-nums text-center">{w.unpublished ? "— / —" : `${pad(w.ammo)} / ${w.mag}`}</span>
+                  {/* Sem valores publicados não se desenha a linha. «— / —»
+                      em quase todos os cartões enchia o índice de informação
+                      vazia sem sequer dizer que campos eram. */}
+                  {!w.unpublished && <span className="font-mono text-[11px] text-dim tabular-nums text-center">{pad(w.ammo)} / {w.mag}</span>}
                 </button>
               )
             })}
             {list.length === 0 && (
               <div className="panel rounded-sm p-6 w-full text-center col-span-full">
-                <p className="font-cond uppercase tracking-[0.14em] text-paper">No weapons match “{query}”</p>
-                <p className="text-dim text-xs mt-1">Try another type or clear the search.</p>
+                {/* Dizia «No weapons match “”» quando quem esvaziou a lista
+                    tinha sido o tipo, com a pesquisa vazia. */}
+                <p className="font-cond uppercase tracking-[0.14em] text-paper">
+                  {query.trim() ? <>No weapons match “{query.trim()}”</> : 'No weapons match these filters'}
+                </p>
+                <p className="text-dim text-xs mt-1">
+                  {[type !== 'all' && 'type', query.trim() && 'search'].filter(Boolean).join(' · ') || 'No filters applied'}
+                </p>
+                <button type="button" onClick={limparFiltros}
+                  className="mt-3 min-h-[44px] px-4 font-cond font-semibold uppercase tracking-[0.12em] text-[12px] text-pink hover:underline">
+                  CLEAR FILTERS
+                </button>
               </div>
             )}
           </div>
@@ -117,11 +155,16 @@ function App() {
         {/* ASIDE: selected weapon */}
         {selected && (
           <aside className="tech-mask glass-panel p-5 self-start">
-            <div className="relative"><WeaponVisual w={displaySelected} className="h-[200px] w-full rounded-sm border border-line" sizes="380px" />{selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous weapon image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next weapon image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}</div>
+            <div className="relative">
+              <Link href={`/database/weapons/${selected.slug}`} className="block" aria-label={`Open ${selected.name} full profile`}>
+                <WeaponVisual w={displaySelected} className="h-[200px] w-full rounded-sm border border-line" sizes="380px" />
+              </Link>
+              {selectedGallery.length > 1 && <><button type="button" onClick={() => setGallerySlide((gallerySlide - 1 + selectedGallery.length) % selectedGallery.length)} aria-label="Previous weapon image" className="absolute left-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowLeft size={14} /></button><button type="button" onClick={() => setGallerySlide((gallerySlide + 1) % selectedGallery.length)} aria-label="Next weapon image" className="absolute right-2 top-1/2 -translate-y-1/2 panel2 rounded-full w-9 h-9 flex items-center justify-center text-paper"><ArrowRight size={14} /></button></>}
+            </div>
 
             <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[0.95] text-[26px] mt-4">{selected.name}</h2>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
-              <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{(weaponTypes.find((t) => t.id === selected.type) || {}).label || selected.type}</span>
+              <TypeChip>{(weaponTypes.find((t) => t.id === selected.type) || {}).label || selected.type}</TypeChip>
               <StatusBadge status={selected.status} />
             </div>
             <span className="block font-mono text-[9px] uppercase tracking-[0.1em] text-mint mt-1.5">{selected.evidenceStatus}</span>

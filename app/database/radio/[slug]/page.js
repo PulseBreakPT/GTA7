@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { Radio as RadioIcon, ChevronRight, FileText, Music, ListMusic, BookMarked } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
-import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
+import { GhostBadge, SourceChip, StatusBadge, TypeChip } from '@/components/site/ui'
+import { ReportedNotes, Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { radioStations } from '@/lib/content'
+import { reportedFor, REPORTED_SOURCE } from '@/lib/reported'
 
 export default function RadioStationPage() {
   const { slug } = useParams()
@@ -26,23 +26,20 @@ export default function RadioStationPage() {
 
   const sections = [
     { id: 'overview', label: 'Overview', icon: FileText },
-    ...(s.tracks?.length > 0 ? [{ id: 'tracklist', label: 'Confirmed Tracks', icon: Music }] : []),
+    ...(s.tracks?.length > 0 ? [{ id: 'tracklist', label: 'Reported Tracks', icon: Music }] : []),
     { id: 'related', label: 'Other Stations', icon: ListMusic },
     { id: 'references', label: 'References', icon: BookMarked },
   ]
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="radio" />
       <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Radio', href: '/database/radio' }, { label: s.name }]} />
 
-        <div className="data-rail mt-2">DIAL INDEX · SOURCE-BOUND RECORD · ID {s.slug.toUpperCase()}</div>
-
-        <header className="mt-5">
-          <div className="flex flex-wrap items-center gap-2">
+        <header className="wiki-article-header mt-5">
+          <div className="wiki-article-meta flex flex-wrap items-center gap-2">
             <StatusBadge status={s.status} />
-            <GhostBadge status="confirmed" label={s.genre} />
+            <TypeChip>{s.genre}</TypeChip>
             <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
           </div>
           <h1 data-ghost="RADIO" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{s.name}</h1>
@@ -51,8 +48,10 @@ export default function RadioStationPage() {
           <Hatnote kind="radio" slug={s.slug} />
         </header>
 
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-          <div className="min-w-0 order-2 lg:order-1">
+        <PageTools kind="radio" slug={s.slug} />
+
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+          <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
             <WikiSection id="overview" title="Overview">
               <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/radio/${s.slug}`}>{s.desc}</WikiText></p>
               <div className="mt-4 border-l-2 border-mint/70 pl-3">
@@ -62,7 +61,7 @@ export default function RadioStationPage() {
             </WikiSection>
 
             {s.tracks?.length > 0 && (
-              <WikiSection id="tracklist" title="Confirmed Tracks">
+              <WikiSection id="tracklist" title="Reported Tracks">
                 <ol className="border border-line divide-y divide-black/[0.08]">
                   {s.tracks.map(([title, artist], i) => (
                     <li key={`${title}-${artist}`} className="flex items-center gap-4 px-4 py-3">
@@ -75,7 +74,7 @@ export default function RadioStationPage() {
                   ))}
                 </ol>
                 <p className="mt-3 text-[12px] leading-relaxed text-dim max-w-[68ch]">
-                  Only tracks documented in the source are listed. A station with no entries here has had no music shown or announced.
+                  These are evidence-bound reports, not a confirmed station playlist. A station with no entries here has had no music credibly associated with it.
                 </p>
               </WikiSection>
             )}
@@ -94,34 +93,28 @@ export default function RadioStationPage() {
                 ))}
               </div>
             </WikiSection>
-            <References items={[{ name: s.sourceName, url: s.sourceUrl, retrieved: s.updatedAt }]} />
+            <ReportedNotes items={reportedFor('radio', s.slug)} source={REPORTED_SOURCE} />
+            {/* Sem endereço público, a referência tem de dizer na mesma onde
+                a alegação foi vista: que material, de quando e de que tipo.
+                Uma estação que se diz «traceable community claim» e mostra
+                apenas «GTA LORE · EDITORIAL RECORD · NO LINK» não deixa o
+                leitor seguir nada. O contexto de fonte passa a constar da
+                própria referência, ainda que não seja clicável. */}
+            <References items={[{ name: s.sourceUrl ? s.sourceName : `${s.sourceName} — reported from: ${s.association}`, url: s.sourceUrl, retrieved: s.updatedAt }]} />
             <CategoryFooter kind="radio" slug={s.slug} />
             <CitePage kind="radio" slug={s.slug} />
             <PageInformation kind="radio" slug={s.slug} />
             <Navbox kind="radio" slug={s.slug} />
           </div>
 
-          <div className="hidden lg:block order-3 lg:order-2">
+          <div className="wiki-entry-tertiary order-1 lg:order-2">
             <TableOfContents sections={sections} />
           </div>
 
-          <div className="order-1 lg:order-3">
-            <InfoboxShell>
-              <div className="flex items-center gap-3">
-                <span className="w-14 h-14 rounded-sm panel2 flex items-center justify-center text-pink shrink-0" aria-hidden="true">
-                  <RadioIcon size={28} strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0">
-                  <p className="font-cond font-bold uppercase text-[18px] text-paper leading-none truncate">{s.name}</p>
-                  <p className="font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-1.5 truncate">{s.genre}</p>
-                </div>
-              </div>
-
-              <div className="space-y-3 border-t border-black/10 pt-4">
+          <div className="wiki-entry-secondary order-2 lg:order-3">
+            <InfoboxShell title={s.name} subtitle="Radio profile">
+              <div className="space-y-3">
                 <InfoRow label="Genre" value={s.genre} />
-                <InfoRow label="Status">
-                  <StatusBadge status={s.status} />
-                </InfoRow>
                 <InfoRow label="Evidence">
                   <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{s.evidenceStatus}</span>
                 </InfoRow>
@@ -130,7 +123,8 @@ export default function RadioStationPage() {
 
               <div className="border-t border-black/10 pt-4">
                 <SourceChip name={s.sourceName} url={s.sourceUrl} />
-                <p className="font-mono text-[9px] text-dim mt-2">Updated {s.updatedAt}</p>
+                {/* Ver as armas: um campo, um sítio. A data de revisão vive
+                    no registo de conhecimento. */}
               </div>
               <WhatLinksHere kind="radio" slug={s.slug} />
               <WhatThisLinks kind="radio" slug={s.slug} />

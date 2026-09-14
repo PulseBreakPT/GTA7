@@ -1,4 +1,5 @@
 import { easterEggs } from '@/lib/content'
+import { notFound } from 'next/navigation'
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
@@ -22,6 +23,8 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Layout({ children }) {
+export default async function Layout({ children, params }) {
+  const { slug } = await params
+  if (!easterEggs.some((item) => item.slug === slug)) notFound()
   return children
 }

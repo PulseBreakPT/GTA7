@@ -27,7 +27,7 @@ export default function StatisticsPage() {
         <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper mb-4">Entries by branch</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px border border-line bg-line">
           {STATS.byKind.filter((k) => k.count > 0).map((k) => (
-            <Link key={k.kind} href={KIND_META[k.kind].base} className="bg-ink p-4 hover:bg-surface2/60 transition-colors">
+            <Link key={k.kind} href={KIND_META[k.kind].index} className="bg-ink p-4 hover:bg-surface2/60 transition-colors">
               <p className="font-cond font-bold text-[28px] leading-none text-paper tabular-nums">{k.count}</p>
               <p className="mt-2 font-cond uppercase tracking-[0.16em] text-[10px] text-dim">{k.label}</p>
             </Link>
@@ -78,13 +78,13 @@ export default function StatisticsPage() {
           Entries that hold only what the source states and nothing more. They are marked as stubs rather than
           padded out — an archive that invents body text to look complete is no longer a record.
         </p>
-        <ul className="border border-line divide-y divide-black/[0.08]">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {STUBS.slice(0, 12).map((e) => (
             <li key={e.href}>
-              <Link href={e.href} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 hover:bg-surface2/50 transition-colors">
-                <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint shrink-0 w-[72px]">{KIND_META[e.kind].label}</span>
-                <span className="font-cond font-semibold uppercase text-[13px] text-paper flex-1 min-w-0 truncate">{e.name}</span>
-                <span className="font-mono text-[10px] text-dim tabular-nums shrink-0">{e.bodyLength} chars</span>
+              <Link href={e.href} className="group flex min-h-[96px] h-full flex-col border border-line bg-white/55 p-3.5 hover:border-pink/55 hover:bg-white transition-colors">
+                <span className="font-cond uppercase tracking-[0.14em] text-[9px] text-mint">{KIND_META[e.kind].label}</span>
+                <span className="mt-2 font-cond font-semibold uppercase text-[14px] leading-tight text-paper line-clamp-2 group-hover:text-pink">{e.name}</span>
+                <span className="mt-auto pt-2 font-mono text-[10px] text-dim tabular-nums">{e.bodyLength} chars</span>
               </Link>
             </li>
           ))}
@@ -99,12 +99,12 @@ export default function StatisticsPage() {
             Names that entries cite in a field but that have no page of their own. On a wiki these are the red links —
             the honest list of what is still missing.
           </p>
-          <ul className="border border-line divide-y divide-black/[0.08]">
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {WANTED.slice(0, 12).map((w) => (
-              <li key={w.name} className="px-4 py-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
-                <span className="font-cond font-semibold uppercase text-[13px] text-warn flex-1 min-w-0 truncate">{w.name}</span>
-                <span className="font-mono text-[10px] text-dim shrink-0">cited by {w.from.length}</span>
-                <span className="basis-full flex flex-wrap gap-x-3 gap-y-1">
+              <li key={w.name} className="flex min-h-[108px] flex-col border border-line bg-white/55 p-3.5">
+                <span className="font-cond font-semibold uppercase text-[14px] leading-tight text-warn line-clamp-2">{w.name}</span>
+                <span className="mt-1 font-mono text-[10px] text-dim">cited by {w.from.length}</span>
+                <span className="mt-auto pt-2 flex flex-wrap gap-x-3 gap-y-1">
                   {w.from.slice(0, 4).map((f) => (
                     <Link key={f.href} href={f.href} className="font-cond uppercase tracking-[0.1em] text-[10px] text-dim hover:text-paper transition-colors">{f.name}</Link>
                   ))}
@@ -118,11 +118,11 @@ export default function StatisticsPage() {
 
       <section className="mt-8">
         <h2 className="deco-rule font-cond font-bold uppercase tracking-[0.16em] text-[15px] text-paper mb-4">Sources carrying the most entries</h2>
-        <ul className="border border-line divide-y divide-black/[0.08]">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {SOURCES.slice(0, 8).map((s) => (
-            <li key={s.name} className="px-4 py-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
-              <span className="font-cond font-semibold uppercase text-[13px] text-paper flex-1 min-w-0 truncate">{s.name}</span>
-              <span className="font-mono text-[11px] text-dim tabular-nums shrink-0">{s.entries.length}</span>
+            <li key={s.name} className="flex min-h-[76px] items-start justify-between gap-3 border border-line bg-white/55 p-3.5">
+              <span className="font-cond font-semibold uppercase text-[13px] leading-tight text-paper line-clamp-2">{s.name}</span>
+              <span className="font-cond font-bold text-[20px] leading-none text-mint tabular-nums shrink-0">{s.entries.length}</span>
             </li>
           ))}
         </ul>

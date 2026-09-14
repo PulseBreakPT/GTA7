@@ -1,5 +1,6 @@
 import { articles } from '@/lib/content'
 import { JsonLd, breadcrumbJsonLd, entryJsonLd, articleJsonLd } from '@/lib/jsonld'
+import { notFound } from 'next/navigation'
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
@@ -10,12 +11,21 @@ export async function generateMetadata({ params }) {
   const description = item.excerpt
 
   return {
-    title: `${name} — LEONIDA ARCHIVE`,
+    // O sufixo da marca é posto pelo template do layout das notícias
+    // (`%s | GTA LORE`). Escrevê-lo também aqui dava «… — GTA LORE | GTA
+    // LORE» em todas as fichas de notícia. As outras fichas do arquivo usam
+    // um sufixo que diz o que a coisa é — «— GTA VI character», «— Leonida
+    // region» — e é esse o padrão que faltava aqui.
+    //
+    // O `openGraph.title` em baixo mantém a marca de propósito: o Next não
+    // lhe aplica o template, e num cartão partilhado o nome do sítio tem de
+    // viajar com o título.
+    title: `${name} — GTA VI news`,
     description,
     alternates: { canonical: `/news/${slug}` },
     openGraph: {
       type: 'article',
-      title: `${name} — LEONIDA ARCHIVE`,
+      title: `${name} — GTA LORE`,
       description,
       url: `/news/${slug}`,
       images: item.image ? [item.image] : undefined,
@@ -26,7 +36,7 @@ export async function generateMetadata({ params }) {
 export default async function Layout({ children, params }) {
   const { slug } = await params
   const item = articles.find((x) => x.slug === slug)
-  if (!item) return children
+  if (!item) notFound()
 
   const path = `/news/${slug}`
   const dados = articleJsonLd({

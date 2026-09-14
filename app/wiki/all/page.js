@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ENTRIES, KIND_META } from '@/lib/wiki-graph'
 import { StatusBadge, cx } from '@/components/site/ui'
 import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
 
 // O Special:AllPages de uma wiki: o índice completo por prefixo. O /wiki
 // mostra tudo de uma vez, agrupado por letra; esta página serve o caso
@@ -45,8 +46,6 @@ export default function AllPagesIndex() {
         { label: 'Special pages', href: '/wiki/special' }, { label: 'All pages' },
       ]} />
 
-      <div className="data-rail mt-2">SPECIAL PAGE · PREFIX INDEX</div>
-
       <div className="mt-4">
         <CategoryHeader
           eyebrow="Index"
@@ -57,44 +56,46 @@ export default function AllPagesIndex() {
         />
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-1.5" role="tablist" aria-label="First letter">
-        {LETTERS.map((l) => {
-          const n = counts[l] || 0
-          const active = l === letter
-          return (
-            <button
-              key={l}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              disabled={n === 0}
-              onClick={() => setLetter(l)}
-              className={cx('w-9 h-9 border rounded-sm font-cond font-bold text-[13px] transition-colors',
-                n === 0 ? 'border-line/40 text-dim/40 cursor-not-allowed'
-                  : active ? 'border-paper bg-paper text-ink'
-                    : 'border-line text-dim hover:text-paper hover:border-black/40')}
-            >
-              {l}
-            </button>
-          )
-        })}
-      </div>
+      <CollapsibleFilters title="Index filters" count={rows.length} activeCount={Number(letter !== 'A') + Number(kind !== 'all')} summary={`${rows.length} entries · starts with ${letter}`}>
+        <div className="wiki-filter-group wiki-filter-letters" role="tablist" aria-label="First letter">
+          {LETTERS.map((l) => {
+            const n = counts[l] || 0
+            const active = l === letter
+            return (
+              <button
+                key={l}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                disabled={n === 0}
+                onClick={() => setLetter(l)}
+                className={cx('w-9 h-9 border rounded-sm font-cond font-bold text-[13px] transition-colors',
+                  n === 0 ? 'border-line/40 text-dim/40 cursor-not-allowed'
+                    : active ? 'border-paper bg-paper text-ink'
+                      : 'border-line text-dim hover:text-paper hover:border-black/40')}
+              >
+                {l}
+              </button>
+            )
+          })}
+        </div>
 
-      <div className="mt-3 flex flex-wrap gap-1.5" role="group" aria-label="Filter by branch">
-        {[{ id: 'all', label: 'All branches', count: ENTRIES.length }, ...kinds].map((k) => (
-          <button
-            key={k.id}
-            type="button"
-            onClick={() => setKind(k.id)}
-            aria-pressed={kind === k.id}
-            className={cx('inline-flex items-center gap-1.5 border rounded-sm px-2.5 h-9 font-cond uppercase tracking-[0.12em] text-[11px] transition-colors',
-              kind === k.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40')}
-          >
-            {k.label}
-            <span className="font-mono text-[10px] tabular-nums opacity-70">{k.count}</span>
-          </button>
-        ))}
-      </div>
+        <div className="wiki-filter-group" role="group" aria-label="Filter by branch">
+          {[{ id: 'all', label: 'All branches', count: ENTRIES.length }, ...kinds].map((k) => (
+            <button
+              key={k.id}
+              type="button"
+              onClick={() => setKind(k.id)}
+              aria-pressed={kind === k.id}
+              className={cx('filter-chip inline-flex items-center gap-1.5 border rounded-sm px-2.5 h-9 font-cond uppercase tracking-[0.12em] text-[11px] transition-colors',
+                kind === k.id ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/40')}
+            >
+              {k.label}
+              <span className="font-mono text-[10px] tabular-nums opacity-70">{k.count}</span>
+            </button>
+          ))}
+        </div>
+      </CollapsibleFilters>
 
       <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-dim">
         {rows.length} {rows.length === 1 ? 'entry' : 'entries'} starting with {letter}

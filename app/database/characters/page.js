@@ -1,27 +1,39 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Search, Heart, Zap, Eye, ChevronRight, Triangle, Repeat2, HeartHandshake, Glasses, Backpack } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
-import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
+import { SourceChip, StatusBadge, cx, TypeChip } from '@/components/site/ui'
 import { characters, characterFilters, relationships, mechanics, characterBySlug, extendedLookBrief } from '@/lib/content'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
+import CollapsibleFilters from '@/components/site/collapsible-filters'
+import { useUrlState } from '@/components/site/use-url-state'
+
+// A vista por omissão numa tabela só: o contador de filtros activos compara-se
+// com ela em vez de repetir os valores à mão.
+const VISTA_OMISSA = { filter: 'all', sort: 'default', q: '' }
 
 const MECH_ICONS = { switch: Repeat2, relation: HeartHandshake, disguise: Glasses, inventory: Backpack }
 const REL_BARS = [
-  { key: 'trust', label: 'TRUST', icon: Heart, color: '#C2185B' },
-  { key: 'tension', label: 'TENSION', icon: Zap, color: '#0E7C6B' },
-  { key: 'risk', label: 'RISK', icon: Eye, color: '#5B3FD6' },
+  // Three measures, three colours — but drawn from the archive's own entity
+  // palette rather than the pre-refresh violet, which was the only violet left
+  // on the route and read as a fourth accent nothing else shared.
+  { key: 'trust', label: 'TRUST', icon: Heart, color: 'var(--archive-accent)' },
+  { key: 'tension', label: 'TENSION', icon: Zap, color: '#816632' },
+  { key: 'risk', label: 'RISK', icon: Eye, color: '#C83032' },
 ]
 
 export function Portrait({ c, className, sizes = '120px', priority = false }) {
   const pos = className && className.includes('absolute') ? '' : 'relative'
-  if (c.image) {
+  const visual = c.image || c.contextImage
+  const contextual = !c.image && Boolean(c.contextImage)
+  if (visual) {
     return (
-      <span className={cx(pos, 'block overflow-hidden bg-surface2', className)}>
-        <Image src={c.image} alt={`Portrait of ${c.name}`} fill priority={priority} sizes={sizes} className="object-cover object-top" />
+      <span className={cx(pos, 'character-visual block overflow-hidden bg-surface2', contextual && 'is-contextual', className)} title={contextual ? c.imageCaption : undefined}>
+        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill priority={priority} sizes={sizes} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
+        {contextual && <span className="character-context-label">Context</span>}
       </span>
     )
   }
@@ -35,9 +47,25 @@ export function Portrait({ c, className, sizes = '120px', priority = false }) {
 
 function App() {
   const router = useRouter()
-  const [filter, setFilter] = useState('all')
+
+  // Grupo, ordenação e pesquisa vivem na URL: a vista sobrevive a abrir uma
+  // personagem e voltar atrás, e o endereço filtrado pode ser partilhado.
+  const [vista, definirVista] = useUrlState(VISTA_OMISSA)
+  const { filter, sort } = vista
+  const setFilter = (valor) => definirVista({ filter: valor })
+  const setSort = (valor) => definirVista({ sort: valor })
+
+  // Filtra a cada tecla, escreve na URL só quando o leitor pára de escrever.
   const [query, setQuery] = useState('')
-  const [sort, setSort] = useState('default')
+  useEffect(() => { setQuery(vista.q) }, [vista.q])
+  useEffect(() => {
+    if (query === vista.q) return undefined
+    const id = setTimeout(() => definirVista({ q: query }), 250)
+    return () => clearTimeout(id)
+  }, [query, vista.q, definirVista])
+
+  const limparFiltros = () => { definirVista(VISTA_OMISSA); setQuery('') }
+
   const [selectedSlug, setSelectedSlug] = useState('lucia-caminos')
   const [mechSlug, setMechSlug] = useState('character-switching')
 
@@ -60,55 +88,57 @@ function App() {
   const others = rels.filter((r) => r !== primary)
   const mechList = mechanics.slice(0, 4)
   const selMech = mechanics.find((m) => m.slug === mechSlug) || mechList[0]
+  const activeFilterCount = Object.keys(VISTA_OMISSA)
+    .filter((chave) => (chave === 'q' ? query.trim() !== '' : vista[chave] !== VISTA_OMISSA[chave]))
+    .length
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="characters" />
-      <div className="px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
+      <div className="wiki-index-layout px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6 flex-1">
         <div className="min-w-0 flex flex-col">
-          <div className="ghost-type" data-ghost="CHARACTERS"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">CHARACTERS</h1></div>
+          <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters' }]} />
+          <div className="mt-4"><CategoryHeader kind="characters" eyebrow="People of Leonida" title="Characters" image="/media/key-art/cover.webp" imageAlt="Official Grand Theft Auto VI cover artwork featuring the principal cast" imagePosition="center 42%" description="Named protagonists, allies and figures documented from Rockstar-published material, with reported identities kept visibly separate from confirmed records." count={characters.length} countLabel="characters" updatedAt={lastUpdated} /></div>
 
-          <label className="mt-4 flex items-center gap-2 h-11 px-3 bg-surface2/70 border border-line rounded-sm focus-within:border-black/40">
-            <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
-          </label>
-
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2">
-              <span className="font-cond uppercase tracking-[0.14em] text-[10px] text-dim">Sort</span>
-              <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort characters"
-                className="h-9 px-2 bg-surface2/70 border border-line rounded-sm font-cond uppercase tracking-[0.08em] text-[11px] text-paper outline-none focus:border-black/40">
-                <option value="default">Archive order</option>
-                <option value="name">Name A–Z</option>
-                <option value="name-desc">Name Z–A</option>
-                <option value="updated">Recently updated</option>
-              </select>
+          <CollapsibleFilters title="Character filters" count={list.length} activeCount={activeFilterCount} summary={`${list.length} of ${characters.length} entries${lastUpdated ? ` · updated ${lastUpdated}` : ''}`}>
+            <label className="wiki-filter-search">
+              <Search size={15} className="text-dim shrink-0" aria-hidden="true" />
+              <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search character…" aria-label="Search character" className="flex-1 bg-transparent outline-none text-[13px] text-paper placeholder:text-dim min-w-0" />
             </label>
-            <p className="font-mono text-[11px] text-dim tabular-nums ml-auto">
-              {list.length} of {characters.length} entries{lastUpdated ? ` · updated ${lastUpdated}` : ''}
-            </p>
-          </div>
 
-          <div className="mt-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Character filters">
-            {characterFilters.map((f) => {
-              const active = filter === f.id
-              const count = f.id === 'all' ? characters.length : characters.filter((c) => c.group === f.id).length
-              return (
-                <button key={f.id} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
-                  className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
-                    active ? 'border-pink text-pink bg-pink/5 shadow-[0_0_14px_-6px_rgba(241,163,195,0.6)]' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
-                  <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.label}</span>
-                  <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
-                </button>
-              )
-            })}
-          </div>
+            <div className="wiki-filter-grid">
+              <label className="wiki-select-wrap">
+                <span>Sort</span>
+                <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort characters">
+                  <option value="default">Archive order</option>
+                  <option value="name">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                  <option value="updated">Recently updated</option>
+                </select>
+              </label>
+              <p className="self-end font-mono text-[11px] text-dim tabular-nums">{list.length} of {characters.length} entries</p>
+            </div>
+
+            <div className="wiki-filter-group" role="tablist" aria-label="Character filters">
+              {characterFilters.map((f) => {
+                const active = filter === f.id
+                const count = f.id === 'all' ? characters.length : characters.filter((c) => c.group === f.id).length
+                return (
+                  <button key={f.id} type="button" role="tab" aria-selected={active} onClick={() => setFilter(f.id)}
+                    className={cx('flex items-center gap-1.5 px-3 h-9 border rounded-sm transition-all duration-150',
+                      active ? 'border-pink text-pink bg-pink/5' : 'border-line text-dim hover:text-paper hover:border-black/30')}>
+                    <span className="font-cond font-semibold uppercase tracking-[0.1em] text-[11px]">{f.label}</span>
+                    <span className="font-mono text-[10px] tabular-nums opacity-70">{count}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </CollapsibleFilters>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4 pb-2" role="listbox" aria-label="Character grid">
             {list.map((c) => {
               const active = c.slug === selected.slug
               return (
-                <button key={c.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/characters/${c.slug}`)} onMouseEnter={() => setSelectedSlug(c.slug)}
+                <button key={c.slug} type="button" role="option" aria-selected={active} onClick={() => router.push(`/database/characters/${c.slug}`)} onMouseEnter={() => setSelectedSlug(c.slug)} onFocus={() => setSelectedSlug(c.slug)}
                   className={cx('panel rounded-sm p-2 text-left transition-all duration-200', active ? 'card-active' : 'hover:border-black/30')}>
                   <Portrait c={c} className="w-full h-[104px] rounded-sm border border-line text-[16px]" sizes="210px" />
                   <span className="block font-cond font-bold uppercase tracking-[0.04em] text-[14px] text-paper leading-none truncate mt-2">{c.name}</span>
@@ -118,8 +148,16 @@ function App() {
             })}
             {list.length === 0 && (
               <div className="panel rounded-sm p-6 text-center col-span-full">
-                <p className="font-cond uppercase tracking-[0.14em] text-paper text-sm">No characters found</p>
-                <p className="text-dim text-xs mt-1">Adjust the filter or clear the search.</p>
+                <p className="font-cond uppercase tracking-[0.14em] text-paper text-sm">
+                  {query.trim() ? <>No characters match “{query.trim()}”</> : 'No characters match these filters'}
+                </p>
+                <p className="text-dim text-xs mt-1">
+                  {[filter !== 'all' && 'group', query.trim() && 'search'].filter(Boolean).join(' · ') || 'No filters applied'}
+                </p>
+                <button type="button" onClick={limparFiltros}
+                  className="mt-3 min-h-[44px] px-4 font-cond font-semibold uppercase tracking-[0.12em] text-[12px] text-pink hover:underline">
+                  CLEAR FILTERS
+                </button>
               </div>
             )}
           </div>
@@ -158,11 +196,13 @@ function App() {
 
         {/* ASIDE: selected character */}
         <aside className="tech-mask glass-panel p-5 self-start">
-          <Portrait c={selected} className="w-full aspect-[4/5] rounded-sm border border-line text-[26px]" sizes="380px" priority />
+          <Link href={`/database/characters/${selected.slug}`} className="block" aria-label={`Open ${selected.name} full profile`}>
+            <Portrait c={selected} className="w-full aspect-[4/5] rounded-sm border border-line text-[26px]" sizes="380px" priority />
+          </Link>
 
           <h2 className={cx('font-cond font-bold uppercase tracking-tight leading-[0.95] text-[26px] mt-4', selected.slug === 'lucia-caminos' ? 'text-pink' : selected.slug === 'jason-duval' ? 'text-mint' : 'text-paper')}>{selected.name}</h2>
           <div className="flex items-center gap-2 mt-2 flex-wrap">
-            <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{selected.role}</span>
+            <TypeChip>{selected.role}</TypeChip>
             <StatusBadge status={selected.status} />
           </div>
           <p className="text-dim text-[13px] leading-relaxed mt-3">{selected.bio}</p>

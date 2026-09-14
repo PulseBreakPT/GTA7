@@ -3,36 +3,24 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { ChevronUp, Quote, Star, TriangleAlert } from 'lucide-react'
-import MediaCarousel from '@/components/site/media-carousel'
-import { articles, articleVisuals, categoriesForArticle, relatedArticlesFor, sources } from '@/lib/content'
-import { GhostBadge, SourceChip, StatusBadge, fmtDate } from '@/components/site/ui'
+import { ChevronUp, TriangleAlert } from 'lucide-react'
+import { articles, categoriesForArticle, relatedArticlesFor, sources } from '@/lib/content'
+import { GhostBadge, SourceChip, fmtDate } from '@/components/site/ui'
 import { Breadcrumb } from '@/components/site/wiki'
+import { ARTICLE_OUTLINES } from '@/lib/article-outlines'
 
-const SECTION_RULES = [
-  ['SOURCE & SESSION', /session|demonstration|preview|creator|visit|hands-off/i],
-  ['WORLD & EXPLORATION', /world|map|Leonida|Vice City|interior|hotel|zoo|underwater|explor|population|NPC|beach/i],
-  ['VEHICLES & TRAVEL', /vehicle|car|fuel|charging|driv|garage|tracker|trunk|scooter|train|transport/i],
-  ['MONEY, CRIME & ROBBERIES', /money|bank|cash|robber|crime|stolen|fence|store|gang|loot|econom/i],
-  ['POLICE & ESCAPE', /police|wanted|CCTV|camera|witness|escape|pursuit|evidence|recogn/i],
-  ['JASON & LUCIA', /Jason|Lucia|relationship|protagonist|partner|switch|together/i],
-  ['COMBAT & INVENTORY', /combat|weapon|gun|shoot|Focus|aim|hit|body|inventory|armour/i],
-  ['ACTIVITIES & PROGRESSION', /gym|fitness|train|fishing|hunting|activity|attribute|profile|mission|story/i],
-  ['INTERFACE & TECHNICAL NOTES', /HUD|phone|menu|FPS|PS5|first-person|interface|performance|technical/i],
-]
-
-const SECTION_THEMES = [
-  { text: 'text-mint', border: 'border-mint/45', bg: 'bg-mint/8', dot: 'bg-mint' },
-  { text: 'text-pink', border: 'border-pink/45', bg: 'bg-pink/8', dot: 'bg-pink' },
-  { text: 'text-violet', border: 'border-violet/45', bg: 'bg-violet/8', dot: 'bg-violet' },
-  { text: 'text-warn', border: 'border-warn/45', bg: 'bg-warn/8', dot: 'bg-warn' },
-]
-
-const sectionFor = (text, index) => {
-  if (index === 0) return 'SOURCE & SESSION'
-  const explicit = text.match(/^([A-Z][A-Z &]+) — /)
-  if (explicit) return explicit[1]
-  return SECTION_RULES.find(([, rule]) => rule.test(text))?.[0] || 'ADDITIONAL RECORD'
+// Os títulos de cada notícia vêm de lib/article-outlines, escritos para o
+// texto dela. Antes eram adivinhados por palavras-chave, e quase todas as
+// notícias abriam com «Source & session» e acabavam em «Additional record».
+const EXPLICIT = /^([A-Z][A-Z &,]+) — /
+const sectionsFor = (slug, body) => {
+  const outline = ARTICLE_OUTLINES[slug]
+  const clean = (paragraph) => paragraph.replace(EXPLICIT, '')
+  if (!outline?.length) return [{ title: null, paragraphs: body.map(clean) }]
+  return outline.map(([from, title], index) => ({
+    title,
+    paragraphs: body.slice(from, outline[index + 1]?.[0] ?? body.length).map(clean),
+  }))
 }
 
 function InlineText({ text }) {
@@ -43,40 +31,67 @@ function InlineText({ text }) {
     : part)
 }
 
-function FormattedArticleBody({ body }) {
-  let previousSection = ''
-  const sections = body.reduce((list, paragraph, index) => {
-    const section = sectionFor(paragraph, index)
-    return list.includes(section) ? list : [...list, section]
-  }, [])
+function FormattedArticleBody({ slug, body }) {
+  const sections = sectionsFor(slug, body)
+  const titled = sections.filter((section) => section.title)
 
   return (
     <>
-      {sections.length >= 3 && <nav aria-label="On this page" className="mb-8 border border-line bg-panel/50 p-4 sm:p-5">
-        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-mint mb-3">IN THIS RECORD</p>
-        <div className="flex flex-wrap gap-2">{sections.map((section, index) => {
-          const theme = SECTION_THEMES[index % SECTION_THEMES.length]
-          return <a key={section} href={`#section-${index + 1}`} className={`inline-flex items-center gap-1.5 border ${theme.border} ${theme.bg} px-2 py-1 font-cond uppercase tracking-[0.1em] text-[10px] ${theme.text} hover:bg-black/10`}><span className={`w-1.5 h-1.5 rounded-full ${theme.dot}`} />{String(index + 1).padStart(2, '0')} · {section}</a>
-        })}</div>
+      {titled.length >= 3 && <nav aria-label="On this page" className="article-inline-toc">
+        <p>In this record <span>{titled.length} sections</span></p>
+        <ol>{titled.map((section, index) => (
+          <li key={section.title}><a href={`#section-${index + 1}`}><span>{String(index + 1).padStart(2, '0')}</span>{section.title}</a></li>
+        ))}</ol>
       </nav>}
-      <div className="max-w-[780px] flex flex-col gap-7 sm:gap-9 border-l border-black/10 pl-4 sm:pl-6">
-        {body.map((paragraph, index) => {
-          const section = sectionFor(paragraph, index)
-          const sectionIndex = sections.indexOf(section)
-          const theme = SECTION_THEMES[sectionIndex % SECTION_THEMES.length]
-          const isNewSection = section !== previousSection
-          previousSection = section
-          const cleanParagraph = paragraph.replace(/^([A-Z][A-Z &]+) — /, '')
-          return <div key={index} className={isNewSection ? 'pt-4 first:pt-0' : ''}>
-            {isNewSection && <div className="mb-3"><p className={`font-mono text-[9px] tracking-[0.18em] ${theme.text} mb-1.5`}>EVIDENCE GROUP</p><h2 id={`section-${sectionIndex + 1}`} className={`scroll-mt-24 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-[18px] sm:text-[20px] ${theme.text} border-b ${theme.border} pb-2`}><span className={`w-2 h-2 rounded-full ${theme.dot}`} />{section}</h2></div>}
-            <div className="relative">
-              {index === 0 && <Quote size={20} className="text-pink mb-2" aria-hidden="true" />}
-              <p className={index === 0 ? 'text-[18px] sm:text-[20px] leading-[1.72] text-paper font-medium max-w-[66ch]' : 'text-[17px] sm:text-[18px] leading-[1.9] text-paper/90 max-w-[68ch]'}><InlineText text={cleanParagraph} /></p>
-            </div>
-          </div>
-        })}
+      <div id="article-content" className="article-news-sections">
+        {sections.map((section, sectionIndex) => (
+          <section key={section.title || sectionIndex} id={section.title ? `section-${sectionIndex + 1}` : undefined} className="article-news-section">
+            {section.title && <h2><span>{String(sectionIndex + 1).padStart(2, '0')}</span>{section.title}</h2>}
+            {section.paragraphs.map((text, index) => (
+              <p key={`${sectionIndex}-${index}`}><InlineText text={text} /></p>
+            ))}
+          </section>
+        ))}
       </div>
     </>
+  )
+}
+
+function EvidenceLens({ article, source, categories }) {
+  const statusCopy = {
+    confirmed: 'Strong claim: treated as established by the archive.',
+    verified: 'Strongly supported by published material or repeatable public evidence.',
+    analysis: 'Editorial analysis: the archive explains the inference instead of presenting it as a raw fact.',
+    rumour: 'Community or leak-side claim: useful to track, not safe to treat as confirmed.',
+    official: 'Official communication or Rockstar-published material.',
+    community: 'Community reporting or third-party coverage with visible boundaries.',
+    category: 'The category is established, but this exact item still needs narrower proof.',
+  }
+  const sourceType = source?.kind || (article.sourceUrl ? 'linked source' : 'archive classification')
+  const proofState = article.sourceUrl
+    ? 'Direct source attached'
+    : article.sourceName?.toLowerCase().includes('analysis')
+      ? 'No external claim link: this is filed as archive analysis'
+      : 'No public source URL attached'
+  const unknown = article.status === 'confirmed'
+    ? 'Remaining uncertainty, if any, lives inside the article body.'
+    : article.status === 'verified'
+      ? 'Specific mechanics, names or limits may still change until Rockstar publishes final documentation.'
+      : 'Treat precise labels, limits and UI readings as provisional until stronger evidence appears.'
+
+  return (
+    <aside className="article-evidence-lens" aria-label="Evidence lens">
+      <div>
+        <p>Evidence lens</p>
+        <h2>How to read this record</h2>
+      </div>
+      <dl>
+        <div><dt>Classification</dt><dd><GhostBadge status={article.status} />{statusCopy[article.status] || 'Tracked with archive context.'}</dd></div>
+        <div><dt>Source trail</dt><dd>{sourceType}<small>{proofState}</small></dd></div>
+        <div><dt>Filed under</dt><dd>{categories.slice(0, 3).map((category) => category.title).join(' · ') || 'News archive'}</dd></div>
+        <div><dt>Still open</dt><dd>{unknown}</dd></div>
+      </dl>
+    </aside>
   )
 }
 
@@ -102,30 +117,25 @@ function App() {
   const src = sources.find((s) => a.sourceName.toLowerCase().includes(s.name.split(' ')[0].toLowerCase()))
   const related = relatedArticlesFor(a.slug)
   const categories = categoriesForArticle(a.slug)
-  const visuals = articleVisuals(a).map((src, index) => ({
-    src,
-    label: `Reference ${String(index + 1).padStart(2, '0')}`,
-    alt: `${a.title} visual reference ${index + 1}`,
-  }))
 
   return (
-    <article className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
+    <article className="wiki-news-article px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1080px] mx-auto w-full ambient-bloom">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news' }, { label: a.title }]} />
 
-      <div className="corner-brackets tech-mask relative aspect-[21/9] overflow-hidden border border-line mt-3 panel">
-        <Image src={a.image} alt={a.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="object-cover" />
-        <span className="absolute top-4 left-4 flex items-center gap-2">
-          <StatusBadge status={a.category === 'official' ? 'official' : a.category === 'community' ? 'community' : 'analysis'} />
-          <GhostBadge status={a.status} />
-        </span>
-      </div>
-      {a.imageCredit && <p className="mt-2 text-right font-cond uppercase tracking-[0.12em] text-[10px] text-dim">Portrait: <a href={a.imageCreditUrl} target="_blank" rel="noreferrer" className="text-paper/75 hover:text-pink underline underline-offset-2">{a.imageCredit}</a></p>}
-
-      <div className="ghost-type mt-6" data-ghost="LUSORAE">
+      <header className="wiki-article-header mt-5">
         <h1 data-ghost="ARTICLES" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px] max-w-[920px]">{a.title}</h1>
-      </div>
+      </header>
 
-      <div className="data-rail mt-5">FILE {a.slug.slice(0, 8).toUpperCase()} · ARCHIVE RECORD · CONTENT INDEX</div>
+      <div className="article-hero-media corner-brackets tech-mask relative aspect-video overflow-hidden border border-line mt-5 panel">
+        <Image src={a.image} alt={a.title} fill priority sizes="(max-width:1080px) 100vw, 1080px" className="article-hero-image object-contain" />
+      </div>
+      {a.imageNote && <p className="wiki-article-image-note">{a.imageNote}</p>}
+
+      <aside className="tech-mask-sm panel mt-5 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
+        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-pink">AT A GLANCE</p>
+        <p className="wiki-article-lede mt-2 font-medium">{a.excerpt}</p>
+      </aside>
+
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 border-y hairline py-3">
         <span className="font-cond uppercase tracking-[0.14em] text-[13px] text-dim">{fmtDate(a.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{a.readTime} MIN READ</span>
 
@@ -137,6 +147,8 @@ function App() {
 
       {categories.length > 0 && <nav className="mt-4 flex flex-wrap gap-2" aria-label="Article categories">{categories.map((category) => <Link key={category.slug} href={`/categories/${category.slug}`} className="border border-mint/35 bg-mint/5 px-2.5 py-1.5 font-cond font-bold uppercase tracking-[0.13em] text-[10px] text-mint hover:border-mint">CATEGORY: {category.title}</Link>)}</nav>}
 
+      <EvidenceLens article={a} source={src} categories={categories} />
+
       {a.status === 'rumour' && (
         <div className="mt-5 border border-warn/50 bg-warn/10 rounded-sm px-4 py-3 flex items-center gap-3">
           <TriangleAlert size={16} className="text-warn shrink-0" />
@@ -144,24 +156,12 @@ function App() {
         </div>
       )}
 
-      <aside className="tech-mask-sm panel mt-6 max-w-[780px] border border-pink/35 bg-gradient-to-r from-pink/10 via-violet/8 to-transparent px-4 py-4 sm:px-5" aria-label="Article summary">
-        <p className="font-cond font-bold uppercase tracking-[0.15em] text-[11px] text-pink">AT A GLANCE</p>
-        <p className="mt-2 text-[16px] sm:text-[17px] leading-[1.65] text-paper font-medium">{a.excerpt}</p>
-      </aside>
+      {/* A tira «Visual reference · promotional media» saiu daqui: repetia
+          material que o hero e o corpo já mostram, e entre o resumo e o
+          texto interrompia a leitura em vez de a servir. */}
 
-      {/* A referência visual estava no fim, a seguir ao artigo todo e ao «back
-          to top»: chegava-lhe só quem já não precisava dela. Sobe para junto
-          do resumo e antes do corpo — vê-se do que trata, depois lê-se.
-          Em modo compacto e sem segundo título de secção: o hero já está
-          logo acima, e dois cabeçalhos grandes seguidos eram ruído. */}
-      {visuals.length > 0 && (
-        <section className="mt-6 max-w-[900px]" aria-label="Visual reference gallery">
-          <MediaCarousel compact label="Visual reference · promotional media" items={visuals} />
-        </section>
-      )}
-
-      <div className="mt-7">
-        <FormattedArticleBody body={a.body} />
+      <div className="wiki-news-paper mt-7">
+        <FormattedArticleBody slug={a.slug} body={a.body} />
       </div>
 
       <div className="mt-8 max-w-[780px] flex justify-end border-t border-line pt-3">

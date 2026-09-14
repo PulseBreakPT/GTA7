@@ -3,31 +3,38 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Heart, ChevronRight, FileText, Users, Zap, ListChecks, BookMarked } from 'lucide-react'
-import DbTabs from '@/components/site/dbtabs'
-import { SourceChip, StatusBadge, cx } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, SpecGrid, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription } from '@/components/site/wiki'
-import { characters, relationships, mechanics, characterBySlug } from '@/lib/content'
+import { Heart, ChevronRight, FileText, Users, BookMarked, ScrollText } from 'lucide-react'
+import { SourceChip, StatusBadge, cx, TypeChip } from '@/components/site/ui'
+import { ReportedNotes, Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools, Cite } from '@/components/site/wiki'
+import { characters, relationships, characterBySlug } from '@/lib/content'
+import { reportedFor, REPORTED_SOURCE } from '@/lib/reported'
+import { characterIdentity, identityAttributes } from '@/lib/entity-identity'
 
 const REL_BARS = [
   { key: 'trust', label: 'TRUST', color: '#C2185B' },
-  { key: 'tension', label: 'TENSION', color: '#0E7C6B' },
-  { key: 'risk', label: 'RISK', color: '#5B3FD6' },
+  { key: 'tension', label: 'TENSION', color: '#1B7773' },
+  { key: 'risk', label: 'RISK', color: '#386BAA' },
 ]
 
-const SECTIONS = [
-  { id: 'background', label: 'Background', icon: FileText },
-  { id: 'details', label: 'Details', icon: ListChecks },
-  { id: 'relationships', label: 'Relationships', icon: Users },
-  { id: 'mechanics', label: 'Associated Mechanics', icon: Zap },
-  { id: 'references', label: 'References', icon: BookMarked },
-]
+// O índice é construído a partir das secções que a página serve mesmo.
+//
+// Estava fixo em quatro entradas enquanto a ficha servia seis secções com
+// âncora própria: as notas da comunidade e as referências existiam na página,
+// tinham endereço, e não apareciam no Contents. Um índice que não descreve o
+// documento é pior do que não haver índice — promete que já se viu tudo.
+//
+// Não há «Appearances» nem «Gameplay» porque o registo de uma personagem não
+// tem esses campos. Desenhá-las daria linhas de «Not published» seguidas, que
+// é ruído a fingir-se de conteúdo. Quando os dados existirem, entram aqui.
 
 function Portrait({ c, className, sizes = '120px' }) {
-  if (c.image) {
+  const visual = c.image || c.contextImage
+  const contextual = !c.image && Boolean(c.contextImage)
+  if (visual) {
     return (
-      <span className={cx('relative block overflow-hidden bg-surface2', className)}>
-        <Image src={c.image} alt={`Portrait of ${c.name}`} fill sizes={sizes} className="object-cover object-top" />
+      <span className={cx('character-visual relative block overflow-hidden bg-surface2', contextual && 'is-contextual', className)} title={contextual ? c.imageCaption : undefined}>
+        <Image src={visual} alt={contextual ? (c.imageCaption || `Official GTA VI context for ${c.name}`) : `Portrait of ${c.name}`} fill sizes={sizes} className={`object-cover ${contextual ? 'object-center' : 'object-top'}`} />
+        {contextual && <span className="character-context-label">Context</span>}
       </span>
     )
   }
@@ -72,58 +79,61 @@ function App() {
   }
 
   const rels = relationships.filter((r) => r.a === c.slug || r.b === c.slug)
-  const mechs = mechanics.slice(0, 4)
+  const identity = characterIdentity(c)
   const primaryRel = rels.find((r) => r.primary)
   const primaryOther = primaryRel ? characterBySlug(primaryRel.a === c.slug ? primaryRel.b : primaryRel.a) : null
 
-  // A mesma grelha de pares rótulo/valor das fichas de veículo e de arma:
-  // o que a caixa de dados diz à direita, dito também no corpo, que é onde
-  // se lê e de onde se copia. Só campos que o registo tem — a uma pessoa
-  // não se inventa uma ficha técnica.
-  const detailRows = [
-    { label: 'Role', value: c.role },
-    { label: 'Group', children: c.group ? <span className="capitalize">{c.group}</span> : null },
-    { label: 'Status', children: <StatusBadge status={c.status} /> },
-    { label: 'Primary bond', children: primaryOther ? <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link> : null },
-    { label: 'Documented relationships', value: String(rels.length) },
-    { label: 'Source', value: c.sourceName },
-    { label: 'First recorded', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.publishedAt}</span> },
-    { label: 'Last updated', children: <span className="font-mono text-[11px] tracking-normal text-paper">{c.updatedAt}</span> },
+  const notas = reportedFor('character', c.slug)
+
+  // A referência só existe se o registo tiver fonte. Sem ela não há `[1]` no
+  // texto nem entrada na lista — o silêncio é a leitura honesta.
+  const temFonte = Boolean(c.sourceName)
+
+  const seccoes = [
+    { id: 'background', label: 'Story & background', icon: ScrollText },
+    { id: 'relationships', label: 'Relationships', icon: Users },
+    ...(notas.length ? [{ id: 'reported', label: 'Reported in community summaries', icon: FileText }] : []),
+    { id: 'evidence', label: 'Evidence & sources', icon: BookMarked },
+    ...(temFonte ? [{ id: 'references', label: 'References', icon: BookMarked }] : []),
   ]
 
   return (
     <div className="flex-1 flex flex-col">
-      <DbTabs active="characters" />
-      <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
         <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Characters', href: '/database/characters' }, { label: c.name }]} />
 
-        <div className="data-rail mt-2">CHARACTER FILE · SOURCE-BOUND RECORD · ID {c.slug.toUpperCase()}</div>
-
-        {/* Cabeçalho fora da grelha: o nome vem antes da caixa de dados em
-            qualquer largura, como nas fichas das wikis. */}
-        <header className="mt-5">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="px-2 py-[3px] rounded-sm font-cond font-semibold uppercase tracking-[0.1em] text-[11px] bg-pink text-ink">{c.role}</span>
+        {/* Identidade: quem é, em três segundos. O papel, o estado de prova e
+            o grupo dizem-se aqui uma vez, e não voltam a dizer-se no corpo. */}
+        <header className="wiki-article-header mt-5">
+          <div className="wiki-article-meta flex flex-wrap items-center gap-2 mb-3">
+            <TypeChip>{c.role}</TypeChip>
             <StatusBadge status={c.status} />
           </div>
           <h1 data-ghost="CHARACTERS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[52px] sm:text-[64px]">{c.name}</h1>
-          <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.bio}</WikiText></p>
           <ShortDescription>
             {c.role} in Grand Theft Auto VI{c.group ? ` · ${c.group}` : ''}
           </ShortDescription>
           <StubNotice kind="characters" slug={c.slug} />
           <Hatnote kind="characters" slug={c.slug} />
+
+          {/* O lead: a abertura do artigo, antes do índice, como em qualquer
+              enciclopédia. Estava a viver numa secção «Overview» a seguir ao
+              Contents, o que obrigava o leitor a passar por um índice antes de
+              saber de quem se tratava. O `[1]` a seguir liga à referência que o
+              registo declara — e só aparece quando essa referência existe. */}
+          <p className="wiki-lead mt-4 max-w-[72ch] text-[16px] leading-[1.8] text-paper/90">
+            <WikiText exclude={`/database/characters/${c.slug}`}>{c.bio}</WikiText>
+            {temFonte && <Cite n={1} label={c.sourceName} />}
+          </p>
         </header>
 
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-          {/* Corpo do artigo */}
-          <div className="min-w-0 order-2 lg:order-1">
-            <WikiSection id="background" title="Background">
-              <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.long}</WikiText></p>
-            </WikiSection>
+        <PageTools kind="characters" slug={c.slug} />
 
-            <WikiSection id="details" title="Details">
-              <SpecGrid items={detailRows} />
+        <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+          {/* Corpo do artigo */}
+          <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
+            <WikiSection id="background" title="Story & background">
+              <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/database/characters/${c.slug}`}>{c.long}</WikiText></p>
             </WikiSection>
 
             <WikiSection id="relationships" title="Relationships">
@@ -139,7 +149,7 @@ function App() {
                   if (!other) return null
                   return (
                     <Link key={other.slug} href={`/database/characters/${other.slug}`} className="panel rounded-sm p-3 flex flex-wrap sm:flex-nowrap items-center gap-3 hover:border-black/30 transition-colors">
-                      <Portrait c={other} className="w-[46px] h-[46px] rounded-sm border border-line shrink-0 text-[14px]" sizes="46px" />
+                      <Portrait c={other} className="w-[46px] h-[46px] rounded-sm border border-line shrink-0" sizes="46px" />
                       <span className="min-w-0 flex-1 sm:flex-none sm:w-[110px]">
                         <span className="block font-cond font-bold uppercase text-[14px] text-paper truncate">{other.name}</span>
                         <span className="block font-cond uppercase tracking-[0.14em] text-[9px] text-dim mt-0.5">{other.role}</span>
@@ -159,20 +169,20 @@ function App() {
               </div>
             </WikiSection>
 
-            <WikiSection id="mechanics" title="Associated Mechanics" className="mb-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {mechs.map((m) => (
-                  <Link key={m.slug} href={`/database/mechanics?m=${m.slug}`} className="panel rounded-sm p-4 hover:border-black/30 transition-colors">
-                    <span className="flex items-center justify-between">
-                      <span className="font-cond font-bold uppercase text-[16px] text-paper leading-tight">{m.name}</span>
-                      <span className="shrink-0 min-w-[24px] h-[20px] px-1 rounded-sm border border-line flex items-center justify-center font-cond font-bold text-[10px] text-dim">{m.glyph}</span>
-                    </span>
-                    <span className="block text-[12px] text-dim leading-relaxed mt-2 clamp-2">{m.desc}</span>
-                  </Link>
-                ))}
+            {/* Provas e fontes, num sítio só. Isto estava repartido pelo
+                bloco «Details», pelas referências e pela caixa de dados: o
+                mesmo estado, a mesma fonte e a mesma data ditos três vezes,
+                com três nomes. A contagem de ligações e o resto do que é
+                técnico ficam onde pertencem, na informação da página. */}
+            <WikiSection id="evidence" title="Evidence & sources" className="mb-0">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <StatusBadge status={c.status} />
+                <SourceChip name={c.sourceName} url={c.sourceUrl} prefix={null} />
               </div>
+              <ReportedNotes items={notas} source={REPORTED_SOURCE} />
+              <References items={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
             </WikiSection>
-            <References items={[{ name: c.sourceName, url: c.sourceUrl, retrieved: c.updatedAt }]} />
+
             <CategoryFooter kind="characters" slug={c.slug} />
             <CitePage kind="characters" slug={c.slug} />
             <PageInformation kind="characters" slug={c.slug} />
@@ -180,34 +190,34 @@ function App() {
           </div>
 
           {/* Índice */}
-          <div className="hidden lg:block order-3 lg:order-2">
-            <TableOfContents sections={SECTIONS} />
+          <div className="wiki-entry-tertiary order-1 lg:order-2">
+            <TableOfContents sections={seccoes} />
           </div>
 
-          {/* Caixa de dados */}
-          <div className="order-1 lg:order-3">
-            <InfoboxShell>
+          {/* Character profile: o único sítio onde os campos estruturados
+              aparecem em tabela. «Primary location», «First appearance» e
+              «Actor» não constam porque o arquivo não guarda nenhum deles —
+              e um campo inventado é pior do que um campo em falta. */}
+          <div className="wiki-entry-secondary order-2 lg:order-3">
+            <InfoboxShell title={c.name} subtitle="Character profile">
               <Portrait c={c} className="w-full aspect-[3/4] rounded-sm border border-line" sizes="(max-width:1024px) 100vw, 300px" />
 
               <div className="space-y-3 border-t border-black/10 pt-4">
                 <InfoRow label="Role" value={c.role} />
-                <InfoRow label="Group">
+                <InfoRow label="Affiliation">
                   <span className="capitalize">{c.group || 'Unspecified'}</span>
-                </InfoRow>
-                <InfoRow label="Status">
-                  <StatusBadge status={c.status} />
                 </InfoRow>
                 {primaryOther && (
                   <InfoRow label="Primary bond">
                     <Link href={`/database/characters/${primaryOther.slug}`} className="text-pink hover:text-paper transition-colors">{primaryOther.name}</Link>
                   </InfoRow>
                 )}
+                <InfoRow label="Documented relationships" value={String(rels.length)} />
+                <InfoRow label="First recorded">
+                  <span className="font-mono text-[11px] tracking-normal text-paper">{c.publishedAt}</span>
+                </InfoRow>
               </div>
 
-              <div className="border-t border-black/10 pt-4">
-                <SourceChip name={c.sourceName} url={c.sourceUrl} prefix={null} />
-                <p className="font-mono text-[9px] text-dim mt-2">Updated {c.updatedAt}</p>
-              </div>
               <WhatLinksHere kind="characters" slug={c.slug} />
               <WhatThisLinks kind="characters" slug={c.slug} />
             </InfoboxShell>

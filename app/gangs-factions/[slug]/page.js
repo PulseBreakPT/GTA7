@@ -3,10 +3,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked } from 'lucide-react'
-import { GhostBadge, SourceChip, StatusBadge } from '@/components/site/ui'
-import { Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks } from '@/components/site/wiki'
+import { Users, ChevronRight, FileText, BadgeCheck, HelpCircle, MapPin, BookMarked, ShieldCheck, Network, Building2 } from 'lucide-react'
+import { GhostBadge, SourceChip, StatusBadge, TypeChip } from '@/components/site/ui'
+import { ReportedNotes, Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, PageTools } from '@/components/site/wiki'
 import { factions } from '@/lib/content'
+import { reportedFor, REPORTED_SOURCE } from '@/lib/reported'
+import { factionIdentity, identityAttributes } from '@/lib/entity-identity'
+import { factionBible } from '@/lib/faction-bible'
 
 export default function FactionPage() {
   const { slug } = useParams()
@@ -22,9 +25,14 @@ export default function FactionPage() {
   }
 
   const related = factions.filter((x) => x.slug !== f.slug).slice(0, 4)
+  const identity = factionIdentity(f)
+  const bible = factionBible(f)
 
   const sections = [
     { id: 'overview', label: 'Overview', icon: FileText },
+    { id: 'evidence', label: 'Evidence & identity', icon: ShieldCheck },
+    { id: 'ecosystem', label: 'Territory & ecosystem', icon: MapPin },
+    { id: 'networks', label: 'Related networks', icon: Network },
     ...(f.confirmed?.length > 0 ? [{ id: 'confirmed', label: 'Confirmed', icon: BadgeCheck }] : []),
     ...(f.unknown?.length > 0 ? [{ id: 'unknown', label: 'Not Published', icon: HelpCircle }] : []),
     { id: 'related', label: 'Other Factions', icon: Users },
@@ -32,16 +40,14 @@ export default function FactionPage() {
   ]
 
   return (
-    <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+    <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Factions', href: '/gangs-factions' }, { label: f.name }]} />
 
-      <div className="data-rail mt-2">FACTION FILE · SOURCE-BOUND RECORD · {f.region}</div>
-
-      <header className="mt-5">
-        <div className="flex flex-wrap items-center gap-2">
+      <header className="wiki-article-header mt-5">
+        <div className="wiki-article-meta flex flex-wrap items-center gap-2">
           <StatusBadge status={f.status} />
-          <GhostBadge status="confirmed" label={f.kind} />
-          <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-mint">{f.evidenceStatus}</span>
+          <TypeChip>{f.kind}</TypeChip>
+          <span className="faction-evidence-chip font-mono text-[9px] uppercase tracking-[0.1em]">{bible.evidenceLevel}</span>
         </div>
         <h1 data-ghost="FACTIONS" className="ghost-type chromatic-title font-cond font-bold uppercase text-paper tracking-tight leading-[0.9] text-[46px] sm:text-[60px] mt-2">{f.name}</h1>
         <p className="text-paper/85 text-[16px] leading-relaxed mt-4 max-w-[68ch]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
@@ -49,10 +55,58 @@ export default function FactionPage() {
           <Hatnote kind="factions" slug={f.slug} />
       </header>
 
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
-        <div className="min-w-0 order-2 lg:order-1">
+      <PageTools kind="factions" slug={f.slug} />
+
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
           <WikiSection id="overview" title="Overview">
             <p className="text-dim text-[14px] leading-[1.8]"><WikiText exclude={`/gangs-factions/${f.slug}`}>{f.desc}</WikiText></p>
+          </WikiSection>
+
+          <WikiSection id="evidence" title="Evidence & identity">
+            <div className="faction-bible-fact-grid">
+              <article className="faction-bible-tier-card">
+                <ShieldCheck size={18} aria-hidden="true" />
+                <span>Archive evidence tier</span>
+                <strong>{bible.evidenceLevel}</strong>
+                <p>{bible.nameState}</p>
+              </article>
+              <dl>
+                <div><dt>Type</dt><dd>{bible.category}</dd></div>
+                <div><dt>Founded</dt><dd>{bible.founded}</dd></div>
+                <div><dt>Identity</dt><dd>{bible.identity}</dd></div>
+                <div><dt>Known members</dt><dd>{bible.members}</dd></div>
+              </dl>
+            </div>
+            <div className="faction-evidence-strip" aria-label="Faction appearance evidence strip">
+              <div className="faction-evidence-strip-heading"><span>Appearance evidence strip</span><small>Name, image and context are separate signals</small></div>
+              <div className="faction-evidence-strip-items">
+                {bible.appearances.map(([label, detail, level]) => <div key={`${label}-${detail}`}><b>{label}</b><p>{detail}</p><span data-level={level}>{level}</span></div>)}
+              </div>
+            </div>
+            <p className="faction-bible-disclaimer">A group can be visible in official media without Rockstar publishing a formal gang name, hierarchy or territory. Development material is never upgraded to confirmed by repetition.</p>
+          </WikiSection>
+
+          <WikiSection id="ecosystem" title="Territory & criminal ecosystem">
+            <dl className="faction-bible-data-grid">
+              {[
+                ['Primary area', bible.area],
+                ['Headquarters / base', bible.headquarters],
+                ['Criminal activity', bible.activities],
+                ['Leadership', bible.leadership],
+                ['Vehicles', bible.vehicles],
+                ['Weapons', bible.weapons],
+                ['Relationships', bible.relationships],
+              ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
+            </dl>
+            <div className="faction-bible-system-note"><Building2 size={17} aria-hidden="true" /><p><strong>Classification rule:</strong> Lusorae records gangs, criminal networks, businesses, media organisations and social clubs as different entity types even when their worlds overlap.</p></div>
+          </WikiSection>
+
+          <WikiSection id="networks" title="Related networks & organisations">
+            <p className="text-dim text-[13px] leading-relaxed mb-3">These records are deliberately contextual. They are not silently promoted to “gang” status because they share characters, locations or criminal activity.</p>
+            <div className="faction-network-grid">
+              {bible.networks.map(([name, type, copy, level]) => <article key={name}><div><h3>{name}</h3><span>{type}</span></div><p>{copy}</p><b data-level={level}>{level}</b></article>)}
+            </div>
           </WikiSection>
 
           {f.confirmed?.length > 0 && (
@@ -89,6 +143,7 @@ export default function FactionPage() {
               ))}
             </div>
           </WikiSection>
+          <ReportedNotes items={reportedFor('faction', f.slug)} source={REPORTED_SOURCE} />
           <References items={[{ name: f.sourceName, url: f.sourceUrl }]} />
           <CategoryFooter kind="factions" slug={f.slug} />
             <CitePage kind="factions" slug={f.slug} />
@@ -96,12 +151,12 @@ export default function FactionPage() {
             <Navbox kind="factions" slug={f.slug} />
         </div>
 
-        <div className="hidden lg:block order-3 lg:order-2">
+        <div className="wiki-entry-tertiary order-1 lg:order-2">
           <TableOfContents sections={sections} />
         </div>
 
-        <div className="order-1 lg:order-3">
-          <InfoboxShell>
+        <div className="wiki-entry-secondary order-2 lg:order-3">
+          <InfoboxShell title={f.name} subtitle="Faction profile">
             {f.image ? (
               <span className="relative block aspect-[16/10] overflow-hidden rounded-sm border border-line bg-surface2">
                 <Image src={f.image} alt={f.name} fill sizes="(max-width:1024px) 100vw, 300px" className="object-cover" />
@@ -120,9 +175,6 @@ export default function FactionPage() {
                   <MapPin size={12} className="text-mint" aria-hidden="true" />
                   {f.region}
                 </span>
-              </InfoRow>
-              <InfoRow label="Status">
-                <StatusBadge status={f.status} />
               </InfoRow>
               <InfoRow label="Evidence">
                 <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-mint">{f.evidenceStatus}</span>

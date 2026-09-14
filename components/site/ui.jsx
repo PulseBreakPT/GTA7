@@ -1,6 +1,7 @@
 'use client'
 
 import { Check, HelpCircle, Activity, BadgeCheck, X, Circle, Triangle, Square, ExternalLink } from 'lucide-react'
+import { publicSource } from '@/lib/official-links'
 
 export const cx = (...a) => a.filter(Boolean).join(' ')
 
@@ -11,33 +12,52 @@ export const cx = (...a) => a.filter(Boolean).join(' ')
 // desaparecia por completo.
 export const ACCENT = {
   pink: '#C2185B',
-  mint: '#0E7C6B',
+  mint: '#1B7773',
   violet: '#5B3FD6',
   warn: '#8A6A00',
-  neutral: '#334155',
-  ink: '#0B0F16',
+  neutral: '#2B2230',
+  ink: '#120D19',
   onAccent: '#FFFFFF',
 }
 
+// Rótulos em sentence case, como no resto do arquivo. Os dados trazem muitos
+// em maiúsculas («SPORTS CLASSIC», «SUVS»); passam a «Sports classic» e
+// «SUVs», sem estragar siglas. Texto que já tem minúsculas fica como está.
+const LABEL_ACRONYMS = { SUVS: 'SUVs', SUV: 'SUV', GTA: 'GTA', VI: 'VI', ATV: 'ATV', UTV: 'UTV', SMG: 'SMG', LMG: 'LMG', RPG: 'RPG', MC: 'MC', PTT: 'PTT', DJ: 'DJ', TV: 'TV', FM: 'FM', VC: 'VC', HQ: 'HQ', PS5: 'PS5', NPC: 'NPC', EMS: 'EMS', VCPD: 'VCPD', UK: 'UK', US: 'US', II: 'II', III: 'III', IV: 'IV', '4X4': '4x4', '6X6': '6x6', GT: 'GT', GTX: 'GTX', SS: 'SS', RS: 'RS', LX: 'LX' }
+export const displayLabel = (value) => {
+  const text = String(value ?? '')
+  if (!text || /[a-z]/.test(text)) return text
+  const words = text.toLowerCase().split(/(\s+)/).map((word) => LABEL_ACRONYMS[word.toUpperCase()] || word)
+  const joined = words.join('')
+  return joined.charAt(0).toUpperCase() + joined.slice(1)
+}
+
+// Etiqueta de classificação (classe, tipo, género, papel): neutra, não é
+// evidência. O estado da evidência fica só com StatusBadge e GhostBadge.
+export function TypeChip({ children, className }) {
+  return <span className={cx('type-chip', className)}>{typeof children === 'string' ? displayLabel(children) : children}</span>
+}
+
 export const STATUS_META = {
-  confirmed: { label: 'CONFIRMED', color: ACCENT.mint, Icon: Check },
-  verified: { label: 'VERIFIED', color: ACCENT.mint, Icon: BadgeCheck },
-  category: { label: 'CATEGORY CONFIRMED', color: ACCENT.warn, Icon: BadgeCheck },
-  analysis: { label: 'ANALYSIS', color: ACCENT.mint, Icon: Activity },
-  rumour: { label: 'RUMOUR', color: ACCENT.violet, Icon: HelpCircle },
-  official: { label: 'OFFICIAL', color: ACCENT.pink, Icon: Check },
-  community: { label: 'COMMUNITY', color: ACCENT.violet, Icon: HelpCircle },
-  featured: { label: 'FEATURED', color: ACCENT.pink, Icon: Check },
-  update: { label: 'UPDATE', color: ACCENT.violet, Icon: Activity },
-  news: { label: 'NEWS', color: ACCENT.mint, Icon: Activity },
+  confirmed: { label: 'Confirmed', color: ACCENT.mint, Icon: Check },
+  verified: { label: 'Verified', color: '#276CBE', Icon: BadgeCheck },
+  category: { label: 'Category confirmed', color: ACCENT.warn, Icon: BadgeCheck },
+  analysis: { label: 'Analysis', color: '#946200', Icon: Activity },
+  rumour: { label: 'Rumour', color: ACCENT.violet, Icon: HelpCircle },
+  official: { label: 'Official', color: ACCENT.pink, Icon: Check },
+  community: { label: 'Community', color: ACCENT.violet, Icon: HelpCircle },
+  featured: { label: 'Featured', color: ACCENT.pink, Icon: Check },
+  update: { label: 'Update', color: ACCENT.violet, Icon: Activity },
+  news: { label: 'News', color: ACCENT.mint, Icon: Activity },
 }
 
 export function StatusBadge({ status, label, className }) {
   const m = STATUS_META[status] || STATUS_META.analysis
-  const text = label || m.label
+  const text = displayLabel(label || m.label)
   return (
     <span
-      className={cx('inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm', className)}
+      className={cx('status-badge inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm', className)}
+      data-status={status || 'analysis'}
       style={{ color: ACCENT.onAccent, backgroundColor: m.color }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />
@@ -48,10 +68,11 @@ export function StatusBadge({ status, label, className }) {
 
 export function GhostBadge({ status, label, className }) {
   const m = STATUS_META[status] || STATUS_META.analysis
-  const text = label || m.label
+  const text = displayLabel(label || m.label)
   return (
     <span
-      className={cx('inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm border', className)}
+      className={cx('ghost-badge inline-flex items-center gap-1 px-1.5 py-[3px] font-cond font-semibold uppercase tracking-[0.1em] text-[11px] leading-none rounded-sm border', className)}
+      data-status={status || 'analysis'}
       style={{ color: m.color, borderColor: `${m.color}55`, backgroundColor: `${m.color}0F` }}
     >
       <m.Icon size={10} strokeWidth={3} aria-hidden="true" />
@@ -147,11 +168,12 @@ export function fmtDate(iso) {
 // Fica o nome da fonte, dito por extenso e a cinzento, que é exactamente o
 // que o arquivo pode garantir sobre esse registo.
 export function SourceChip({ name, url, prefix = 'SOURCE', className }) {
-  const label = name
-    ? (prefix ? `${prefix}: ${String(name).toUpperCase()}` : String(name).toUpperCase())
+  const source = publicSource(name, url)
+  const label = source.name
+    ? (prefix ? `${prefix}: ${String(source.name).toUpperCase()}` : String(source.name).toUpperCase())
     : (prefix || 'SOURCE')
   const base = 'inline-flex items-center gap-1.5 border border-line rounded-sm px-2.5 py-1.5 font-cond uppercase tracking-[0.12em] text-[11px]'
-  if (!url) {
+  if (!source.url) {
     return (
       <span className={cx(base, 'text-dim', className)}>
         {label}
@@ -160,7 +182,7 @@ export function SourceChip({ name, url, prefix = 'SOURCE', className }) {
     )
   }
   return (
-    <a href={url} target="_blank" rel="noreferrer" className={cx(base, 'text-paper hover:border-black/40 transition-colors', className)}>
+    <a href={source.url} target="_blank" rel="noreferrer" className={cx(base, 'text-paper hover:border-black/40 transition-colors', className)}>
       {label} <ExternalLink size={11} aria-hidden="true" />
     </a>
   )

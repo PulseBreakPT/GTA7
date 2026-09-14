@@ -1,47 +1,47 @@
+const path = require('path')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './lib/**/*.{js,jsx}',
-  ],
+  // Caminhos absolutos, a partir da pasta deste ficheiro: relativos, o
+  // Tailwind resolvia-os pela pasta de onde o build corria, e um build lançado
+  // de outra pasta gerava CSS sem utilitários — que a cache do Next depois
+  // reaproveitava na publicação.
+  content: ['pages', 'components', 'app', 'lib'].map((dir) => path.join(__dirname, dir, '**/*.{js,jsx}')),
   prefix: "",
   theme: {
     container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
     extend: {
-      // Tema claro. Os nomes mantêm-se — `ink` é o fundo e `paper` o
-      // texto, tal como antes — porque são centenas de utilizações no
-      // projecto: trocar o significado de dois tokens vira o site todo
-      // sem tocar numa única classe. O que muda de verdade são os
-      // acentos: os pastéis do tema escuro davam menos de 2:1 sobre
-      // branco, ou seja, texto ilegível. Aqui cada um tem a versão
-      // escura da mesma cor, acima de 4.5:1.
+      // Paleta extraída da key art oficial de Jason e Lucia. Os tons mais
+      // escuros são derivados acessíveis das mesmas cores, para texto e
+      // controlos manterem contraste sobre o papel quente.
       colors: {
-        ink: '#FFFFFF',
-        raised: '#F7F8FA',
-        surface2: '#EDEFF3',
-        paper: '#0B0F16',
-        dim: '#5A6270',
-        line: 'rgba(11,15,22,0.14)',
+        ink: '#FFF5E8',
+        raised: '#FFF9F2',
+        surface2: '#F3EEE8',
+        paper: '#2B2230',
+        // #716872 = --gta6-muted-ink. O cinzento puro da paleta (#746B75) mede
+        // 4.44 sobre concrete e 4.38 sobre véus coloridos: abaixo de AA. Fica
+        // em HEX literal porque text-dim/70 precisa de HEX, não de var().
+        dim: '#716872',
+        line: 'rgba(43,34,48,0.16)',
         pink: '#C2185B',
-        mint: '#0E7C6B',
-        violet: '#5B3FD6',
-        warn: '#8A6A00',
-        danger: '#B3202A',
-        border: 'rgba(11,15,22,0.14)',
-        input: 'rgba(11,15,22,0.14)',
-        ring: '#C2185B',
-        background: '#FFFFFF',
-        foreground: '#0B0F16',
-        primary: { DEFAULT: '#0B0F16', foreground: '#FFFFFF' },
-        secondary: { DEFAULT: '#EDEFF3', foreground: '#0B0F16' },
-        destructive: { DEFAULT: '#B3202A', foreground: '#FFFFFF' },
-        muted: { DEFAULT: '#EDEFF3', foreground: '#5A6270' },
-        accent: { DEFAULT: '#C2185B', foreground: '#FFFFFF' },
-        popover: { DEFAULT: '#FFFFFF', foreground: '#0B0F16' },
-        card: { DEFAULT: '#FFFFFF', foreground: '#0B0F16' },
+        mint: '#22C7B7',
+        violet: '#7B4DE3',
+        warn: '#E8B84A',
+        danger: '#E13535',
+        border: 'rgba(43,34,48,0.16)',
+        input: 'rgba(43,34,48,0.16)',
+        ring: '#4FA3FF',
+        background: '#FFF5E8',
+        foreground: '#2B2230',
+        primary: { DEFAULT: '#2B2230', foreground: '#FFF5E8' },
+        secondary: { DEFAULT: '#F3EEE8', foreground: '#2B2230' },
+        destructive: { DEFAULT: '#E13535', foreground: '#FFF5E8' },
+        muted: { DEFAULT: '#F3EEE8', foreground: '#716872' },
+        accent: { DEFAULT: '#C2185B', foreground: '#FFF5E8' },
+        popover: { DEFAULT: '#FFF9F2', foreground: '#2B2230' },
+        card: { DEFAULT: '#FFF9F2', foreground: '#2B2230' },
       },
       fontFamily: {
         cond: ['var(--font-cond)', 'Arial Narrow', 'sans-serif'],

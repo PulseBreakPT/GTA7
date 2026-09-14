@@ -1,0 +1,3503 @@
+/* GTA LORE — editorial archive.
+ * Loaded last: one explicit surface, type and interaction vocabulary above
+ * legacy page styles. Entity accent colours remain available to each dossier.
+ */
+.lore-design.archive-refresh {
+  /* O papel da paleta passa a ser o chão do sítio; os cartões continuam brancos
+     por cima dele, e é essa diferença que os separa. */
+  --archive-bg: var(--gta6-paper);
+  --archive-surface: #ffffff;
+  --archive-ink: var(--gta6-ink);
+  /* O cinzento da paleta mede 4.44 sobre concrete, abaixo de AA por uma unha;
+     a variante -ink escurece-o 3% e passa em todos os fundos claros. */
+  --archive-muted: var(--gta6-muted-ink);
+  --archive-border: color-mix(in srgb, var(--gta6-ink) 14%, var(--gta6-concrete));
+  --archive-accent: var(--gta6-pink);
+  --archive-accent-hot: var(--gta6-hot-pink);
+  --archive-system: var(--gta6-blue);
+  --archive-verified: var(--gta6-teal);
+  --archive-money: var(--gta6-money);
+  --archive-warning: var(--gta6-amber);
+  --archive-danger: var(--gta6-red);
+  --archive-night: var(--gta6-night);
+  --archive-asphalt: var(--gta6-asphalt);
+  /* Aliases de TEXTO. --archive-verified e companhia continuam a ser o HEX puro
+     para preenchimentos e linhas; estes são o que se usa quando é texto. */
+  --archive-verified-ink: var(--gta6-teal-ink);
+  --archive-system-ink: var(--gta6-blue-ink);
+  --archive-money-ink: var(--gta6-money-ink);
+  --archive-warning-ink: var(--gta6-amber-ink);
+  --archive-danger-ink: var(--gta6-red-ink);
+  --archive-accent-hot-ink: var(--gta6-hot-pink-ink);
+  --archive-radius: 14px;
+  --ds-paper-50: var(--archive-bg);
+  --ds-ink-900: var(--archive-ink);
+  --ds-radius-sm: 10px;
+  --ds-radius-md: 14px;
+  --ds-radius-lg: 18px;
+  background: var(--archive-bg) !important;
+  color: var(--archive-ink);
+  -webkit-font-smoothing: antialiased;
+}
+body.lore-design.archive-refresh :is(.gta-lore-ambient, .wiki-global-rail) { display: none !important; }
+body.lore-design.archive-refresh .site-frame { margin-left: 0 !important; padding-left: 0 !important; width: 100% !important; }
+body.lore-design.archive-refresh :is(.grain, .archive-grid)::before,
+body.lore-design.archive-refresh.grain::before { display: none !important; }
+body.lore-design.archive-refresh :is(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid var(--gta6-focus) !important;
+  outline-offset: 4px;
+  box-shadow: none !important;
+}
+body.lore-design.archive-refresh :is(button, a, summary) { -webkit-tap-highlight-color: transparent; }
+body.lore-design.archive-refresh main :is(h1, h2, h3) { text-wrap: balance; }
+body.lore-design.archive-refresh main :is(p, li) { overflow-wrap: break-word; }
+body.lore-design.archive-refresh :is(.panel, .panel2, .wiki-entry-tile, .wiki-discovery-entry,
+  .wiki-portal-card, .mechanic-card, .places-card, .world-subject-card,
+  .world-record-grid > a, .news-grid-card, .visual-card-grid.two-up-visual-grid > *) {
+  border-radius: var(--archive-radius) !important;
+  border-color: var(--archive-border) !important;
+  box-shadow: 0 2px 4px rgb(30 20 40 / .025) !important;
+}
+body.lore-design.archive-refresh main :is(.corner-brackets, .panel, .panel2)::before,
+body.lore-design.archive-refresh main :is(.corner-brackets, .panel, .panel2)::after { display: none !important; }
+body.lore-design.archive-refresh main :is(.wiki-category-title, .wiki-main-title, .chromatic-title) {
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: var(--archive-ink) !important;
+  text-shadow: none !important;
+  letter-spacing: -.035em !important;
+}
+body.lore-design.archive-refresh :is(input:not([type=checkbox]):not([type=radio]), select, textarea) {
+  border-radius: 10px;
+  font-family: var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge, .entity-label) {
+  flex: 0 0 auto !important;
+  width: fit-content !important;
+  max-width: 100%;
+  min-height: 25px;
+  padding: 4px 8px !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  font: 650 11px/1.25 var(--font-inter), sans-serif !important;
+  letter-spacing: .025em !important;
+}
+
+/* One navigation for every route. The full directory lives in Explore. */
+body.lore-design.archive-refresh .wiki-global-header {
+  min-height: 76px !important;
+  height: auto !important;
+  padding: 12px clamp(16px, 3vw, 48px) !important;
+  gap: clamp(16px, 2.5vw, 40px) !important;
+  background: #fffdf9 !important;
+  border-bottom: 1px solid var(--archive-border) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+body.lore-design.archive-refresh .wiki-global-header::before,
+body.lore-design.archive-refresh .wiki-global-header::after { display: none !important; }
+body.lore-design.archive-refresh .wiki-global-brand { gap: 11px !important; }
+body.lore-design.archive-refresh .wiki-global-brand > span:first-child {
+  width: 40px !important; height: 40px !important; border-radius: 10px !important;
+  background: linear-gradient(140deg, var(--gta6-blue-ink), var(--gta6-pink)) !important;
+  color: white !important; box-shadow: none !important;
+}
+body.lore-design.archive-refresh .wiki-global-brand strong { font-size: 19px !important; letter-spacing: .11em !important; }
+body.lore-design.archive-refresh .wiki-global-brand small { display: block !important; font: 11px/1.5 var(--font-inter), sans-serif !important; letter-spacing: 0 !important; color: var(--archive-muted) !important; }
+body.lore-design.archive-refresh .wiki-global-search {
+  max-width: 390px; min-height: 44px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 70%, white) !important; border: 1px solid transparent !important;
+  box-shadow: none !important; border-radius: 10px !important;
+}
+body.lore-design.archive-refresh .wiki-global-search span { font-size: 13px !important; }
+body.lore-design.archive-refresh .wiki-global-topnav { margin-left: auto !important; gap: 8px !important; }
+body.lore-design.archive-refresh .wiki-global-topnav > a,
+body.lore-design.archive-refresh .wiki-explore-trigger { font: 600 13px/1.2 var(--font-inter), sans-serif !important; text-transform: none !important; letter-spacing: 0 !important; min-height: 44px !important; padding: 10px !important; }
+body.lore-design.archive-refresh .wiki-global-topnav > a > svg { display: none; }
+body.lore-design.archive-refresh .wiki-account-trigger { min-height: 44px !important; border-radius: 10px !important; background: white !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .wiki-explore-panel[hidden] { display: none !important; }
+body.lore-design.archive-refresh .wiki-explore-menu.is-open .wiki-explore-panel {
+  display: block !important; visibility: visible !important; opacity: 1 !important;
+  pointer-events: auto !important; transform: none !important;
+}
+body.lore-design.archive-refresh :is(.wiki-explore-panel, .wiki-account-panel, .gta-lore-search-modal) {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 16px !important;
+  background: white !important;
+  box-shadow: 0 20px 70px rgb(35 20 45 / .16) !important;
+}
+body.lore-design.archive-refresh .gta-lore-search-layer { background: rgb(30 21 38 / .3) !important; backdrop-filter: blur(5px); }
+body.lore-design.archive-refresh .search-command-input input { color: var(--archive-ink) !important; font-size: 18px !important; }
+body.lore-design.archive-refresh .search-command-head {
+  background: color-mix(in srgb, var(--archive-system) 10%, white) !important;
+  color: color-mix(in srgb, var(--archive-system) 60%, var(--archive-ink)) !important;
+}
+body.lore-design.archive-refresh .search-aside-title { display: flex; align-items: center; }
+body.lore-design.archive-refresh .search-clear-recent {
+  margin-left: auto; border: 0; background: transparent; color: var(--archive-accent);
+  font: 650 11px/1.2 var(--font-inter), sans-serif; text-decoration: underline;
+  text-underline-offset: 3px; cursor: pointer;
+}
+body.lore-design.archive-refresh .search-mobile-recents { display: none; }
+body.lore-design.archive-refresh .search-type-tabs button { min-height: 36px !important; border-radius: 6px !important; }
+
+/* A photographic front cover, not text placed over the protagonists. */
+body.lore-design.archive-refresh .hq-home { --hq-max: 1400px; --hq-pad: clamp(18px, 4vw, 56px); background: var(--archive-bg) !important; }
+body.lore-design.archive-refresh .hq-hero {
+  display: grid !important; grid-template-columns: 46% 54%; grid-template-rows: auto !important;
+  width: min(calc(100% - 48px), 1440px); margin: 24px auto 0;
+  min-height: 610px !important; height: auto !important;
+  background: #f0e9ee !important; color: var(--archive-ink) !important;
+  border: 1px solid #e4dce3; border-radius: 22px !important;
+}
+body.lore-design.archive-refresh .hq-hero-art { position: relative !important; inset: auto !important; grid-column: 2; grid-row: 1; min-height: 100%; }
+body.lore-design.archive-refresh .hq-hero-art img { object-position: 51% 36% !important; filter: none !important; transform: none !important; }
+body.lore-design.archive-refresh .hq-hero-shade { display: none !important; }
+body.lore-design.archive-refresh .hq-hero-content {
+  grid-column: 1; grid-row: 1; width: 100% !important; min-height: 0 !important;
+  margin: 0 !important; padding: clamp(24px, 3.5vw, 54px) !important;
+  justify-content: center; background: none !important;
+}
+body.lore-design.archive-refresh .hq-hero-signal { font: 600 10px/1.7 var(--font-inter), sans-serif !important; color: #6f4869 !important; letter-spacing: .08em !important; flex-wrap: wrap; gap: 6px; }
+body.lore-design.archive-refresh .hq-hero-signal i { display: none; }
+body.lore-design.archive-refresh .hq-hero-signal span { color: var(--archive-muted); }
+body.lore-design.archive-refresh .hq-hero h1 { margin-top: 26px !important; }
+body.lore-design.archive-refresh .hq-hero h1 > span { color: #534552 !important; font: 500 clamp(20px, 2vw, 29px)/1.25 var(--font-cond), sans-serif !important; letter-spacing: .06em !important; }
+body.lore-design.archive-refresh .hq-hero h1 > strong { color: #322239 !important; font-size: clamp(80px, 9.1vw, 140px) !important; line-height: .92 !important; letter-spacing: -.045em !important; text-shadow: none !important; background: none !important; -webkit-text-fill-color: currentColor !important; }
+body.lore-design.archive-refresh .hq-hero-content > p { color: #544953 !important; font: 400 clamp(15px, 1.2vw, 18px)/1.65 var(--font-inter), sans-serif !important; margin-top: 22px !important; max-width: 38ch; }
+body.lore-design.archive-refresh .hq-hero-actions { display: flex !important; flex-direction: column; gap: 12px; width: 100% !important; margin-top: 25px !important; }
+body.lore-design.archive-refresh .hq-command-trigger { min-height: 66px !important; padding: 12px 16px !important; background: white !important; border: 1px solid #d8cbd7 !important; color: var(--archive-ink) !important; backdrop-filter: none !important; box-shadow: 0 4px 16px rgb(48 25 44 / .035) !important; border-radius: 10px !important; }
+body.lore-design.archive-refresh .hq-command-trigger strong { color: var(--archive-ink) !important; font: 600 15px/1.4 var(--font-inter), sans-serif !important; margin: 0 !important; }
+body.lore-design.archive-refresh .hq-command-trigger small { color: var(--archive-muted) !important; font: 400 12px/1.5 var(--font-inter), sans-serif !important; letter-spacing: 0 !important; text-transform: none !important; }
+body.lore-design.archive-refresh .hq-command-trigger kbd { color: var(--archive-muted) !important; background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important; border-color: var(--archive-border) !important; }
+body.lore-design.archive-refresh .hq-hero-primary { min-height: 44px !important; align-self: flex-start; padding: 10px 18px !important; background: var(--archive-accent) !important; box-shadow: none !important; font: 650 13px/1.3 var(--font-inter), sans-serif !important; text-transform: none !important; letter-spacing: 0 !important; }
+body.lore-design.archive-refresh .hq-hero-meta { margin-top: 28px !important; padding-top: 16px !important; width: 100%; gap: 20px !important; border-color: #d9cdd6 !important; }
+body.lore-design.archive-refresh .hq-hero-meta span { padding: 0 !important; border: 0 !important; }
+body.lore-design.archive-refresh .hq-hero-meta small { color: #746573 !important; font: 500 10px/1.4 var(--font-inter), sans-serif !important; letter-spacing: .02em !important; }
+body.lore-design.archive-refresh .hq-hero-meta strong { color: #493747 !important; font: 650 12px/1.6 var(--font-inter), sans-serif !important; }
+body.lore-design.archive-refresh .hq-hero-caption { position: absolute; z-index: 2; bottom: 20px; right: 20px; display: flex; flex-direction: column; padding: 10px 14px; border-radius: 8px; background: #2d1c34e8; color: white; font: 500 12px/1.6 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .hq-hero-caption small { color: #e7dbe7; font-size: 10px; }
+body.lore-design.archive-refresh .hq-mission-bar { margin: 18px auto 0 !important; width: min(calc(100% - 48px), 1440px) !important; transform: none !important; border-radius: 12px !important; background: white !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .hq-mission-bar :is(a, button) { border-radius: 0 !important; min-height: 68px !important; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .hq-mission-bar strong { font: 650 13px/1.5 var(--font-inter), sans-serif !important; text-transform: none; letter-spacing: 0; }
+body.lore-design.archive-refresh .hq-mission-bar small { font: 400 11px/1.5 var(--font-inter), sans-serif !important; color: var(--archive-muted) !important; text-transform: none; letter-spacing: 0; }
+body.lore-design.archive-refresh .hq-section { max-width: 1440px !important; padding: 48px var(--hq-pad) 0 !important; margin-inline: auto; }
+body.lore-design.archive-refresh .hq-section-head { padding: 0 0 22px !important; margin: 0 !important; gap: 18px !important; border: 0 !important; align-items: end !important; }
+body.lore-design.archive-refresh .hq-section-index { display: none !important; }
+body.lore-design.archive-refresh .hq-section-head > div { margin: 0 !important; }
+body.lore-design.archive-refresh .hq-section-head p { color: var(--archive-accent) !important; font: 650 10px/1.5 var(--font-inter), sans-serif !important; letter-spacing: .15em !important; }
+body.lore-design.archive-refresh .hq-section-head h2 { margin-top: 5px !important; color: var(--archive-ink) !important; background: none !important; -webkit-text-fill-color: currentColor !important; font: 650 clamp(30px, 3.3vw, 48px)/1.02 var(--font-cond), sans-serif !important; letter-spacing: -.02em !important; text-transform: none !important; text-shadow: none !important; }
+body.lore-design.archive-refresh .hq-section-head > div > span { font: 400 14px/1.65 var(--font-inter), sans-serif !important; color: var(--archive-muted) !important; max-width: 65ch; }
+body.lore-design.archive-refresh .hq-section-head > a { font: 650 12px/1.4 var(--font-inter), sans-serif !important; letter-spacing: 0 !important; text-transform: none !important; min-height: 44px; white-space: nowrap; }
+body.lore-design.archive-refresh .hq-branch-grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 18px !important; overflow: visible !important; padding: 0 !important; margin: 0 !important; }
+body.lore-design.archive-refresh .hq-branch-card { width: auto !important; min-width: 0 !important; background: white !important; border: 1px solid var(--archive-border) !important; border-radius: 14px !important; box-shadow: none !important; overflow: hidden; transition: transform .2s, box-shadow .2s; }
+body.lore-design.archive-refresh .hq-branch-card:nth-child(n) { grid-column: auto !important; min-height: 0 !important; }
+body.lore-design.archive-refresh .hq-branch-media { flex: none !important; min-height: 0 !important; }
+body.lore-design.archive-refresh .hq-branch-media { aspect-ratio: 1.65 !important; height: auto !important; border: 0 !important; }
+body.lore-design.archive-refresh .hq-branch-media img { filter: none !important; object-position: center 35%; }
+body.lore-design.archive-refresh .hq-branch-copy { display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important; gap: 10px !important; min-height: 122px !important; padding: 17px !important; align-items: start !important; }
+body.lore-design.archive-refresh .hq-branch-icon, body.lore-design.archive-refresh .hq-branch-arrow { display: none !important; }
+body.lore-design.archive-refresh .hq-branch-copy strong { font: 650 26px/1.05 var(--font-cond), sans-serif !important; color: var(--archive-ink) !important; text-transform: none !important; }
+body.lore-design.archive-refresh .hq-branch-copy small { font: 400 12px/1.65 var(--font-inter), sans-serif !important; margin-top: 7px !important; color: var(--archive-muted) !important; }
+body.lore-design.archive-refresh .hq-branch-copy > b { color: #76546f !important; font: 500 12px/1.5 var(--font-mono), monospace !important; padding-top: 5px; }
+body.lore-design.archive-refresh :is(.hq-news-lead, .hq-news-card) { border-radius: 14px !important; border: 1px solid var(--archive-border) !important; box-shadow: none !important; background: white !important; }
+body.lore-design.archive-refresh .hq-news-media { background: #140d19 !important; }
+body.lore-design.archive-refresh .hq-news-media img {
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+body.lore-design.archive-refresh .hq-news-copy { padding: 20px !important; }
+body.lore-design.archive-refresh .hq-news-copy > strong { font-family: var(--font-cond), sans-serif !important; text-transform: none !important; letter-spacing: -.01em !important; line-height: 1.12 !important; }
+body.lore-design.archive-refresh .hq-atlas { max-width: 1330px; margin: 48px auto 0 !important; padding: 30px !important; border-radius: 20px; background: #292031 !important; }
+body.lore-design.archive-refresh .hq-atlas .hq-section-head h2 { color: #fff6ed !important; }
+body.lore-design.archive-refresh .hq-atlas .hq-section-head :is(p, a) { color: #ffb6d1 !important; }
+body.lore-design.archive-refresh .hq-atlas .hq-section-head > div > span { color: #d8cddc !important; }
+body.lore-design.archive-refresh .hq-atlas .hq-section-head > a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: max-content !important;
+  min-width: 132px !important;
+  min-height: 42px !important;
+  padding: 0 15px !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+body.lore-design.archive-refresh .hq-atlas-proof { color: #ddd2e0 !important; border-color: #615265 !important; background: transparent !important; }
+body.lore-design.archive-refresh .hq-atlas-proof :is(strong, small) { color: inherit !important; }
+body.lore-design.archive-refresh .hq-region-rail { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 14px !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
+body.lore-design.archive-refresh .hq-region-card { width: auto !important; min-width: 0 !important; min-height: 230px !important; border-radius: 12px !important; border: 1px solid #5c4d61 !important; }
+body.lore-design.archive-refresh .hq-region-copy strong { color: white !important; font: 650 30px/1.1 var(--font-cond), sans-serif !important; }
+body.lore-design.archive-refresh .hq-region-copy :is(small, i) { color: #f8eaf6 !important; }
+body.lore-design.archive-refresh .hq-region-wash { background: linear-gradient(transparent 25%, #1a1424ed) !important; }
+body.lore-design.archive-refresh .hq-pulse-grid { gap: 18px !important; }
+body.lore-design.archive-refresh .hq-pulse-grid > section { background: white !important; border: 1px solid var(--archive-border) !important; border-radius: 14px !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .hq-evidence-panel {
+  background:
+    linear-gradient(180deg, rgba(194, 24, 91, .055), transparent 32%),
+    #fff !important;
+}
+body.lore-design.archive-refresh .hq-evidence-panel > header {
+  min-height: 74px !important;
+  padding: 15px 18px !important;
+  background: linear-gradient(90deg, rgba(194, 24, 91, .08), rgba(255,255,255,0) 64%) !important;
+}
+body.lore-design.archive-refresh .hq-evidence-panel > header > svg {
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border: 1px solid rgba(194, 24, 91, .22);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--archive-accent) !important;
+}
+body.lore-design.archive-refresh .hq-evidence-panel > p {
+  margin: 14px 14px 0 !important;
+  padding: 12px 13px !important;
+  border: 1px solid var(--archive-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--gta6-concrete) 35%, white);
+  color: #584852 !important;
+  font: 500 13px/1.55 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .hq-evidence-panel > div {
+  gap: 8px !important;
+  padding: 12px 14px 10px !important;
+}
+body.lore-design.archive-refresh .hq-confidence {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 12px 10px 14px !important;
+  border: 1px solid var(--archive-border);
+  border-radius: 12px;
+  background: rgba(255,255,255,.82);
+}
+body.lore-design.archive-refresh .hq-confidence::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #0a8f7b;
+}
+body.lore-design.archive-refresh .hq-confidence-verified::before { background: #2f73b8; }
+body.lore-design.archive-refresh .hq-confidence-category::before { background: #9b7821; }
+body.lore-design.archive-refresh .hq-confidence-analysis::before { background: #b46917; }
+body.lore-design.archive-refresh .hq-confidence-rumour::before { background: #6d4fc5; }
+body.lore-design.archive-refresh .hq-confidence > span {
+  display: grid !important;
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+  justify-content: start !important;
+  gap: 10px !important;
+}
+body.lore-design.archive-refresh .hq-confidence > span > small {
+  align-self: center;
+  color: #51454e !important;
+  font: 550 12px/1.35 var(--font-inter), sans-serif !important;
+  text-align: left;
+}
+body.lore-design.archive-refresh .hq-evidence-panel > a {
+  min-height: 40px;
+  margin: 0 14px 14px !important;
+  padding: 0 13px;
+  border: 1px solid rgba(194, 24, 91, .2);
+  border-radius: 999px;
+  background: #fff;
+  width: fit-content;
+}
+body.lore-design.archive-refresh .hq-claim-panel {
+  padding: 18px;
+}
+body.lore-design.archive-refresh .hq-claim-panel header,
+body.lore-design.archive-refresh .hq-claim-panel li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+body.lore-design.archive-refresh .hq-claim-panel header {
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--archive-border);
+}
+body.lore-design.archive-refresh .hq-claim-panel header > svg { color: var(--archive-accent); }
+body.lore-design.archive-refresh .hq-claim-panel header span { flex: 1; min-width: 0; }
+body.lore-design.archive-refresh .hq-claim-panel header small,
+body.lore-design.archive-refresh .hq-claim-panel p {
+  color: var(--archive-muted);
+  font: 500 12px/1.55 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .hq-claim-panel header strong {
+  display: block;
+  color: var(--archive-ink);
+  font: 650 17px/1.1 var(--font-cond), sans-serif;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .hq-claim-panel header a {
+  color: var(--archive-accent);
+  font: 650 10px/1.2 var(--font-inter), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+body.lore-design.archive-refresh .hq-claim-panel p { margin-top: 14px; }
+body.lore-design.archive-refresh .hq-claim-panel ol { margin-top: 12px; display: grid; gap: 1px; }
+body.lore-design.archive-refresh .hq-claim-panel li a {
+  min-height: 50px;
+  padding: 10px 0;
+  border-top: 1px solid rgb(38 35 43 / .07);
+}
+body.lore-design.archive-refresh .hq-claim-panel li:first-child a { border-top: 0; }
+body.lore-design.archive-refresh .hq-claim-panel li span:nth-child(2) { flex: 1; min-width: 0; }
+body.lore-design.archive-refresh .hq-claim-panel li strong {
+  display: block;
+  overflow: hidden;
+  color: var(--archive-ink);
+  font: 650 13px/1.15 var(--font-cond), sans-serif;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+body.lore-design.archive-refresh .hq-claim-panel li small {
+  color: var(--archive-muted);
+  font: 500 10px/1.4 var(--font-mono), monospace;
+}
+body.lore-design.archive-refresh .hq-final-call { min-height: 280px !important; margin-top: 48px !important; }
+body.lore-design.archive-refresh .hq-final-call h2 { font-size: clamp(32px, 4vw, 54px) !important; }
+
+/* Listing headers and records share a restrained reading surface. */
+body.lore-design.archive-refresh .wiki-category-header { padding: 0 0 24px !important; background: none !important; border: 0 !important; border-bottom: 1px solid var(--archive-border) !important; border-radius: 0 !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .wiki-category-header::before, body.lore-design.archive-refresh .wiki-category-header::after { display: none !important; }
+body.lore-design.archive-refresh .wiki-category-title { font-size: clamp(40px, 5vw, 72px) !important; line-height: 1.02 !important; }
+body.lore-design.archive-refresh .wiki-category-facts { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+body.lore-design.archive-refresh .wiki-category-facts :is(dt, dd) { color: var(--archive-ink) !important; text-shadow: none !important; }
+body.lore-design.archive-refresh .wiki-category-facts { flex-wrap: wrap !important; gap: 24px !important; }
+body.lore-design.archive-refresh .wiki-category-facts > div { flex: 0 0 auto !important; min-width: 0 !important; }
+body.lore-design.archive-refresh .wiki-category-facts dd { font: 650 20px/1.3 var(--font-inter), sans-serif !important; white-space: nowrap; }
+body.lore-design.archive-refresh .wiki-category-facts > div:last-child:not(:first-child) dd { font-size: 13px !important; }
+body.lore-design.archive-refresh .wiki-category-hero-media { height: clamp(150px, 23vw, 300px) !important; border: 0 !important; border-radius: 14px !important; margin-top: 20px !important; }
+body.lore-design.archive-refresh .wiki-category-description { font: 400 16px/1.65 var(--font-inter), sans-serif !important; max-width: 78ch !important; color: var(--archive-muted) !important; }
+body.lore-design.archive-refresh .wiki-coverage-snapshot { background: var(--gta6-concrete) !important; border: 0 !important; border-radius: 9px !important; margin-top: 16px !important; padding: 0 !important; }
+body.lore-design.archive-refresh .archive-coverage-toggle { padding: 13px 16px; cursor: pointer; color: #533a63; font: 650 12px/1.6 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .archive-coverage-toggle span { font-weight: 400; color: var(--archive-muted); margin-left: 12px; }
+body.lore-design.archive-refresh .wiki-coverage-snapshot[open] > :not(summary) { margin: 16px !important; }
+body.lore-design.archive-refresh main:has(.wiki-entry-grid) { background: var(--archive-bg) !important; }
+body.lore-design.archive-refresh main:has(.wiki-entry-grid) :is(.entity-identity::before, .entity-identity::after) { display: none !important; }
+body.lore-design.archive-refresh .wiki-article-header { padding: 20px 0 !important; border: 0 !important; border-bottom: 1px solid var(--archive-border) !important; background: none !important; box-shadow: none !important; border-radius: 0 !important; }
+body.lore-design.archive-refresh .wiki-article-header::before, body.lore-design.archive-refresh .wiki-article-header::after { display: none !important; }
+body.lore-design.archive-refresh main .entity-identity .wiki-article-header { opacity: 1 !important; animation: none !important; transform: none !important; }
+body.lore-design.archive-refresh main .entity-identity .wiki-article-header h1.chromatic-title {
+  color: #26232b !important; -webkit-text-fill-color: #26232b !important;
+  text-shadow: none !important; background: none !important;
+}
+body.lore-design.archive-refresh .wiki-article-header h1 { display: block !important; position: static !important; width: auto !important; height: auto !important; opacity: 1 !important; clip-path: none !important; overflow: visible !important; font: 650 clamp(38px, 5vw, 64px)/1.05 var(--font-cond), sans-serif !important; margin: 8px 0 0 !important; color: var(--archive-ink) !important; }
+body.lore-design.archive-refresh .wiki-article-header :is(p, .wiki-short-description) { color: var(--archive-muted) !important; }
+body.lore-design.archive-refresh .wiki-article-header a { color: #86325f !important; text-decoration: underline; text-underline-offset: 3px; }
+body.lore-design.archive-refresh .wiki-article-body { background: transparent !important; border: 0 !important; padding: 0 !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .wiki-article-body :is(p, li) { font-size: 16px; line-height: 1.8; }
+
+body.lore-design.archive-refresh .article-evidence-lens {
+  display: grid;
+  grid-template-columns: minmax(180px, .55fr) minmax(0, 1.45fr);
+  gap: clamp(16px, 3vw, 28px);
+  margin-top: 18px;
+  padding: clamp(16px, 2.2vw, 22px);
+  border: 1px solid var(--archive-border);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgb(184 23 97 / .08), transparent 45%),
+    #fff;
+}
+body.lore-design.archive-refresh .article-evidence-lens > div > p {
+  color: var(--archive-accent);
+  font: 700 10px/1.3 var(--font-inter), sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .article-evidence-lens h2 {
+  margin-top: 8px;
+  color: var(--archive-ink);
+  font: 650 clamp(24px, 3vw, 38px)/.95 var(--font-cond), sans-serif;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .article-evidence-lens dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+body.lore-design.archive-refresh .article-evidence-lens dl > div {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgb(38 35 43 / .08);
+  border-radius: 10px;
+  background: rgb(250 248 250 / .8);
+}
+body.lore-design.archive-refresh .article-evidence-lens dt {
+  color: #766574;
+  font: 650 9px/1.35 var(--font-inter), sans-serif;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .article-evidence-lens dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 7px;
+  color: var(--archive-ink);
+  font: 520 12px/1.5 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .article-evidence-lens dd small {
+  flex-basis: 100%;
+  color: var(--archive-muted);
+  font: 500 11px/1.45 var(--font-inter), sans-serif;
+}
+
+/* O lead: a abertura do artigo, entre o título e o índice.
+   Escrito encostado a `.wiki-article-header` de propósito: a regra acima pinta
+   de cinzento todos os parágrafos do cabeçalho, e o lead não é uma legenda —
+   é a primeira frase do artigo e tem de se ler com a tinta do corpo. */
+body.lore-design.archive-refresh .wiki-article-header p.wiki-lead {
+  max-width: 72ch;
+  margin-top: 14px !important;
+  color: var(--archive-ink) !important;
+  font-size: clamp(17px, 16px + .2vw, 18.5px) !important;
+  line-height: 1.75 !important;
+}
+
+/* A marca de citação. Pequena de propósito: acompanha a afirmação sem competir
+   com ela, e mantém área suficiente para se acertar com o dedo. */
+body.lore-design.archive-refresh .wiki-cite { font-size: 11px; line-height: 0; vertical-align: super; }
+body.lore-design.archive-refresh .wiki-cite a {
+  padding: 2px 3px;
+  border-radius: 3px;
+  color: #86325f !important;
+  text-decoration: none !important;
+}
+body.lore-design.archive-refresh .wiki-cite a:hover,
+body.lore-design.archive-refresh .wiki-cite a:focus-visible { background: var(--gta6-concrete); }
+
+/* A referência acabada de visitar acende-se, para o leitor saber onde aterrou
+   quando a lista tem várias. */
+body.lore-design.archive-refresh .wiki-references li:target { background: var(--gta6-concrete); }
+body.lore-design.archive-refresh .wiki-entry-grid { gap: 24px !important; margin-top: 24px !important; }
+body.lore-design.archive-refresh :is(.wiki-infobox, .wiki-toc-panel) { position: static !important; inset: auto !important; border-radius: 12px !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .wiki-infobox { border: 1px solid var(--archive-border) !important; background: white !important; padding: 0 !important; }
+body.lore-design.archive-refresh .wiki-infobox-heading { position: static !important; background: var(--gta6-concrete) !important; color: var(--archive-ink) !important; padding: 14px 16px !important; border: 0 !important; }
+body.lore-design.archive-refresh .wiki-infobox-heading :is(strong, span) { color: inherit !important; }
+body.lore-design.archive-refresh .wiki-infobox-heading small { color: #665369 !important; }
+body.lore-design.archive-refresh .wiki-infobox-heading::before, body.lore-design.archive-refresh .wiki-infobox-heading::after { display: none !important; }
+body.lore-design.archive-refresh .wiki-infobox-body { padding: 14px !important; }
+body.lore-design.archive-refresh .wiki-toc-panel { padding: 0 !important; border: 1px solid var(--archive-border) !important; background: color-mix(in srgb, var(--gta6-concrete) 70%, white) !important; margin: 0 !important; }
+body.lore-design.archive-refresh .wiki-toc-summary { margin: 0 !important; padding: 13px 16px !important; position: static !important; background: transparent !important; }
+body.lore-design.archive-refresh .wiki-toc-list { padding: 0 12px 10px !important; margin: 0 !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px 10px !important; }
+body.lore-design.archive-refresh .wiki-toc-list a { min-height: 36px; border: 0 !important; font: 500 12px/1.5 var(--font-inter), sans-serif !important; }
+body.lore-design.archive-refresh .wiki-toc-list li { width: auto !important; min-width: 0 !important; }
+body.lore-design.archive-refresh .wiki-toc-list a { display: flex !important; align-items: center; gap: 9px; width: 100% !important; padding: 8px !important; }
+body.lore-design.archive-refresh .wiki-toc-list a > span:last-child { flex: 1; min-width: 0; width: auto !important; max-width: none !important; }
+body.lore-design.archive-refresh .wiki-toc-list a > svg { flex: 0 0 auto; }
+body.lore-design.archive-refresh .wiki-user-actions { background: var(--gta6-concrete) !important; border: 0 !important; border-radius: 10px !important; box-shadow: none !important; padding: 12px !important; }
+body.lore-design.archive-refresh .wiki-user-actions { display: flex !important; align-items: center !important; flex-wrap: wrap !important; gap: 8px 16px !important; }
+body.lore-design.archive-refresh .wiki-user-actions-label { width: auto !important; min-width: 0 !important; flex: 0 0 auto !important; }
+body.lore-design.archive-refresh .wiki-user-actions-buttons { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; }
+body.lore-design.archive-refresh .wiki-user-action { min-height: 36px !important; width: auto !important; padding: 6px 10px !important; font: 550 12px/1.4 var(--font-inter), sans-serif !important; text-transform: none !important; }
+body.lore-design.archive-refresh .archive-page-toolbox { border-bottom: 1px solid var(--archive-border); }
+body.lore-design.archive-refresh .archive-page-toolbox > summary { cursor: pointer; padding: 12px 4px; font: 600 12px/1.5 var(--font-inter), sans-serif; color: #63506d; }
+body.lore-design.archive-refresh .archive-page-toolbox > summary span { font-weight: 400; margin-left: 8px; color: var(--archive-muted); }
+body.lore-design.archive-refresh .archive-page-toolbox .wiki-page-tools { display: flex !important; flex-wrap: wrap !important; overflow: visible !important; width: 100% !important; margin: 0 !important; padding: 8px 0 !important; border: 0 !important; }
+body.lore-design.archive-refresh .wiki-spec-grid > div { border: 0 !important; background: none !important; box-shadow: none !important; padding: 8px 0 !important; }
+
+/* Legal text must always exist in the rendered/printed document. Generic
+ * content-visibility optimisation made long policies look empty in full-page
+ * capture, find-in-page and some print pipelines. */
+body.lore-design.archive-refresh .legal-document .wiki-content-section {
+  content-visibility: visible !important;
+  contain-intrinsic-size: none !important;
+}
+@media (min-width: 1024px) {
+  body.lore-design.archive-refresh .wiki-entry-grid { display: grid !important; grid-template-columns: minmax(0, 1fr) 320px !important; grid-template-rows: auto 1fr !important; }
+  body.lore-design.archive-refresh .wiki-entry-grid > .wiki-entry-tertiary { grid-column: 1 !important; grid-row: 1 !important; }
+  body.lore-design.archive-refresh .wiki-entry-grid > .wiki-entry-primary { grid-column: 1 !important; grid-row: 2 !important; }
+  body.lore-design.archive-refresh .wiki-entry-grid > .wiki-entry-secondary { grid-column: 2 !important; grid-row: 1 / span 2 !important; }
+}
+
+/* Footer: all the links, without three competing layers of decoration. */
+body.lore-design.archive-refresh .footer-v3 { background: var(--gta6-concrete) !important; border-top: 1px solid var(--archive-border) !important; box-shadow: none !important; margin-top: 32px !important; }
+body.lore-design.archive-refresh .footer-v3::before, body.lore-design.archive-refresh .footer-v3::after { display: none !important; }
+body.lore-design.archive-refresh .footer-v3-shell { max-width: 1400px; padding: 30px clamp(18px, 4vw, 48px) 22px !important; }
+body.lore-design.archive-refresh .footer-v3-primary { gap: 32px !important; }
+body.lore-design.archive-refresh .footer-v3-brand p { color: var(--archive-muted) !important; font-size: 12px !important; max-width: 34ch; }
+body.lore-design.archive-refresh .footer-v3-mark { border-radius: 9px !important; box-shadow: none !important; width: 40px !important; height: 40px !important; }
+body.lore-design.archive-refresh .footer-v3-lockup strong { font-size: 28px !important; }
+body.lore-design.archive-refresh .footer-v3-context { display: none !important; }
+body.lore-design.archive-refresh .footer-v3-directory { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; overflow: visible !important; gap: 24px !important; margin: 0 !important; padding: 0 !important; }
+body.lore-design.archive-refresh .footer-v3-group { width: auto !important; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .footer-v3-group header { border: 0 !important; padding: 0 0 12px !important; }
+body.lore-design.archive-refresh .footer-v3-group header :is(.footer-v3-group-icon, small, b) { display: none !important; }
+body.lore-design.archive-refresh .footer-v3-group header strong { font: 650 12px/1.5 var(--font-inter), sans-serif !important; color: #48384d !important; text-transform: none !important; }
+body.lore-design.archive-refresh .footer-v3-group ul { gap: 2px 14px !important; }
+body.lore-design.archive-refresh .footer-v3-group li a { min-height: 32px !important; padding: 5px 0 !important; font: 400 12px/1.5 var(--font-inter), sans-serif !important; color: var(--archive-muted) !important; text-transform: none !important; }
+body.lore-design.archive-refresh .footer-v3-group li a svg { display: none; }
+body.lore-design.archive-refresh .footer-v3-assurance { background: transparent !important; border: 0 !important; border-top: 1px solid var(--archive-border) !important; padding: 14px 0 !important; margin-top: 20px !important; border-radius: 0 !important; }
+body.lore-design.archive-refresh .footer-v3-assurance-copy > span { display: none; }
+body.lore-design.archive-refresh .footer-v3-bottom { border-color: var(--archive-border) !important; padding-top: 14px !important; }
+body.lore-design.archive-refresh .footer-v3-release { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+
+@media (hover: hover) and (pointer: fine) {
+  body.lore-design.archive-refresh :is(.hq-branch-card, .wiki-entry-tile, .world-subject-card, .news-grid-card):hover {
+    border-radius: 14px !important; transform: translateY(-3px); box-shadow: 0 10px 24px rgb(40 22 47 / .09) !important;
+  }
+  body.lore-design.archive-refresh :is(.wiki-global-topnav > a, .wiki-explore-trigger, .footer-v3-group a):hover { color: var(--archive-accent) !important; }
+}
+@media (max-width: 1100px) {
+  body.lore-design.archive-refresh .wiki-global-search { max-width: 290px; }
+  body.lore-design.archive-refresh .wiki-global-brand small { display: none !important; }
+  body.lore-design.archive-refresh .hq-hero { min-height: 550px !important; }
+  body.lore-design.archive-refresh .hq-hero-meta { flex-wrap: wrap; }
+  body.lore-design.archive-refresh .hq-branch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  body.lore-design.archive-refresh .hq-atlas { margin-inline: 24px !important; }
+}
+@media (max-width: 1023px) {
+  body.lore-design.archive-refresh .wiki-entry-grid { display: flex !important; flex-direction: column !important; }
+  body.lore-design.archive-refresh .wiki-entry-grid > .wiki-entry-secondary { order: 1 !important; width: 100% !important; }
+  body.lore-design.archive-refresh .wiki-entry-grid > .wiki-entry-tertiary { order: 2 !important; width: 100% !important; }
+  body.lore-design.archive-refresh .wiki-entry-grid > .wiki-entry-primary { order: 3 !important; width: 100% !important; }
+}
+/* ==========================================================================
+   THE TWO MENUS — the finder and the account panel.
+
+   Both were authored for a dark modal and only half-converted when the archive
+   moved to paper: what survived underneath was the violet, the gradient tiles
+   and the condensed small caps this refresh had already dropped everywhere
+   else. They now use the same vocabulary as the front page — Inter in sentence
+   case, condensed only for a title, one accent, #dfdbe1 hairlines.
+   ========================================================================== */
+
+/* The ring the reader tabs through was the last violet in the product. */
+body.lore-design.archive-refresh :is(a, button, input, select, textarea, summary):focus-visible {
+  outline-color: var(--archive-accent) !important;
+}
+
+/* ---- The finder ------------------------------------------------------------ */
+body.lore-design.archive-refresh .search-command-head {
+  border-bottom: 1px solid var(--archive-border) !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .search-command-head > span {
+  color: var(--archive-accent) !important;
+  font: 650 10px/1.5 var(--font-inter), sans-serif !important;
+  letter-spacing: .15em !important;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .search-command-head > span svg { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .search-command-head > small {
+  color: var(--archive-muted) !important;
+  font: 400 11px/1.5 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-command-head > button {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 10px !important;
+  background: white !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .search-command-head > button:hover {
+  border-color: var(--archive-accent) !important;
+  background: white !important;
+  color: var(--archive-accent) !important;
+}
+
+/* The gradient tile went. On the front page the magnifier is an icon, and the
+   field itself is the object. */
+body.lore-design.archive-refresh .search-command-input {
+  border-bottom: 1px solid var(--archive-border) !important;
+  background: white !important;
+  box-shadow: none !important;
+}
+body.lore-design.archive-refresh .search-command-icon {
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--archive-accent) !important;
+}
+body.lore-design.archive-refresh .search-command-input input::placeholder { color: #8b8390 !important; }
+body.lore-design.archive-refresh .search-command-input > button { border-radius: 8px !important; color: var(--archive-muted) !important; }
+body.lore-design.archive-refresh .search-command-input > button:hover { background: color-mix(in srgb, var(--gta6-concrete) 70%, white) !important; color: var(--archive-ink) !important; }
+body.lore-design.archive-refresh .search-command-input > kbd {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 6px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+  color: var(--archive-muted) !important;
+  font: 500 10px/1 var(--font-mono), monospace !important;
+}
+
+/* Scope: white with a hairline, ink when chosen. No gradient, no small caps. */
+body.lore-design.archive-refresh .search-type-tabs {
+  border-bottom: 1px solid var(--archive-border) !important;
+  background: white !important;
+}
+body.lore-design.archive-refresh .search-type-tabs button {
+  padding: 0 12px !important;
+  border: 1px solid var(--archive-border) !important;
+  background: white !important;
+  color: var(--archive-muted) !important;
+  font: 600 13px/1.2 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-type-tabs button:hover {
+  border-color: #c9b9c7 !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 35%, white) !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .search-type-tabs button.is-active {
+  border-color: var(--archive-ink) !important;
+  background: var(--archive-ink) !important;
+  color: white !important;
+}
+body.lore-design.archive-refresh .search-type-tabs button b {
+  color: #8b8390 !important;
+  font: 500 11px/1 var(--font-mono), monospace !important;
+}
+body.lore-design.archive-refresh .search-type-tabs button.is-active b { color: rgb(255 255 255 / .58) !important; }
+
+/* Section openers, quick destinations, subject pills. */
+body.lore-design.archive-refresh .search-section-title span {
+  color: var(--archive-ink) !important;
+  font: 650 13px/1.4 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-section-title small {
+  color: var(--archive-muted) !important;
+  font: 400 11px/1.5 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+body.lore-design.archive-refresh .search-quick-grid > button {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 12px !important;
+  background: white !important;
+  box-shadow: none !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .search-quick-grid > button:hover {
+  border-color: var(--archive-accent) !important;
+  background: #fdfbfd !important;
+  transform: none !important;
+}
+body.lore-design.archive-refresh .search-quick-grid button > span {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 9px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+  color: var(--archive-accent) !important;
+}
+body.lore-design.archive-refresh .search-quick-grid button strong {
+  color: var(--archive-ink) !important;
+  font: 650 14px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-quick-grid button small {
+  color: var(--archive-muted) !important;
+  font: 400 12px/1.5 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .search-quick-grid button > svg { color: #a89ea9 !important; }
+
+body.lore-design.archive-refresh .search-popular button {
+  min-height: 34px !important;
+  padding: 0 12px !important;
+  border: 1px solid var(--archive-border) !important;
+  background: white !important;
+  color: var(--archive-muted) !important;
+  font: 500 12px/1.2 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-popular button:hover {
+  border-color: var(--archive-accent) !important;
+  background: white !important;
+  color: var(--archive-accent) !important;
+}
+
+/* A result is paper; the one under the cursor takes an accent spine. */
+body.lore-design.archive-refresh .search-result-list > button {
+  border-bottom: 1px solid var(--archive-border) !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .search-result-list > button:hover,
+body.lore-design.archive-refresh .search-result-list > button.is-selected {
+  background: color-mix(in srgb, var(--gta6-concrete) 35%, white) !important;
+  box-shadow: inset 3px 0 var(--archive-accent) !important;
+}
+body.lore-design.archive-refresh .search-result-icon {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 9px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+  color: var(--archive-accent) !important;
+}
+body.lore-design.archive-refresh .search-result-copy strong {
+  color: var(--archive-ink) !important;
+  font: 650 14px/1.25 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-result-copy small {
+  color: var(--archive-muted) !important;
+  font: 400 12px/1.45 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .search-result-enter { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .search-result-arrow { color: #b3aab4 !important; }
+
+body.lore-design.archive-refresh .search-all-results {
+  border-top: 1px solid var(--archive-border) !important;
+  background: white !important;
+  color: var(--archive-ink) !important;
+  font: 650 12px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  backdrop-filter: none !important;
+}
+body.lore-design.archive-refresh .search-all-results:hover { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .search-all-results span {
+  color: var(--archive-muted) !important;
+  font: 400 11px/1 var(--font-inter), sans-serif !important;
+}
+
+body.lore-design.archive-refresh .search-empty-state > svg { color: #b3aab4 !important; }
+body.lore-design.archive-refresh .search-empty-state strong {
+  color: var(--archive-ink) !important;
+  font: 650 22px/1.15 var(--font-cond), sans-serif !important;
+  letter-spacing: -.01em !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-empty-state p {
+  color: var(--archive-muted) !important;
+  font: 400 13px/1.6 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .search-empty-state button {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 10px !important;
+  background: white !important;
+  color: var(--archive-accent) !important;
+  font: 650 12px/1.2 var(--font-inter), sans-serif !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-empty-suggestions button { color: var(--archive-muted) !important; }
+
+/* The aside is a recessed column of the same paper, not a darker pane. */
+body.lore-design.archive-refresh .search-command-aside {
+  border-left: 1px solid var(--archive-border) !important;
+  background: var(--archive-bg) !important;
+}
+body.lore-design.archive-refresh .search-command-aside section { border-bottom: 1px solid var(--archive-border) !important; }
+body.lore-design.archive-refresh .search-aside-title { color: var(--archive-ink) !important; }
+body.lore-design.archive-refresh .search-aside-title svg { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .search-aside-title span {
+  font: 650 11px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: .1em !important;
+}
+body.lore-design.archive-refresh .search-command-aside section > p {
+  color: var(--archive-muted) !important;
+  font: 400 11px/1.55 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .search-command-aside li button {
+  color: var(--archive-muted) !important;
+  font: 400 12px/1.3 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .search-command-aside li button:hover {
+  background: white !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .search-command-aside dl > div {
+  color: var(--archive-muted) !important;
+  font: 400 11px/1.3 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .search-command-aside kbd {
+  border: 1px solid var(--archive-border) !important;
+  background: white !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .search-live-dot {
+  background: #12a08b !important;
+  box-shadow: 0 0 0 3px rgb(18 160 139 / .15) !important;
+}
+body.lore-design.archive-refresh .search-live-dot.is-offline {
+  background: #d08b1c !important;
+  box-shadow: 0 0 0 3px rgb(208 139 28 / .16) !important;
+}
+body.lore-design.archive-refresh .search-index-health strong {
+  color: var(--archive-ink) !important;
+  font: 650 11px/1.3 var(--font-inter), sans-serif !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .search-index-health small {
+  color: var(--archive-muted) !important;
+  font: 400 10px/1.4 var(--font-inter), sans-serif !important;
+}
+
+/* ---- The account panel -------------------------------------------------------
+   The three-colour bar across its top was the only cyan→violet→pink object left
+   anywhere; the mark now matches the wordmark tile in the masthead. */
+body.lore-design.archive-refresh .wiki-account-panel::before { display: none !important; }
+body.lore-design.archive-refresh .wiki-account-card-avatar {
+  border-radius: 10px !important;
+  background: linear-gradient(140deg, var(--archive-system), var(--archive-accent)) !important;
+  color: white !important;
+  font: 650 20px/1 var(--font-cond), sans-serif !important;
+  font-style: normal !important;
+  box-shadow: none !important;
+}
+body.lore-design.archive-refresh .wiki-account-card strong {
+  color: var(--archive-ink) !important;
+  font: 650 16px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-account-card small {
+  color: var(--archive-muted) !important;
+  font: 400 11px/1.4 var(--font-inter), sans-serif !important;
+  letter-spacing: .04em !important;
+}
+body.lore-design.archive-refresh .wiki-account-card > svg { color: var(--archive-verified-ink) !important; }
+
+body.lore-design.archive-refresh .wiki-account-stats {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 10px !important;
+  background: var(--archive-border) !important;
+}
+body.lore-design.archive-refresh .wiki-account-stats span { background: white !important; }
+body.lore-design.archive-refresh .wiki-account-stats b {
+  color: var(--archive-ink) !important;
+  font: 650 19px/1 var(--font-cond), sans-serif !important;
+}
+body.lore-design.archive-refresh .wiki-account-stats small {
+  color: var(--archive-muted) !important;
+  font: 400 10px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: .02em !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-account-state {
+  color: var(--archive-muted) !important;
+  font: 400 12px/1.5 var(--font-inter), sans-serif !important;
+}
+
+/* A porta da secretaria. Fica acima dos atalhos pessoais e separada deles
+   porque é trabalho do arquivo, não do perfil — e leva o accento, o único
+   sítio do painel onde ele pinta uma linha inteira. */
+body.lore-design.archive-refresh .wiki-global-topnav .wiki-account-panel a.wiki-account-staff {
+  display: flex !important;
+  align-items: center !important;
+  gap: .55rem !important;
+  margin-top: .55rem !important;
+  padding: 9px 11px !important;
+  border: 1px solid color-mix(in srgb, var(--archive-accent) 28%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--archive-accent) 5%, white) !important;
+  color: var(--archive-accent) !important;
+  font: 550 12.5px/1.2 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-account-staff:hover { background: color-mix(in srgb, var(--archive-accent) 10%, white) !important; }
+body.lore-design.archive-refresh .wiki-account-staff svg { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .wiki-account-staff span { flex: 1 !important; min-width: 0 !important; }
+body.lore-design.archive-refresh .wiki-account-staff small {
+  flex: none !important;
+  color: var(--archive-muted) !important;
+  font: 500 10px/1 var(--font-mono), monospace !important;
+  text-transform: uppercase !important;
+  letter-spacing: .08em !important;
+}
+
+body.lore-design.archive-refresh .wiki-account-links { border-top: 1px solid var(--archive-border) !important; }
+body.lore-design.archive-refresh .wiki-account-links a,
+body.lore-design.archive-refresh .wiki-global-topnav .wiki-account-panel a {
+  border-color: transparent !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+  color: var(--archive-muted) !important;
+  font: 500 13px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-account-links a:hover,
+body.lore-design.archive-refresh .wiki-global-topnav .wiki-account-panel a:hover {
+  border-color: transparent !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+  color: var(--archive-ink) !important;
+}
+/* "Account dashboard" does not fit half of a 350px panel, and it is the
+   destination the rest of the menu hangs off: it takes the full row. */
+body.lore-design.archive-refresh .wiki-account-links a:first-child { grid-column: 1 / -1 !important; }
+body.lore-design.archive-refresh .wiki-account-links a svg { color: #a89ea9 !important; }
+body.lore-design.archive-refresh .wiki-account-links a:hover svg { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .wiki-account-links a b { background: var(--archive-accent) !important; }
+
+body.lore-design.archive-refresh .wiki-account-logout {
+  border-top: 1px solid var(--archive-border) !important;
+  color: var(--archive-accent) !important;
+  font: 650 13px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-account-logout:hover { background: color-mix(in srgb, var(--archive-accent) 6%, white) !important; }
+
+body.lore-design.archive-refresh .wiki-account-guest strong {
+  color: var(--archive-ink) !important;
+  font: 650 19px/1.15 var(--font-cond), sans-serif !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-account-guest p {
+  color: var(--archive-muted) !important;
+  font: 400 12px/1.6 var(--font-inter), sans-serif !important;
+}
+body.lore-design.archive-refresh .wiki-account-guest-actions { border-top: 1px solid var(--archive-border) !important; }
+body.lore-design.archive-refresh .wiki-global-topnav .wiki-account-guest-actions a {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 10px !important;
+  background: white !important;
+  color: var(--archive-ink) !important;
+  font: 650 13px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-global-topnav .wiki-account-guest-actions a:hover { border-color: #c9b9c7 !important; }
+body.lore-design.archive-refresh .wiki-global-topnav .wiki-account-guest-actions a:last-child {
+  border-color: var(--archive-accent) !important;
+  background: var(--archive-accent) !important;
+  color: white !important;
+}
+
+/* ---- The explore drop-down shares the same materials ------------------------- */
+body.lore-design.archive-refresh .wiki-explore-panel > header strong {
+  color: var(--archive-ink) !important;
+  font: 650 21px/1.1 var(--font-cond), sans-serif !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-explore-panel section > p {
+  color: var(--archive-accent) !important;
+  font: 650 10px/1.5 var(--font-inter), sans-serif !important;
+  letter-spacing: .15em !important;
+  text-transform: uppercase !important;
+}
+body.lore-design.archive-refresh .wiki-explore-panel section a {
+  border-radius: 9px !important;
+  color: var(--archive-muted) !important;
+  font: 500 13px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-explore-panel section a:hover {
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .wiki-explore-panel > footer {
+  border-top: 1px solid var(--archive-border) !important;
+  background: var(--archive-bg) !important;
+}
+body.lore-design.archive-refresh .wiki-explore-panel > footer button {
+  color: var(--archive-accent) !important;
+  font: 650 12px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* ==========================================================================
+   THE BOTTOM BAR AND ITS SHEET
+
+   The last surface still speaking the old language: four different accent
+   colours — one per destination — a violet-to-magenta gradient on the active
+   pill, and condensed small caps for every label. On a front page with a single
+   accent, four tints mean the same as none, so they collapse into one. Nothing
+   in the component changes; only what it is painted with.
+   ========================================================================== */
+
+/* ---- The bar ---------------------------------------------------------------- */
+body.lore-design.archive-refresh .gta-lore-tabbar {
+  border-radius: 22px !important;
+  background: white !important;
+  box-shadow:
+    0 0 0 1px var(--archive-border),
+    0 2px 6px -1px rgb(30 20 40 / .06),
+    0 18px 44px -16px rgb(30 20 40 / .22) !important;
+}
+/* The three-colour filament along the top edge. */
+body.lore-design.archive-refresh .gta-lore-tabbar > .bg-gradient-to-r { display: none !important; }
+
+/* One accent for whichever destination you are on. */
+body.lore-design.archive-refresh .gta-lore-tabbar > .bg-paper,
+body.lore-design.archive-refresh .gta-lore-tabbar > :is(.bg-pink, .bg-violet, .bg-mint, .bg-warn) {
+  border-radius: 14px !important;
+  background: var(--archive-accent) !important;
+  box-shadow: none !important;
+}
+/* The hover veil stops carrying a colour of its own. */
+body.lore-design.archive-refresh .gta-lore-tabbar > span[class*="ring-"] {
+  border-radius: 14px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 70%, white) !important;
+  --tw-ring-color: transparent !important;
+}
+body.lore-design.archive-refresh .gta-lore-tabbar :is(.text-pink, .text-violet, .text-mint, .text-warn, .text-dim) {
+  color: #8b8390 !important;
+}
+body.lore-design.archive-refresh .gta-lore-tabbar :is(a, button) { border-radius: 14px !important; }
+body.lore-design.archive-refresh .gta-lore-tabbar :is(a, button) > span:last-child {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+/* On the accent pill everything reads white, icon included. */
+body.lore-design.archive-refresh .gta-lore-tabbar :is(a[aria-current="page"], button[aria-expanded="true"]) :is(svg, span) {
+  color: white !important;
+}
+body.lore-design.archive-refresh .gta-lore-tabbar > a[aria-current='page'],
+body.lore-design.archive-refresh .gta-lore-tabbar > a[aria-current='page'] :is(.text-paper, .text-dim) { color: white !important; }
+
+/* ---- The sheet --------------------------------------------------------------- */
+body.lore-design.archive-refresh button[aria-label="Close menu"] {
+  background: rgb(30 21 38 / .3) !important;
+  backdrop-filter: blur(5px);
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 18px !important;
+  background: white !important;
+  box-shadow: 0 20px 70px rgb(35 20 45 / .2) !important;
+}
+
+/* The wordmark stops being a gradient, like every other title in the refresh. */
+body.lore-design.archive-refresh .gta-lore-menu-sheet .chromatic-title {
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: var(--archive-ink) !important;
+  font: 650 16px/1.2 var(--font-cond), sans-serif !important;
+  letter-spacing: .06em !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet .text-paper { color: var(--archive-ink) !important; }
+body.lore-design.archive-refresh .gta-lore-menu-sheet .text-dim { color: var(--archive-muted) !important; }
+body.lore-design.archive-refresh .gta-lore-menu-sheet .text-mint { color: var(--archive-ink) !important; }
+body.lore-design.archive-refresh .gta-lore-menu-sheet .bg-black\/15 { background: rgb(255 255 255 / .22) !important; }
+
+/* The counters read as the front page's meta row: a condensed number over an
+   Inter label, not two lines of tracked-out small caps. */
+body.lore-design.archive-refresh .gta-lore-menu-sheet .border-b { border-color: var(--archive-border) !important; }
+body.lore-design.archive-refresh .gta-lore-menu-sheet .tabular-nums {
+  color: var(--archive-ink) !important;
+  font: 650 15px/1 var(--font-cond), sans-serif !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet .tabular-nums + span {
+  margin-top: 3px !important;
+  color: var(--archive-muted) !important;
+  font: 400 9px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: .02em !important;
+  text-transform: none !important;
+}
+
+/* Group headings: the front page's accent kicker, in Inter. */
+body.lore-design.archive-refresh .gta-lore-menu-sheet p {
+  color: var(--archive-accent) !important;
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 650 !important;
+  letter-spacing: .15em !important;
+  text-transform: uppercase !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet p > span:first-child {
+  background: var(--archive-accent) !important;
+}
+
+/* Destinations: white rows, ink text, accent when you are on one. */
+body.lore-design.archive-refresh .gta-lore-menu-sheet a {
+  border-radius: 10px !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet a > span:last-child {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet a > span:first-child {
+  border-radius: 9px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet a > span:first-child svg { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .gta-lore-menu-sheet a:hover { background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important; }
+body.lore-design.archive-refresh .gta-lore-menu-sheet a:is(.bg-pink, .bg-violet, .bg-mint, .bg-warn, .bg-paper) {
+  background: var(--archive-accent) !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet a:is(.bg-pink, .bg-violet, .bg-mint, .bg-warn, .bg-paper),
+body.lore-design.archive-refresh .gta-lore-menu-sheet a:is(.bg-pink, .bg-violet, .bg-mint, .bg-warn, .bg-paper) :is(span, svg) {
+  color: white !important;
+}
+body.lore-design.archive-refresh .gta-lore-menu-sheet a:is(.bg-pink, .bg-violet, .bg-mint, .bg-warn, .bg-paper) > span:first-child {
+  background: rgb(255 255 255 / .2) !important;
+}
+
+/* ==========================================================================
+   THE MARK
+
+   Both marks were the letters "GL" set in a rounded square filled with a
+   violet-to-magenta gradient — a stand-in, not a logo. They are now the real
+   artwork, traced to SVG so the encyclopedia line in the lockup survives at
+   header height and the whole thing costs 5.5 kB instead of 24 kB of PNG.
+   ========================================================================== */
+
+/* ---- Masthead ---------------------------------------------------------------
+   Above the tablet breakpoint the full lockup runs, and the live text steps
+   back to being the accessible name. Below it the strapline inside the artwork
+   would be under 5px tall, so the mark stands alone next to real text. */
+body.lore-design.archive-refresh .wiki-global-brand {
+  gap: 10px !important;
+  min-width: 0;
+}
+body.lore-design.archive-refresh .wiki-global-brand > span:first-of-type {
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+body.lore-design.archive-refresh .brand-lockup {
+  display: block;
+  width: auto;
+  height: clamp(38px, 4vw, 52px);
+}
+body.lore-design.archive-refresh .brand-lockup--compact { display: none; }
+
+/* The name lives in the DOM for assistive technology and for search, and is
+   never drawn: the logo already says it, in its own letterforms. */
+body.lore-design.archive-refresh .wiki-global-brand > span:last-child,
+body.lore-design.archive-refresh .footer-v3-lockup strong {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ---- Footer lockup ------------------------------------------------------------ */
+body.lore-design.archive-refresh .footer-v3-lockup-art {
+  display: block;
+  width: auto;
+  height: 52px;
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   THE ROUTES THE REFRESH DID NOT REACH
+
+   Measured rather than guessed: every route was walked and every painted
+   element compared against the front page's vocabulary. Three findings account
+   for most of it, and all three are shared components, so they are fixed once
+   here rather than thirty times downstream.
+
+     · the breadcrumb        — violet, condensed small caps, on 32 of 34 routes
+     · the filter panel      — a gradient header in condensed caps, on 11
+     · --route-accent        — a different accent per branch: violet on
+                               vehicles, amber on weapons, blue on places.
+                               Four accents mean the same as none.
+   ========================================================================== */
+
+/* ---- One accent, on every branch --------------------------------------------
+   The per-route tint was the same idea as the four-colour bottom bar, and it
+   loses the same way: nothing is emphasised when everything is. */
+body.lore-design.archive-refresh .site-frame,
+body.lore-design.archive-refresh .site-frame:has(.mechanics-index),
+body.lore-design.archive-refresh .site-frame:has(.places-directory),
+body.lore-design.archive-refresh .site-frame:has(.news-card-grid),
+body.lore-design.archive-refresh .site-frame:has([aria-label="Vehicle grid"]),
+body.lore-design.archive-refresh .site-frame:has([aria-label="Weapon grid"]),
+body.lore-design.archive-refresh .site-frame:has([aria-label="Character grid"]) {
+  --route-accent: var(--archive-accent);
+  --route-accent-soft: rgb(184 23 97 / .08);
+}
+
+/* ---- Breadcrumb --------------------------------------------------------------
+   The most-seen component on the site was also the least converted. */
+body.lore-design.archive-refresh .wiki-breadcrumb ol {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .wiki-breadcrumb :is(a, span) {
+  font-family: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-breadcrumb a,
+body.lore-design.archive-refresh .wiki-breadcrumb li:first-child a {
+  color: var(--archive-muted) !important;
+  font-weight: 500 !important;
+  text-decoration: none;
+}
+body.lore-design.archive-refresh .wiki-breadcrumb a:hover { color: var(--archive-accent) !important; }
+body.lore-design.archive-refresh .wiki-breadcrumb [aria-current='page'] { color: var(--archive-ink) !important; font-weight: 600 !important; }
+body.lore-design.archive-refresh .wiki-breadcrumb svg { color: #b3aab4 !important; opacity: 1 !important; }
+
+/* ---- Filter panel ------------------------------------------------------------- */
+body.lore-design.archive-refresh .wiki-filter-panel {
+  border-color: var(--archive-border) !important;
+  background: white !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+body.lore-design.archive-refresh .wiki-filter-panel-toggle {
+  background: white !important;
+  background-image: none !important;
+  border-radius: 14px 14px 0 0 !important;
+}
+body.lore-design.archive-refresh :is(.wiki-filter-panel-copy, .wiki-filter-panel-toggle) :is(strong, span, small) {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .wiki-filter-panel-copy strong {
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .wiki-filter-panel-copy small,
+body.lore-design.archive-refresh .wiki-filter-panel-copy span { font-size: 12px !important; color: var(--archive-muted) !important; }
+body.lore-design.archive-refresh .wiki-filter-panel-icon {
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+  color: var(--archive-accent) !important;
+}
+
+/* ---- Sign in ------------------------------------------------------------------
+   The one route with a violet primary button — the single loudest control on the
+   site, in the one colour the refresh does not own. */
+/* The page-block rule in design-system.css reaches this element through
+   `.site-frame > main > :is(…, main[class*="max-w-"])`, which carries one more
+   element than a plain class selector; the card was landing flush against the
+   masthead. Matched here rather than fought with a wider hammer. */
+body.lore-design.archive-refresh .site-frame > main > .auth-shell {
+  padding-block: clamp(24px, 4vw, 56px) !important;
+}
+body.lore-design.archive-refresh :is(.auth-card, .auth-benefits) {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 16px !important;
+  background: white !important;
+  box-shadow: none !important;
+}
+/* Every label in the card was condensed small caps — the mode tabs, the field
+   names, "Remember for 30 days", "Forgot password?". One rule moves the lot to
+   the interface voice; the two headings and the kickers are restated after it. */
+body.lore-design.archive-refresh :is(.auth-card, .auth-intro) :is(p, span, label, button, small, strong, li, a, dt, dd) {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .auth-card-heading > div > p:first-child,
+body.lore-design.archive-refresh .auth-intro > p:first-child {
+  color: var(--archive-accent) !important;
+  font-size: 10px !important;
+  font-weight: 650 !important;
+  line-height: 1.5 !important;
+  letter-spacing: .15em !important;
+  text-transform: uppercase !important;
+}
+body.lore-design.archive-refresh .auth-card-heading h1,
+body.lore-design.archive-refresh .auth-intro h2 {
+  color: var(--archive-ink) !important;
+  font-family: var(--font-cond), sans-serif !important;
+  font-weight: 650 !important;
+  letter-spacing: -.02em !important;
+  text-transform: none !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+body.lore-design.archive-refresh .auth-card-heading h1 { font-size: clamp(30px, 3.2vw, 42px) !important; line-height: 1.04 !important; }
+body.lore-design.archive-refresh .auth-card-heading > div > p:last-child,
+body.lore-design.archive-refresh .auth-intro > p:last-of-type {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .auth-card input[type='checkbox'] { accent-color: var(--archive-accent); }
+body.lore-design.archive-refresh :is(.auth-lockmark, .auth-benefit-icon) {
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+  color: var(--archive-accent) !important;
+}
+body.lore-design.archive-refresh .auth-mode-tabs {
+  border-radius: 12px !important;
+  border-color: var(--archive-border) !important;
+  background: color-mix(in srgb, var(--gta6-concrete) 55%, white) !important;
+}
+body.lore-design.archive-refresh .auth-mode-tab {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--archive-muted) !important;
+  border-radius: 10px !important;
+}
+body.lore-design.archive-refresh .auth-mode-tab:is(.is-active, [aria-selected='true']) {
+  background: white !important;
+  border-color: var(--archive-border) !important;
+  color: var(--archive-ink) !important;
+  box-shadow: 0 1px 2px rgb(30 20 40 / .06) !important;
+}
+body.lore-design.archive-refresh .auth-field > span,
+body.lore-design.archive-refresh .auth-form label > span:first-child {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .auth-input-shell {
+  border-radius: 10px !important;
+  border-color: var(--archive-border) !important;
+}
+body.lore-design.archive-refresh .auth-input-shell svg { color: #a89ea9 !important; }
+body.lore-design.archive-refresh .auth-submit {
+  border-radius: 10px !important;
+  border-color: var(--archive-accent) !important;
+  background: var(--archive-accent) !important;
+  color: white !important;
+  font: 650 14px/1.3 var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .auth-submit:hover:not(:disabled) {
+  border-color: #A9144D !important;
+  background: #A9144D !important;
+}
+body.lore-design.archive-refresh :is(.auth-secondary, .auth-card-footer a, .auth-legal-consent a) {
+  color: var(--archive-accent) !important;
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh :is(.auth-card-footer, .auth-legal-consent) {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 12px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .auth-benefits :is(strong, h2) {
+  font-family: var(--font-cond), sans-serif !important;
+  text-transform: none !important;
+  letter-spacing: -.01em !important;
+  color: var(--archive-ink) !important;
+}
+body.lore-design.archive-refresh .auth-benefits li strong {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+}
+body.lore-design.archive-refresh .auth-benefits li :is(p, small, span) {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: 13px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--archive-muted) !important;
+}
+body.lore-design.archive-refresh .auth-benefits li { border-color: var(--archive-border) !important; border-radius: 12px !important; }
+body.lore-design.archive-refresh .auth-benefits li svg:last-child { color: var(--archive-accent) !important; }
+
+/* ==========================================================================
+   THE REST OF THE ROUTES
+
+   After the breadcrumb, the filter panel and --route-accent were fixed, what
+   remained across every listing and record page reduced to two habits from the
+   pre-refresh system, both expressed as Tailwind utilities rather than as named
+   components — which is why no component fix could reach them:
+
+     · icons and small labels tinted violet or blue, the old primary
+     · interface text set condensed, uppercase, on wide tracking
+
+   The refresh's answer to both is already visible on the front page: one
+   accent, condensed reserved for names and titles in sentence case, Inter for
+   everything the reader is meant to read as interface. These rules say that
+   once, for `main`, instead of thirty times downstream.
+   ========================================================================== */
+
+/* ---- Semantic colour bridge --------------------------------------------------
+   Legacy utility names now map to the GTA VI interface palette instead of
+   collapsing to one accent. Evidence badges keep their own confidence palette. */
+body.lore-design.archive-refresh main :is(.text-violet):not([data-status]):not(.status-badge):not(.ghost-badge) {
+  color: var(--archive-system-ink) !important;
+}
+body.lore-design.archive-refresh main :is(.text-blue, .text-ocean):not([data-status]):not(.status-badge):not(.ghost-badge) {
+  color: var(--archive-system-ink) !important;
+}
+body.lore-design.archive-refresh main :is(.text-mint):not([data-status]):not(.status-badge):not(.ghost-badge) {
+  color: var(--archive-verified-ink) !important;
+}
+body.lore-design.archive-refresh main :is(.text-warn):not([data-status]):not(.status-badge):not(.ghost-badge) {
+  color: var(--archive-warning-ink) !important;
+}
+body.lore-design.archive-refresh main :is(.text-violet, .text-blue, .text-ocean, .text-mint, .text-warn) :is(svg, path, circle, rect) { color: inherit !important; }
+body.lore-design.archive-refresh main :is(.bg-violet):not([data-status]) {
+  background-color: var(--archive-system) !important;
+  color: var(--gta6-on-neon) !important;
+}
+body.lore-design.archive-refresh main :is(.bg-ocean):not([data-status]) {
+  background-color: var(--archive-system) !important;
+  color: var(--gta6-on-neon) !important;
+}
+body.lore-design.archive-refresh main :is(.border-violet, .border-ocean):not([data-status]) {
+  border-color: currentColor !important;
+}
+/* The washes the old system painted behind selected chips and callouts. */
+body.lore-design.archive-refresh main [class*="bg-violet/"]:not([data-status]) { background-color: color-mix(in srgb, var(--archive-system) 8%, transparent) !important; }
+body.lore-design.archive-refresh main [class*="border-violet/"]:not([data-status]) { border-color: color-mix(in srgb, var(--archive-system) 32%, transparent) !important; }
+body.lore-design.archive-refresh main [class*="bg-mint/"]:not([data-status]) { background-color: color-mix(in srgb, var(--archive-verified) 8%, transparent) !important; }
+body.lore-design.archive-refresh main [class*="border-mint/"]:not([data-status]) { border-color: color-mix(in srgb, var(--archive-verified) 32%, transparent) !important; }
+body.lore-design.archive-refresh main [class*="bg-warn/"]:not([data-status]) { background-color: color-mix(in srgb, var(--archive-warning) 12%, transparent) !important; }
+body.lore-design.archive-refresh main [class*="border-warn/"]:not([data-status]) { border-color: color-mix(in srgb, var(--archive-warning) 36%, transparent) !important; }
+
+/* ---- Interface text --------------------------------------------------------
+   Two treatments, split by size, because that is the distinction the refresh
+   itself draws: a name stays condensed and loses its small caps; a label
+   becomes Inter and stops shouting. */
+body.lore-design.archive-refresh main [class*="font-cond"][class*="uppercase"]:not(h1):not(h2):not(h3):not(.status-badge):not(.ghost-badge):not([data-status]):not(.entity-label) {
+  text-transform: none !important;
+  letter-spacing: -.005em !important;
+}
+body.lore-design.archive-refresh main [class*="font-cond"][class*="uppercase"]:is(
+  [class*="text-[9px]"], [class*="text-[10px]"], [class*="text-[11px]"],
+  [class*="text-[12px]"], [class*="text-[13px]"]
+):not(.status-badge):not(.ghost-badge):not([data-status]):not(.entity-label) {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  font-weight: 550 !important;
+}
+
+/* The filter panel's own trigger kept its condensed caps: the earlier fix
+   reached its children but not the button itself. */
+body.lore-design.archive-refresh .wiki-filter-panel-toggle {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Disclosure summaries across the record pages carried the same small caps. */
+body.lore-design.archive-refresh main summary:not(.status-badge) {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* ---- Geometry ---------------------------------------------------------------
+   Two-pixel radii were the old "sharp document" language; the refresh rounds
+   media and controls on a single scale. */
+body.lore-design.archive-refresh main :is(.rounded-sm, [class*="rounded-[2px]"]) { border-radius: 8px !important; }
+body.lore-design.archive-refresh main :is(img, .aspect-\[16\/9\], .aspect-\[16\/10\], .aspect-\[4\/3\]) { border-radius: inherit; }
+
+/* ---- The palettes underneath ------------------------------------------------
+   Site-wide rule: pink is action/editorial, blue is system/navigation, teal is
+   verified/source confidence, amber is analysis/caution, red is danger/wanted,
+   night/asphalt are immersive dark surfaces. Existing route variables map into
+   that vocabulary instead of every legacy accent collapsing to one colour. */
+body.lore-design.archive-refresh {
+  --vice-violet: #7B4DE3;
+  --vice-cyan: var(--archive-system);
+  --vice-pink: var(--archive-accent);
+  --vice-blush: var(--archive-accent-hot);
+  --vice-mauve: #A965D8;
+  --vice-water: var(--archive-verified);
+  --control-active: var(--archive-accent);
+  --ds-violet-500: #7B4DE3;
+  --ds-blue-500: var(--archive-system);
+  --ds-cyan-500: var(--archive-verified);
+  --ds-sun-500: var(--archive-warning);
+  --ds-pink-500: var(--archive-accent);
+  --ds-pink-600: #a01455;
+  --route-accent: var(--archive-accent);
+  --route-accent-soft: rgb(184 23 97 / .08);
+}
+
+/* The entity identity engine is kept: each character and region carries its own
+   muted accent, and none of them is violet — Jason is burnt orange, Lucia
+   crimson, Cal teal. What was violet is the *default*, used by every record the
+   engine has no signature for, which is most of them. Only that moves. */
+/* `:where()` keeps this at a lower weight than the per-entity signatures, so it
+   replaces only the default and never a character's own colour. */
+body.lore-design.archive-refresh :where(.entity-identity) {
+  --entity-accent: var(--archive-accent);
+  --entity-accent-2: #7a5d70;
+  --entity-line: rgb(184 23 97 / .22);
+  --entity-haze: rgb(184 23 97 / .12);
+}
+
+/* Eleven of the twelve vehicle-class signatures are a considered muted
+   spectrum — muscle red, marine teal, offroad olive, industrial grey. The
+   twelfth, "exotic", was the old violet, and it landed on the supercars, which
+   is where a reader is most likely to be looking. Moved into the same family:
+   a saturated plum that still reads as its own signature next to the brand. */
+body.lore-design.archive-refresh .entity-identity[data-entity-theme="vehicle-exotic"] {
+  --entity-accent: #8d2a6d;
+  --entity-line: rgb(141 42 109 / .24);
+  --entity-haze: rgb(141 42 109 / .14);
+}
+body.lore-design.archive-refresh .entity-identity[data-entity-theme="music"] { --entity-accent-2: #7a5d70; }
+
+/* Tailwind compiles its own colours to literal values, so the opacity variants
+   have to be named. In this build `mint` is a blue, not the evidence green —
+   that one is set on the badges themselves and stays where it is. */
+body.lore-design.archive-refresh main :is([class*="border-mint/"], [class*="border-violet/"], [class*="border-ocean/"]):not([data-status]) {
+  border-color: rgb(184 23 97 / .3) !important;
+}
+body.lore-design.archive-refresh main :is([class*="bg-mint/"], [class*="bg-violet/"], [class*="bg-ocean/"]):not([data-status]) {
+  background-color: rgb(184 23 97 / .05) !important;
+}
+body.lore-design.archive-refresh main :is([class*="decoration-mint/"], [class*="decoration-violet/"]) {
+  text-decoration-color: rgb(184 23 97 / .4) !important;
+}
+body.lore-design.archive-refresh main :is([class*="hover:text-mint"], [class*="hover:text-violet"]):hover { color: var(--archive-accent) !important; }
+
+/* Two-pixel radii were the pre-refresh "document" language; media and controls
+   now round on the same scale as the front page's cards. */
+body.lore-design.archive-refresh main :is([class*="rounded-[2px]"], .rounded-\[2px\]) { border-radius: 8px !important; }
+body.lore-design.archive-refresh main .panel > span.relative.block.overflow-hidden,
+body.lore-design.archive-refresh main a.panel > span.relative { border-radius: 10px 10px 0 0 !important; }
+
+/* The last named labels still set in small caps. */
+body.lore-design.archive-refresh main :is(.vehicle-evidence-chip, .vice-mode-toggle, .vice-phase, .vice-dial-record) {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* ---- Selected and pressed states ---------------------------------------------
+   Every listing on the site marks its chosen card or filter with `#6f3fc4`,
+   declared eight times as a literal across design-system.css and inherited by
+   everything inside the card — which is why the audit found the same violet on
+   the button, its icon, its title and its caption at once. */
+body.lore-design.archive-refresh main :is([aria-pressed="true"], [aria-selected="true"]):not([data-status]):not(.status-badge):not(.ghost-badge) {
+  color: var(--archive-accent) !important;
+  border-color: rgb(184 23 97 / .32) !important;
+}
+body.lore-design.archive-refresh main :is([aria-pressed="true"], [aria-selected="true"]) :is(svg, path, circle, rect) { color: inherit !important; }
+
+/* ---- Atlas legends -------------------------------------------------------------
+   The layer legend and filter headings kept the old primary. The evidence chips
+   beside them do not: `[data-layer]` carries confidence, like `[data-status]`,
+   and confidence keeps its own palette. */
+body.lore-design.archive-refresh :is(.map-layer-legend-heading, .map-layer-filter-heading) {
+  color: var(--archive-accent) !important;
+  border-left-color: var(--archive-accent) !important;
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh :is(.map-layer-legend-heading, .map-layer-filter-heading) svg { color: inherit !important; }
+
+/* ---- The last labels ------------------------------------------------------------
+   Wide tracking on uppercase is the tell for a label rather than a title: the
+   refresh's own titles are tracked tight. Anything condensed, uppercase and
+   tracked out is interface text and reads as Inter. */
+body.lore-design.archive-refresh main [class*="font-cond"][class*="uppercase"][class*="tracking-["]:not(h1):not(h2):not(h3):not(.status-badge):not(.ghost-badge):not([data-status]):not(.entity-label):not([data-layer]) {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  font-weight: 550 !important;
+}
+
+/* The knowledge record's header kept a violet-to-pink tint behind it — the last
+   gradient on the site mixing the old primary with the new one. */
+body.lore-design.archive-refresh .wiki-knowledge-record > header {
+  background: var(--archive-bg) !important;
+  border-bottom-color: var(--archive-border) !important;
+}
+body.lore-design.archive-refresh :is(.wiki-knowledge-record, .wiki-coverage-snapshot, .wiki-page-data) > header strong,
+body.lore-design.archive-refresh .wiki-page-data > summary {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* ---- Vice City hub -------------------------------------------------------------
+   This page was the worst casualty of the `--type-display` bug: every heading on
+   it, including the hero, was rendering at the 16px browser default. With the
+   rules alive again it needs the same pass every other route got — the gold
+   kicker was the last colour on the site outside the palette, and the headings
+   were still shouting in small caps. */
+body.lore-design.archive-refresh .vice-city-eyebrow {
+  color: #ffb6d1 !important;
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: .14em !important;
+}
+body.lore-design.archive-refresh .vice-city-hero h1 { text-transform: none !important; letter-spacing: -.03em !important; }
+body.lore-design.archive-refresh :is(.vice-feature h2, .vice-phase strong, .vice-ride-record h3, .vice-postcard figcaption strong) {
+  text-transform: none !important;
+  letter-spacing: -.01em !important;
+}
+body.lore-design.archive-refresh :is(.vice-live-date, .vice-mode-toggle span, .vice-random-place a,
+  .vice-postcard figcaption small, .vice-search-results a, .vice-city-hero > div nav a) {
+  font-family: var(--font-inter), sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+body.lore-design.archive-refresh .vice-feature-count b { letter-spacing: -.03em !important; }
+
+/* ==========================================================================
+   ARCHIVE OPERATIONS — /admin
+
+   Built on the account desk's furniture rather than beside it: the header, the
+   grouped column and the cards are the same components, because the two desks
+   are the same product seen from two sides. Only what is genuinely new to
+   administration is declared here — a signal, a worklist, an account row.
+   ========================================================================== */
+
+body.lore-design.archive-refresh .adm-desk .acc-monogram {
+  background: var(--archive-accent) !important;
+  color: white;
+}
+
+/* ---- Signals ------------------------------------------------------------------
+   A number an operator is meant to act on. Neutral until it is non-zero, then
+   coloured by how much it wants: amber asks, red insists. */
+/* Each signal carries its own edge rather than showing through a shared
+   background: an incomplete last row was leaving a grey ghost cell where the
+   archive simply had nothing more to count. */
+body.lore-design.archive-refresh .adm-signals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-top: 1.15rem;
+}
+body.lore-design.archive-refresh .adm-signal {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: 13px 14px 15px;
+  border: 1px solid var(--archive-border);
+  border-radius: 12px;
+  background: white;
+}
+body.lore-design.archive-refresh .adm-signal dt {
+  color: var(--archive-muted);
+  font: 500 11px/1.4 var(--font-inter), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body.lore-design.archive-refresh .adm-signal dd {
+  color: var(--archive-ink);
+  font: 650 1.9rem/1 var(--font-cond), sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+body.lore-design.archive-refresh .adm-signal small {
+  color: var(--archive-muted);
+  font: 400 11px/1.45 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .adm-signal[data-tone="warn"] dd { color: #9c6a18; }
+body.lore-design.archive-refresh .adm-signal[data-tone="alert"] dd { color: #a72b35; }
+
+/* ---- Worklists ------------------------------------------------------------------
+   What the encyclopedia still owes, as four short lists a person can start from
+   rather than a number they can only look at. */
+body.lore-design.archive-refresh .adm-worklists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: clamp(.9rem, 2vw, 1.4rem);
+  margin-top: 1.4rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--archive-border);
+}
+body.lore-design.archive-refresh .adm-worklist ul { display: grid; gap: 2px; }
+body.lore-design.archive-refresh .adm-worklist li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .6rem;
+  min-height: 28px;
+}
+body.lore-design.archive-refresh .adm-worklist :is(a, li > span:first-child) {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--archive-ink);
+  font: 500 12.5px/1.35 var(--font-inter), sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.lore-design.archive-refresh .adm-worklist a:hover { color: var(--archive-accent); }
+body.lore-design.archive-refresh .adm-worklist small {
+  flex: none;
+  color: var(--archive-muted);
+  font: 400 10.5px/1 var(--font-mono), monospace;
+}
+
+/* ---- Suggestion ------------------------------------------------------------------ */
+body.lore-design.archive-refresh .adm-suggestion + .adm-suggestion { margin-top: clamp(.8rem, 1.6vw, 1.1rem); }
+body.lore-design.archive-refresh .adm-summary {
+  color: var(--archive-ink);
+  font: 550 14px/1.55 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .adm-details {
+  max-width: 78ch;
+  padding: .75rem .9rem;
+  border-left: 3px solid var(--archive-border);
+  border-radius: 0 8px 8px 0;
+  background: var(--archive-bg);
+  color: var(--archive-muted);
+  font: 400 13px/1.6 var(--font-inter), sans-serif;
+  white-space: pre-wrap;
+}
+body.lore-design.archive-refresh .adm-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem;
+}
+/* The archive's own promise, made visible: a sourced change points at Rockstar,
+   or it says plainly that it does not. */
+body.lore-design.archive-refresh .acc-pill.is-good { border-color: rgb(18 160 139 / .45); color: #0f7f6e; }
+body.lore-design.archive-refresh .acc-pill.is-warn { border-color: rgb(156 106 24 / .45); color: #9c6a18; }
+
+/* ---- Accounts --------------------------------------------------------------------- */
+body.lore-design.archive-refresh .adm-account + .adm-account { margin-top: clamp(.7rem, 1.4vw, 1rem); }
+body.lore-design.archive-refresh .adm-account.is-suspended {
+  border-color: rgb(167 43 53 / .32) !important;
+  background: rgb(167 43 53 / .03) !important;
+}
+body.lore-design.archive-refresh .adm-avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--archive-ink);
+  color: white;
+  font: 650 17px/1 var(--font-cond), sans-serif;
+}
+body.lore-design.archive-refresh .adm-account h3 em { font-style: normal; color: var(--archive-accent); }
+body.lore-design.archive-refresh .adm-account-state { display: flex; align-items: center; gap: .45rem; }
+body.lore-design.archive-refresh .adm-tick { display: grid; place-items: center; color: #0f7f6e; }
+body.lore-design.archive-refresh .adm-tick.is-warn { color: #9c6a18; }
+
+body.lore-design.archive-refresh .adm-account-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: .8rem 1rem;
+  margin-top: 1rem;
+  padding-top: .95rem;
+  border-top: 1px solid var(--archive-border);
+}
+body.lore-design.archive-refresh .adm-account-facts dt {
+  color: var(--archive-muted);
+  font: 500 11px/1.3 var(--font-inter), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body.lore-design.archive-refresh .adm-account-facts dd {
+  margin-top: 3px;
+  color: var(--archive-ink);
+  font: 650 15px/1.2 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .adm-account-actions { align-items: flex-end; }
+
+/* Four roles and a status in a column wasted most of the card. */
+body.lore-design.archive-refresh .adm-desk .acc-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: .75rem 1rem;
+}
+body.lore-design.archive-refresh .adm-desk .acc-facts > div { padding: 0; border: 0; }
+body.lore-design.archive-refresh .adm-desk .acc-facts dt {
+  color: var(--archive-muted);
+  font: 500 11px/1.3 var(--font-inter), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body.lore-design.archive-refresh .adm-desk .acc-facts dd {
+  margin-top: 2px;
+  color: var(--archive-ink);
+  font: 650 1.5rem/1 var(--font-cond), sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+body.lore-design.archive-refresh .adm-role-picker { width: auto; min-width: 150px; }
+body.lore-design.archive-refresh .adm-self-note { flex-basis: 100%; margin-top: .2rem; }
+
+/* ---- Filters and paging -------------------------------------------------------------- */
+body.lore-design.archive-refresh .adm-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: .8rem;
+  justify-items: stretch;
+}
+body.lore-design.archive-refresh .adm-action-picker {
+  min-height: 34px;
+  max-width: 260px;
+  padding: 0 .6rem;
+  border: 1px solid var(--archive-border);
+  border-radius: 999px;
+  background: white;
+  color: var(--archive-muted);
+  font: 500 12px/1 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .adm-pager { margin: 1rem 0 0; justify-content: space-between; }
+body.lore-design.archive-refresh .adm-pager .acc-toolbar-count { margin: 0; }
+
+@media (max-width: 780px) {
+  body.lore-design.archive-refresh .adm-filters { grid-template-columns: minmax(0, 1fr); }
+  body.lore-design.archive-refresh .adm-account-actions { align-items: stretch; }
+  body.lore-design.archive-refresh .adm-role-picker { min-width: 0; width: 100%; }
+}
+
+@media (max-width: 767px) {
+  /* The strapline inside the full lockup lands around three pixels tall here. */
+  body.lore-design.archive-refresh .brand-lockup { display: none; }
+  body.lore-design.archive-refresh .brand-lockup--compact { display: block; height: 34px; }
+  body.lore-design.archive-refresh .footer-v3-lockup-art { height: 44px; }
+}
+
+/* ---- Footer ------------------------------------------------------------------ */
+body.lore-design.archive-refresh .footer-v3-mark {
+  width: 44px !important;
+  height: 44px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  object-fit: contain;
+}
+
+/* ---- The reader is not the brand ----------------------------------------------
+   The account tile borrowed the wordmark's gradient while it was a placeholder.
+   Now that the gradient is a real logo, an initial wearing it would read as the
+   site's own mark; it goes back to being ink. */
+body.lore-design.archive-refresh .wiki-account-card-avatar,
+body.lore-design.archive-refresh .wiki-account-avatar {
+  background: var(--archive-ink) !important;
+  color: white !important;
+}
+
+body.lore-design.archive-refresh .acc-watch-brief {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0 16px;
+}
+body.lore-design.archive-refresh .acc-watch-brief > div {
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgb(38 35 43 / .08);
+  border-radius: 12px;
+  background: #fbf8fb;
+}
+body.lore-design.archive-refresh .acc-watch-brief svg {
+  flex: 0 0 auto;
+  color: var(--archive-accent);
+  margin-top: 1px;
+}
+body.lore-design.archive-refresh .acc-watch-brief strong {
+  display: block;
+  color: var(--archive-ink);
+  font: 650 12px/1.25 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .acc-watch-brief small {
+  display: block;
+  margin-top: 3px;
+  color: var(--archive-muted);
+  font: 500 11px/1.45 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .acc-watch-starters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+body.lore-design.archive-refresh .acc-watch-starters a {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  border: 1px solid var(--archive-border);
+  border-radius: 999px;
+  background: white;
+  padding: 0 12px;
+  color: var(--archive-ink);
+  font: 650 11px/1 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .acc-watch-starters a:hover {
+  border-color: var(--archive-accent);
+  color: var(--archive-accent);
+}
+
+@media (max-width: 767px) {
+  body.lore-design.archive-refresh .wiki-global-header { min-height: 66px !important; padding: 10px 16px !important; gap: 12px !important; }
+  body.lore-design.archive-refresh .wiki-global-brand strong { font-size: 17px !important; }
+  body.lore-design.archive-refresh .wiki-global-search { width: 42px !important; min-width: 42px !important; padding: 10px !important; margin-left: auto !important; }
+  body.lore-design.archive-refresh .wiki-global-topnav { margin-left: 0 !important; }
+  body.lore-design.archive-refresh .wiki-global-search :is(span, kbd) { display: none !important; }
+  body.lore-design.archive-refresh .hq-hero { width: calc(100% - 28px); margin-top: 14px; grid-template-columns: 1fr !important; grid-template-rows: auto auto !important; min-height: 0 !important; border-radius: 16px !important; }
+  body.lore-design.archive-refresh .hq-hero-art { grid-column: 1; grid-row: 1; height: clamp(240px, 62vw, 440px); min-height: 0; }
+  body.lore-design.archive-refresh .hq-hero-art img { object-position: center 31% !important; }
+  body.lore-design.archive-refresh .hq-hero-content { grid-column: 1; grid-row: 2; padding: 24px !important; }
+  body.lore-design.archive-refresh .hq-hero-caption { display: none; }
+  body.lore-design.archive-refresh .hq-hero-signal { font-size: 9px !important; letter-spacing: .04em !important; }
+  body.lore-design.archive-refresh .hq-hero h1 { margin-top: 16px !important; }
+  body.lore-design.archive-refresh .hq-hero h1 > strong { font-size: clamp(76px, 16vw, 115px) !important; }
+  body.lore-design.archive-refresh .hq-hero-content > p { margin-top: 15px !important; max-width: none; font-size: 15px !important; }
+  body.lore-design.archive-refresh .hq-hero-actions { margin-top: 18px !important; }
+  body.lore-design.archive-refresh .hq-hero-meta { margin-top: 20px !important; gap: 14px !important; }
+  body.lore-design.archive-refresh .hq-hero-meta > span:last-child { display: none; }
+  body.lore-design.archive-refresh .hq-mission-bar { width: calc(100% - 28px) !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; margin-top: 14px !important; }
+  body.lore-design.archive-refresh .hq-mission-bar :is(a, button) { min-width: 0; min-height: 70px !important; padding: 14px !important; gap: 10px !important; }
+  body.lore-design.archive-refresh .hq-mission-bar small { font-size: 10px !important; }
+  body.lore-design.archive-refresh .hq-section { padding: 32px 16px 0 !important; }
+  body.lore-design.archive-refresh .hq-section-head { flex-wrap: wrap !important; gap: 8px !important; padding-bottom: 18px !important; }
+  body.lore-design.archive-refresh .hq-section-head > a { min-height: 34px; margin: 0 !important; padding: 0 !important; }
+  body.lore-design.archive-refresh .hq-branch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
+  body.lore-design.archive-refresh .hq-branch-copy { padding: 12px !important; min-height: 132px !important; gap: 4px !important; }
+  body.lore-design.archive-refresh .hq-branch-copy strong { font-size: 23px !important; }
+  body.lore-design.archive-refresh .hq-branch-copy small { font-size: 11px !important; line-height: 1.55 !important; }
+  body.lore-design.archive-refresh .hq-branch-copy > b { font-size: 10px !important; }
+  body.lore-design.archive-refresh .hq-branch-media { aspect-ratio: 1.25 !important; }
+  body.lore-design.archive-refresh .hq-news-copy { padding: 16px !important; }
+  body.lore-design.archive-refresh .hq-atlas { margin: 32px 14px 0 !important; padding: 20px 14px !important; border-radius: 16px; }
+  body.lore-design.archive-refresh .hq-region-rail { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+  body.lore-design.archive-refresh .hq-region-card { min-height: 200px !important; }
+  body.lore-design.archive-refresh .hq-region-copy { padding: 12px !important; }
+  body.lore-design.archive-refresh .hq-region-copy strong { font-size: 25px !important; }
+  body.lore-design.archive-refresh .hq-region-copy small { font-size: 9px !important; }
+  body.lore-design.archive-refresh .hq-region-copy i { font-size: 11px !important; }
+  body.lore-design.archive-refresh .wiki-category-header { padding-bottom: 18px !important; }
+  body.lore-design.archive-refresh .wiki-category-description { font-size: 15px !important; }
+  body.lore-design.archive-refresh .archive-coverage-toggle span { display: block; margin-left: 0; font-size: 11px; }
+  body.lore-design.archive-refresh .wiki-article-body :is(p, li) { font-size: 15px; line-height: 1.75; }
+  body.lore-design.archive-refresh .wiki-toc-list { grid-template-columns: 1fr; }
+  body.lore-design.archive-refresh .footer-v3-primary { display: block !important; }
+  body.lore-design.archive-refresh .footer-v3-brand p { max-width: 48ch; }
+  body.lore-design.archive-refresh .footer-v3-directory { margin-top: 24px !important; gap: 18px !important; }
+  body.lore-design.archive-refresh .footer-v3-group ul { grid-template-columns: 1fr !important; }
+  body.lore-design.archive-refresh .footer-v3-group li a { min-height: 40px !important; font-size: 11px !important; }
+  body.lore-design.archive-refresh .footer-v3-assurance-copy { display: none; }
+  body.lore-design.archive-refresh .footer-v3-bottom { gap: 16px !important; }
+  /* Two columns cut "Account dashboard" mid-word at this width; one column
+     gives every destination its full label and a bigger target. */
+  body.lore-design.archive-refresh .wiki-account-links { grid-template-columns: 1fr !important; }
+  body.lore-design.archive-refresh .wiki-account-links a { min-height: 44px !important; }
+  body.lore-design.archive-refresh .gta-lore-search-modal { top: 12px !important; max-height: calc(100dvh - 24px) !important; }
+  body.lore-design.archive-refresh .search-command-input input { font-size: 16px !important; }
+  body.lore-design.archive-refresh .search-mobile-recents { display: block; margin-top: 18px; }
+  body.lore-design.archive-refresh .search-mobile-recents .search-section-title { display: flex; align-items: center; }
+
+  /* Policy inventories read as labelled records on narrow screens. No field
+   * is hidden beyond a horizontal scroller. */
+  body.lore-design.archive-refresh .legal-data-table { overflow: visible !important; border: 0 !important; }
+  body.lore-design.archive-refresh .legal-data-table table { display: block; min-width: 0 !important; }
+  body.lore-design.archive-refresh .legal-data-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+  body.lore-design.archive-refresh .legal-data-table tbody { display: grid; gap: 10px; }
+  body.lore-design.archive-refresh .legal-data-table tr { display: grid; overflow: hidden; border: 1px solid var(--archive-border); border-radius: 10px; background: #fff; }
+  body.lore-design.archive-refresh .legal-data-table :is(th, td) {
+    display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 10px;
+    width: 100% !important; padding: 10px 12px !important; border-bottom: 1px solid var(--archive-border) !important;
+    overflow-wrap: anywhere;
+  }
+  body.lore-design.archive-refresh .legal-data-table :is(th, td)::before {
+    content: attr(data-label); color: #695663;
+    font: 650 10px/1.45 var(--font-inter), sans-serif; text-transform: uppercase; letter-spacing: .05em;
+  }
+  body.lore-design.archive-refresh .legal-data-table tr > :last-child { border-bottom: 0 !important; }
+  body.lore-design.archive-refresh .legal-data-table code { white-space: normal; overflow-wrap: anywhere; }
+}
+@media print {
+  body.lore-design.archive-refresh .legal-document .wiki-content-section { content-visibility: visible !important; contain: none !important; }
+}
+
+/* Policy navigation is a paired control, including on a phone. Keeping both
+ * directions in one row makes the sequence obvious without a long vertical
+ * interruption at the end of a document. */
+body.lore-design.archive-refresh .legal-prev-next {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+body.lore-design.archive-refresh .legal-prev-next a {
+  min-width: 0;
+  min-height: 54px;
+  padding: 9px 10px !important;
+  gap: 8px;
+}
+body.lore-design.archive-refresh .legal-prev-next a > span { min-width: 0; }
+body.lore-design.archive-refresh .legal-prev-next a > span:not(:first-child) { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  body.lore-design.archive-refresh *, body.lore-design.archive-refresh *::before, body.lore-design.archive-refresh *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+
+/* Paired with the live clock above it, not a feature of its own: one says
+   what time it is here, this says how long until it's real. Same card, same
+   border-top divider language as the rest of the hub. */
+.vice-countdown { display: flex; gap: .85rem; margin-top: .85rem; padding-top: .85rem; border-top: 1px solid var(--surface-border); }
+.vice-countdown-unit { display: flex; flex-direction: column; align-items: flex-start; padding-left: .85rem; border-left: 1px solid var(--surface-border); }
+.vice-countdown-unit:first-child { padding-left: 0; border-left: 0; }
+.vice-countdown-unit b { color: var(--vice-pink); font: 700 1.3rem/1 var(--type-code); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.vice-countdown-unit small { margin-top: .25rem; color: var(--vice-hub-dim); font: 700 .58rem/1 var(--type-interface); letter-spacing: .1em; text-transform: uppercase; }
+
+/* Launch countdown — the same white utility card as the quick-actions bar
+   under the hero, on the hero's gutters, so the top of the page reads as one
+   stack of cards: countdown, hero, actions. Inter in sentence case; the
+   accent is spent only on the icon and the progress fill. */
+body.lore-design.archive-refresh .hq-launch {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px 40px;
+  width: min(calc(100% - 48px), 1440px);
+  margin: 24px auto 0;
+  padding: 14px 22px;
+  border: 1px solid var(--archive-border);
+  border-radius: 12px;
+  background: white;
+  color: var(--archive-ink);
+}
+body.lore-design.archive-refresh .hq-launch + .hq-hero { margin-top: 18px; }
+body.lore-design.archive-refresh .hq-launch-head { display: flex; align-items: center; gap: 12px; min-width: 0; }
+body.lore-design.archive-refresh .hq-launch-head > svg { flex: none; color: var(--archive-accent); }
+body.lore-design.archive-refresh .hq-launch-head > span { display: flex; min-width: 0; flex-direction: column; }
+body.lore-design.archive-refresh .hq-launch-head strong { color: var(--archive-ink); font: 650 13px/1.5 var(--font-inter), sans-serif; letter-spacing: 0; text-transform: none; }
+body.lore-design.archive-refresh .hq-launch-head small { color: var(--archive-muted); font: 400 11px/1.5 var(--font-inter), sans-serif; letter-spacing: 0; text-transform: none; }
+/* On a phone the line breaks before the date, never inside it. */
+body.lore-design.archive-refresh .hq-launch-date { white-space: nowrap; }
+body.lore-design.archive-refresh .hq-launch-clock { display: flex; align-items: flex-start; gap: 22px; }
+body.lore-design.archive-refresh .hq-launch-clock > span { display: flex; flex-direction: column; align-items: center; }
+/* Two tabular digits wide before mount too, so "--" becoming "69" moves nothing. */
+body.lore-design.archive-refresh .hq-launch-clock b { min-width: 1.3em; color: var(--archive-ink); font: 650 22px/1.15 var(--font-inter), sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -.02em; text-align: center; }
+body.lore-design.archive-refresh .hq-launch-clock small { margin-top: 1px; color: var(--archive-muted); font: 400 11px/1.4 var(--font-inter), sans-serif; letter-spacing: 0; text-transform: none; }
+body.lore-design.archive-refresh .hq-launch-progress { display: flex; width: min(100%, 420px); min-width: 0; flex-direction: column; gap: 8px; justify-self: end; }
+body.lore-design.archive-refresh .hq-launch-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+body.lore-design.archive-refresh .hq-launch-meta span { overflow: hidden; color: var(--archive-muted); font: 400 11px/1.5 var(--font-inter), sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+body.lore-design.archive-refresh .hq-launch-meta strong { flex: none; color: var(--archive-ink); font: 650 13px/1.5 var(--font-inter), sans-serif; font-variant-numeric: tabular-nums; }
+body.lore-design.archive-refresh .hq-launch-track { height: 6px; overflow: hidden; border-radius: 999px; background: rgb(38 35 43 / .08); }
+body.lore-design.archive-refresh .hq-launch-track span { display: block; height: 100%; border-radius: inherit; background: var(--archive-accent); }
+@media (max-width: 1023px) {
+  body.lore-design.archive-refresh .hq-launch { grid-template-columns: minmax(0, 1fr) auto; gap: 14px 24px; }
+  body.lore-design.archive-refresh .hq-launch-progress { grid-column: 1 / -1; width: 100%; justify-self: stretch; }
+}
+@media (max-width: 767px) {
+  body.lore-design.archive-refresh .hq-launch { width: calc(100% - 28px); margin-top: 14px; padding: 14px 16px; gap: 14px 16px; }
+  body.lore-design.archive-refresh .hq-launch + .hq-hero { margin-top: 12px; }
+  body.lore-design.archive-refresh .hq-launch-clock { gap: 14px; }
+  body.lore-design.archive-refresh .hq-launch-clock b { font-size: 19px; }
+}
+@media (max-width: 480px) {
+  body.lore-design.archive-refresh .hq-launch-head > svg { display: none; }
+  body.lore-design.archive-refresh .hq-launch-clock { gap: 11px; }
+}
+
+/* Community-reported details on record pages: the same white card as the rest
+   of the archive, fenced off by a hairline and a plain provenance line rather
+   than a warning colour. */
+body.lore-design.archive-refresh .reported-notes { padding: 16px 18px; border: 1px solid var(--archive-border); border-radius: 12px; background: white; }
+body.lore-design.archive-refresh .reported-notes p { margin: 0 0 10px; color: var(--archive-muted); font: 400 13px/1.55 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .reported-notes ul { display: grid; gap: 8px; margin: 0; padding-left: 18px; list-style: disc; }
+body.lore-design.archive-refresh .reported-notes li { color: var(--archive-ink); font: 400 15px/1.6 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .reported-notes li::marker { color: var(--archive-muted); }
+
+/* Radio and mechanics are indexes, not galleries: plain lists in one white
+   card, one row per record, no artwork standing in for what isn't shown. */
+body.lore-design.archive-refresh :is(.radio-song-list, .mechanics-list) { margin: 20px 0 0; padding: 0; overflow: hidden; border: 1px solid var(--archive-border); border-radius: 12px; background: white; list-style: none; }
+body.lore-design.archive-refresh :is(.radio-song-list, .mechanics-list) > li + li { border-top: 1px solid var(--archive-border); }
+
+body.lore-design.archive-refresh .radio-song-list > li { display: grid; grid-template-columns: 2.2rem minmax(0, 1.5fr) minmax(0, 1fr) auto 8.5rem; align-items: center; gap: 16px; padding: 12px 18px; }
+body.lore-design.archive-refresh .radio-song-index { color: var(--archive-muted); font: 500 12px/1 var(--font-mono), monospace; font-variant-numeric: tabular-nums; }
+body.lore-design.archive-refresh .radio-song-main { display: flex; min-width: 0; flex-direction: column; }
+body.lore-design.archive-refresh .radio-song-main strong { overflow: hidden; color: var(--archive-ink); font: 650 14px/1.4 var(--font-inter), sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+body.lore-design.archive-refresh .radio-song-main small { overflow: hidden; color: var(--archive-muted); font: 400 12px/1.4 var(--font-inter), sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+body.lore-design.archive-refresh .radio-song-where { min-width: 0; color: var(--archive-muted); font: 400 12px/1.4 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .radio-song-evidence { padding: 4px 9px; font: 600 10px/1.2 var(--font-inter), sans-serif !important; letter-spacing: .02em !important; text-transform: none !important; white-space: nowrap; }
+body.lore-design.archive-refresh .radio-song-source { display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; color: var(--archive-ink); font: 500 12px/1.2 var(--font-inter), sans-serif; white-space: nowrap; }
+body.lore-design.archive-refresh a.radio-song-source:hover { color: var(--archive-accent); }
+body.lore-design.archive-refresh .radio-song-source.is-none { color: var(--archive-muted); }
+
+body.lore-design.archive-refresh .mechanics-row { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto 16px; align-items: center; gap: 14px; padding: 14px 18px; color: var(--archive-ink); transition: background .15s; }
+body.lore-design.archive-refresh .mechanics-row:hover { background: var(--archive-bg); }
+body.lore-design.archive-refresh .mechanics-row > svg:first-child { color: var(--archive-accent); }
+body.lore-design.archive-refresh .mechanics-row-main { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+body.lore-design.archive-refresh .mechanics-row-main strong { color: var(--archive-ink); font: 650 14px/1.4 var(--font-inter), sans-serif; letter-spacing: 0; text-transform: capitalize; }
+body.lore-design.archive-refresh .mechanics-row-main small { color: var(--archive-muted); font: 400 13px/1.5 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .mechanics-row-arrow { color: var(--archive-muted); }
+body.lore-design.archive-refresh .mechanics-row:hover .mechanics-row-arrow { color: var(--archive-accent); }
+
+@media (max-width: 767px) {
+  body.lore-design.archive-refresh .radio-song-list > li { grid-template-columns: 1.8rem minmax(0, 1fr) auto; gap: 6px 12px; padding: 12px 14px; }
+  body.lore-design.archive-refresh .radio-song-where { grid-column: 2 / -1; }
+  body.lore-design.archive-refresh .radio-song-evidence { grid-column: 3; grid-row: 1; }
+  body.lore-design.archive-refresh .radio-song-source { grid-column: 2 / -1; justify-content: flex-start; }
+  body.lore-design.archive-refresh .mechanics-row { grid-template-columns: 18px minmax(0, 1fr) 14px; padding: 13px 14px; }
+  body.lore-design.archive-refresh .mechanics-row > .ghost-badge { grid-column: 2; grid-row: 2; }
+  body.lore-design.archive-refresh .mechanics-row-arrow { grid-column: 3; grid-row: 1; }
+}
+
+/* Every song row is its own grid, so no column may be `auto`: the evidence
+   pill gets a fixed track, or "Trailer 1" and "Trailer 2" stop lining up. */
+body.lore-design.archive-refresh .radio-song-list > li { grid-template-columns: 2.2rem minmax(0, 1.5fr) minmax(0, 1fr) 11rem 8.5rem; }
+body.lore-design.archive-refresh .radio-song-evidence { justify-self: end; }
+
+/* World index: the same one-card list as radio and mechanics. */
+body.lore-design.archive-refresh .world-list { margin: 20px 0 0; padding: 0; overflow: hidden; border: 1px solid var(--archive-border); border-radius: 12px; background: white; list-style: none; }
+body.lore-design.archive-refresh .world-list > li + li { border-top: 1px solid var(--archive-border); }
+body.lore-design.archive-refresh .world-row { display: grid; width: 100%; grid-template-columns: 20px minmax(0, 1fr) auto 16px; align-items: center; gap: 14px; padding: 14px 18px; color: var(--archive-ink); text-align: left; transition: background .15s; }
+body.lore-design.archive-refresh .world-row-record { grid-template-columns: minmax(0, 1fr) auto 16px; padding: 12px 18px; }
+body.lore-design.archive-refresh .world-row:hover { background: var(--archive-bg); }
+body.lore-design.archive-refresh .world-row > svg:first-child { width: 18px; height: 18px; color: var(--archive-accent); }
+body.lore-design.archive-refresh .world-row-main { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+body.lore-design.archive-refresh .world-row-main strong { color: var(--archive-ink); font: 650 14px/1.4 var(--font-inter), sans-serif; letter-spacing: 0; text-transform: capitalize; }
+body.lore-design.archive-refresh .world-row-main small { color: var(--archive-muted); font: 400 13px/1.5 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .world-row-count { color: var(--archive-muted); font: 500 12px/1 var(--font-mono), monospace; font-variant-numeric: tabular-nums; }
+body.lore-design.archive-refresh .world-row-arrow { width: 16px; height: 16px; color: var(--archive-muted); }
+body.lore-design.archive-refresh .world-row:hover .world-row-arrow { color: var(--archive-accent); }
+@media (max-width: 767px) {
+  body.lore-design.archive-refresh .radio-song-list > li { grid-template-columns: 1.8rem minmax(0, 1fr) auto; }
+  body.lore-design.archive-refresh .world-row { padding: 13px 14px; }
+  body.lore-design.archive-refresh .world-row-record { grid-template-columns: minmax(0, 1fr) 14px; }
+  body.lore-design.archive-refresh .world-row-record > .status-badge { grid-column: 1; grid-row: 2; }
+  body.lore-design.archive-refresh .world-row-record > .world-row-arrow { grid-column: 2; grid-row: 1; }
+}
+
+/* Places without a verified frame: listed under the picture grid, never
+   illustrated with a stand-in. */
+body.lore-design.archive-refresh .places-unframed { margin-top: 36px; }
+body.lore-design.archive-refresh .places-unframed h3 { color: var(--archive-ink); font: 600 24px/1.1 var(--font-cond), sans-serif; letter-spacing: 0; text-transform: none; }
+body.lore-design.archive-refresh .places-unframed > p { max-width: 68ch; margin-top: 6px; color: var(--archive-muted); font: 400 13px/1.55 var(--font-inter), sans-serif; }
+
+/* ==========================================================================
+   SITE NAVIGATION — one map (lib/navigation) for header, footer, sheet and
+   the /directory page
+   ========================================================================== */
+body.lore-design.archive-refresh .wiki-explore-panel {
+  width: min(880px, calc(100vw - 48px)) !important;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto !important;
+}
+body.lore-design.archive-refresh .wiki-explore-panel > div { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: .4rem; }
+body.lore-design.archive-refresh .wiki-explore-panel section:nth-child(3n + 1) { border-left: 0 !important; }
+body.lore-design.archive-refresh .wiki-explore-panel section:nth-child(n + 4) { border-top: 1px solid var(--archive-border); padding-top: .8rem; }
+
+/* -------------------------------------------------------------------------
+   GLOBAL DENSITY PASS
+   Goal: show more real content above the fold without turning the archive into
+   a cramped admin table. This lives at the end so it tightens the current
+   system consistently instead of rewriting every component one by one.
+------------------------------------------------------------------------- */
+body.lore-design.archive-refresh {
+  --density-page-x: clamp(14px, 3vw, 42px);
+  --density-section-y: clamp(28px, 4vw, 42px);
+  --density-card-pad: clamp(12px, 1.5vw, 16px);
+}
+
+body.lore-design.archive-refresh .wiki-global-header {
+  min-height: 66px !important;
+  padding: 9px clamp(14px, 2.4vw, 38px) !important;
+  gap: clamp(10px, 1.8vw, 28px) !important;
+}
+body.lore-design.archive-refresh :is(.wiki-global-search, .wiki-explore-trigger, .wiki-account-trigger) {
+  min-height: 40px !important;
+}
+
+body.lore-design.archive-refresh :is(
+  .ambient-bloom.px-4,
+  .wiki-news-article,
+  .legal-shell
+) {
+  padding-left: var(--density-page-x) !important;
+  padding-right: var(--density-page-x) !important;
+}
+
+body.lore-design.archive-refresh .hq-hero {
+  margin-top: 16px !important;
+  min-height: 540px !important;
+  width: min(calc(100% - 36px), 1440px) !important;
+}
+body.lore-design.archive-refresh .hq-hero-content {
+  padding: clamp(22px, 3vw, 44px) !important;
+}
+body.lore-design.archive-refresh .hq-hero h1 { margin-top: 18px !important; }
+body.lore-design.archive-refresh .hq-hero-content > p { margin-top: 16px !important; line-height: 1.55 !important; }
+body.lore-design.archive-refresh .hq-hero-actions { margin-top: 18px !important; gap: 9px !important; }
+body.lore-design.archive-refresh .hq-command-trigger { min-height: 58px !important; padding: 10px 14px !important; }
+body.lore-design.archive-refresh .hq-hero-meta { margin-top: 20px !important; padding-top: 12px !important; gap: 16px !important; }
+body.lore-design.archive-refresh .hq-mission-bar {
+  margin-top: 12px !important;
+  width: min(calc(100% - 36px), 1440px) !important;
+}
+body.lore-design.archive-refresh .hq-mission-bar :is(a, button) {
+  min-height: 58px !important;
+}
+body.lore-design.archive-refresh .hq-section {
+  padding-top: var(--density-section-y) !important;
+}
+body.lore-design.archive-refresh .hq-section-head {
+  padding-bottom: 16px !important;
+  gap: 12px !important;
+}
+body.lore-design.archive-refresh .hq-section-head h2 { margin-top: 3px !important; }
+body.lore-design.archive-refresh .hq-branch-grid,
+body.lore-design.archive-refresh .hq-pulse-grid {
+  gap: 14px !important;
+}
+body.lore-design.archive-refresh .hq-branch-copy {
+  min-height: 108px !important;
+  padding: 14px !important;
+}
+body.lore-design.archive-refresh .hq-branch-copy small {
+  margin-top: 4px !important;
+  line-height: 1.5 !important;
+}
+body.lore-design.archive-refresh .hq-news-copy,
+body.lore-design.archive-refresh .hq-claim-panel {
+  padding: 16px !important;
+}
+body.lore-design.archive-refresh .hq-atlas {
+  margin-top: 38px !important;
+  padding: 24px !important;
+}
+body.lore-design.archive-refresh .hq-region-card {
+  min-height: 205px !important;
+}
+body.lore-design.archive-refresh .hq-final-call {
+  margin-top: 36px !important;
+  min-height: 245px !important;
+}
+
+body.lore-design.archive-refresh .wiki-category-header {
+  padding-bottom: 18px !important;
+}
+body.lore-design.archive-refresh .wiki-category-hero-media {
+  margin-top: 14px !important;
+  height: clamp(135px, 20vw, 260px) !important;
+}
+body.lore-design.archive-refresh .wiki-category-description {
+  line-height: 1.55 !important;
+}
+body.lore-design.archive-refresh .wiki-entry-grid {
+  gap: 18px !important;
+  margin-top: 18px !important;
+}
+body.lore-design.archive-refresh .wiki-article-header {
+  padding: 14px 0 !important;
+}
+body.lore-design.archive-refresh .wiki-article-header h1 {
+  margin-top: 4px !important;
+}
+body.lore-design.archive-refresh .wiki-article-body :is(p, li) {
+  line-height: 1.68 !important;
+}
+body.lore-design.archive-refresh .wiki-infobox-heading,
+body.lore-design.archive-refresh .wiki-infobox-body {
+  padding: 12px 14px !important;
+}
+body.lore-design.archive-refresh .wiki-toc-summary {
+  padding: 11px 14px !important;
+}
+body.lore-design.archive-refresh .wiki-toc-list a {
+  min-height: 32px !important;
+  padding: 6px 7px !important;
+}
+body.lore-design.archive-refresh .wiki-user-actions {
+  padding: 10px !important;
+}
+body.lore-design.archive-refresh .wiki-user-action {
+  min-height: 32px !important;
+}
+
+body.lore-design.archive-refresh .article-hero-media {
+  margin-top: 14px !important;
+}
+body.lore-design.archive-refresh .article-evidence-lens {
+  margin-top: 14px !important;
+  padding: var(--density-card-pad) !important;
+  gap: 14px !important;
+}
+body.lore-design.archive-refresh .article-evidence-lens dl {
+  gap: 9px !important;
+}
+body.lore-design.archive-refresh .article-evidence-lens dl > div {
+  padding: 10px !important;
+}
+body.lore-design.archive-refresh .article-news-section {
+  margin-top: 22px !important;
+}
+body.lore-design.archive-refresh .article-news-section h2 {
+  margin-bottom: 10px !important;
+}
+body.lore-design.archive-refresh .article-news-section p {
+  margin-top: 12px !important;
+  line-height: 1.72 !important;
+}
+body.lore-design.archive-refresh .article-inline-toc {
+  margin: 16px 0 !important;
+}
+
+body.lore-design.archive-refresh .source-method {
+  margin-top: 18px !important;
+  padding: clamp(16px, 2.4vw, 26px) !important;
+  gap: 18px !important;
+}
+body.lore-design.archive-refresh .source-method-grid,
+body.lore-design.archive-refresh .source-state-strip {
+  gap: 9px !important;
+}
+body.lore-design.archive-refresh .source-method-grid article,
+body.lore-design.archive-refresh .source-state-strip span {
+  padding: 12px !important;
+}
+
+body.lore-design.archive-refresh :is(.acc-card, .panel) {
+  --acc-card-pad: var(--density-card-pad);
+}
+body.lore-design.archive-refresh .acc-plate-body {
+  padding: clamp(20px, 3vw, 36px) !important;
+}
+body.lore-design.archive-refresh .acc-layout {
+  gap: 16px !important;
+}
+body.lore-design.archive-refresh .acc-card {
+  padding: var(--density-card-pad) !important;
+}
+body.lore-design.archive-refresh .acc-card-head {
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+body.lore-design.archive-refresh .acc-watch-brief {
+  margin: 10px 0 12px !important;
+}
+
+body.lore-design.archive-refresh .footer-v3 {
+  margin-top: 24px !important;
+}
+body.lore-design.archive-refresh .footer-v3-shell {
+  padding-top: 24px !important;
+}
+body.lore-design.archive-refresh .footer-v3-primary,
+body.lore-design.archive-refresh .footer-v3-directory {
+  gap: 20px !important;
+}
+
+@media (max-width: 767px) {
+  body.lore-design.archive-refresh {
+    --density-page-x: 14px;
+    --density-section-y: 26px;
+  }
+  body.lore-design.archive-refresh .wiki-global-header {
+    min-height: 60px !important;
+    padding: 8px 14px !important;
+  }
+  body.lore-design.archive-refresh .hq-hero {
+    width: calc(100% - 24px) !important;
+    margin-top: 10px !important;
+  }
+  body.lore-design.archive-refresh .hq-hero-art {
+    height: clamp(210px, 56vw, 380px) !important;
+  }
+  body.lore-design.archive-refresh .hq-hero-content {
+    padding: 18px !important;
+  }
+  body.lore-design.archive-refresh .hq-hero h1 { margin-top: 12px !important; }
+  body.lore-design.archive-refresh .hq-hero-content > p { margin-top: 10px !important; }
+  body.lore-design.archive-refresh .hq-hero-actions { margin-top: 14px !important; }
+  body.lore-design.archive-refresh .hq-hero-meta { margin-top: 14px !important; }
+  body.lore-design.archive-refresh .hq-mission-bar {
+    width: calc(100% - 24px) !important;
+    margin-top: 10px !important;
+  }
+  body.lore-design.archive-refresh .hq-mission-bar :is(a, button) {
+    min-height: 58px !important;
+    padding: 10px !important;
+  }
+  body.lore-design.archive-refresh .hq-section {
+    padding: 26px 14px 0 !important;
+  }
+  body.lore-design.archive-refresh .hq-section-head {
+    padding-bottom: 12px !important;
+  }
+  body.lore-design.archive-refresh .hq-branch-grid { gap: 9px !important; }
+  body.lore-design.archive-refresh .hq-branch-copy {
+    min-height: 112px !important;
+    padding: 10px !important;
+  }
+  body.lore-design.archive-refresh .hq-news-copy { padding: 12px !important; }
+  body.lore-design.archive-refresh .hq-atlas {
+    margin: 24px 12px 0 !important;
+    padding: 16px 12px !important;
+  }
+  body.lore-design.archive-refresh .hq-region-card { min-height: 180px !important; }
+  body.lore-design.archive-refresh .wiki-entry-grid {
+    gap: 13px !important;
+    margin-top: 14px !important;
+  }
+  body.lore-design.archive-refresh .article-news-section p {
+    line-height: 1.68 !important;
+  }
+  body.lore-design.archive-refresh .footer-v3-directory {
+    margin-top: 18px !important;
+    gap: 14px !important;
+  }
+}
+
+/* Density pass II — remove the remaining "air pockets" from secondary pages
+   and data-heavy lists while keeping tap targets usable. */
+body.lore-design.archive-refresh :is(
+  .ambient-bloom.py-6,
+  .ambient-bloom.lg\:py-8,
+  .px-4.py-6,
+  .px-4.lg\:py-8
+) {
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
+}
+
+body.lore-design.archive-refresh :is(
+  .visual-card-grid,
+  .guides-card-grid,
+  .two-up-visual-grid
+) {
+  gap: 14px !important;
+  margin-top: 16px !important;
+}
+
+body.lore-design.archive-refresh :is(.visual-card-grid, .guides-card-grid, .two-up-visual-grid) article,
+body.lore-design.archive-refresh :is(.visual-card-grid, .guides-card-grid, .two-up-visual-grid) a {
+  border-radius: 12px !important;
+}
+
+body.lore-design.archive-refresh :is(.visual-card-grid, .guides-card-grid, .two-up-visual-grid) :is(h2, h3) {
+  margin-top: 8px !important;
+  line-height: 1.02 !important;
+}
+
+body.lore-design.archive-refresh :is(.visual-card-grid, .guides-card-grid, .two-up-visual-grid) p {
+  margin-top: 6px !important;
+  line-height: 1.5 !important;
+}
+
+body.lore-design.archive-refresh :is(.radio-song-list, .mechanics-list, .world-list) {
+  margin-top: 14px !important;
+  border-radius: 10px !important;
+}
+body.lore-design.archive-refresh .radio-song-list > li {
+  gap: 12px !important;
+  padding: 9px 14px !important;
+}
+body.lore-design.archive-refresh :is(.mechanics-row, .world-row) {
+  gap: 11px !important;
+  padding: 10px 14px !important;
+}
+body.lore-design.archive-refresh .world-row-record {
+  padding: 9px 14px !important;
+}
+body.lore-design.archive-refresh .reported-notes {
+  padding: 12px 14px !important;
+}
+
+body.lore-design.archive-refresh .legal-hq-hero {
+  min-height: 320px !important;
+}
+body.lore-design.archive-refresh .legal-hq-copy {
+  padding: clamp(24px, 4vw, 52px) !important;
+}
+body.lore-design.archive-refresh .legal-hq-copy h1 {
+  margin-top: 16px !important;
+}
+body.lore-design.archive-refresh .legal-hq-copy > p:not(.legal-hq-signal) {
+  margin-top: 14px !important;
+  line-height: 1.55 !important;
+}
+body.lore-design.archive-refresh .legal-hq-meta {
+  margin-top: 20px !important;
+  padding-top: 12px !important;
+}
+body.lore-design.archive-refresh .legal-card-grid {
+  gap: 10px !important;
+  margin-top: 14px !important;
+}
+body.lore-design.archive-refresh .legal-policy-card {
+  min-height: 180px !important;
+  padding: 16px !important;
+}
+body.lore-design.archive-refresh .legal-policy-hero {
+  padding: clamp(24px, 4vw, 44px) !important;
+  gap: clamp(18px, 3vw, 48px) !important;
+}
+body.lore-design.archive-refresh .legal-document-layout {
+  gap: 14px !important;
+  margin-top: 16px !important;
+}
+body.lore-design.archive-refresh .legal-document {
+  padding: clamp(16px, 2.4vw, 28px) !important;
+}
+body.lore-design.archive-refresh .legal-document .wiki-content-section {
+  padding-block: 16px !important;
+}
+
+body.lore-design.archive-refresh .auth-shell {
+  padding-block: 22px !important;
+}
+body.lore-design.archive-refresh .auth-card {
+  padding: clamp(18px, 3vw, 30px) !important;
+}
+body.lore-design.archive-refresh .auth-card-heading h1 {
+  margin-top: 6px !important;
+}
+body.lore-design.archive-refresh .auth-form {
+  gap: 12px !important;
+  margin-top: 16px !important;
+}
+
+body.lore-design.archive-refresh .acc-plate-body {
+  padding: clamp(18px, 2.5vw, 30px) !important;
+}
+body.lore-design.archive-refresh .acc-plate-meta {
+  margin-top: 16px !important;
+  gap: 10px !important;
+}
+body.lore-design.archive-refresh .acc-body {
+  gap: 14px !important;
+}
+body.lore-design.archive-refresh :is(.acc-split, .acc-duo, .acc-plain, .acc-collections) {
+  gap: 14px !important;
+}
+body.lore-design.archive-refresh .acc-list {
+  gap: 2px !important;
+}
+body.lore-design.archive-refresh .acc-row {
+  min-height: 42px !important;
+  padding-block: 8px !important;
+}
+
+body.lore-design.archive-refresh .places-unframed {
+  margin-top: 24px !important;
+}
+body.lore-design.archive-refresh .vice-feature-grid {
+  gap: 14px !important;
+  margin-top: 16px !important;
+}
+
+body.lore-design.archive-refresh .article-inline-toc ol {
+  gap: 4px !important;
+}
+body.lore-design.archive-refresh .article-inline-toc a {
+  min-height: 34px !important;
+  padding-block: 7px !important;
+}
+
+@media (max-width: 767px) {
+  body.lore-design.archive-refresh :is(
+    .ambient-bloom.py-6,
+    .ambient-bloom.lg\:py-8,
+    .px-4.py-6,
+    .px-4.lg\:py-8
+  ) {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+  }
+  body.lore-design.archive-refresh .legal-hq-hero { min-height: 0 !important; }
+  body.lore-design.archive-refresh .legal-hq-copy { padding: 20px 18px !important; }
+  body.lore-design.archive-refresh .legal-card-grid { gap: 8px !important; }
+  body.lore-design.archive-refresh .legal-policy-card { min-height: 145px !important; }
+  body.lore-design.archive-refresh .legal-document .wiki-content-section { padding-block: 14px !important; }
+  body.lore-design.archive-refresh .radio-song-list > li,
+  body.lore-design.archive-refresh :is(.mechanics-row, .world-row) {
+    padding: 10px 12px !important;
+  }
+  body.lore-design.archive-refresh .acc-row {
+    min-height: 40px !important;
+  }
+}
+
+/* ---- Screenshots index -------------------------------------------------- */
+body.lore-design.archive-refresh .screenshots-proof,
+body.lore-design.archive-refresh .screenshots-policy-note {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: end;
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--archive-border);
+  border-radius: 14px;
+  background: #fff;
+}
+body.lore-design.archive-refresh .screenshots-proof p,
+body.lore-design.archive-refresh .screenshots-policy-note p,
+body.lore-design.archive-refresh .screenshots-onsite > header p,
+body.lore-design.archive-refresh .screenshots-groups > header p {
+  color: var(--archive-accent);
+  font: 700 10px/1.3 var(--font-inter), sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .screenshots-proof h2,
+body.lore-design.archive-refresh .screenshots-policy-note h2,
+body.lore-design.archive-refresh .screenshots-onsite > header h2,
+body.lore-design.archive-refresh .screenshots-groups > header h2,
+body.lore-design.archive-refresh .screenshots-rules h2 {
+  margin-top: 6px;
+  color: var(--archive-ink);
+  font: 650 clamp(28px, 3vw, 44px)/.98 var(--font-cond), sans-serif;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .screenshots-proof span,
+body.lore-design.archive-refresh .screenshots-policy-note span,
+body.lore-design.archive-refresh .screenshots-onsite > header span,
+body.lore-design.archive-refresh .screenshots-groups > header span {
+  display: block;
+  max-width: 78ch;
+  margin-top: 8px;
+  color: var(--archive-muted);
+  font: 400 14px/1.55 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .screenshots-policy-note {
+  border-color: color-mix(in srgb, var(--archive-accent) 26%, var(--archive-border));
+  background:
+    linear-gradient(135deg, rgba(193, 22, 98, .07), transparent 46%),
+    #fff;
+}
+body.lore-design.archive-refresh .screenshots-proof a,
+body.lore-design.archive-refresh .screenshots-policy-note a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  border: 1px solid var(--archive-border);
+  border-radius: 999px;
+  padding: 0 14px;
+  color: var(--archive-accent);
+  font: 650 11px/1 var(--font-inter), sans-serif;
+  white-space: nowrap;
+}
+body.lore-design.archive-refresh .screenshots-onsite {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--archive-border);
+  border-radius: 14px;
+  background: #fff;
+}
+body.lore-design.archive-refresh .screenshots-live-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+body.lore-design.archive-refresh .screenshots-live-card {
+  overflow: hidden;
+  border: 1px solid var(--archive-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--gta6-concrete) 35%, white);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+body.lore-design.archive-refresh .screenshots-live-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--archive-accent) 30%, var(--archive-border));
+  box-shadow: 0 18px 34px -30px rgba(55, 32, 48, .65);
+}
+body.lore-design.archive-refresh .screenshots-live-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #ece5ec;
+}
+body.lore-design.archive-refresh .screenshots-live-media img {
+  object-fit: cover;
+  transition: transform .28s ease;
+}
+body.lore-design.archive-refresh .screenshots-live-card:hover .screenshots-live-media img {
+  transform: scale(1.035);
+}
+body.lore-design.archive-refresh .screenshots-live-copy {
+  display: grid;
+  gap: 4px;
+  padding: 9px 10px 10px;
+}
+body.lore-design.archive-refresh .screenshots-live-copy strong {
+  color: var(--archive-ink);
+  font: 650 16px/1.02 var(--font-cond), sans-serif;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .screenshots-live-copy small {
+  color: var(--archive-muted);
+  font: 600 10px/1.35 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .screenshots-package-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+body.lore-design.archive-refresh .screenshots-package-card {
+  min-height: 132px;
+  padding: 14px;
+  border: 1px solid var(--archive-border);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff, #f7f4f8);
+}
+body.lore-design.archive-refresh .screenshots-package-card span {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+body.lore-design.archive-refresh .screenshots-package-card small,
+body.lore-design.archive-refresh .screenshots-card-copy small {
+  color: var(--archive-muted);
+  font: 700 9px/1.35 var(--font-inter), sans-serif;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .screenshots-package-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--archive-ink);
+  font: 650 18px/1.05 var(--font-cond), sans-serif;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .screenshots-package-card b {
+  display: block;
+  margin-top: 16px;
+  color: var(--archive-accent);
+  font: 650 42px/.9 var(--font-cond), sans-serif;
+}
+body.lore-design.archive-refresh .screenshots-package-card p {
+  margin-top: 10px;
+  color: var(--archive-muted);
+  font: 500 12px/1.45 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .screenshots-groups {
+  margin-top: 28px;
+}
+body.lore-design.archive-refresh .screenshots-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+body.lore-design.archive-refresh .screenshots-card {
+  overflow: hidden;
+  border: 1px solid var(--archive-border);
+  border-radius: 14px;
+  background: #fff;
+}
+body.lore-design.archive-refresh .screenshots-card-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #eee9ef;
+}
+body.lore-design.archive-refresh .screenshots-card-media img {
+  object-fit: cover;
+  transition: transform .3s ease;
+}
+body.lore-design.archive-refresh .screenshots-card:hover .screenshots-card-media img {
+  transform: scale(1.035);
+}
+body.lore-design.archive-refresh .screenshots-card-copy {
+  padding: 12px;
+}
+body.lore-design.archive-refresh .screenshots-card-copy > div {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px;
+}
+body.lore-design.archive-refresh .screenshots-card-copy h3 {
+  color: var(--archive-ink);
+  font: 650 17px/1.04 var(--font-cond), sans-serif;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .screenshots-card-copy b {
+  color: var(--archive-accent);
+  font: 650 20px/1 var(--font-cond), sans-serif;
+}
+body.lore-design.archive-refresh .screenshots-card-copy p {
+  min-height: 45px;
+  margin-top: 7px;
+  color: var(--archive-muted);
+  font: 500 12px/1.45 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .screenshots-rules {
+  margin-top: 26px;
+  padding: 18px;
+  border: 1px solid var(--archive-border);
+  border-radius: 14px;
+  background: #fff;
+}
+body.lore-design.archive-refresh .screenshots-rules ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+body.lore-design.archive-refresh .screenshots-rules li {
+  border-left: 2px solid var(--archive-accent);
+  padding-left: 12px;
+}
+body.lore-design.archive-refresh .screenshots-rules strong {
+  display: block;
+  color: var(--archive-ink);
+  font: 650 14px/1.2 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .screenshots-rules span {
+  display: block;
+  margin-top: 5px;
+  color: var(--archive-muted);
+  font: 500 12px/1.5 var(--font-inter), sans-serif;
+}
+
+@media (max-width: 1100px) {
+  body.lore-design.archive-refresh .screenshots-grid,
+  body.lore-design.archive-refresh .screenshots-live-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  body.lore-design.archive-refresh .screenshots-proof,
+  body.lore-design.archive-refresh .screenshots-policy-note,
+  body.lore-design.archive-refresh .screenshots-package-grid,
+  body.lore-design.archive-refresh .screenshots-rules ul {
+    grid-template-columns: 1fr;
+  }
+  body.lore-design.archive-refresh .screenshots-grid,
+  body.lore-design.archive-refresh .screenshots-live-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  body.lore-design.archive-refresh .screenshots-proof,
+  body.lore-design.archive-refresh .screenshots-policy-note,
+  body.lore-design.archive-refresh .screenshots-onsite,
+  body.lore-design.archive-refresh .screenshots-rules {
+    padding: 14px;
+  }
+  body.lore-design.archive-refresh .screenshots-package-card {
+    min-height: 0;
+  }
+  body.lore-design.archive-refresh .screenshots-card-copy {
+    padding: 10px;
+  }
+  body.lore-design.archive-refresh .screenshots-card-copy p {
+    min-height: 0;
+  }
+}
+body.lore-design.archive-refresh .wiki-explore-panel > footer .wiki-explore-directory {
+  display: inline-flex; align-items: center; gap: .35rem;
+  color: var(--archive-ink); font: 600 12px/1.3 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .wiki-explore-panel > footer .wiki-explore-directory:hover { color: var(--archive-accent); }
+
+/* Active filter buttons use a solid accent background globally; keep their
+   labels readable instead of inheriting the accent colour into the accent fill. */
+body.lore-design.archive-refresh main button:is([aria-pressed="true"], [aria-selected="true"]):not([role="option"]):not([data-status]):not(.status-badge):not(.ghost-badge) {
+  color: #fff !important;
+}
+body.lore-design.archive-refresh main button:is([aria-pressed="true"], [aria-selected="true"]):not([role="option"]):not([data-status]):not(.status-badge):not(.ghost-badge) :is(span, strong, small, b, em, svg) {
+  color: inherit !important;
+}
+
+.site-directory-jump {
+  display: flex; flex-wrap: wrap; gap: .5rem;
+  margin-top: 1.25rem;
+}
+.site-directory-jump a {
+  padding: .45rem .8rem;
+  border: 1px solid var(--archive-border, #e7e1e6);
+  border-radius: 999px;
+  background: white;
+  color: var(--archive-muted, #5d5563);
+  font: 500 13px/1.2 var(--font-inter), sans-serif;
+  transition: border-color .15s, color .15s;
+}
+.site-directory-jump a:hover { border-color: var(--archive-accent, #b3246b); color: var(--archive-ink, #1d1622); }
+
+.site-directory-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  margin-top: 1.25rem;
+}
+.site-directory-card {
+  scroll-margin-top: 6rem;
+  padding: 1.1rem 1.1rem .8rem;
+  border: 1px solid var(--archive-border, #e7e1e6);
+  border-radius: 16px;
+  background: white;
+}
+.site-directory-card > header h2,
+.site-directory-card > header h3 {
+  color: var(--archive-ink, #1d1622);
+  font: 650 19px/1.2 var(--font-inter), sans-serif;
+  letter-spacing: -.01em;
+}
+.site-directory-card > header p { margin-top: .2rem; color: var(--archive-muted, #5d5563); font: 400 13px/1.4 var(--font-inter), sans-serif; }
+.site-directory-card > header p a { color: var(--archive-accent, #b3246b); }
+.site-directory-card > ul { margin-top: .7rem; }
+.site-directory-card > ul:not(.site-directory-chips) li + li { border-top: 1px solid var(--archive-border, #e7e1e6); }
+.site-directory-card > ul:not(.site-directory-chips) a {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .75rem;
+  padding: .6rem .25rem;
+  border-radius: 10px;
+  color: var(--archive-ink, #1d1622);
+  transition: background .15s;
+}
+.site-directory-card > ul:not(.site-directory-chips) a:hover { background: color-mix(in srgb, var(--gta6-concrete) 55%, white); }
+.site-directory-card a > svg:first-child { color: var(--archive-accent, #b3246b); }
+.site-directory-card a > svg:last-child { color: #b5adb4; }
+.site-directory-card a strong { display: block; font: 600 14px/1.3 var(--font-inter), sans-serif; }
+.site-directory-card a small { display: block; margin-top: .1rem; color: var(--archive-muted, #5d5563); font: 400 12.5px/1.4 var(--font-inter), sans-serif; }
+
+.site-directory-chips { display: flex; flex-wrap: wrap; gap: .4rem; padding-bottom: .3rem; }
+.site-directory-chips a {
+  display: inline-block;
+  padding: .35rem .65rem;
+  border: 1px solid var(--archive-border, #e7e1e6);
+  border-radius: 8px;
+  color: var(--archive-ink, #1d1622);
+  font: 500 13px/1.3 var(--font-inter), sans-serif;
+  transition: border-color .15s, color .15s;
+}
+.site-directory-chips a:hover { border-color: var(--archive-accent, #b3246b); color: var(--archive-accent, #b3246b); }
+
+.site-directory-deeper { scroll-margin-top: 6rem; margin-top: 2.5rem; }
+.site-directory-deeper > h2 { color: var(--archive-ink, #1d1622); font: 650 24px/1.2 var(--font-inter), sans-serif; letter-spacing: -.015em; }
+.site-directory-deeper > p { max-width: 70ch; margin-top: .35rem; color: var(--archive-muted, #5d5563); font: 400 14px/1.5 var(--font-inter), sans-serif; }
+
+.site-directory-account { display: flex; align-items: center; gap: .8rem; padding: 1rem 1.1rem; transition: border-color .15s; }
+.site-directory-account:hover { border-color: var(--archive-accent, #b3246b); }
+.site-directory-account > svg { color: var(--archive-accent, #b3246b); flex-shrink: 0; }
+.site-directory-account strong { display: block; color: var(--archive-ink, #1d1622); font: 600 14px/1.3 var(--font-inter), sans-serif; }
+.site-directory-account small { display: block; margin-top: .1rem; color: var(--archive-muted, #5d5563); font: 400 12.5px/1.4 var(--font-inter), sans-serif; }
+
+/* Credit line under a news hero image (text only; outbound links stay Rockstar-only) */
+.wiki-article-image-note { margin-top: .5rem; color: var(--archive-muted, #5d5563); font: 400 12.5px/1.4 var(--font-inter), sans-serif; }
+
+/* Previous / next record: always side by side, even on phones (the generic
+   single-column rule for two-column grids inside entries must not apply). */
+body.lore-design .wiki-entry-primary nav.adjacent-records { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+
+/* Type chip beside the status badge on world records: readable, archive-refresh materials */
+body.lore-design.archive-refresh .wiki-article-meta .wiki-type-chip { display: inline-flex; align-items: center; min-height: 26px; padding: 3px 10px; border: 1px solid var(--archive-border) !important; border-radius: 999px; background: white !important; color: var(--archive-ink) !important; box-shadow: none !important; font: 500 12.5px/1.2 var(--font-inter), sans-serif !important; letter-spacing: 0 !important; text-transform: none !important; }
+
+/* ==========================================================================
+   LABELS & BADGES — the home vocabulary
+   Evidence badges (StatusBadge, GhostBadge) are soft tinted pills: one colour
+   per evidence level, dark text on a light tint, a 1px border, Inter in
+   sentence case. Classification labels (TypeChip) are neutral white chips —
+   a vehicle class or a weapon type is not evidence and must not look like it.
+   ========================================================================== */
+body.lore-design.archive-refresh {
+  --badge-confirmed-ink: #087365; --badge-confirmed-bg: color-mix(in srgb, var(--gta6-teal) 13%, white); --badge-confirmed-line: color-mix(in srgb, var(--gta6-teal) 42%, white);
+  --badge-verified-ink: #175f9e;  --badge-verified-bg: color-mix(in srgb, var(--gta6-blue) 12%, white); --badge-verified-line: color-mix(in srgb, var(--gta6-blue) 38%, white);
+  --badge-analysis-ink: #7b5714;  --badge-analysis-bg: color-mix(in srgb, var(--gta6-amber) 17%, white); --badge-analysis-line: color-mix(in srgb, var(--gta6-amber) 42%, white);
+  --badge-rumour-ink: #6534a9;    --badge-rumour-bg: color-mix(in srgb, #7B4DE3 12%, white); --badge-rumour-line: color-mix(in srgb, #7B4DE3 36%, white);
+  --badge-official-ink: #a9144d;  --badge-official-bg: color-mix(in srgb, var(--gta6-pink) 12%, white); --badge-official-line: color-mix(in srgb, var(--gta6-pink) 34%, white);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge) {
+  --badge-ink: var(--badge-analysis-ink); --badge-bg: var(--badge-analysis-bg); --badge-line: var(--badge-analysis-line);
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px !important;
+  flex: 0 0 auto !important;
+  width: fit-content !important;
+  max-width: 100%;
+  min-height: 24px;
+  padding: 3px 10px 3px 8px !important;
+  border: 1px solid var(--badge-line) !important;
+  border-radius: 999px !important;
+  background: var(--badge-bg) !important;
+  color: var(--badge-ink) !important;
+  font: 600 12px/1.2 var(--font-inter), system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge) svg {
+  width: 12px; height: 12px; flex: none;
+  color: var(--badge-ink) !important;
+  stroke-width: 2.5;
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="confirmed"], [data-status="news"]) {
+  --badge-ink: var(--badge-confirmed-ink); --badge-bg: var(--badge-confirmed-bg); --badge-line: var(--badge-confirmed-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge)[data-status="verified"] {
+  --badge-ink: var(--badge-verified-ink); --badge-bg: var(--badge-verified-bg); --badge-line: var(--badge-verified-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="analysis"], [data-status="category"]) {
+  --badge-ink: var(--badge-analysis-ink); --badge-bg: var(--badge-analysis-bg); --badge-line: var(--badge-analysis-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="rumour"], [data-status="community"], [data-status="update"]) {
+  --badge-ink: var(--badge-rumour-ink); --badge-bg: var(--badge-rumour-bg); --badge-line: var(--badge-rumour-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="official"], [data-status="featured"]) {
+  --badge-ink: var(--badge-official-ink); --badge-bg: var(--badge-official-bg); --badge-line: var(--badge-official-line);
+}
+/* The ghost variant is the outline of the same colour on white; a rumour is
+   always dashed, so the level reads even without colour. */
+body.lore-design.archive-refresh .ghost-badge { background: #fff !important; }
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="rumour"], [data-status="community"]) { border-style: dashed !important; }
+
+/* Over an image (news cards, hero frames) the pill needs a solid ground. */
+body.lore-design.archive-refresh :is(.absolute, [class*="absolute "]) > :is(.status-badge, .ghost-badge),
+body.lore-design.archive-refresh .absolute :is(.status-badge, .ghost-badge) {
+  background: rgb(255 255 255 / .94) !important;
+  box-shadow: 0 1px 2px rgb(20 12 24 / .12) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Classification chips. Also restyles any leftover .entity-label and the
+   typed spans in the article meta row, which the old theme painted navy. */
+body.lore-design.archive-refresh :is(.type-chip, .entity-label, .wiki-article-meta > span:not(.status-badge):not(.ghost-badge)) {
+  display: inline-flex !important;
+  align-items: center;
+  flex: 0 0 auto !important;
+  width: fit-content !important;
+  max-width: 100%;
+  min-height: 24px;
+  padding: 3px 10px !important;
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: var(--archive-ink) !important;
+  font: 500 12px/1.2 var(--font-inter), system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+body.lore-design.archive-refresh .type-chip::before {
+  content: '';
+  width: 6px; height: 6px; margin-right: 6px;
+  border-radius: 50%;
+  background: var(--archive-accent);
+  flex: none;
+}
+/* Meta rows: badge and chip sit on one baseline with an even gap. */
+body.lore-design.archive-refresh .wiki-article-meta { gap: 8px !important; align-items: center !important; }
+
+/* ---- Accessibility fixes found by the Macaco (run #3) ---------------------- */
+/* Contrast: small muted labels were ~4.3:1 on the light grounds; this ink is
+   above 6:1 on white, the archive paper and the footer tint. */
+body.lore-design.archive-refresh :is(.footer-v3-legal > p, .footer-v3-release > span, .legal-policy-number, .map-county-ledger-heading > span, .map-bible-fact-grid dt) {
+  color: #5c4853 !important;
+}
+/* Links inside running text are underlined, not told apart by colour alone. */
+body.lore-design.archive-refresh main :is(p, dd) > a:not([class*="button"]):not([class*="chip"]):not([class*="card"]) {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+/* Keyboard focus on the scrollable image rail. */
+body.lore-design.archive-refresh .film-rail:focus-visible { outline: 2px solid var(--archive-accent); outline-offset: 4px; border-radius: 12px; }
+/* Database overview counts. */
+body.lore-design.archive-refresh .database-branch-count { margin-left: auto; color: var(--archive-ink); font: 650 18px/1 var(--font-inter), sans-serif; font-variant-numeric: tabular-nums; }
+
+/* ---- Legal desk: the homepage's editorial grammar, tuned for long reading. */
+body.lore-design.archive-refresh .legal-shell {
+  max-width: 1400px !important;
+  padding-inline: clamp(14px, 4vw, 56px) !important;
+}
+body.lore-design.archive-refresh .legal-hq-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  min-height: 390px;
+  overflow: hidden;
+  border: 1px solid var(--archive-border);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 20px 60px -50px rgba(50, 34, 57, .45);
+}
+body.lore-design.archive-refresh .legal-hq-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(30px, 5vw, 68px);
+}
+body.lore-design.archive-refresh .legal-hq-signal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #694966;
+  font: 650 10px/1.4 var(--font-inter), sans-serif;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .legal-hq-signal i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--archive-accent);
+}
+body.lore-design.archive-refresh .legal-hq-signal span { color: var(--archive-muted); }
+body.lore-design.archive-refresh .legal-hq-copy h1 {
+  margin-top: 22px;
+  color: var(--archive-ink);
+  font: 650 clamp(54px, 7vw, 104px)/.86 var(--font-cond), sans-serif;
+  letter-spacing: -.045em;
+}
+body.lore-design.archive-refresh .legal-hq-copy h1 span,
+body.lore-design.archive-refresh .legal-hq-copy h1 strong { display: block; }
+body.lore-design.archive-refresh .legal-hq-copy h1 span {
+  color: #665565;
+  font-size: .35em;
+  line-height: 1.25;
+  letter-spacing: .035em;
+}
+body.lore-design.archive-refresh .legal-hq-copy h1 strong { font-weight: inherit; }
+body.lore-design.archive-refresh .legal-hq-copy > p:not(.legal-hq-signal) {
+  max-width: 57ch;
+  margin-top: 20px;
+  color: var(--archive-muted);
+  font: 400 clamp(15px, 1.2vw, 18px)/1.65 var(--font-inter), sans-serif;
+}
+
+/* ---- Sources methodology: trust as a product surface. */
+body.lore-design.archive-refresh .source-method {
+  display: grid;
+  grid-template-columns: minmax(260px, .75fr) minmax(0, 1.25fr);
+  gap: clamp(18px, 3vw, 34px);
+  margin-top: 26px;
+  padding: clamp(20px, 3.2vw, 34px);
+  border: 1px solid var(--archive-border);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--archive-accent) 13%, transparent), transparent 33%),
+    linear-gradient(135deg, #fff, #f8f5f8);
+}
+body.lore-design.archive-refresh .source-method-copy p {
+  color: var(--archive-accent);
+  font: 700 10px/1.3 var(--font-inter), sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .source-method-copy h2 {
+  margin-top: 10px;
+  max-width: 12ch;
+  color: var(--archive-ink);
+  font: 650 clamp(34px, 4.5vw, 64px)/.92 var(--font-cond), sans-serif;
+  letter-spacing: -.035em;
+}
+body.lore-design.archive-refresh .source-method-copy span {
+  display: block;
+  max-width: 52ch;
+  margin-top: 16px;
+  color: var(--archive-muted);
+  font: 400 15px/1.65 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .source-method-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+body.lore-design.archive-refresh .source-method-grid article,
+body.lore-design.archive-refresh .source-state-strip span {
+  border: 1px solid rgb(38 35 43 / .09);
+  border-radius: 12px;
+  background: white;
+}
+body.lore-design.archive-refresh .source-method-grid article { padding: 16px; }
+body.lore-design.archive-refresh .source-method-grid strong,
+body.lore-design.archive-refresh .source-state-strip b {
+  display: block;
+  color: var(--archive-ink);
+  font: 650 15px/1.12 var(--font-cond), sans-serif;
+  text-transform: uppercase;
+}
+body.lore-design.archive-refresh .source-method-grid small,
+body.lore-design.archive-refresh .source-state-strip small {
+  display: block;
+  margin-top: 7px;
+  color: var(--archive-muted);
+  font: 500 12px/1.55 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .source-state-strip {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+body.lore-design.archive-refresh .source-state-strip span { padding: 14px; }
+body.lore-design.archive-refresh .legal-hq-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 28px;
+  margin-top: 30px;
+  padding-top: 16px;
+  border-top: 1px solid var(--archive-border);
+}
+body.lore-design.archive-refresh .legal-hq-meta dt,
+body.lore-design.archive-refresh .legal-policy-hero dt {
+  color: #766574;
+  font: 550 10px/1.35 var(--font-inter), sans-serif;
+}
+body.lore-design.archive-refresh .legal-hq-meta dd,
+body.lore-design.archive-refresh .legal-policy-hero dd {
+  margin-top: 3px;
+  color: var(--archive-ink);
+  font: 650 12px/1.4 var(--font-inter), sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+body.lore-design.archive-refresh .legal-hq-register {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  overflow: hidden;
+  background: #302333;
+  color: #fff;
+}
+body.lore-design.archive-refresh .legal-hq-register::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .22;
+  background: repeating-linear-gradient(90deg, transparent 0 35px, rgba(255,255,255,.11) 35px 36px);
+}
+body.lore-design.archive-refresh .legal-hq-register > * { position: relative; }
+body.lore-design.archive-refresh .legal-hq-register > span {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  margin-bottom: auto;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.2);
+}
+body.lore-design.archive-refresh .legal-hq-register p { color: #ffb5d1; font: 650 10px/1.4 var(--font-inter), sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+body.lore-design.archive-refresh .legal-hq-register strong { margin-top: 7px; font: 600 92px/.82 var(--font-cond), sans-serif; letter-spacing: -.04em; }
+body.lore-design.archive-refresh .legal-hq-register small { margin-top: 13px; color: #e8dee8; font: 450 12px/1.6 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .legal-hq-register > i { margin-top: 22px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.17); color: #ffcadc; font: 600 10px/1.45 var(--font-inter), sans-serif; font-style: normal; }
+
+body.lore-design.archive-refresh .legal-assurance-strip { gap: 8px !important; }
+body.lore-design.archive-refresh .legal-assurance-strip span {
+  min-height: 46px;
+  border-radius: 9px !important;
+  color: #574751;
+  font: 600 11px/1.35 var(--font-inter), sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body.lore-design.archive-refresh .legal-section-head {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--archive-border);
+}
+body.lore-design.archive-refresh .legal-section-head > span { color: var(--archive-accent); font: 650 11px/1 var(--font-inter), sans-serif; letter-spacing: .1em; }
+body.lore-design.archive-refresh .legal-section-head p,
+body.lore-design.archive-refresh .legal-panel-kicker { color: var(--archive-accent); font: 650 10px/1.4 var(--font-inter), sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+body.lore-design.archive-refresh .legal-section-head h2 { margin-top: 5px; color: var(--archive-ink); font: 650 clamp(28px, 3vw, 44px)/1 var(--font-cond), sans-serif; letter-spacing: -.02em; }
+body.lore-design.archive-refresh .legal-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+body.lore-design.archive-refresh .legal-policy-card {
+  --policy-accent: #c22e70;
+  min-height: 205px !important;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+  grid-template-rows: auto 1fr auto !important;
+  gap: 12px 14px !important;
+  padding: 20px !important;
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+body.lore-design.archive-refresh .legal-policy-card[data-policy="privacy"],
+body.lore-design.archive-refresh .legal-policy-card[data-policy="cookies"] { --policy-accent: #347b81; }
+body.lore-design.archive-refresh .legal-policy-card[data-policy="copyright"],
+body.lore-design.archive-refresh .legal-policy-card[data-policy="community"] { --policy-accent: #6d4fc5; }
+body.lore-design.archive-refresh .legal-policy-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--policy-accent);
+}
+body.lore-design.archive-refresh .legal-policy-icon {
+  width: 44px;
+  height: 44px;
+  grid-row: 1 !important;
+  color: var(--policy-accent) !important;
+  border: 1px solid color-mix(in srgb, var(--policy-accent) 25%, white) !important;
+  border-radius: 9px !important;
+  background: color-mix(in srgb, var(--policy-accent) 7%, white) !important;
+}
+body.lore-design.archive-refresh .legal-policy-card strong { align-self: center; padding-right: 22px; color: var(--archive-ink); font: 650 20px/1.05 var(--font-cond), sans-serif; letter-spacing: 0; text-transform: none; }
+body.lore-design.archive-refresh .legal-policy-card small { grid-column: 1 / -1 !important; margin: 0; color: var(--archive-muted); font: 400 13px/1.6 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .legal-policy-open { grid-column: 1 / -1 !important; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--archive-border); color: var(--policy-accent); font: 650 11px/1.2 var(--font-inter), sans-serif; letter-spacing: 0; text-transform: none; }
+body.lore-design.archive-refresh .legal-policy-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--policy-accent) 35%, white) !important; box-shadow: 0 18px 30px -28px rgba(50,34,57,.6) !important; }
+body.lore-design.archive-refresh .legal-service-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr); gap: 12px; }
+body.lore-design.archive-refresh :is(.legal-route-panel, .legal-contact-card) { border-radius: 14px !important; box-shadow: none !important; }
+body.lore-design.archive-refresh .legal-route-panel h2,
+body.lore-design.archive-refresh .legal-contact-card h2 { margin-top: 7px; color: var(--archive-ink) !important; font: 650 25px/1.05 var(--font-cond), sans-serif !important; letter-spacing: -.01em !important; text-transform: none !important; }
+body.lore-design.archive-refresh .legal-route-list dd a { color: var(--archive-accent); font: 650 12px/1.3 var(--font-inter), sans-serif; letter-spacing: 0; text-transform: none; }
+body.lore-design.archive-refresh .legal-contact-card { border-top: 1px solid var(--archive-border) !important; }
+
+body.lore-design.archive-refresh .legal-policy-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(24px, 5vw, 70px);
+  align-items: end;
+  padding: clamp(30px, 5vw, 58px);
+  border: 1px solid var(--archive-border);
+  border-top: 4px solid var(--archive-accent);
+  border-radius: 16px;
+  background: #fff;
+}
+body.lore-design.archive-refresh .legal-policy-hero h1 { margin-top: 18px; color: var(--archive-ink); font: 650 clamp(46px, 6vw, 84px)/.9 var(--font-cond), sans-serif; letter-spacing: -.035em; }
+body.lore-design.archive-refresh .legal-policy-hero > div > p:last-child { max-width: 62ch; margin-top: 16px; color: var(--archive-muted); font: 400 clamp(15px, 1.1vw, 17px)/1.65 var(--font-inter), sans-serif; }
+body.lore-design.archive-refresh .legal-policy-hero > dl { display: grid; grid-template-columns: repeat(3, minmax(90px, auto)); gap: 16px; }
+body.lore-design.archive-refresh .legal-policy-hero > dl > div { padding-left: 14px; border-left: 1px solid var(--archive-border); }
+body.lore-design.archive-refresh .legal-document-layout { grid-template-columns: minmax(0, 1fr) minmax(240px, 280px) !important; gap: 18px !important; }
+body.lore-design.archive-refresh .legal-document { padding: clamp(18px, 3vw, 36px) !important; border: 1px solid var(--archive-border) !important; border-radius: 16px !important; background: #fff !important; }
+body.lore-design.archive-refresh .legal-effective { border: 0 !important; border-bottom: 1px solid var(--archive-border) !important; border-radius: 0 !important; background: transparent !important; padding: 0 0 18px !important; }
+body.lore-design.archive-refresh .legal-document .wiki-content-section { padding-block: 20px !important; margin: 0 !important; border-bottom: 1px solid var(--archive-border); }
+body.lore-design.archive-refresh .legal-document .wiki-content-section:last-of-type { border-bottom: 0; }
+body.lore-design.archive-refresh .legal-document .wiki-content-section > h2 { margin-bottom: 14px !important; color: var(--archive-ink) !important; font: 650 clamp(23px, 2.2vw, 31px)/1.08 var(--font-cond), sans-serif !important; letter-spacing: -.015em !important; }
+body.lore-design.archive-refresh .legal-document .wiki-content-section > p { color: #4c4149 !important; font: 400 clamp(15px, .3vw + 14px, 17px)/1.72 var(--font-serif), Georgia, serif !important; }
+body.lore-design.archive-refresh .legal-bullet-list { gap: 8px !important; }
+body.lore-design.archive-refresh .legal-bullet-list li { border: 0 !important; border-left: 2px solid #d9cbd4 !important; border-radius: 0 !important; background: #fbf8f9 !important; padding: 10px 14px !important; }
+body.lore-design.archive-refresh .legal-document-nav .wiki-toc-panel,
+body.lore-design.archive-refresh .legal-help-card { border-radius: 12px !important; box-shadow: none !important; }
+
+@media (max-width: 900px) {
+  body.lore-design.archive-refresh .legal-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  body.lore-design.archive-refresh .legal-service-grid { grid-template-columns: 1fr; }
+  body.lore-design.archive-refresh .legal-policy-hero { grid-template-columns: 1fr; }
+  body.lore-design.archive-refresh .legal-policy-hero > dl { justify-content: start; }
+  body.lore-design.archive-refresh .legal-document-layout { grid-template-columns: 1fr !important; }
+  body.lore-design.archive-refresh .legal-document-nav { position: static !important; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.lore-design.archive-refresh .legal-back-link { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  body.lore-design.archive-refresh .legal-shell { padding-top: 12px !important; }
+  body.lore-design.archive-refresh .legal-hq-hero { grid-template-columns: 1fr; min-height: 0; border-radius: 14px; }
+  body.lore-design.archive-refresh .legal-hq-copy { padding: 26px 20px; }
+  body.lore-design.archive-refresh .legal-hq-copy h1 { margin-top: 16px; font-size: clamp(58px, 18vw, 78px); }
+  body.lore-design.archive-refresh .legal-hq-copy > p:not(.legal-hq-signal) { margin-top: 15px; font-size: 15px; }
+  body.lore-design.archive-refresh .legal-hq-meta { margin-top: 20px; gap: 12px 20px; }
+  body.lore-design.archive-refresh .legal-hq-meta > div:last-child { display: none; }
+  body.lore-design.archive-refresh .legal-hq-register { min-height: 150px; display: grid; grid-template-columns: 44px 1fr auto; grid-template-rows: auto auto; gap: 5px 14px; align-items: center; padding: 20px; }
+  body.lore-design.archive-refresh .legal-hq-register > span { grid-row: 1 / 3; margin: 0; }
+  body.lore-design.archive-refresh .legal-hq-register p { align-self: end; }
+  body.lore-design.archive-refresh .legal-hq-register strong { grid-row: 1 / 3; grid-column: 3; margin: 0; font-size: 66px; }
+  body.lore-design.archive-refresh .legal-hq-register small { align-self: start; margin: 0; }
+  body.lore-design.archive-refresh .legal-hq-register > i { grid-column: 1 / -1; margin-top: 9px; padding-top: 10px; }
+  body.lore-design.archive-refresh .legal-section-head { grid-template-columns: 28px minmax(0, 1fr); gap: 10px; }
+  body.lore-design.archive-refresh .legal-section-head h2 { font-size: 31px; }
+  body.lore-design.archive-refresh .legal-card-grid { grid-template-columns: 1fr !important; gap: 9px !important; }
+  body.lore-design.archive-refresh .legal-policy-card { min-height: 170px !important; padding: 17px !important; }
+  body.lore-design.archive-refresh .legal-policy-hero { gap: 22px; padding: 24px 20px; border-radius: 14px; }
+  body.lore-design.archive-refresh .legal-policy-hero h1 { font-size: clamp(43px, 13vw, 60px); }
+  body.lore-design.archive-refresh .legal-policy-hero > dl { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  body.lore-design.archive-refresh .legal-policy-hero > dl > div { padding-left: 8px; }
+  body.lore-design.archive-refresh .legal-policy-hero dd { font-size: 10px; overflow-wrap: anywhere; }
+  body.lore-design.archive-refresh .legal-document { padding: 17px !important; border-radius: 14px !important; }
+  body.lore-design.archive-refresh .legal-document .wiki-content-section { padding-block: 17px !important; }
+  body.lore-design.archive-refresh .legal-document-nav { grid-template-columns: 1fr; }
+  body.lore-design.archive-refresh .legal-back-link { grid-column: auto; }
+}
+
+@media (max-width: 640px) {
+  body.lore-design.archive-refresh .article-evidence-lens,
+  body.lore-design.archive-refresh .source-method {
+    grid-template-columns: 1fr;
+  }
+  body.lore-design.archive-refresh .article-evidence-lens dl,
+  body.lore-design.archive-refresh .source-method-grid,
+  body.lore-design.archive-refresh .source-state-strip,
+  body.lore-design.archive-refresh .acc-watch-brief {
+    grid-template-columns: 1fr;
+  }
+  body.lore-design.archive-refresh .hq-claim-panel li strong {
+    white-space: normal;
+  }
+}
+
+/* ---- GTA VI palette bridge: final cascade pass ------------------------------
+   This stylesheet loads last. These rules catch older pages/components still
+   authored with legacy Tailwind colour utilities or fixed semantic classes,
+   without changing their layouts. */
+body.lore-design.archive-refresh {
+  --color-action: var(--archive-accent);
+  --color-action-hot: var(--archive-accent-hot);
+  --color-system: var(--archive-system);
+  --color-verified: var(--archive-verified);
+  --color-money: var(--archive-money);
+  --color-warning: var(--archive-warning);
+  --color-danger: var(--archive-danger);
+  --color-verified-ink: var(--archive-verified-ink);
+  --color-system-ink: var(--archive-system-ink);
+  --color-warning-ink: var(--archive-warning-ink);
+  --color-danger-ink: var(--archive-danger-ink);
+}
+body.lore-design.archive-refresh :is(.text-pink, .hover\:text-pink:hover) { color: var(--color-action) !important; }
+body.lore-design.archive-refresh :is(.text-mint, .hover\:text-mint:hover) { color: var(--color-verified-ink) !important; }
+body.lore-design.archive-refresh :is(.text-violet, .hover\:text-violet:hover) { color: var(--color-system-ink) !important; }
+body.lore-design.archive-refresh :is(.text-warn, .hover\:text-warn:hover) { color: var(--color-warning-ink) !important; }
+body.lore-design.archive-refresh :is(.text-danger, .hover\:text-danger:hover) { color: var(--color-danger-ink) !important; }
+body.lore-design.archive-refresh :is(.bg-pink) { background-color: var(--color-action) !important; }
+body.lore-design.archive-refresh :is(.bg-mint) { background-color: var(--color-verified) !important; }
+body.lore-design.archive-refresh :is(.bg-violet) { background-color: var(--color-system) !important; }
+body.lore-design.archive-refresh :is(.bg-warn) { background-color: var(--color-warning) !important; }
+body.lore-design.archive-refresh :is(.bg-danger) { background-color: var(--color-danger) !important; }
+body.lore-design.archive-refresh :is(.border-pink, .hover\:border-pink:hover) { border-color: var(--color-action) !important; }
+body.lore-design.archive-refresh :is(.border-mint, .hover\:border-mint:hover) { border-color: var(--color-verified) !important; }
+body.lore-design.archive-refresh :is(.border-violet, .hover\:border-violet:hover) { border-color: var(--color-system) !important; }
+body.lore-design.archive-refresh :is(.border-warn, .hover\:border-warn:hover) { border-color: var(--color-warning) !important; }
+body.lore-design.archive-refresh :is(.border-danger, .hover\:border-danger:hover) { border-color: var(--color-danger) !important; }
+body.lore-design.archive-refresh [class*="bg-pink/"] { background-color: color-mix(in srgb, var(--color-action) 8%, transparent) !important; }
+body.lore-design.archive-refresh [class*="bg-mint/"] { background-color: color-mix(in srgb, var(--color-verified) 8%, transparent) !important; }
+body.lore-design.archive-refresh [class*="bg-violet/"] { background-color: color-mix(in srgb, var(--color-system) 8%, transparent) !important; }
+body.lore-design.archive-refresh [class*="bg-warn/"] { background-color: color-mix(in srgb, var(--color-warning) 12%, transparent) !important; }
+body.lore-design.archive-refresh [class*="border-pink/"] { border-color: color-mix(in srgb, var(--color-action) 32%, transparent) !important; }
+body.lore-design.archive-refresh [class*="border-mint/"] { border-color: color-mix(in srgb, var(--color-verified) 32%, transparent) !important; }
+body.lore-design.archive-refresh [class*="border-violet/"] { border-color: color-mix(in srgb, var(--color-system) 32%, transparent) !important; }
+body.lore-design.archive-refresh [class*="border-warn/"] { border-color: color-mix(in srgb, var(--color-warning) 36%, transparent) !important; }
+body.lore-design.archive-refresh :is(.wiki-global-brand > span:first-child, .wiki-account-card-avatar, .auth-submit, .btn-hero) {
+  background-image: linear-gradient(140deg, var(--gta6-blue-ink), var(--color-action)) !important;
+}
+
+/* ---- «Page actions» na paleta ----------------------------------------------
+   O rótulo e o hover das acções da página eram pintados com --vice-violet
+   numa regra antiga de globals.css que nenhuma camada nova sobrepunha: era
+   o último violeta de interface fora da paleta. Navegação é azul, e o texto
+   usa a variante -ink, que passa AA sobre o concrete da barra. */
+body.lore-design.archive-refresh .wiki-user-actions-label > span { color: var(--archive-system-ink) !important; }
+body.lore-design.archive-refresh .wiki-user-action:hover { color: var(--archive-system-ink) !important; }
+
+/* ---- Chip de filtro activo: fundo sólido, como a regra promete -----------------------
+   A regra dos botões seleccionados pinta o texto de branco a contar com um
+   fundo de acento sólido. Dentro dos grupos de filtros, porém, o fundo vinha
+   da ponte [class*="bg-pink/"], que lhe dá só um véu de 5–8% sobre branco: o
+   estado por omissão («All») ficava com texto branco a cerca de 1:1, invisível,
+   em /database/vehicles, /database/weapons, /database/characters e duas vezes
+   em /map. Aqui o fundo sólido chega de facto, e o branco passa a 5.87:1.
+   Delimitado aos contentores de filtros: favoritos e outros botões premidos
+   fora deles não mudam. */
+body.lore-design.archive-refresh main :is([role="tablist"], .wiki-filter-panel, .wiki-filter-group) button:is([aria-pressed="true"], [aria-selected="true"]):not([role="option"]):not([data-status]):not(.status-badge):not(.ghost-badge) {
+  background-color: var(--archive-accent) !important;
+  border-color: var(--archive-accent) !important;
+  color: #fff !important;
+}

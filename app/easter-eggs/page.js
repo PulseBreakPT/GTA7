@@ -19,10 +19,9 @@ export default function EasterEggsIndex() {
     <div className="ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1180px] w-full mx-auto flex-1">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Wiki', href: '/wiki' }, { label: 'Secrets' }]} />
 
-      <div className="data-rail mt-2">SECRET INDEX · KEPT APART FROM THE CONFIRMED RECORD</div>
-
       <div className="mt-4">
         <CategoryHeader
+          kind="secrets"
           eyebrow="Community finds"
           title="Secrets"
           description="Oddities the community has reported and the archive has catalogued separately, so a theory never sits next to a fact as if it were one. Each one carries its label, the clues it rests on, and where it is said to be."
@@ -31,7 +30,7 @@ export default function EasterEggsIndex() {
         />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="visual-card-grid two-up-visual-grid mt-6">
         {easterEggs.map((egg) => {
           const found = egg.clues.filter((c) => c.found).length
           const place = locations.find((l) => l.slug === egg.location)

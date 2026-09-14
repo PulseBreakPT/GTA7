@@ -1,0 +1,22 @@
+{
+  "name": "macaco",
+  "version": "1.0.0",
+  "description": "Autonomous QA bot for Lusorae: explores the site in a real browser, finds what breaks and reports it with evidence and a replayable seed.",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "macaco": "./bin/macaco.mjs"
+  },
+  "scripts": {
+    "smart": "node bin/macaco.mjs lusorae.pt --mode smart",
+    "chaos": "node bin/macaco.mjs lusorae.pt --mode chaos",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "axe-core": "^4.10.0",
+    "playwright": "^1.55.0"
+  }
+}

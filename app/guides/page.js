@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { guides } from '@/lib/content'
 import { StatusBadge, fmtDate } from '@/components/site/ui'
 import { ChevronRight } from 'lucide-react'
-import { Breadcrumb } from '@/components/site/wiki'
+import { Breadcrumb, CategoryHeader } from '@/components/site/wiki'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -19,12 +19,9 @@ function App() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex-1 w-full max-w-[1280px] mx-auto">
       <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Guides' }]} />
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="ghost-type" data-ghost="GUIDES"><h1 className="chromatic-title font-cond font-bold uppercase text-paper leading-[0.82] tracking-tight text-[64px] sm:text-[78px]">GUIDES</h1></div>
-        {/* Estes três números estavam escritos à mão: diziam quatro guias
-            quando são cinco, e trinta e seis minutos quando são a soma dos
-            tempos de leitura. Contam-se agora das próprias entradas. */}
-        <div className="flex items-stretch">
+      <div className="mt-4">
+        <CategoryHeader eyebrow="Practical reference" title="Guides" image="/media/key-art/jason-lucia-robbery.webp" imageAlt="Official GTA VI artwork of Jason and Lucia leaving a robbery" description="Structured walkthroughs for understanding systems, evidence and the world without burying the task beneath archive detail." count={guides.length} countLabel="guides">
+        <div className="mt-4 flex flex-wrap items-stretch gap-y-3">
           {counters.map(([n, label], i) => (
             <div key={label} className={`px-5 flex flex-col justify-center leading-none ${i > 0 ? 'border-l hairline' : ''}`}>
               <span className="font-cond font-bold text-[26px] text-paper tabular-nums text-center">{n}</span>
@@ -32,17 +29,25 @@ function App() {
             </div>
           ))}
         </div>
+        </CategoryHeader>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      <div className="visual-card-grid guides-card-grid mt-6">
         {guides.map((g) => (
           <Link key={g.slug} href={`/guides/${g.slug}`} className="panel rounded-sm overflow-hidden group hover:border-black/30 transition-colors flex flex-col">
             <div className="relative aspect-[16/7] overflow-hidden">
-              <Image src={g.image} alt={g.title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+              {g.image ? (
+                <Image src={g.image} alt={g.title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+              ) : (
+                /* Um estado técnico não é conteúdo editorial: «NO VERIFIED
+                   SUBJECT IMAGE» dizia ao leitor uma coisa sobre a nossa
+                   base de dados, não sobre o guia. Fica uma área neutra. */
+                <div className="absolute inset-0 bg-surface2/70" aria-hidden="true" />
+              )}
               <span className="absolute top-3 left-3"><StatusBadge status={g.status} /></span>
             </div>
-            <div className="p-5 flex flex-col flex-1">
-              <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[1] text-[28px]">{g.title}</h2>
+            <div className="p-3 sm:p-5 flex flex-col flex-1">
+              <h2 className="font-cond font-bold uppercase text-paper tracking-tight leading-[1] text-[18px] sm:text-[28px] line-clamp-2">{g.title}</h2>
               <p className="text-dim text-[13px] leading-relaxed mt-2">{g.summary}</p>
               <div className="mt-auto pt-4 flex items-center justify-between">
                 <span className="font-cond uppercase tracking-[0.14em] text-[11px] text-dim">{fmtDate(g.publishedAt)}&nbsp;&nbsp;·&nbsp;&nbsp;{g.readTime} MIN&nbsp;&nbsp;·&nbsp;&nbsp;{g.steps.length} STEPS</span>

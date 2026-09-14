@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Search } from 'lucide-react'
-import SearchModal from './search'
 import { cx } from './ui'
+import { openGlobalSearch } from './home-client'
 
 // A barra superior saiu. O que ela tinha de indispensável era uma coisa
 // só — a pesquisa — e essa passa a viver num botão flutuante no canto,
@@ -14,7 +14,6 @@ import { cx } from './ui'
 // em todas as páginas para mostrar um campo que quase nunca se usa.
 export default function SearchFab() {
   const pathname = usePathname() || '/'
-  const [open, setOpen] = useState(false)
   const [compact, setCompact] = useState(false)
   const lastY = useRef(0)
 
@@ -40,17 +39,6 @@ export default function SearchFab() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    const onKey = (e) => {
-      const tag = (e.target.tagName || '').toLowerCase()
-      const typing = tag === 'input' || tag === 'textarea' || e.target.isContentEditable
-      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); setOpen(true) }
-      else if (e.key === '/' && !typing) { e.preventDefault(); setOpen(true) }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-
   // Nas páginas da base de dados a lupa vive dentro do menu flutuante;
   // aqui fica só o atalho de teclado, que é global. Os efeitos acima
   // correm na mesma — é só o botão que não se desenha duas vezes.
@@ -60,16 +48,16 @@ export default function SearchFab() {
     <>
       {!hosted && (
       <div
-        className="fixed top-0 right-0 z-[80] p-3 pointer-events-none"
+        className="mobile-search-fab fixed top-0 right-0 z-[80] p-3 pointer-events-none"
         style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}
       >
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={openGlobalSearch}
           aria-label="Search the archive"
           aria-keyshortcuts="/"
           className={cx(
-            'group pointer-events-auto relative flex items-center justify-center rounded-[32%] bg-ink',
+            'gta-lore-search-fab group pointer-events-auto relative flex items-center justify-center rounded-[32%] bg-ink',
             // A mesma gramática de luz da barra de baixo: aresta no topo,
             // contorno, contacto, elevação e a sombra tingida — aqui em
             // turquesa, que é a cor da pesquisa em todo o sítio.
@@ -96,8 +84,6 @@ export default function SearchFab() {
         </button>
       </div>
       )}
-
-      <SearchModal open={open} onClose={() => setOpen(false)} />
     </>
   )
 }

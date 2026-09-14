@@ -3,27 +3,27 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {
-  House, Library, Map, Newspaper, MoreHorizontal, X, Users, Car, Crosshair,
-  MapPin, Radio as RadioIcon, Repeat2, Layers, FolderTree, Sparkles, BookOpen,
-  Images, BookMarked, BarChart3, Clock, Shuffle,
-} from 'lucide-react'
+import { House, Library, Newspaper, MoreHorizontal, X, MapPin, UserRound, ShieldCheck } from 'lucide-react'
 import { SITE_COUNTERS } from '@/lib/content'
+import { NAV_SECTIONS } from '@/lib/navigation'
+import { useAuth } from './auth-provider'
 import { cx } from './ui'
 
 // A barra flutuante inferior. Quatro destinos mais um «More»: acima de
 // cinco alvos o polegar deixa de acertar, e este arquivo tem quinze
 // destinos — os outros dez vivem na folha, agrupados por natureza.
 
+const STAFF = new Set(['moderator', 'admin'])
+
 const WIKI_ROUTES = ['/wiki', '/sources', '/database', '/gangs-factions', '/editions', '/categories', '/easter-eggs']
-const inWiki = (p) => WIKI_ROUTES.some((r) => p.startsWith(r)) || p.startsWith('/map/')
+const inWiki = (p) => WIKI_ROUTES.some((r) => p === r || p.startsWith(`${r}/`))
 
 // Cada destino leva a sua cor, como cada medidor do HUD do jogo leva a
 // dele: reconhece-se o sítio pela cor antes de se ler a palavra.
 const TABS = [
   { key: 'home', label: 'Home', href: '/', icon: House, match: (p) => p === '/', tint: 'pink' },
   { key: 'wiki', label: 'Wiki', href: '/wiki', icon: Library, match: inWiki, tint: 'violet' },
-  { key: 'map', label: 'Map', href: '/map', icon: Map, match: (p) => p === '/map', tint: 'mint' },
+  { key: 'map', label: 'Places', href: '/map', icon: MapPin, match: (p) => p === '/map' || p.startsWith('/map/'), tint: 'mint' },
   { key: 'news', label: 'News', href: '/news', icon: Newspaper, match: (p) => p.startsWith('/news'), tint: 'warn' },
 ]
 
@@ -37,41 +37,16 @@ const TINT = {
   paper: { pill: 'bg-paper', text: 'text-paper', ring: 'bg-black/[0.06]', dot: 'bg-paper', wash: 'bg-black/[0.06]', hoverRing: 'hover:bg-black/[0.04]', ringLine: 'ring-black/10', glow: 'shadow-[0_2px_10px_-2px_rgba(11,15,22,0.45)]', cast: '0 10px 30px -14px rgba(11,15,22,0.35)' },
 }
 
+// A folha mostra o mapa de navegação partilhado (lib/navigation) inteiro,
+// secção a secção — o mesmo do cabeçalho e do rodapé. A casa já tem
+// botão na barra, por isso sai daqui; a conta entra no fim.
 const SHEET_GROUPS = [
-  {
-    title: 'Wiki', tint: 'violet',
-    items: [
-      { label: 'All entries', href: '/wiki', icon: Library },
-      { label: 'Characters', href: '/database/characters', icon: Users },
-      { label: 'Vehicles', href: '/database/vehicles', icon: Car },
-      { label: 'Weapons', href: '/database/weapons', icon: Crosshair },
-      { label: 'Locations', href: '/map', icon: MapPin },
-      { label: 'Factions', href: '/gangs-factions', icon: Users },
-      { label: 'Radio', href: '/database/radio', icon: RadioIcon },
-      { label: 'Mechanics', href: '/database/mechanics', icon: Repeat2 },
-      { label: 'Editions', href: '/editions', icon: Layers },
-    ],
-  },
-  {
-    title: 'Read', tint: 'pink',
-    items: [
-      { label: 'News', href: '/news', icon: Newspaper },
-      { label: 'Guides', href: '/guides', icon: BookOpen },
-      { label: 'Media', href: '/media', icon: Images },
-      { label: 'Categories', href: '/categories', icon: FolderTree },
-    ],
-  },
-  {
-    title: 'About the archive', tint: 'mint',
-    items: [
-      { label: 'Sources', href: '/sources', icon: BookMarked },
-      { label: 'Statistics', href: '/wiki/statistics', icon: BarChart3 },
-      { label: 'Recent changes', href: '/wiki/changes', icon: Clock },
-      { label: 'All categories', href: '/wiki/categories', icon: FolderTree },
-      { label: 'Special pages', href: '/wiki/special', icon: Sparkles },
-      { label: 'Random entry', href: '/wiki/random', icon: Shuffle },
-    ],
-  },
+  ...NAV_SECTIONS.map((section) => ({
+    title: section.label,
+    tint: section.tint === 'warn' ? 'pink' : section.tint,
+    items: section.links.filter((link) => link.href !== '/'),
+  })),
+  { title: 'Account', tint: 'mint', items: [{ label: 'Account', href: '/account', icon: UserRound }] },
 ]
 
 function countersFor(p) {
@@ -83,6 +58,8 @@ function countersFor(p) {
 
 export default function TabBar() {
   const pathname = usePathname() || '/'
+  const { user } = useAuth()
+  const staff = !!user && STAFF.has(user.role)
   const [sheetOpen, setSheetOpen] = useState(false)
   const [compact, setCompact] = useState(false)
   const [reduced, setReduced] = useState(false)
@@ -194,7 +171,7 @@ export default function TabBar() {
   return (
     <>
       <div
-        className="fixed inset-x-0 bottom-0 z-[80] flex justify-center px-3 pointer-events-none"
+        className="mobile-tabbar-shell fixed inset-x-0 bottom-0 z-[80] flex justify-center px-3 pointer-events-none"
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
         <nav
@@ -202,7 +179,7 @@ export default function TabBar() {
           aria-label="Primary"
           onPointerLeave={() => setHoverKey(null)}
           className={cx(
-            'pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink',
+            'gta-lore-tabbar pointer-events-auto relative flex items-center gap-1 rounded-[26px] bg-ink',
             'transition-[padding,box-shadow] duration-500 ease-out',
             compact ? 'px-7 py-1.5' : 'px-7 py-2'
           )}
@@ -222,19 +199,6 @@ export default function TabBar() {
             ].join(', '),
           }}
         >
-          {/* Linhas de velocidade, a assinatura do Streamline Moderne:
-              três traços horizontais de cada lado, o do meio mais longo,
-              como nas fachadas e nos letreiros de Ocean Drive. */}
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-[3px]" aria-hidden="true">
-            <span className="block h-px w-2.5 rounded-full bg-pink/45" />
-            <span className="block h-px w-4 rounded-full bg-pink/70" />
-            <span className="block h-px w-2.5 rounded-full bg-pink/45" />
-          </span>
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex flex-col items-end gap-[3px]" aria-hidden="true">
-            <span className="block h-px w-2.5 rounded-full bg-mint/45" />
-            <span className="block h-px w-4 rounded-full bg-mint/70" />
-            <span className="block h-px w-2.5 rounded-full bg-mint/45" />
-          </span>
           {/* O filete das três cores, agora encostado à curva. */}
           <span
             className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-violet to-transparent opacity-60"
@@ -352,7 +316,7 @@ export default function TabBar() {
             className="fixed inset-x-0 bottom-0 z-[79] mx-auto w-full max-w-[720px] px-3 animate-in slide-in-from-bottom-6 fade-in duration-300 ease-out motion-reduce:animate-none"
             style={{ paddingBottom: 'calc(max(0.75rem, env(safe-area-inset-bottom)) + 78px)' }}
           >
-            <div className="rounded-[28px] bg-ink overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.30)]">
+            <div className="gta-lore-menu-sheet rounded-[28px] bg-ink overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(11,15,22,0.07),0_24px_70px_-18px_rgba(11,15,22,0.30)]">
               {/* Pega, como nas folhas do iOS: diz que isto veio de baixo
                   e que se fecha para baixo. */}
               <div className="flex justify-center pt-2.5 pb-1">
@@ -361,7 +325,7 @@ export default function TabBar() {
 
               <div className="max-h-[min(64vh,560px)] overflow-y-auto overscroll-contain px-4 pb-4">
                 <div className="flex items-center justify-between gap-4 py-3 mb-1 border-b border-black/[0.07]">
-                  <span className="chromatic-title font-cond font-bold text-[15px] tracking-wide text-paper">LEONIDA ARCHIVE</span>
+                  <span className="chromatic-title font-cond font-bold text-[15px] tracking-wide text-paper">GTA LORE</span>
                   <span className="flex items-center gap-3 shrink-0">
                     {counters.map(([n, label]) => (
                       <span key={label} className="flex flex-col items-end leading-none">
@@ -374,6 +338,9 @@ export default function TabBar() {
 
                 {SHEET_GROUPS.map((group) => {
                   const tint = TINT[group.tint]
+                  const items = group.title === 'About the archive' && staff
+                    ? [{ label: 'Operations', href: '/admin', icon: ShieldCheck }, ...group.items]
+                    : group.items
                   return (
                     <div key={group.title} className="mt-4 first:mt-3">
                       <p className="flex items-center gap-2 font-cond uppercase tracking-[0.16em] text-[9px] text-dim mb-2">
@@ -381,7 +348,7 @@ export default function TabBar() {
                         {group.title}
                       </p>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-                        {group.items.map((item) => {
+                        {items.map((item) => {
                           const Icon = item.icon
                           const active = pathname === item.href
                           return (
@@ -404,7 +371,7 @@ export default function TabBar() {
                               >
                                 <Icon size={15} className={active ? 'text-ink' : tint.text} />
                               </span>
-                              <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[12px] truncate">{item.label}</span>
+                              <span className="font-cond font-semibold uppercase tracking-[0.08em] text-[12px] leading-tight line-clamp-2">{item.label}</span>
                             </Link>
                           )
                         })}
