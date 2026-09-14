@@ -1,0 +1,2 @@
+  // No record existed; from a community emergency-vehicles summary (September 2026).
+  V('police-ghost-stanier-le', 'POLICE GHOST STANIER LE', 'emergency', [0,0,0,0], ['—','—','—','—'], 'analysis', null, '000', null, null, ['Community summary', null], true, 'TRAILER 2 · COMMUNITY IDENTIFICATION', [], ['Reported as an unmarked, low-visibility Vapid police cruiser based on the Ford Crown Victoria: four seats, about 1,400 kg, rear-wheel drive, five gears.', 'Rockstar confirmation of the name.'], 'VAPID'),

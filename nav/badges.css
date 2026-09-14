@@ -1,0 +1,99 @@
+
+/* ==========================================================================
+   LABELS & BADGES — the home vocabulary
+   Evidence badges (StatusBadge, GhostBadge) are soft tinted pills: one colour
+   per evidence level, dark text on a light tint, a 1px border, Inter in
+   sentence case. Classification labels (TypeChip) are neutral white chips —
+   a vehicle class or a weapon type is not evidence and must not look like it.
+   ========================================================================== */
+body.lore-design.archive-refresh {
+  --badge-confirmed-ink: #0a5c4f; --badge-confirmed-bg: #e9f6f2; --badge-confirmed-line: #a9d8ca;
+  --badge-verified-ink: #1b5496;  --badge-verified-bg: #ebf2fb;  --badge-verified-line: #b3cdec;
+  --badge-analysis-ink: #7a4f00;  --badge-analysis-bg: #fcf4e3;  --badge-analysis-line: #e9cf97;
+  --badge-rumour-ink: #5530b0;    --badge-rumour-bg: #f2eefc;    --badge-rumour-line: #cdbff0;
+  --badge-official-ink: #a3124f;  --badge-official-bg: #fcedf3;  --badge-official-line: #efbcd1;
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge) {
+  --badge-ink: var(--badge-analysis-ink); --badge-bg: var(--badge-analysis-bg); --badge-line: var(--badge-analysis-line);
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px !important;
+  flex: 0 0 auto !important;
+  width: fit-content !important;
+  max-width: 100%;
+  min-height: 24px;
+  padding: 3px 10px 3px 8px !important;
+  border: 1px solid var(--badge-line) !important;
+  border-radius: 999px !important;
+  background: var(--badge-bg) !important;
+  color: var(--badge-ink) !important;
+  font: 600 12px/1.2 var(--font-inter), system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge) svg {
+  width: 12px; height: 12px; flex: none;
+  color: var(--badge-ink) !important;
+  stroke-width: 2.5;
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="confirmed"], [data-status="news"]) {
+  --badge-ink: var(--badge-confirmed-ink); --badge-bg: var(--badge-confirmed-bg); --badge-line: var(--badge-confirmed-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge)[data-status="verified"] {
+  --badge-ink: var(--badge-verified-ink); --badge-bg: var(--badge-verified-bg); --badge-line: var(--badge-verified-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="analysis"], [data-status="category"]) {
+  --badge-ink: var(--badge-analysis-ink); --badge-bg: var(--badge-analysis-bg); --badge-line: var(--badge-analysis-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="rumour"], [data-status="community"], [data-status="update"]) {
+  --badge-ink: var(--badge-rumour-ink); --badge-bg: var(--badge-rumour-bg); --badge-line: var(--badge-rumour-line);
+}
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="official"], [data-status="featured"]) {
+  --badge-ink: var(--badge-official-ink); --badge-bg: var(--badge-official-bg); --badge-line: var(--badge-official-line);
+}
+/* The ghost variant is the outline of the same colour on white; a rumour is
+   always dashed, so the level reads even without colour. */
+body.lore-design.archive-refresh .ghost-badge { background: #fff !important; }
+body.lore-design.archive-refresh :is(.status-badge, .ghost-badge):is([data-status="rumour"], [data-status="community"]) { border-style: dashed !important; }
+
+/* Over an image (news cards, hero frames) the pill needs a solid ground. */
+body.lore-design.archive-refresh :is(.absolute, [class*="absolute "]) > :is(.status-badge, .ghost-badge),
+body.lore-design.archive-refresh .absolute :is(.status-badge, .ghost-badge) {
+  background: rgb(255 255 255 / .94) !important;
+  box-shadow: 0 1px 2px rgb(20 12 24 / .12) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Classification chips. Also restyles any leftover .entity-label and the
+   typed spans in the article meta row, which the old theme painted navy. */
+body.lore-design.archive-refresh :is(.type-chip, .entity-label, .wiki-article-meta > span:not(.status-badge):not(.ghost-badge)) {
+  display: inline-flex !important;
+  align-items: center;
+  flex: 0 0 auto !important;
+  width: fit-content !important;
+  max-width: 100%;
+  min-height: 24px;
+  padding: 3px 10px !important;
+  border: 1px solid var(--archive-border) !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: var(--archive-ink) !important;
+  font: 500 12px/1.2 var(--font-inter), system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+body.lore-design.archive-refresh .type-chip::before {
+  content: '';
+  width: 6px; height: 6px; margin-right: 6px;
+  border-radius: 50%;
+  background: var(--archive-accent);
+  flex: none;
+}
+/* Meta rows: badge and chip sit on one baseline with an even gap. */
+body.lore-design.archive-refresh .wiki-article-meta { gap: 8px !important; align-items: center !important; }

@@ -1,0 +1,307 @@
+{
+  "id": "MACACO-00012",
+  "fingerprint": "overlap|/:slug",
+  "check": "overlap",
+  "bucket": "visual",
+  "severity": "MEDIUM",
+  "title": "Controls overlap (100%): one is covered by the other",
+  "detail": "FINAL CHAPTER MC ↔ News",
+  "selector": "div.flex.items-start > div > h2.mt-2.font-cond > a.transition-colors",
+  "page": "/gangs-factions",
+  "pattern": "/:slug",
+  "viewport": "390x844",
+  "viewports": [
+    "mobile"
+  ],
+  "pages": [
+    "/gangs-factions"
+  ],
+  "elements": [
+    "div.flex.items-start > div > h2.mt-2.font-cond > a.transition-colors"
+  ],
+  "mode": "chaos",
+  "steps": [
+    "(4 earlier steps — see the replay file)",
+    "Click card \"PTT YOUNGIN$ COMPOUND\"",
+    "Hover link \"GTA VI overview\"",
+    "Click link \"LEGAL\"",
+    "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+    "Click link \"Legal centre\"",
+    "Hover link \"Go to page\"",
+    "Hover card \"GTA Lore home\"",
+    "Double-click link \"Guides\"",
+    "Click link \"Editions\"",
+    "Click link \"Characters\"",
+    "Double-click card \"Open LUCIA CAMINOS full profile\"",
+    "Click link \"Gangs & factions\""
+  ],
+  "result": "Controls overlap (100%): one is covered by the other",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00012.png",
+  "trace": "traces/chaos-mobile-0.zip",
+  "video": "videos/chaos-mobile-0.webm",
+  "seed": 843921,
+  "sessionSeed": 276006,
+  "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00012.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T19:00:59.593Z",
+  "lastSeen": "2026-09-11T19:00:59.593Z",
+  "session": "chaos-mobile-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "CAL HAMPTON ALLY",
+        "href": "https://lusorae.pt/database/characters/cal-hampton",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"CAL HAMPTON ALLY\"",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "SOURCE POLICY",
+        "href": "https://lusorae.pt/sources",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"SOURCE POLICY\"",
+      "at": "/database/characters/cal-hampton"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Location VC PORT Confirmed",
+        "href": "https://lusorae.pt/map/location/vc-port",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Location VC PORT Confirmed\"",
+      "at": "/sources"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "PTT YOUNGIN$ COMPOUND",
+        "href": "https://lusorae.pt/map/location/ptt-youngins-compound",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"PTT YOUNGIN$ COMPOUND\"",
+      "at": "/map/location/vc-port"
+    },
+    {
+      "type": "hover",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "GTA VI overview",
+        "href": "https://lusorae.pt/wiki/grand-theft-auto-vi",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Hover link \"GTA VI overview\"",
+      "at": "/map/location/ptt-youngins-compound"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "LEGAL",
+        "href": "https://lusorae.pt/legal",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"LEGAL\"",
+      "at": "/map/location/ptt-youngins-compound"
+    },
+    {
+      "type": "double-click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "04 COPYRIGHT & IP POLICY Ownership, fan-project status, content licensing and a ",
+        "href": "https://lusorae.pt/legal/copyright",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+      "at": "/legal"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Legal centre",
+        "href": "https://lusorae.pt/legal",
+        "kind": "link",
+        "nth": 3
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Legal centre\"",
+      "at": "/legal/copyright"
+    },
+    {
+      "type": "hover",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Go to page",
+        "href": "https://lusorae.pt/wiki/go",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Hover link \"Go to page\"",
+      "at": "/legal"
+    },
+    {
+      "type": "hover",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "GTA Lore home",
+        "href": "https://lusorae.pt/",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Hover card \"GTA Lore home\"",
+      "at": "/legal"
+    },
+    {
+      "type": "double-click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Guides",
+        "href": "https://lusorae.pt/guides",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Double-click link \"Guides\"",
+      "at": "/legal"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Editions",
+        "href": "https://lusorae.pt/editions",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Editions\"",
+      "at": "/guides"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Characters",
+        "href": "https://lusorae.pt/database/characters",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Characters\"",
+      "at": "/editions"
+    },
+    {
+      "type": "double-click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Open LUCIA CAMINOS full profile",
+        "href": "https://lusorae.pt/database/characters/lucia-caminos",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Double-click card \"Open LUCIA CAMINOS full profile\"",
+      "at": "/database/characters"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Gangs & factions",
+        "href": "https://lusorae.pt/gangs-factions",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Gangs & factions\"",
+      "at": "/database/characters/lucia-caminos"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00012.json",
+  "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 15",
+  "text": "MACACO-00012\n\nSeverity: MEDIUM\nPage: /gangs-factions\nViewport: 390x844\nOccurrences: 1\n\nProblem:\nControls overlap (100%): one is covered by the other\n\nSteps:\n1. (4 earlier steps — see the replay file)\n2. Click card \"PTT YOUNGIN$ COMPOUND\"\n3. Hover link \"GTA VI overview\"\n4. Click link \"LEGAL\"\n5. Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"\n6. Click link \"Legal centre\"\n7. Hover link \"Go to page\"\n8. Hover card \"GTA Lore home\"\n9. Double-click link \"Guides\"\n10. Click link \"Editions\"\n11. Click link \"Characters\"\n12. Double-click card \"Open LUCIA CAMINOS full profile\"\n13. Click link \"Gangs & factions\"\n\nResult:\nControls overlap (100%): one is covered by the other\n\nDetail:\nFINAL CHAPTER MC ↔ News\n\nScreenshot:\nscreenshots/macaco-00012.png\n\nTrace:\ntraces/chaos-mobile-0.zip (npx playwright show-trace)\n\nVideo:\nvideos/chaos-mobile-0.webm\n\nSeed:\n843921\n\nReplay:\nmacaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00012.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "mobile",
+    "label": "mobile 390x844",
+    "width": 390,
+    "height": 844,
+    "mobile": true,
+    "scale": 3,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "id": "MACACO-00028",
+  "fingerprint": "clipped-text|/:slug/:slug|html.__variable_ba58e4.__variable_a918ff > body.__variable_ba58e4.__variable_a918ff > a.sr-only|Text is cut off without an ellipsis",
+  "check": "clipped-text",
+  "bucket": "visual",
+  "severity": "LOW",
+  "title": "Text is cut off without an ellipsis",
+  "detail": "Skip to content",
+  "selector": "html.__variable_ba58e4.__variable_a918ff > body.__variable_ba58e4.__variable_a918ff > a.sr-only",
+  "page": "/categories/release-and-editions",
+  "pattern": "/:slug/:slug",
+  "viewport": "1440x900",
+  "viewports": [
+    "desktop"
+  ],
+  "pages": [
+    "/categories/release-and-editions"
+  ],
+  "mode": "smart",
+  "steps": [
+    "Open / (1440x900)",
+    "Click link \"OPEN VISUAL ARCHIVE\"",
+    "Click card \"GTA Lore home\"",
+    "Press Back",
+    "Click button \"EDITIONS 15\"",
+    "Click link \"Random entry\"",
+    "Click link \"POSSUMS\"",
+    "Click link \"Article categories\"",
+    "Click card \"FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …\""
+  ],
+  "result": "Text is cut off without an ellipsis",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00028.png",
+  "trace": "traces/smart-desktop-0.zip",
+  "video": null,
+  "seed": 200437,
+  "sessionSeed": 484073,
+  "replay": "macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00028.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T18:57:02.009Z",
+  "lastSeen": "2026-09-11T18:57:02.009Z",
+  "session": "smart-desktop-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "OPEN VISUAL ARCHIVE",
+        "href": "https://lusorae.pt/media",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"OPEN VISUAL ARCHIVE\"",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "GTA Lore home",
+        "href": "https://lusorae.pt/",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"GTA Lore home\"",
+      "at": "/media"
+    },
+    {
+      "type": "back",
+      "descriptor": null,
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Press Back",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "button",
+        "role": null,
+        "name": "EDITIONS 15",
+        "href": null,
+        "kind": "button",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click button \"EDITIONS 15\"",
+      "at": "/media"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Random entry",
+        "href": "https://lusorae.pt/wiki/random",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Random entry\"",
+      "at": "/media"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "POSSUMS",
+        "href": "https://lusorae.pt/database/world/possums",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"POSSUMS\"",
+      "at": "/database/world/duke-arms-company"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Article categories",
+        "href": "https://lusorae.pt/categories",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Article categories\"",
+      "at": "/database/world/possums"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, release chronology, editions, ",
+        "href": "https://lusorae.pt/categories/release-and-editions",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …\"",
+      "at": "/categories"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00028.json",
+  "seedReplay": "macaco lusorae.pt --mode smart --seed 200437 --viewports desktop --actions 8",
+  "text": "MACACO-00028\n\nSeverity: LOW\nPage: /categories/release-and-editions\nViewport: 1440x900\nOccurrences: 1\n\nProblem:\nText is cut off without an ellipsis\n\nSteps:\n1. Open / (1440x900)\n2. Click link \"OPEN VISUAL ARCHIVE\"\n3. Click card \"GTA Lore home\"\n4. Press Back\n5. Click button \"EDITIONS 15\"\n6. Click link \"Random entry\"\n7. Click link \"POSSUMS\"\n8. Click link \"Article categories\"\n9. Click card \"FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …\"\n\nResult:\nText is cut off without an ellipsis\n\nDetail:\nSkip to content\n\nScreenshot:\nscreenshots/macaco-00028.png\n\nTrace:\ntraces/smart-desktop-0.zip (npx playwright show-trace)\n\nSeed:\n200437\n\nReplay:\nmacaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00028.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "desktop",
+    "label": "desktop 1440x900",
+    "width": 1440,
+    "height": 900
+  }
+}

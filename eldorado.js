@@ -1,0 +1,2 @@
+  // No record existed; from a community coupes summary (September 2026).
+  V('cadillac-eldorado-1959-inspired-coupe', 'CADILLAC ELDORADO (1959)-INSPIRED COUPE', 'sedans', [0,0,0,0], ['—','—','—','—'], 'analysis', null, '000', null, null, ['Community summary', null], true, 'TRAILER 2 · COMMUNITY IDENTIFICATION', [], ['Reported as a classic luxury coupe modelled on the 1959 Cadillac Eldorado — huge tailfins, heavy chrome, a long low body — and new to the series.', 'In-game name, manufacturer and statistics.'], 'NOT OFFICIALLY SPECIFIED'),

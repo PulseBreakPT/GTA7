@@ -1,0 +1,125 @@
+Local security checks passed.
+[2K[1G[1myarn check v1.22.22[22m
+[2K[1G[33mwarning[39m ../package.json: No license field
+[2K[1G[32msuccess[39m Folder in sync.
+[2K[1GDone in 0.07s.
+a preparar a publicação v2.0.65
+[2K[1G[1myarn run v1.22.22[22m
+[2K[1G[33mwarning[39m ../package.json: No license field
+[2K[1G[2m$ next build[22m
+   [1m[38;2;173;127;168m▲ Next.js 15.5.24[39m[22m
+   - Environments: .env
+   - Experiments (use with caution):
+     · sri
+
+ [37m[1m [22m[39m Creating an optimized production build ...
+ [32m[1m✓[22m[39m Compiled successfully in 11.1s
+ [37m[1m [22m[39m Linting and checking validity of types ...
+ [37m[1m [22m[39m Collecting page data ...
+ [37m[1m [22m[39m Generating static pages (0/397) ...
+ [37m[1m [22m[39m Generating static pages (99/397) 
+ [37m[1m [22m[39m Generating static pages (198/397) 
+ [37m[1m [22m[39m Generating static pages (297/397) 
+ [32m[1m✓[22m[39m Generating static pages (397/397)
+ [37m[1m [22m[39m Finalizing page optimization ...
+ [37m[1m [22m[39m Collecting build traces ...
+
+[4mRoute (app)[24m                                 [4mSize[24m  [4mFirst Load JS[24m  [4m[24m  [4m[24m
+┌ ○ /                                    3.31 kB         [37m[1m115 kB[22m[39m
+├ ○ /_not-found                            238 B         [37m[1m103 kB[22m[39m
+├ ƒ /account                             15.1 kB         [37m[1m121 kB[22m[39m
+├ ƒ /admin                               12.2 kB         [37m[1m118 kB[22m[39m
+├ ƒ /api/[[...path]]                       238 B         [37m[1m103 kB[22m[39m
+├ ƒ /api/auth/[...auth]                    238 B         [37m[1m103 kB[22m[39m
+├ ○ /apple-icon.png                          0 B            [37m[1m0 B[22m[39m
+├ ○ /categories                          3.28 kB         [37m[1m241 kB[22m[39m
+├ ƒ /categories/[slug]                   1.67 kB         [37m[1m243 kB[22m[39m
+├ ○ /database                              238 B         [37m[1m103 kB[22m[39m
+├ ○ /database/characters                 7.61 kB         [37m[1m246 kB[22m[39m
+├ ƒ /database/characters/[slug]          6.81 kB         [37m[1m257 kB[22m[39m
+├ ○ /database/mechanics                  2.43 kB         [37m[1m243 kB[22m[39m
+├ ƒ /database/mechanics/[slug]           2.79 kB         [37m[1m256 kB[22m[39m
+├ ○ /database/radio                      8.62 kB         [37m[1m247 kB[22m[39m
+├ ƒ /database/radio/[slug]               4.43 kB         [37m[1m255 kB[22m[39m
+├ ○ /database/vehicles                   7.15 kB         [37m[1m249 kB[22m[39m
+├ ƒ /database/vehicles/[slug]            6.73 kB         [37m[1m248 kB[22m[39m
+├ ○ /database/weapons                    7.37 kB         [37m[1m246 kB[22m[39m
+├ ƒ /database/weapons/[slug]             7.48 kB         [37m[1m258 kB[22m[39m
+├ ○ /database/world                      7.21 kB         [37m[1m245 kB[22m[39m
+├ ● /database/world/[slug]               1.95 kB         [37m[1m240 kB[22m[39m
+├   ├ /database/world/alligators
+├   ├ /database/world/beavers
+├   ├ /database/world/boars
+├   └ [+320 more paths]
+├ ○ /easter-eggs                         1.95 kB         [37m[1m240 kB[22m[39m
+├ ƒ /easter-eggs/[slug]                   4.2 kB         [37m[1m242 kB[22m[39m
+├ ○ /editions                             8.1 kB         [37m[1m246 kB[22m[39m
+├ ○ /gangs-factions                      1.95 kB         [37m[1m240 kB[22m[39m
+├ ƒ /gangs-factions/[slug]                9.2 kB         [37m[1m260 kB[22m[39m
+├ ○ /guides                              3.31 kB         [37m[1m241 kB[22m[39m
+├ ƒ /guides/[slug]                       3.41 kB         [37m[1m242 kB[22m[39m
+├ ○ /icon0.svg                               0 B            [37m[1m0 B[22m[39m
+├ ○ /icon1.png                               0 B            [37m[1m0 B[22m[39m
+├ ○ /legal                               1.95 kB         [37m[1m240 kB[22m[39m
+├ ● /legal/[slug]                        1.94 kB         [37m[1m240 kB[22m[39m
+├   ├ /legal/terms
+├   ├ /legal/privacy
+├   ├ /legal/cookies
+├   └ [+3 more paths]
+├ ○ /login                               8.13 kB         [37m[1m114 kB[22m[39m
+├ ○ /manifest.webmanifest                    0 B            [37m[1m0 B[22m[39m
+├ ○ /map                                 10.3 kB         [37m[1m261 kB[22m[39m
+├ ƒ /map/[slug]                          10.2 kB         [37m[1m261 kB[22m[39m
+├ ƒ /map/location/[slug]                 9.16 kB         [37m[1m260 kB[22m[39m
+├ ○ /media                               5.78 kB         [37m[1m244 kB[22m[39m
+├ ○ /news                                6.89 kB         [37m[1m245 kB[22m[39m
+├ ƒ /news/[slug]                         3.56 kB         [37m[1m245 kB[22m[39m
+├ ○ /reset-password                      3.49 kB         [37m[1m109 kB[22m[39m
+├ ○ /robots.txt                            238 B         [37m[1m103 kB[22m[39m
+├ ○ /sitemap.xml                           238 B         [37m[1m103 kB[22m[39m
+├ ○ /sources                             3.03 kB         [37m[1m241 kB[22m[39m
+├ ƒ /users/[username]                    1.95 kB         [37m[1m240 kB[22m[39m
+├ ○ /verify-email                        2.93 kB         [37m[1m109 kB[22m[39m
+├ ○ /vice-city                           7.79 kB         [37m[1m246 kB[22m[39m
+├ ○ /wiki                                1.96 kB         [37m[1m240 kB[22m[39m
+├ ○ /wiki/all                            4.35 kB         [37m[1m243 kB[22m[39m
+├ ○ /wiki/categories                     3.42 kB         [37m[1m242 kB[22m[39m
+├ ƒ /wiki/category/[slug]                3.42 kB         [37m[1m242 kB[22m[39m
+├ ○ /wiki/changes                         3.8 kB         [37m[1m242 kB[22m[39m
+├ ○ /wiki/discover                       4.12 kB         [37m[1m242 kB[22m[39m
+├ ○ /wiki/glossary                       1.95 kB         [37m[1m240 kB[22m[39m
+├ ○ /wiki/go                             3.65 kB         [37m[1m242 kB[22m[39m
+├ ○ /wiki/grand-theft-auto-vi            2.72 kB         [37m[1m241 kB[22m[39m
+├ ○ /wiki/help                           1.95 kB         [37m[1m240 kB[22m[39m
+├ ● /wiki/portal/[kind]                  1.95 kB         [37m[1m240 kB[22m[39m
+├   ├ /wiki/portal/characters
+├   ├ /wiki/portal/vehicles
+├   ├ /wiki/portal/weapons
+├   └ [+7 more paths]
+├ ○ /wiki/portals                        1.95 kB         [37m[1m240 kB[22m[39m
+├ ○ /wiki/random                         1.68 kB         [37m[1m224 kB[22m[39m
+├ ○ /wiki/search                         15.5 kB         [37m[1m254 kB[22m[39m
+├ ○ /wiki/special                        4.83 kB         [37m[1m243 kB[22m[39m
+├ ● /wiki/special/[list]                 1.95 kB         [37m[1m240 kB[22m[39m
+├   ├ /wiki/special/most-linked
+├   ├ /wiki/special/orphans
+├   ├ /wiki/special/dead-ends
+├   └ [+8 more paths]
+├ ○ /wiki/statistics                     3.81 kB         [37m[1m242 kB[22m[39m
+└ ○ /wiki/what-links-here                3.53 kB         [37m[1m242 kB[22m[39m
++ First Load JS shared by all             [37m[1m102 kB[22m[39m
+  ├ chunks/1255-7b4b5a04291b6a94.js      46.1 kB
+  ├ chunks/4bd1b696-100b9d70ed4e49c1.js  54.2 kB
+  └ other shared chunks (total)          2.06 kB
+
+
+ƒ Middleware                             [37m[1m34.2 kB[22m[39m
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses [36mgenerateStaticParams[39m)
+ƒ  (Dynamic)  server-rendered on demand
+
+[2K[1GDone in 48.22s.
+preservada a configuração protegida de /opt/leonida
+Sensitive-data migration complete: 0 users, 0 sessions, 0 notes, 0 contributions updated.
+publicado v2.0.65 a partir de /home/ubuntu/gta7

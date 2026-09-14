@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ReleaseCountdown, SearchTrigger } from '@/components/site/home-client'
+import { LaunchBar, ReleaseCountdown, SearchTrigger } from '@/components/site/home-client'
 import LoreIcon from '@/components/site/lore-icons'
 import { GhostBadge, StatusBadge } from '@/components/site/ui'
 import { isRockstarUrl } from '@/lib/official-links'
@@ -93,6 +93,7 @@ export default function HomePage() {
 
   return (
     <div className="hq-home">
+      <LaunchBar releaseDate={extendedLookBrief.releaseDate} />
       <section className="hq-hero" aria-labelledby="home-title">
         <div className="hq-hero-art">
           <Image src={IMG.keyArt} alt="Official Grand Theft Auto VI artwork featuring Lucia Caminos and Jason Duval in Vice City" fill priority sizes="100vw" />

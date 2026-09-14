@@ -1,0 +1,17 @@
+
+/* ---- Accessibility fixes found by the Macaco (run #3) ---------------------- */
+/* Contrast: small muted labels were ~4.3:1 on the light grounds; this ink is
+   above 6:1 on white, the archive paper and the footer tint. */
+body.lore-design.archive-refresh :is(.footer-v3-legal > p, .footer-v3-release > span, .legal-policy-number, .map-county-ledger-heading > span, .map-bible-fact-grid dt) {
+  color: #5c4853 !important;
+}
+/* Links inside running text are underlined, not told apart by colour alone. */
+body.lore-design.archive-refresh main :is(p, dd) > a:not([class*="button"]):not([class*="chip"]):not([class*="card"]) {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+/* Keyboard focus on the scrollable image rail. */
+body.lore-design.archive-refresh .film-rail:focus-visible { outline: 2px solid var(--archive-accent); outline-offset: 4px; border-radius: 12px; }
+/* Database overview counts. */
+body.lore-design.archive-refresh .database-branch-count { margin-left: auto; color: var(--archive-ink); font: 650 18px/1 var(--font-inter), sans-serif; font-variant-numeric: tabular-nums; }

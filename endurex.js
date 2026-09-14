@@ -1,0 +1,2 @@
+  // No record existed; from a community cycles summary (September 2026).
+  V('endurex-race-bike', 'ENDUREX RACE BIKE', 'cycles', [0,0,0,0], ['—','—','—','—'], 'analysis', null, '000', null, null, ['Community summary', null], true, 'AN EXTENDED LOOK · COMMUNITY IDENTIFICATION', [], ['Reported as the returning road-racing bicycle from GTA V, based on the Pinarello Dogma (model ID tribike2): one seat, about 110 kg, built for paved roads.', 'Rockstar confirmation of the name and statistics.'], 'NOT OFFICIALLY SPECIFIED'),

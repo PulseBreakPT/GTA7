@@ -1,0 +1,12 @@
+const puppeteer = require('/home/ubuntu/node_modules/puppeteer')
+;(async () => {
+  const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+  const page = await browser.newPage()
+  await page.setViewport({ width: 1440, height: 1100 })
+  await page.goto('https://lusorae.pt/news/vice-city-sign-kaseya-center-miami', { waitUntil: 'networkidle2' })
+  await page.screenshot({ path: '/home/ubuntu/.claude/jobs/aa302669/tmp/news-kaseya.png' })
+  await page.goto('https://lusorae.pt/news', { waitUntil: 'networkidle2' })
+  await page.evaluate(() => document.getElementById('latest-news-heading')?.scrollIntoView())
+  await page.screenshot({ path: '/home/ubuntu/.claude/jobs/aa302669/tmp/news-latest.png' })
+  await browser.close()
+})()

@@ -1,0 +1,382 @@
+GTA 6 Gameplay Systems
+EXHAUSTIVE PRE-RELEASE GUIDE
+Wanted Level & Police • Vehicle Theft • Fuel & Refuelling • Focus Ability • Robberies & Money
+Updated September 11, 2026
+Editorial note
+This is publish-ready original English copy. It consolidates all substantive information currently spread across the five dedicated gameplay guides and their directly related GTA 6 database, features, weapons, properties, preview and development-material pages. Information from older development footage is separated when it has not been reconfirmed, and superseded details are explicitly identified.
+Contents
+1. GTA 6 Wanted Level & Police System
+2. GTA 6 Vehicle Theft, Car Stealing & Ownership
+3. GTA 6 Fuel, Refuelling & Vehicle Maintenance
+4. GTA 6 Focus Ability
+5. GTA 6 Robberies & Money System
+Scope: the articles below prioritize the current pre-release state of the game. When older alpha or leaked development material adds useful context, it appears in a clearly marked development-history section rather than being presented as final gameplay.
+1. GTA 6 Wanted Level & Police System
+CURRENT STATUS
+The six-star Wanted Level, information-based police identification, regional heat, witnesses, surveillance and multiple evasion methods are part of the current pre-release picture. Exact star-by-star thresholds and the final composition of every police response remain unrevealed.
+Grand Theft Auto VI turns the traditional Wanted Level into a broader manhunt system. Stars still represent the severity of the law-enforcement response, but escaping is no longer only about leaving a flashing search radius. Police can collect information about Jason or Lucia, remember details connected to the crime, and continue searching based on what they know.
+The result is a system built around two separate questions: how serious is the crime, and how well have the police identified the person who committed it? A player can be wanted without being fully identified, and reducing the quality of the information held by police can be just as important as physically getting away.
+Six-Star Wanted Level
+GTA 6 restores a six-star Wanted Level. The stars indicate escalating police severity, while additional interface elements communicate the information law enforcement has collected about the suspect. The exact actions required to reach each individual star level have not yet been published.
+The current six-star structure supersedes older 2022 alpha material that showed a five-star system. That earlier interface should be treated as development history, not the current final target.
+Wanted vs. Identified
+The police system distinguishes between being wanted and being identified. A reported crime can trigger a police response even when officers do not yet have a useful description of the offender. This creates situations where law enforcement knows that a crime happened but does not know exactly who to look for.
+A hollow Wanted Star is used when a crime has been reported but the perpetrator has not been identified with useful information. Avoiding witnesses, cameras and direct police observation can therefore reduce the quality of the subsequent search.
+Police Information and Heat
+Police can build a profile using multiple pieces of information. The current system includes physical appearance, clothing, the vehicle being used, CCTV footage, a companion, the location of the crime and regional police activity or heat.
+Physical description: witnesses or officers can provide a description of the suspect.
+Clothing: police can separately remember what the suspect is wearing.
+Vehicle: the vehicle connected to the crime can become an identifying clue.
+CCTV: security cameras can provide information even when a witness does not get a clear look at the player.
+Companion: police can know that Jason and Lucia were operating together.
+Crime location: the place where the incident happened remains relevant to the search.
+Regional heat: police attention can remain concentrated in an area after the immediate chase ends.
+HUD Information Icons
+Red icons beneath the Wanted Stars show what information the police have obtained. Confirmed examples include a human-silhouette icon for physical description, a clothes-hanger icon for clothing information and a camera icon for CCTV evidence. Vehicle, companion and location information are also part of the broader identification system even though every final icon has not been publicly catalogued.
+Witnesses, Alarms and Reporting Crimes
+A crime needs to be witnessed or trigger an alarm before it is reported. The circumstances surrounding the incident determine what is sent to police dispatch. A witness may provide a description, while a camera can provide surveillance information and an alarm may report the crime without supplying a clear identity.
+This makes prevention meaningful. Committing a crime outside a witness line of sight or avoiding surveillance can reduce the amount of information available to police before the chase even begins.
+Police Dispatch
+Dispatch is more specific than a generic alert. Depending on what was observed, officers can receive information about the suspect, clothing, vehicle, location, companions and CCTV footage. The better the information, the more targeted the police search can become.
+Physical Appearance and Hairstyle
+Appearance is a usable police clue. Changing a hairstyle can invalidate an existing physical description. Because physical appearance and clothing are tracked separately, changing only one category may leave other information intact.
+Small changes may not erase everything the police know. An accessory such as a baseball cap can alter part of a description without replacing the entire clothing profile, so a more complete disguise may require both appearance and outfit changes.
+Changing Clothes and Spare Outfits
+Jason and Lucia can change outfits at clothing stores, and vehicles can carry spare outfit changes in their trunks. This connects the wanted system directly to vehicle storage: a personal or stolen car can function as a mobile inventory containing extra weapons, equipment, loot bags and clothing.
+If police know what the player is wearing, changing clothes can make that information obsolete. It does not automatically remove other clues such as vehicle identification, CCTV footage or a physical description.
+Vehicle Identification, Repainting and Switching Cars
+Police can identify the vehicle associated with a crime. Continuing to use that vehicle can allow law enforcement or civilians to recognize the player again. Switching vehicles is therefore a direct method of reducing an active clue.
+Pay & Spray returns and can repaint vehicles, with repainting specifically tied to breaking police chases. The same service is also used for repairs, vehicle-value assessment and stolen-vehicle registration. The current system therefore gives players both immediate escape tools and longer-term ownership tools in the same vehicle ecosystem.
+Development footage also showed a player apparently becoming wanted again after an NPC recognized a previously stolen police vehicle. Because that example comes from a development build, the exact recognition rules should be considered subject to change.
+Splitting Up Jason and Lucia
+Police can know that Jason and Lucia are together. When both characters are linked to the same incident, separating them can reduce the usefulness of that information and make the pair harder to track as a single target.
+Hot Areas and Regional Police Activity
+Crime locations can remain hot after the immediate pursuit. Police may continue patrolling those areas, and the map can indicate where law-enforcement activity remains concentrated. Returning too quickly can therefore create risk even after the active chase has ended.
+Heat can be reduced by leaving the area, waiting for activity to die down and avoiding a return to the crime scene while the region is still under heightened attention.
+Stealth, Masks and Line of Sight
+Crouching and stealth are useful because avoiding identification can weaken the entire police response. Staying outside officer sightlines, limiting witness exposure and avoiding cameras can prevent or reduce the information sent to dispatch.
+Masks return and can obscure identity, but they do not make the player completely anonymous. Police may still identify clothing, the vehicle, the crime location, CCTV context or other details connected with the incident.
+Surrender and De-Escalation
+Police encounters do not always escalate immediately to lethal force. Current gameplay information describes delayed responses, warnings and opportunities to surrender. Development footage also showed a surrender interaction during police encounters.
+The severity of the player’s behavior matters. In a demonstrated situation, Jason pointed a weapon at hostile NPCs without firing; the group fled and reported him, but the resulting Wanted Level remained relatively low. Avoiding unnecessary violence can therefore reduce escalation.
+Suppression fire and non-lethal combat options also support this design. Firing near police or civilians can frighten or disorient them, weapons can be shot from hands, and limb shots can incapacitate targets without necessarily killing them.
+Criminal Profile System
+GTA 6 also includes a Criminal Profile System accessible through a character sub-menu. It tracks how professionally the protagonists commit crimes and how much unnecessary violence they use. The profile can influence NPC hostility, police severity, the narrative and broader world reactions, linking the Wanted System to a longer-term reputation for criminal behavior.
+Focus and Police Locations
+Police positions are not always presented on the minimap in the traditional way. Focus can be used to reveal nearby officers, including through walls. This shifts some police awareness away from passive minimap watching and toward active scanning of the environment.
+How to Lose the Police
+Check the Wanted HUD and identify which information icons are active.
+Break line of sight and leave the immediate search area.
+Change any known appearance details, including hairstyle where possible.
+Change clothes if the clothing description is known.
+Abandon, repaint or switch the identified vehicle.
+Separate Jason and Lucia if the police have linked them together.
+Avoid CCTV, witnesses and known police positions while escaping.
+Stay away from hot areas until regional police activity falls.
+Use lower-violence or surrender options when avoiding further escalation is more valuable than fighting.
+Development-History Notes
+The 2022 alpha build showed five Wanted Stars. Current information confirms six stars, so the older five-star display is superseded.
+Early footage suggested longer police arrival times, surrender interactions, functional CCTV and vehicle model/plate recognition. Several of these ideas have since been echoed by newer information, but the exact implementation may have changed.
+A later development clip appeared to mark a weapon after it was used to kill an officer, potentially indicating crime-linked weapon identification. This has not been fully explained as a final mechanic.
+Port Gellhorn markings on police vehicles suggest regional law-enforcement identities or departments, but the structure of separate police agencies has not yet been fully detailed.
+What Is Still Unknown
+The exact crime thresholds for each of the six Wanted Stars.
+The final set of police units and tactics assigned to every star level.
+How long each type of information remains valid.
+Whether weapon identification survives into the final release and how it can be cleared.
+The full rules for surrender, arrest, fines, jail or other non-lethal outcomes.
+How the Criminal Profile System is scored and how strongly it changes missions or story outcomes.
+Frequently Asked Questions
+How many Wanted Stars are in GTA 6?
+Six. The six-star Wanted Level returns in the current pre-release version of GTA 6.
+What is the Heat System?
+It is the broader police-information and regional-attention system that tracks what law enforcement knows about a crime and its suspects, as well as areas where police attention remains high.
+Can changing clothes help?
+Yes. Clothing is a separate identification category. Changing clothes can invalidate that clue, although police may still know the player’s appearance, vehicle, location or CCTV profile.
+Can changing hairstyle help?
+Yes. Hairstyle changes can alter the physical description known to police.
+Can switching cars help?
+Yes. Police can identify a vehicle, so abandoning, repainting or switching it can remove an important clue.
+Can Jason and Lucia split up while wanted?
+Yes. Separating them can reduce the value of information linking the two protagonists to the same crime.
+Do masks make the player anonymous?
+No. Masks can limit identity information, but police can still use clothing, vehicles, location, surveillance and other clues.
+2. GTA 6 Vehicle Theft, Car Stealing & Ownership
+CURRENT STATUS
+Vehicle theft is a progression system rather than a universal one-button action. Parked cars have security tiers, specialized tools unlock more targets, stolen cars can be tracked, sold or registered, and garages provide persistent storage.
+Stealing vehicles remains central to GTA 6, but the process is more detailed than in previous entries. Parked cars can have different security levels, valuable vehicles can require specialized equipment, trackers can complicate the escape, and the player must eventually decide whether a stolen vehicle should be sold, kept temporarily or registered as a personal vehicle.
+Parked Cars vs. Carjacking
+The new security system mainly applies to parked, unoccupied vehicles. Occupied vehicles on the road can still be carjacked in the traditional GTA style by removing the driver, although the process is more physical and passengers may resist through a quick-time interaction.
+Development footage showed detailed resistance during carjacking, including Jason trying a locked door, smashing a window, reaching inside to unlock the car and physically pulling the driver out.
+Vehicle Security Tiers
+Parked vehicles are divided into multiple security tiers. Older or cheaper vehicles can be vulnerable to basic methods, while newer or more valuable cars can use electronic locks and stronger anti-theft technology.
+Low-security vehicles may be opened with a slim jim.
+Windows can be smashed when a quieter entry method is unavailable.
+Modern high-end vehicles can require digital key cloning or other advanced tools.
+Security level influences the difficulty of entry, the tools required and the time needed to complete the theft.
+More valuable vehicles may also carry trackers or additional anti-theft systems.
+The exact number of security tiers has not yet been revealed.
+WAINK Scanner
+The WAINK scanner allows Jason and Lucia to assess a parked vehicle before committing to the theft. It can reveal security information, vehicle value, tracker status and the cost of registering the vehicle as a personal car.
+This turns vehicle theft into a risk-versus-reward decision. A high-value car may generate a better sale price or be more desirable to keep, but it can also demand better tools and create more problems after the player drives away.
+Breaking Into Vehicles
+Several entry methods are part of the current system. A slim jim offers a simple way to unlock compatible cars, while smashing the window is a more forceful option. Development footage also showed a Clone Key interaction, suggesting a quieter route into electronically secured vehicles.
+The toolset associated with theft includes a Slim Jim, Lock Pick, Immobilizer Bypass, Tracker Jammer and other equipment. Not every item has been fully explained in final-game terms, but together they show that vehicle theft, tracking and electronic security are connected to a broader equipment-progression system.
+Digital Key Cloning
+Some high-end cars cannot be taken by simply forcing a lock. A digital key-cloning device can bypass certain electronic systems. This equipment is not available freely from the beginning: it must be acquired, it has a cost, and more advanced theft tools become available later in the story.
+As better equipment is unlocked, vehicles that were previously impractical or inaccessible can become viable targets. This gives car theft its own sense of progression.
+Trackers and Tracker Removal
+Stealing the vehicle does not necessarily end the theft. High-end cars can contain trackers, and more advanced trackers can alert police to the vehicle’s location if the player drives too slowly. Development footage showed a tracker indicator flashing when a stolen vehicle stopped moving.
+Fences can remove trackers. Tracker removal itself progresses: as the player advances with fences, increasingly advanced tracking systems can be disabled. A Tracker Jammer also exists among the known equipment items, although the final rules for when and how it is used have not been fully detailed.
+Fuel and Battery State on Stolen Vehicles
+Stolen vehicles are not guaranteed to begin with a full fuel tank or battery. A successful theft can therefore create an immediate logistical problem if the car is already low on fuel or charge. This is especially important during long journeys or police escapes.
+Selling Stolen Vehicles
+Stolen cars can be taken to a fence and sold for profit. Vehicle value is affected by the target itself and can also be reduced by damage, making a clean theft and escape more valuable than wrecking the car on the way out.
+Security systems can influence the process as well. A tracker-equipped car may require additional work before it becomes attractive to a fence. The WAINK scanner helps the player identify the car’s value in advance rather than guessing which target is profitable.
+Keeping and Registering Stolen Cars
+Jason and Lucia can own multiple personal vehicles. To permanently convert a stolen car into a personal vehicle, any tracker must first be dealt with and the vehicle must then be registered. The WAINK scanner can display the registration cost before the player decides whether keeping the vehicle is worth the expense.
+An unregistered stolen vehicle is temporary and can eventually despawn. However, a stolen car can be stored inside a garage before registration, allowing the player to protect a valuable target until the necessary tracker removal or registration step becomes available.
+Purchasable Garages
+Garages can be purchased separately around Leonida to expand personal vehicle storage. Residential safehouses themselves are not currently described as purchasable with cash; they unlock through story progression, while garages provide the direct expansion path for vehicle ownership.
+Some garages include additional utility such as a weapon locker or a deposit for stolen goods, further linking property ownership to robberies, inventory and vehicle progression.
+Pay & Spray
+Pay & Spray returns with a broader role. It can repaint cars to help break police chases, repair damaged vehicles, assess a vehicle’s value and register stolen vehicles. Because vehicle identity matters to police, repainting is no longer only cosmetic.
+Vehicle Storage and Mobile Inventory
+Personal vehicles and stolen cars can act as mobile inventories. Trunks can hold extra firearms, equipment, duffel bags and spare outfits. One observed Storage interface displayed a 0/4 capacity, although the final meaning and limits of that value have not been fully documented.
+Vehicles also have a dedicated interaction menu. Players can individually control elements such as the trunk, hood and doors, with quick access through a vehicle-controls menu.
+Buying Vehicles Legally
+The theft system is not the only way to acquire vehicles. Leonida includes physical dealerships and showrooms where cars can be browsed and purchased. Online vehicle purchasing is also expected as part of the broader in-game economy, while Jason and Lucia already have personal vehicles that persist through the story.
+Destroyed, Abandoned and Impounded Vehicles
+Personal vehicles are not necessarily lost forever when destroyed. The current vehicle database describes a recovery system using the Scooter Bros app, where a destroyed vehicle can be returned for a fee.
+Vehicles abandoned for too long can end up in a police impound lot. The player can recover them by paying a fee or by stealing them back from the impound.
+Car Theft During Police Chases
+Security tiers change the logic of getaway-car selection. During an active pursuit, an unlocked or low-security vehicle may be more useful than an expensive car that requires time-consuming electronic tools. The best-value target is not necessarily the best escape vehicle.
+Denser traffic and roads that are narrower than GTA V also make the choice more important. Escaping in a high-performance vehicle offers little advantage if the player loses time defeating its security or becomes trapped in traffic.
+Development-History Notes
+Development footage showed Clone Key and Smash Window as explicit approach options on some vehicles.
+A key-cloning approach appeared quieter than smashing a window, suggesting different theft methods can create different levels of attention.
+Older development material listed hacking-related equipment including a Tracker Jammer, Immobilizer Bypass, USB Drive and Auto Dialer.
+Later footage showed tracker behavior and detailed carjacking animations, supporting the broader direction of the final theft system while still representing a development build.
+What Is Still Unknown
+The exact number and names of vehicle security tiers.
+A complete progression list for every theft tool and fence service.
+The final rules for Tracker Jammer use.
+Exact registration costs and stolen-car sale values.
+The final storage capacity rules for vehicle trunks.
+Whether every vehicle can be registered or whether some are restricted.
+The precise legal-purchase flow for online car buying.
+Frequently Asked Questions
+Can you still carjack occupied cars normally?
+Yes. The complex security system mainly applies to parked cars. Occupied vehicles can still be taken by removing the driver, although passengers can resist.
+What does the WAINK scanner show?
+Security information, value, tracker status and registration cost are among the known readouts.
+Can stolen cars be sold?
+Yes. Fences buy stolen vehicles, with condition and security affecting value.
+Can stolen cars be kept permanently?
+Yes, after the necessary tracker removal and registration steps. Garages can hold a stolen vehicle temporarily before registration.
+Do expensive cars take more work to steal?
+Generally, yes. Higher-value modern cars can use stronger security, electronic locks and trackers.
+3. GTA 6 Fuel, Refuelling & Vehicle Maintenance
+CURRENT STATUS
+Fuel consumption is part of GTA 6. Cars and motorcycles use fuel, electric vehicles use charging, gas stations can refuel and repair vehicles, and the interface is designed to minimize constant micromanagement. Exact consumption rates and recovery rules remain unknown.
+GTA 6 introduces a functional fuel-and-battery system to normal vehicle use. Internal-combustion vehicles consume fuel as they are driven, electric vehicles require charging, and fuel stations become active gameplay locations rather than purely decorative scenery.
+Which Vehicles Use Fuel?
+Current vehicle information specifically describes functional fuel gauges for cars and motorcycles. Electric vehicles use a battery and dedicated recharging system. The final rules for every other vehicle category, such as boats or aircraft, have not been fully documented in the same detail.
+How Refuelling Works
+Gas stations can be used to refuel vehicles. Preview information describes refuelling as a short interaction or cutscene triggered by holding RT on Xbox or R2 on PlayStation. The sequence lasts roughly ten seconds and is usually inexpensive.
+The short duration is intentional. The system is designed to add planning and immersion without turning normal driving into constant maintenance.
+Fuel Gauge and HUD Behavior
+Fuel is not designed to occupy the HUD constantly. The gauge is reported to stay hidden until the vehicle begins running low, reducing interface clutter during ordinary driving. The HUD is also described as customizable, so a permanent display may be possible, although the final options have not been fully published.
+Development builds showed fuel and engine indicators during extended driving sequences. Those displays support the existence of the system but should not be treated as proof that the final HUD will look identical.
+How Long Fuel Lasts
+The broader vehicle information describes fuel as lasting a long time so that the mechanic does not become tedious. The exact consumption rate has not been revealed, and it is not yet known whether heavier, faster or less-efficient vehicles burn fuel at different rates.
+Because rates remain unpublished, no reliable distance-per-tank figures or vehicle-by-vehicle efficiency rankings are currently available.
+Stolen Vehicles Can Start Low
+Cars stolen from the street are not guaranteed to have full tanks or batteries. A player may steal a valuable or useful vehicle only to discover that it is already close to empty, creating an extra risk during a chase or a long journey across Leonida.
+This directly connects the fuel system to the WAINK-driven theft system: vehicle choice is not only about speed, value and security, but also about whether the stolen car can actually complete the trip.
+Running Out of Fuel
+Current vehicle information describes running out of fuel as something that can strand the player, including during a chase. The dedicated fuel guide is more cautious about the exact final behavior and does not yet document the recovery sequence in detail.
+It has not been confirmed whether an empty car simply stops, whether the player can carry a fuel can, whether roadside assistance exists, or whether another recovery method can restore mobility without bringing the vehicle directly to a station.
+Electric Vehicles and Charging
+Electric vehicles are present in Leonida and use charging stations instead of gasoline pumps. The charging process is expected to fill the same gameplay role as refuelling, but exact charging times, costs and battery behavior have not yet been fully explained.
+Vehicle Repairs at Gas Stations
+Gas stations can also repair vehicles. This makes them combined maintenance points where the player can restore fuel and address vehicle damage in one stop.
+Development footage showed an engine-condition meter changing after heavy damage, with smoke beginning to appear as the engine deteriorated. The same footage indicated a repair interaction at a fuel station.
+Pay & Spray and Repairs
+Gas stations are not the only repair option. Pay & Spray also returns and can repair vehicles while offering repainting, value assessment and stolen-car registration. This gives the player multiple maintenance routes depending on whether the goal is simple repair, police evasion or vehicle ownership.
+Gas Station Availability
+Development footage showed multiple gas stations relatively close to one another in some areas, suggesting that refuelling points are intended to be accessible rather than rare. The final density across rural Leonida, the Keys and other remote regions has not yet been mapped.
+Fuel, Damage and Focus
+Vehicle systems also interact with combat. Focus can identify components such as the engine block, fuel tank and tyres when targeting a vehicle. This suggests that the fuel system is not only a travel mechanic: the fuel tank itself can be treated as a meaningful vehicle component during combat.
+Fuel and Vehicle Theft
+A stolen car can carry two independent risks: security/tracking and fuel state. A vehicle that is easy to steal may still be a poor escape choice if the tank is almost empty, while an expensive car may combine advanced security, a tracker and low fuel.
+Possible GTA 6 Online Implementation
+The Online component has not yet been detailed, so there is no confirmed answer on whether multiplayer will use the same fuel rules. Concerns include players camping fuel stations or using the mechanic for griefing. The system could remain unchanged, be simplified or be omitted from Online; no final decision has been announced publicly.
+Development-History Notes
+Later development footage visibly showed fuel and engine indicators while driving.
+A gas-station sequence showed refuelling, repairs and a robbery occurring at the same location.
+Heavy collisions could trigger brief slow-motion emphasis, while engine condition visibly worsened after damage.
+These development visuals may not match the final interface even where the underlying mechanics have since been confirmed.
+What Is Still Unknown
+Exact fuel-consumption rates.
+Whether consumption varies by engine type, vehicle weight, speed or driving style.
+Exact fuel and electricity prices.
+Exact charging duration for electric vehicles.
+What happens mechanically at zero fuel or zero battery.
+Whether fuel cans, roadside assistance or towing can restore an empty vehicle.
+Whether the system appears unchanged in GTA 6 Online.
+Whether every vehicle class uses the same fuel logic.
+Frequently Asked Questions
+Does GTA 6 have fuel consumption?
+Yes. Fuel is consumed during normal driving, and electric vehicles use a separate charging system.
+Can cars be refuelled at gas stations?
+Yes. Gas stations are functional refuelling locations and can also repair vehicles.
+Is the fuel gauge always visible?
+Not necessarily. It is reported to remain hidden until fuel becomes low, with broader HUD customization also expected.
+Can a stolen car already be low on fuel?
+Yes. Stolen vehicles are not guaranteed to start with a full tank or battery.
+What happens if a vehicle reaches zero fuel?
+The current information indicates that running out can strand the player, but the exact final recovery mechanics have not been published.
+4. GTA 6 Focus Ability
+CURRENT STATUS
+Focus is a multi-purpose ability used for slow-motion aiming, weak-point targeting, police detection, environmental awareness and robbery planning. A purple meter represents the available resource. Recharge rules remain unknown.
+Focus is one of GTA 6’s major new gameplay systems. It resembles Red Dead Redemption 2’s Dead Eye at first glance because it can slow the action during combat, but its role is broader: it can reveal enemies, highlight body parts and vehicle components, locate police, identify points of interest and help the player recognize valuable robbery targets.
+Focus Meter
+Focus is represented by a purple HUD meter. Activating the ability consumes the available resource; when the meter is depleted, the slow-motion effect ends and normal-speed gameplay resumes. Because the ability has applications beyond gunfights, deciding when to spend the meter can become part of both combat and exploration strategy.
+Slow-Motion Combat
+When Focus is active, time slows and the player receives more precise control over target selection. It is especially valuable when multiple enemies are present because threats can be evaluated before committing to a shot.
+GTA 6 also uses cinematic slow-motion in dramatic moments, including certain incapacitations and heavy vehicle collisions. Those cinematic effects are related presentation systems and should not automatically be treated as manual Focus activation.
+Enemy Body-Part Targeting
+Focus can highlight specific parts of an enemy’s body. Red target areas represent lethal options, while yellow areas represent non-lethal or incapacitating options. A head or chest shot can produce a lethal result, while arms or legs can be used to neutralize an enemy without necessarily killing them.
+The wider combat interface uses color feedback as well: white crosshair feedback indicates normal hits, yellow indicates incapacitation and red indicates a kill. These systems reinforce the game’s emphasis on choosing between lethal and non-lethal outcomes.
+Vehicle Component Targeting
+Focus can identify meaningful parts of a vehicle, including the engine block, fuel tank and tyres. Instead of simply firing into a car until it stops, the player can choose a component that matches the desired result, such as disabling mobility or attacking a vulnerable system.
+Police Detection Through Walls
+Focus is also a police-awareness tool. Nearby officers can be revealed through walls, reducing reliance on traditional minimap icons. During a Wanted situation, the player may need to actively scan the environment to understand where police are positioned before moving through an interior, alley or other obstructed area.
+Points of Interest and Escape Routes
+The broader feature set describes Focus as highlighting points of interest and escape routes. That turns it into an environmental-reading system rather than a combat-only power. It can help the player identify useful paths, threats and interactable opportunities when planning an escape or approaching an objective.
+Focus During Robberies
+Robberies are another major use case. Focus can highlight valuable objects that may be worth stealing, which is especially useful in locations such as jewellery stores where multiple items compete for the player’s attention. It can also support route planning by drawing attention to escape options.
+This function evolves an idea seen in early development material, where Jason’s special ability turned much of the scene desaturated while valuable loot was highlighted.
+Character-Specific Special Abilities
+Current feature information describes character-specific slow-motion abilities alongside the general Focus system. Jason’s ability highlights enemy weak points in a Dead Eye-like mode, while Lucia’s ability is described as slow motion concentrated around a single shot.
+The exact relationship between the shared Focus terminology and each protagonist’s individual special ability has not yet been fully explained. They may represent variants of the same system, character-specific versions of Focus, or overlapping mechanics.
+Focus and Non-Lethal Play
+Focus fits the broader non-lethal combat design. The player can target limbs, disarm enemies by shooting weapons from their hands, use suppression fire to frighten targets and choose incapacitation over killing. Because the Criminal Profile System tracks unnecessarily violent behavior, precise non-lethal targeting may have consequences beyond a single fight.
+Recharge and Resource Management
+The method for recharging Focus has not been revealed. Consumables have been suggested as a possibility, but that connection is not confirmed. What is clear is that Focus is limited by a meter and is not intended to function as an unlimited permanent slow-motion mode.
+Until Rockstar details the recharge rules, any specific claim about items, cooldowns, kills, food, sleep or other recharge methods should be treated as speculation.
+Development-History Notes
+The 2022 alpha material suggested Jason could recognize valuable loot by shifting the scene toward black-and-white while highlighting important items.
+Later development footage showed a third purple meter with an eye-style icon next to health and stamina, potentially representing the modern Focus resource.
+Development combat footage also showed dramatic slow-motion during incapacitations, supporting the game’s broader use of time-slowing effects without proving every slow-motion event is manual Focus.
+What Is Still Unknown
+How Focus is recharged.
+How long a full meter lasts.
+Whether Jason and Lucia share identical Focus meters.
+The exact relationship between Focus and each protagonist’s special ability.
+Whether Focus can be upgraded through progression.
+Whether difficulty settings or accessibility options alter its behavior.
+The complete list of environmental objects that Focus can highlight.
+Frequently Asked Questions
+Is Focus just GTA 6’s version of Dead Eye?
+Not exactly. It uses slow motion and precise targeting, but it also reveals police, points of interest, escape routes and valuable robbery targets.
+Can Focus target non-lethal areas?
+Yes. Yellow body areas represent non-lethal or incapacitating targets, while red areas represent lethal targets.
+Can Focus target vehicles?
+Yes. Known targetable components include the engine block, fuel tank and tyres.
+Can Focus reveal police through walls?
+Yes. It is used to identify nearby police positions even when direct line of sight is blocked.
+How is Focus recharged?
+That has not yet been officially explained.
+5. GTA 6 Robberies & Money System
+CURRENT STATUS
+Robberies are a major open-world economy system. Almost any store can become a target, larger opportunities have estimated values, information can come from tips or overheard conversations, loot may require fencing, and money is divided between bank funds, carried cash and the value of goods in a duffle bag.
+GTA 6 greatly expands open-world robbery. Instead of limiting robberies to a small set of predefined convenience stores, the game allows the player to treat practically any suitable store as a potential target while also offering larger, more structured robbery opportunities involving banks, jewellery stores, compounds, vans and other valuable locations.
+Three-Part Money System
+Money is divided into three practical categories: funds stored in a bank account, cash physically carried by the player and the current value of loot being carried in a duffle bag. This distinction makes criminal income more vulnerable before it is converted or deposited.
+Bank account: money already stored safely in the financial system.
+Carried cash: spendable money physically held by the player.
+Loot value: the estimated value of stolen goods currently carried in a duffle bag and not necessarily converted into cash yet.
+Almost Any Store Can Be Robbed
+Players can attempt to rob nearly any store they can enter. Small targets such as convenience stores and phone-repair shops provide lower-tier opportunities, with preview information placing some of these robberies around the $1,000 range.
+These smaller robberies are not necessarily marked on the map. The player can discover them naturally while exploring Vice City and the wider state of Leonida.
+Larger Robbery Targets
+Higher-value targets include jewellery stores, banks, compounds and various vans. These opportunities can appear on the map with an estimated robbery value, allowing the player to compare risk and reward before beginning the job.
+The game therefore supports a spectrum of crime: quick opportunistic store thefts for immediate money and larger robberies that require more preparation, information and equipment.
+Discovering Opportunities
+Robbery opportunities can be discovered in several ways. NPCs can provide anonymous tips, conversations can be overheard, and leads can direct the player toward additional targets. This gives social interaction and exploration a direct economic purpose.
+The game is designed so that players do not need to rely exclusively on map icons. Information can emerge from the world itself.
+Safes, Combinations and Environmental Clues
+Some robberies involve more than threatening a cashier. Valuable loot can be protected inside safes, and accessing those safes may require a combination. The player may need to search the environment for clues or speak to NPCs to obtain the information needed to open them.
+CCTV, Backdoors and Escape Planning
+Security cameras can complicate robberies because surveillance feeds information into the broader Wanted and identification system. Backdoors and other exit routes can be used as escape options, making route planning part of the robbery rather than something considered only after the police arrive.
+Focus can support this planning by highlighting valuable objects, points of interest and escape routes.
+NPC Reactions
+NPCs do not always behave passively during robberies. Some may panic, flee, report the crime or act heroically and attempt to stop Jason or Lucia. Official gameplay has shown Lucia physically fighting an NPC during a robbery, while development footage depicted detailed civilian reactions and more cautious police behavior around robbery scenes.
+Walking through populated areas with a weapon openly drawn can also trigger reactions, with characters warning the player and the protagonists automatically hiding weapons in some situations.
+Dialogue, Threats, Hostages and Restraints
+Earlier development material showed contextual dialogue prompts such as Greet, Threaten and Rob during a diner robbery. The game also includes zip ties, hostage interactions, human shields and the ability to carry or loot bodies, all of which broaden the toolset available during criminal encounters.
+Because some of these observations originated in development builds, the final availability of every contextual prompt in every robbery type remains subject to change.
+Loot Bags and Trunk Storage
+Duffel or loot bags are part of the robbery inventory. Players can carry multiple loot bags, and extra bags can be stored in vehicle trunks alongside weapons, equipment and spare outfits. This ties the robbery system directly to vehicle choice and preparation.
+A car is therefore more than transportation during a robbery: it can serve as a mobile cache for tools, weapons, disguises and additional stolen goods.
+Fences and Converting Loot Into Cash
+Some stolen goods cannot be treated as spendable money immediately. Valuable items such as jewellery or drugs may need to be taken to a fence and converted into usable cash. Successfully leaving the robbery scene does not necessarily mean the profit is secure.
+If the player is caught before fencing the goods or depositing cash, a successful robbery can still result in little or no usable gain. This adds a post-robbery risk phase that continues after the initial escape.
+Garages and Stolen-Goods Deposits
+Some garage properties include a deposit for stolen goods as well as a weapon locker. This creates a direct connection between property progression and the criminal economy, allowing selected garages to function as operational support locations rather than simple vehicle storage.
+Shipping Containers and Other Theft Opportunities
+The open-world theft system is not limited to shops. Shipping containers can be opened and robbed, with possible contents including cash, supplies, weapons and even bikes. These encounters broaden the definition of robbery into opportunistic theft across the world.
+Focus During Robberies
+Focus can identify valuable items that may be worth stealing. In a jewellery store or other loot-rich environment, this lets the player rapidly distinguish important targets from background objects. Earlier development material showed a similar concept through Jason’s loot-recognition ability.
+Money Can Affect Story Progression
+Money is more structurally important to the story than in many earlier GTA games. At certain points, story progression can be limited if the player does not have enough money. That makes optional robberies, contacts and other income sources relevant to the main campaign rather than purely side activities.
+New contacts introduced through the story can provide additional ways to make money, expanding the economy as the campaign progresses.
+Criminal Profile and Violence
+The Criminal Profile System tracks whether crimes are carried out professionally or with unnecessary violence. Because the profile can influence police severity, NPC hostility, the narrative and world reactions, the way a robbery is executed may matter beyond the immediate payout.
+Non-lethal tools, suppression fire, disarming shots and intimidation therefore have economic and systemic value: a clean robbery can potentially reduce police escalation and long-term consequences compared with uncontrolled violence.
+Enterable Locations Connected to Theft and Robbery
+The game includes a large range of enterable interiors that can support normal exploration, purchases or criminal activity. Development material identified bars and restaurants, gas stations, gun stores, laundries, motels and hotels, nightclubs and strip clubs, pawn shops, supermarkets and metro stations among the accessible interior types.
+Not every enterable building should automatically be described as a robbery target, but the large interior count supports the broader design goal of making theft and robbery more systemic across the world.
+Purchasable Businesses: Current Status
+Older development material contained references to purchasable businesses. Current property information, however, says it is still unknown whether GTA 6 will feature businesses that generate passive income in the style of GTA Vice City or GTA V. The older reference should therefore remain in the development-history category until reconfirmed.
+Development-History Notes
+The 2022 diner robbery showed dialogue options such as Greet, Threaten and Rob and demonstrated zip ties and hostage behavior.
+Early material described detailed store robberies with NPC reactions and police surrounding locations more cautiously instead of rushing in immediately.
+Jason’s early special ability highlighted valuable loot in a desaturated view, an idea now reflected in the broader Focus system.
+Early data listed an Easy Score family of world events tied to places such as a bingo hall, cash-and-carry, cafe, body shop and closing store.
+The same development material showed equipment relevant to theft, including a Cut-off Tool, Lock Pick, Slim Jim, Tracker Jammer, Immobilizer Bypass, USB Drive and Auto Dialer.
+What Is Still Unknown
+The final payout range for each store and major robbery type.
+Whether every enterable retail business is robbable or whether some exceptions exist.
+How often anonymous tips and eavesdropping leads appear.
+The complete fence network and how fence progression works.
+Exactly what is lost when the player is arrested or killed while carrying cash or loot.
+The full list of story moments that require a minimum amount of money.
+Whether purchasable passive-income businesses are present in the final game.
+The final inventory limits for duffel bags and vehicle-stored loot.
+Frequently Asked Questions
+Can almost any store be robbed?
+Yes. Current preview information says players can attempt to rob practically any suitable store they can enter, although the final list of exceptions has not been published.
+How is money divided?
+The economy distinguishes bank funds, cash carried by the player and the value of loot currently held in a duffle bag.
+Are robberies marked on the map?
+Small opportunistic robberies may be unmarked, while larger targets can appear with estimated values. Tips and overheard conversations can also reveal opportunities.
+Do stolen valuables become cash immediately?
+Not always. Items such as jewellery or drugs can require a fence before their value becomes usable cash.
+Can Focus help during robberies?
+Yes. Focus can identify valuable loot and help highlight useful points of interest and escape routes.
+System Integration: How the Five Mechanics Connect
+These five systems are designed to overlap rather than operate independently. A robbery can begin with Focus identifying valuable goods, continue with witnesses or CCTV generating a Wanted response, force the player to choose a getaway car based on its security and fuel state, and end with stolen goods or vehicles being taken to a fence. Clothing, vehicle storage, garages, Pay & Spray and the Criminal Profile System then affect what happens after the immediate crime.
+Robbery → Wanted: witnesses, alarms, CCTV and violence determine the police response and identification quality.
+Robbery → Focus: valuable loot and escape routes can be highlighted during the job.
+Robbery → Vehicles: trunks carry weapons, disguises and extra loot bags; the getaway car itself may be stolen.
+Vehicle Theft → Wanted: tracked or identified cars can reveal the player’s location or trigger renewed attention.
+Vehicle Theft → Fuel: a stolen car may already be low on fuel or battery.
+Fuel → Combat: vehicle fuel tanks and engines can be targeted through Focus.
+Police → Clothing/Vehicle Storage: spare outfits and alternate vehicles help invalidate identifying information.
+Garages → Economy: purchased garages expand vehicle storage and can include weapon lockers or stolen-goods deposits.
+Criminal Profile → Police/Story: the style and violence level of crimes can influence police severity, NPC behavior and narrative reactions.
+Publication Status
+This guide is intentionally written as pre-release reference copy. Confirmed current systems are described directly; unresolved mechanics are labeled as unknown; development-only observations are isolated from current facts; and superseded alpha details are not presented as final gameplay. The document can therefore be published now and updated after launch without needing to undo speculative claims embedded in the main text.

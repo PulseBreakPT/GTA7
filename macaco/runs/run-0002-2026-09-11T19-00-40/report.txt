@@ -1,0 +1,1169 @@
+MACACO RUN #2
+
+Target: https://lusorae.pt · mode CHAOS · seed 843921 · mobile 390x844 · 1 min
+
+Pages discovered: 511
+Pages visited: 26
+Route patterns: 19
+Actions executed: 40
+
+Critical: 0
+High: 0
+Medium: 17
+Low: 7
+
+JS errors: 0
+HTTP 500: 0
+Broken images: 0
+Network issues: 0
+Visual issues: 24
+UX issues: 0
+Accessibility issues: 0
+Possible security issues: 0
+
+============================================================
+
+MACACO-00006
+
+Severity: MEDIUM
+Page: /map/location/vc-port
+Viewport: 390x844
+Occurrences: 2
+
+Problem:
+Controls overlap (57%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+4. Click link "Location VC PORT Confirmed"
+
+Result:
+Controls overlap (57%): one is covered by the other
+
+Elements (2):
+- div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]
+- div.space-y-3.border-t > div.wiki-info-row > div.wiki-info-value > a.text-pink.transition-colors
+
+Detail:
+ ↔ Sign in for personal tools
+
+Screenshot:
+screenshots/macaco-00006.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00006.json
+
+------------------------------------------------------------
+
+MACACO-00001
+
+Severity: MEDIUM
+Page: /
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (46%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+
+Result:
+Controls overlap (46%): one is covered by the other
+
+Detail:
+Explore the wiki ↔ Home
+
+Screenshot:
+screenshots/macaco-00001.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00001.json
+
+------------------------------------------------------------
+
+MACACO-00003
+
+Severity: MEDIUM
+Page: /database/characters/cal-hampton
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (85%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+
+Result:
+Controls overlap (85%): one is covered by the other
+
+Detail:
+ ↔ Sign in for personal tools
+
+Screenshot:
+screenshots/macaco-00003.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00003.json
+
+------------------------------------------------------------
+
+MACACO-00004
+
+Severity: MEDIUM
+Page: /sources
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (59%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+
+Result:
+Controls overlap (59%): one is covered by the other
+
+Detail:
+Character
+NIGHTCLUB DJ
+Verifie ↔ Home
+
+Screenshot:
+screenshots/macaco-00004.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00004.json
+
+------------------------------------------------------------
+
+MACACO-00007
+
+Severity: MEDIUM
+Page: /legal
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (47%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+4. Click link "Location VC PORT Confirmed"
+5. Click card "PTT YOUNGIN$ COMPOUND"
+6. Hover link "GTA VI overview"
+7. Click link "LEGAL"
+
+Result:
+Controls overlap (47%): one is covered by the other
+
+Detail:
+02
+PRIVACY NOTICE
+What persona ↔ Home
+
+Screenshot:
+screenshots/macaco-00007.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00007.json
+
+------------------------------------------------------------
+
+MACACO-00009
+
+Severity: MEDIUM
+Page: /guides
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (100%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+4. Click link "Location VC PORT Confirmed"
+5. Click card "PTT YOUNGIN$ COMPOUND"
+6. Hover link "GTA VI overview"
+7. Click link "LEGAL"
+8. Double-click card "04 COPYRIGHT & IP POLICY Ownership, fan-project st…"
+9. Click link "Legal centre"
+10. Hover link "Go to page"
+11. Hover card "GTA Lore home"
+12. Double-click link "Guides"
+
+Result:
+Controls overlap (100%): one is covered by the other
+
+Detail:
+NO VERIFIED SUBJECT IMAGE
+Anal ↔ Home
+
+Screenshot:
+screenshots/macaco-00009.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00009.json
+
+------------------------------------------------------------
+
+MACACO-00011
+
+Severity: MEDIUM
+Page: /database/characters
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (100%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+4. Click link "Location VC PORT Confirmed"
+5. Click card "PTT YOUNGIN$ COMPOUND"
+6. Hover link "GTA VI overview"
+7. Click link "LEGAL"
+8. Double-click card "04 COPYRIGHT & IP POLICY Ownership, fan-project st…"
+9. Click link "Legal centre"
+10. Hover link "Go to page"
+11. Hover card "GTA Lore home"
+12. Double-click link "Guides"
+13. Click link "Editions"
+14. Click link "Characters"
+
+Result:
+Controls overlap (100%): one is covered by the other
+
+Detail:
+LUCIA CAMINOS
+PROTAGONIST ↔ Home
+
+Screenshot:
+screenshots/macaco-00011.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00011.json
+
+------------------------------------------------------------
+
+MACACO-00012
+
+Severity: MEDIUM
+Page: /gangs-factions
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (100%): one is covered by the other
+
+Steps:
+1. (4 earlier steps — see the replay file)
+2. Click card "PTT YOUNGIN$ COMPOUND"
+3. Hover link "GTA VI overview"
+4. Click link "LEGAL"
+5. Double-click card "04 COPYRIGHT & IP POLICY Ownership, fan-project st…"
+6. Click link "Legal centre"
+7. Hover link "Go to page"
+8. Hover card "GTA Lore home"
+9. Double-click link "Guides"
+10. Click link "Editions"
+11. Click link "Characters"
+12. Double-click card "Open LUCIA CAMINOS full profile"
+13. Click link "Gangs & factions"
+
+Result:
+Controls overlap (100%): one is covered by the other
+
+Detail:
+FINAL CHAPTER MC ↔ News
+
+Screenshot:
+screenshots/macaco-00012.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00012.json
+
+------------------------------------------------------------
+
+MACACO-00014
+
+Severity: MEDIUM
+Page: /gangs-factions/final-chapter-mc
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (54%): one is covered by the other
+
+Steps:
+1. (7 earlier steps — see the replay file)
+2. Double-click card "04 COPYRIGHT & IP POLICY Ownership, fan-project st…"
+3. Click link "Legal centre"
+4. Hover link "Go to page"
+5. Hover card "GTA Lore home"
+6. Double-click link "Guides"
+7. Click link "Editions"
+8. Click link "Characters"
+9. Double-click card "Open LUCIA CAMINOS full profile"
+10. Click link "Gangs & factions"
+11. Hover link "COOKIES"
+12. Click menu "Open account menu"
+13. Click link "Read full entry →"
+
+Result:
+Controls overlap (54%): one is covered by the other
+
+Detail:
+ ↔ Sign in for personal tools
+
+Screenshot:
+screenshots/macaco-00014.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00014.json
+
+------------------------------------------------------------
+
+MACACO-00016
+
+Severity: MEDIUM
+Page: /database/vehicles/avarus
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (83%): one is covered by the other
+
+Steps:
+1. (9 earlier steps — see the replay file)
+2. Hover link "Go to page"
+3. Hover card "GTA Lore home"
+4. Double-click link "Guides"
+5. Click link "Editions"
+6. Click link "Characters"
+7. Double-click card "Open LUCIA CAMINOS full profile"
+8. Click link "Gangs & factions"
+9. Hover link "COOKIES"
+10. Click menu "Open account menu"
+11. Click link "Read full entry →"
+12. Rapid-click button "button" ×4
+13. Click link "Avarus"
+
+Result:
+Controls overlap (83%): one is covered by the other
+
+Detail:
+ ↔ Sign in for personal tools
+
+Screenshot:
+screenshots/macaco-00016.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00016.json
+
+------------------------------------------------------------
+
+MACACO-00017
+
+Severity: MEDIUM
+Page: /wiki
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (66%): one is covered by the other
+
+Steps:
+1. (10 earlier steps — see the replay file)
+2. Hover card "GTA Lore home"
+3. Double-click link "Guides"
+4. Click link "Editions"
+5. Click link "Characters"
+6. Double-click card "Open LUCIA CAMINOS full profile"
+7. Click link "Gangs & factions"
+8. Hover link "COOKIES"
+9. Click menu "Open account menu"
+10. Click link "Read full entry →"
+11. Rapid-click button "button" ×4
+12. Click link "Avarus"
+13. Rapid-click link "Wiki" ×4
+
+Result:
+Controls overlap (66%): one is covered by the other
+
+Detail:
+VEHICLES
+Cars, bikes, boats, a ↔ Home
+
+Screenshot:
+screenshots/macaco-00017.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00017.json
+
+------------------------------------------------------------
+
+MACACO-00018
+
+Severity: MEDIUM
+Page: /wiki/statistics
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (100%): one is covered by the other
+
+Steps:
+1. (13 earlier steps — see the replay file)
+2. Click link "Characters"
+3. Double-click card "Open LUCIA CAMINOS full profile"
+4. Click link "Gangs & factions"
+5. Hover link "COOKIES"
+6. Click menu "Open account menu"
+7. Click link "Read full entry →"
+8. Rapid-click button "button" ×4
+9. Click link "Avarus"
+10. Rapid-click link "Wiki" ×4
+11. Click link "LUCIA CAMINOS"
+12. Rapid-click link "https://lusorae.pt/wiki/what-links-here?kind=chara…" ×4
+13. Click link "Statistics"
+
+Result:
+Controls overlap (100%): one is covered by the other
+
+Detail:
+4
+
+Secrets ↔ Home
+
+Screenshot:
+screenshots/macaco-00018.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00018.json
+
+------------------------------------------------------------
+
+MACACO-00019
+
+Severity: MEDIUM
+Page: /wiki/changes
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (100%): one is covered by the other
+
+Steps:
+1. (16 earlier steps — see the replay file)
+2. Hover link "COOKIES"
+3. Click menu "Open account menu"
+4. Click link "Read full entry →"
+5. Rapid-click button "button" ×4
+6. Click link "Avarus"
+7. Rapid-click link "Wiki" ×4
+8. Click link "LUCIA CAMINOS"
+9. Rapid-click link "https://lusorae.pt/wiki/what-links-here?kind=chara…" ×4
+10. Click link "Statistics"
+11. Click link "Easter eggs"
+12. Click link "GATOR SHACK"
+13. Click link "Recent changes"
+
+Result:
+Controls overlap (100%): one is covered by the other
+
+Detail:
+Character
+Confirmed
+JASON DUVA ↔ Home
+
+Screenshot:
+screenshots/macaco-00019.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00019.json
+
+------------------------------------------------------------
+
+MACACO-00020
+
+Severity: MEDIUM
+Page: /wiki/go
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (70%): one is covered by the other
+
+Steps:
+1. (25 earlier steps — see the replay file)
+2. Click link "Easter eggs"
+3. Click link "GATOR SHACK"
+4. Click link "Recent changes"
+5. Click link "Location Rumour NORTH BEACHES Stub entry"
+6. Click card "ELECTRIC FANG TATTOO"
+7. Hover link "Articles"
+8. Click link "GAMBIT BAY"
+9. Click link "Easter eggs"
+10. Click link "Editions"
+11. Hover link "Special pages"
+12. Click link "Characters"
+13. Click link "Go to page"
+
+Result:
+Controls overlap (70%): one is covered by the other
+
+Detail:
+Vehicles ↔ Home
+
+Screenshot:
+screenshots/macaco-00020.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00020.json
+
+------------------------------------------------------------
+
+MACACO-00021
+
+Severity: MEDIUM
+Page: /wiki/special
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (40%): one is covered by the other
+
+Steps:
+1. (26 earlier steps — see the replay file)
+2. Click link "GATOR SHACK"
+3. Click link "Recent changes"
+4. Click link "Location Rumour NORTH BEACHES Stub entry"
+5. Click card "ELECTRIC FANG TATTOO"
+6. Hover link "Articles"
+7. Click link "GAMBIT BAY"
+8. Click link "Easter eggs"
+9. Click link "Editions"
+10. Hover link "Special pages"
+11. Click link "Characters"
+12. Click link "Go to page"
+13. Rapid-click link "Special pages" ×4
+
+Result:
+Controls overlap (40%): one is covered by the other
+
+Detail:
+10
+TOPIC PORTALS
+
+Subject gate ↔ Home
+
+Screenshot:
+screenshots/macaco-00021.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00021.json
+
+------------------------------------------------------------
+
+MACACO-00022
+
+Severity: MEDIUM
+Page: /wiki/discover
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (68%): one is covered by the other
+
+Steps:
+1. (27 earlier steps — see the replay file)
+2. Click link "Recent changes"
+3. Click link "Location Rumour NORTH BEACHES Stub entry"
+4. Click card "ELECTRIC FANG TATTOO"
+5. Hover link "Articles"
+6. Click link "GAMBIT BAY"
+7. Click link "Easter eggs"
+8. Click link "Editions"
+9. Hover link "Special pages"
+10. Click link "Characters"
+11. Click link "Go to page"
+12. Rapid-click link "Special pages" ×4
+13. Click link "Discover 100"
+
+Result:
+Controls overlap (68%): one is covered by the other
+
+Detail:
+003
+WEAPON
+UNNAMED RIFLE
+
+RIFL ↔ Home
+
+Screenshot:
+screenshots/macaco-00022.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00022.json
+
+------------------------------------------------------------
+
+MACACO-00024
+
+Severity: MEDIUM
+Page: /database/radio/la-ola
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (83%): one is covered by the other
+
+Steps:
+1. (28 earlier steps — see the replay file)
+2. Click link "Location Rumour NORTH BEACHES Stub entry"
+3. Click card "ELECTRIC FANG TATTOO"
+4. Hover link "Articles"
+5. Click link "GAMBIT BAY"
+6. Click link "Easter eggs"
+7. Click link "Editions"
+8. Hover link "Special pages"
+9. Click link "Characters"
+10. Click link "Go to page"
+11. Rapid-click link "Special pages" ×4
+12. Click link "Discover 100"
+13. Rapid-click link "060 RADIO STATION LA OLA Latin/Salsa Rumour" ×4
+
+Result:
+Controls overlap (83%): one is covered by the other
+
+Detail:
+ ↔ Sign in for personal tools
+
+Screenshot:
+screenshots/macaco-00024.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00024.json
+
+------------------------------------------------------------
+
+MACACO-00013
+
+Severity: LOW
+Page: /gangs-factions/final-chapter-mc
+Viewport: 390x844
+Occurrences: 8
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. (7 earlier steps — see the replay file)
+2. Double-click card "04 COPYRIGHT & IP POLICY Ownership, fan-project st…"
+3. Click link "Legal centre"
+4. Hover link "Go to page"
+5. Hover card "GTA Lore home"
+6. Double-click link "Guides"
+7. Click link "Editions"
+8. Click link "Characters"
+9. Double-click card "Open LUCIA CAMINOS full profile"
+10. Click link "Gangs & factions"
+11. Hover link "COOKIES"
+12. Click menu "Open account menu"
+13. Click link "Read full entry →"
+
+Result:
+Focusable control is fully transparent
+
+Elements (8):
+- section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#evidence > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#ecosystem > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#networks > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#confirmed > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#unknown > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#related > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+
+Detail:
+Link to the Overview section
+
+Screenshot:
+screenshots/macaco-00013.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00013.json
+
+------------------------------------------------------------
+
+MACACO-00015
+
+Severity: LOW
+Page: /database/vehicles/avarus
+Viewport: 390x844
+Occurrences: 8
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. (9 earlier steps — see the replay file)
+2. Hover link "Go to page"
+3. Hover card "GTA Lore home"
+4. Double-click link "Guides"
+5. Click link "Editions"
+6. Click link "Characters"
+7. Double-click card "Open LUCIA CAMINOS full profile"
+8. Click link "Gangs & factions"
+9. Hover link "COOKIES"
+10. Click menu "Open account menu"
+11. Click link "Read full entry →"
+12. Rapid-click button "button" ×4
+13. Click link "Avarus"
+
+Result:
+Focusable control is fully transparent
+
+Elements (8):
+- section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#evidence > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#ownership > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#customisation > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#performance > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#specifications > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#related > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+
+Detail:
+Link to the Overview section
+
+Screenshot:
+screenshots/macaco-00015.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00015.json
+
+------------------------------------------------------------
+
+MACACO-00008
+
+Severity: LOW
+Page: /legal/copyright
+Viewport: 390x844
+Occurrences: 7
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+4. Click link "Location VC PORT Confirmed"
+5. Click card "PTT YOUNGIN$ COMPOUND"
+6. Hover link "GTA VI overview"
+7. Click link "LEGAL"
+8. Double-click card "04 COPYRIGHT & IP POLICY Ownership, fan-project st…"
+
+Result:
+Focusable control is fully transparent
+
+Elements (7):
+- section#status > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#ownership > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#fan-material > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#music > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#notice > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#process > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#trademarks > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+
+Detail:
+Link to the 1. Independent fan project section
+
+Screenshot:
+screenshots/macaco-00008.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00008.json
+
+------------------------------------------------------------
+
+MACACO-00002
+
+Severity: LOW
+Page: /database/characters/cal-hampton
+Viewport: 390x844
+Occurrences: 5
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+
+Result:
+Focusable control is fully transparent
+
+Elements (5):
+- section#background > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#details > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#relationships > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#mechanics > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+
+Detail:
+Link to the Background section
+
+Screenshot:
+screenshots/macaco-00002.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00002.json
+
+------------------------------------------------------------
+
+MACACO-00005
+
+Severity: LOW
+Page: /map/location/vc-port
+Viewport: 390x844
+Occurrences: 3
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+4. Click link "Location VC PORT Confirmed"
+
+Result:
+Focusable control is fully transparent
+
+Elements (3):
+- section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#evidence > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#nearby > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+
+Detail:
+Link to the Overview section
+
+Screenshot:
+screenshots/macaco-00005.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00005.json
+
+------------------------------------------------------------
+
+MACACO-00023
+
+Severity: LOW
+Page: /database/radio/la-ola
+Viewport: 390x844
+Occurrences: 3
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. (28 earlier steps — see the replay file)
+2. Click link "Location Rumour NORTH BEACHES Stub entry"
+3. Click card "ELECTRIC FANG TATTOO"
+4. Hover link "Articles"
+5. Click link "GAMBIT BAY"
+6. Click link "Easter eggs"
+7. Click link "Editions"
+8. Hover link "Special pages"
+9. Click link "Characters"
+10. Click link "Go to page"
+11. Rapid-click link "Special pages" ×4
+12. Click link "Discover 100"
+13. Rapid-click link "060 RADIO STATION LA OLA Latin/Salsa Rumour" ×4
+
+Result:
+Focusable control is fully transparent
+
+Elements (3):
+- section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#related > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+- section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity
+
+Detail:
+Link to the Overview section
+
+Screenshot:
+screenshots/macaco-00023.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00023.json
+
+------------------------------------------------------------
+
+MACACO-00010
+
+Severity: LOW
+Page: /editions
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click card "CAL HAMPTON ALLY"
+3. Click link "SOURCE POLICY"
+4. Click link "Location VC PORT Confirmed"
+5. Click card "PTT YOUNGIN$ COMPOUND"
+6. Hover link "GTA VI overview"
+7. Click link "LEGAL"
+8. Double-click card "04 COPYRIGHT & IP POLICY Ownership, fan-project st…"
+9. Click link "Legal centre"
+10. Hover link "Go to page"
+11. Hover card "GTA Lore home"
+12. Double-click link "Guides"
+13. Click link "Editions"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Reported in community summaries section
+
+Screenshot:
+screenshots/macaco-00010.png
+
+Trace:
+traces/chaos-mobile-0.zip (npx playwright show-trace)
+
+Video:
+videos/chaos-mobile-0.webm
+
+Seed:
+843921
+
+Replay:
+macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00010.json

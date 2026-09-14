@@ -1,0 +1,4 @@
+
+/* Previous / next record: always side by side, even on phones (the generic
+   single-column rule for two-column grids inside entries must not apply). */
+body.lore-design .wiki-entry-primary nav.adjacent-records { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }

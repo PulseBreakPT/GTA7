@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Macaco run #1</title>
+<style>
+  :root { --bg:#faf8f4; --ink:#26232b; --muted:#625d69; --line:#dfdbe1; --accent:#b81761; }
+  * { box-sizing: border-box } body { margin:0; padding: 24px 16px 64px; background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui, sans-serif }
+  main { max-width: 1100px; margin: 0 auto }
+  h1 { font-size: 26px; margin: 0 0 4px } .muted { color: var(--muted) }
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 10px; margin: 18px 0 }
+  .stat { background:#fff; border:1px solid var(--line); border-radius: 12px; padding: 12px 14px } .stat b { display:block; font-size: 22px }
+  .filters { display:flex; flex-wrap:wrap; gap:6px; margin: 18px 0 } .filters button { border:1px solid var(--line); background:#fff; border-radius: 999px; padding: 6px 12px; cursor:pointer; font: inherit }
+  .filters button.on { border-color: var(--accent); color: var(--accent) }
+  .incident { background:#fff; border:1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin: 12px 0 }
+  .incident header { display:flex; flex-wrap:wrap; gap:8px; align-items:center } .incident h3 { margin: 8px 0; font-size: 16px }
+  .count { margin-left:auto; font-weight:600 } dl { display:flex; flex-wrap:wrap; gap: 4px 20px; margin: 4px 0 } dt { color: var(--muted); font-size: 12px } dd { margin:0 }
+  .sev { border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 600; border:1px solid }
+  .sev-critical { color:#8f0b2e; background:#fde8ee; border-color:#f3b3c4 } .sev-high { color:#a3124f; background:#fcedf3; border-color:#efbcd1 }
+  .sev-medium { color:#7a4f00; background:#fcf4e3; border-color:#e9cf97 } .sev-low { color:#1b5496; background:#ebf2fb; border-color:#b3cdec }
+  pre { white-space: pre-wrap; background:#f6f3f6; padding: 10px; border-radius: 8px; font-size: 12px } .detail { color: var(--muted); word-break: break-word }
+  .evidence img { max-width: 100%; max-height: 260px; border:1px solid var(--line); border-radius: 8px; margin-top: 8px } code { font-size: 12px; background:#f6f3f6; padding: 2px 6px; border-radius: 6px }
+</style></head><body><main>
+<h1>Macaco run #1</h1>
+<p class="muted">https://lusorae.pt · SMART · seed 200437 · desktop 1440x900, mobile 390x844 · 1 min · 2026-09-11T18:56:29.309Z</p>
+<section class="grid">
+  <div class="stat"><span class="muted">Pages discovered</span><b>434</b></div>
+  <div class="stat"><span class="muted">Pages visited</span><b>21</b></div>
+  <div class="stat"><span class="muted">Actions</span><b>40</b></div>
+  <div class="stat"><span class="sev sev-critical">CRITICAL</span><b>0</b></div><div class="stat"><span class="sev sev-high">HIGH</span><b>0</b></div><div class="stat"><span class="sev sev-medium">MEDIUM</span><b>9</b></div><div class="stat"><span class="sev sev-low">LOW</span><b>41</b></div>
+  <div class="stat"><span class="muted">JS errors</span><b>0</b></div>
+  <div class="stat"><span class="muted">HTTP 500</span><b>0</b></div>
+  <div class="stat"><span class="muted">Broken images</span><b>0</b></div>
+  <div class="stat"><span class="muted">Visual</span><b>30</b></div>
+  <div class="stat"><span class="muted">UX</span><b>0</b></div>
+  <div class="stat"><span class="muted">Accessibility</span><b>20</b></div>
+  <div class="stat"><span class="muted">Security</span><b>0</b></div>
+</section>
+<nav class="filters" aria-label="Filter incidents">
+  <button class="on" data-filter="all">All (50)</button>
+  <button data-filter="sev:CRITICAL">CRITICAL (0)</button><button data-filter="sev:HIGH">HIGH (0)</button><button data-filter="sev:MEDIUM">MEDIUM (9)</button><button data-filter="sev:LOW">LOW (41)</button>
+  <button data-filter="bucket:accessibility">accessibility (20)</button><button data-filter="bucket:visual">visual (30)</button>
+</nav>
+<section id="incidents">
+  <article class="incident" data-severity="MEDIUM" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00003</strong>
+      <span class="muted">accessibility · a11y:color-contrast</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Elements must meet minimum color contrast ratio thresholds (2 elements)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (1)</summary><ol><li>Open / (1440x900)</li></ol></details>
+    <p class="result"><b>Result:</b> Elements must meet minimum color contrast ratio thresholds (2 elements)</p>
+    <p class="detail">Fix any of the following:   Element has insufficient color contrast of 4.36 (foreground color: #806873, background color: #f0edf0, font size: 7.7pt (10.24px), font weight: normal). Expected contrast ratio of 4.5:1 — .footer-v3-legal &gt; p | .footer-v3-release &gt; span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00003.png" target="_blank"><img src="screenshots/macaco-00003.png" alt="Screenshot of MACACO-00003" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00003.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00008</strong>
+      <span class="muted">accessibility · a11y:color-contrast</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Elements must meet minimum color contrast ratio thresholds (8 elements)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/media</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Elements must meet minimum color contrast ratio thresholds (8 elements)</p>
+    <p class="detail">Fix any of the following:   Element has insufficient color contrast of 3.6 (foreground color: #ca5289, background color: #f9ecf2, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1 — .border-pink &gt; .font-mono.opacity-70.tabular-nums | .hover\:border-black\/40.filter-chip.h-9:nth-child(4) &gt; .font-mono.opacity-70.tabular-nums | .hover\:border-black\/40.filter-chip.h-9:nth-child(5) &gt; .font-mono.opacity-70.tabular-nums — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00008.png" target="_blank"><img src="screenshots/macaco-00008.png" alt="Screenshot of MACACO-00008" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00008.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00014</strong>
+      <span class="muted">accessibility · a11y:color-contrast</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Elements must meet minimum color contrast ratio thresholds (3 elements)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Elements must meet minimum color contrast ratio thresholds (3 elements)</p>
+    <p class="detail">Fix any of the following:   Element has insufficient color contrast of 2.87 (foreground color: #9b8c93, background color: #f5f2f5, font size: 8.0pt (10.72px), font weight: normal). Expected contrast ratio of 4.5:1 — .wiki-toc-summary &gt; span &gt; small | .footer-v3-legal &gt; p | .footer-v3-release &gt; span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00014.png" target="_blank"><img src="screenshots/macaco-00014.png" alt="Screenshot of MACACO-00014" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00014.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00023</strong>
+      <span class="muted">accessibility · a11y:color-contrast</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Elements must meet minimum color contrast ratio thresholds (3 elements)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Elements must meet minimum color contrast ratio thresholds (3 elements)</p>
+    <p class="detail">Fix any of the following:   Element has insufficient color contrast of 2.87 (foreground color: #9b8c93, background color: #f5f2f5, font size: 8.0pt (10.72px), font weight: normal). Expected contrast ratio of 4.5:1 — .wiki-toc-summary &gt; span &gt; small | .footer-v3-legal &gt; p | .footer-v3-release &gt; span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00023.png" target="_blank"><img src="screenshots/macaco-00023.png" alt="Screenshot of MACACO-00023" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00023.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00030</strong>
+      <span class="muted">accessibility · a11y:color-contrast</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Elements must meet minimum color contrast ratio thresholds (3 elements)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Elements must meet minimum color contrast ratio thresholds (3 elements)</p>
+    <p class="detail">Fix any of the following:   Element has insufficient color contrast of 4.47 (foreground color: #625d69, background color: #e6d3dd, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1 — a[data-macaco-id=&quot;m34&quot;] &gt; span | .footer-v3-legal &gt; p | .footer-v3-release &gt; span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00030.png" target="_blank"><img src="screenshots/macaco-00030.png" alt="Screenshot of MACACO-00030" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00030.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00035</strong>
+      <span class="muted">accessibility · a11y:scrollable-region-focusable</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Scrollable region must have keyboard access (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Scrollable region must have keyboard access (1 element)</p>
+    <p class="detail">Fix any of the following:   Element should have focusable content   Element should be focusable — .film-rail — https://dequeuniversity.com/rules/axe/4.13/scrollable-region-focusable?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00035.png" target="_blank"><img src="screenshots/macaco-00035.png" alt="Screenshot of MACACO-00035" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00035.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00036</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (46%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (1)</summary><ol><li>Open / (390x844)</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (46%): one is covered by the other</p>
+    <p class="detail">Explore the wiki ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00036.png" target="_blank"><img src="screenshots/macaco-00036.png" alt="Screenshot of MACACO-00036" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00036.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00039</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (66%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (5)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (66%): one is covered by the other</p>
+    <p class="detail">VEHICLES
+Cars, bikes, boats, a ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00039.png" target="_blank"><img src="screenshots/macaco-00039.png" alt="Screenshot of MACACO-00039" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00039.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00049</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (83%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (83%): one is covered by the other</p>
+    <p class="detail"> ↔ Sign in for personal tools</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00049.png" target="_blank"><img src="screenshots/macaco-00049.png" alt="Screenshot of MACACO-00049" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00049.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00001</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">2×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900 <span class="muted">(desktop, mobile)</span></dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (1)</summary><ol><li>Open / (1440x900)</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">Skip to content</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00001.png" target="_blank"><img src="screenshots/macaco-00001.png" alt="Screenshot of MACACO-00001" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00001.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00006</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">2×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/media <span class="muted">(+1 more)</span></dd></div>
+      <div><dt>Viewport</dt><dd>1440x900 <span class="muted">(desktop, mobile)</span></dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">Skip to content</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00006.png" target="_blank"><img src="screenshots/macaco-00006.png" alt="Screenshot of MACACO-00006" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00006.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00020</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">2×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums <span class="muted">(+1 more)</span></dd></div>
+      <div><dt>Viewport</dt><dd>1440x900 <span class="muted">(desktop, mobile)</span></dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Related records section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00020.png" target="_blank"><img src="screenshots/macaco-00020.png" alt="Screenshot of MACACO-00020" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00020.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00021</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">2×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums <span class="muted">(+1 more)</span></dd></div>
+      <div><dt>Viewport</dt><dd>1440x900 <span class="muted">(desktop, mobile)</span></dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">Skip to content</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00021.png" target="_blank"><img src="screenshots/macaco-00021.png" alt="Screenshot of MACACO-00021" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00021.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00028</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">2×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions <span class="muted">(+1 more)</span></dd></div>
+      <div><dt>Viewport</dt><dd>1440x900 <span class="muted">(desktop, mobile)</span></dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">Skip to content</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00028.png" target="_blank"><img src="screenshots/macaco-00028.png" alt="Screenshot of MACACO-00028" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00028.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00002</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (1)</summary><ol><li>Open / (1440x900)</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">GTA LORE
+THE GTA VI ENCYCLOPEDIA</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00002.png" target="_blank"><img src="screenshots/macaco-00002.png" alt="Screenshot of MACACO-00002" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00002.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00004</strong>
+      <span class="muted">accessibility · a11y:meta-viewport</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Zooming and scaling must not be disabled (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (1)</summary><ol><li>Open / (1440x900)</li></ol></details>
+    <p class="result"><b>Result:</b> Zooming and scaling must not be disabled (1 element)</p>
+    <p class="detail">Fix any of the following:   user-scalable=no on &lt;meta&gt; tag disables zooming on mobile devices — meta[name=&quot;viewport&quot;] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00004.png" target="_blank"><img src="screenshots/macaco-00004.png" alt="Screenshot of MACACO-00004" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00004.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00005</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/media</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Reported in community summaries section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00005.png" target="_blank"><img src="screenshots/macaco-00005.png" alt="Screenshot of MACACO-00005" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00005.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00007</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/media</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">GTA LORE
+THE GTA VI ENCYCLOPEDIA</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00007.png" target="_blank"><img src="screenshots/macaco-00007.png" alt="Screenshot of MACACO-00007" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00007.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00009</strong>
+      <span class="muted">accessibility · a11y:meta-viewport</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Zooming and scaling must not be disabled (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/media</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Zooming and scaling must not be disabled (1 element)</p>
+    <p class="detail">Fix any of the following:   user-scalable=no on &lt;meta&gt; tag disables zooming on mobile devices — meta[name=&quot;viewport&quot;] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00009.png" target="_blank"><img src="screenshots/macaco-00009.png" alt="Screenshot of MACACO-00009" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00009.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00010</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Archive record section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00010.png" target="_blank"><img src="screenshots/macaco-00010.png" alt="Screenshot of MACACO-00010" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00010.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00011</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Related records section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00011.png" target="_blank"><img src="screenshots/macaco-00011.png" alt="Screenshot of MACACO-00011" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00011.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00012</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">Skip to content</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00012.png" target="_blank"><img src="screenshots/macaco-00012.png" alt="Screenshot of MACACO-00012" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00012.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00013</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">GTA LORE
+THE GTA VI ENCYCLOPEDIA</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00013.png" target="_blank"><img src="screenshots/macaco-00013.png" alt="Screenshot of MACACO-00013" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00013.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00015</strong>
+      <span class="muted">accessibility · a11y:landmark-main-is-top-level</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Main landmark should not be contained in another landmark (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Main landmark should not be contained in another landmark (1 element)</p>
+    <p class="detail">Fix any of the following:   The main landmark is contained in another landmark. — #article-content — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00015.png" target="_blank"><img src="screenshots/macaco-00015.png" alt="Screenshot of MACACO-00015" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00015.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00016</strong>
+      <span class="muted">accessibility · a11y:landmark-no-duplicate-main</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Document should not have more than one main landmark (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Document should not have more than one main landmark (1 element)</p>
+    <p class="detail">Fix any of the following:   Document has more than one main landmark — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-no-duplicate-main?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00016.png" target="_blank"><img src="screenshots/macaco-00016.png" alt="Screenshot of MACACO-00016" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00016.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00017</strong>
+      <span class="muted">accessibility · a11y:landmark-unique</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)</p>
+    <p class="detail">Fix any of the following:   The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable — #main | .wiki-entry-tertiary — https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00017.png" target="_blank"><img src="screenshots/macaco-00017.png" alt="Screenshot of MACACO-00017" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00017.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00018</strong>
+      <span class="muted">accessibility · a11y:meta-viewport</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Zooming and scaling must not be disabled (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/duke-arms-company</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (6)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Zooming and scaling must not be disabled (1 element)</p>
+    <p class="detail">Fix any of the following:   user-scalable=no on &lt;meta&gt; tag disables zooming on mobile devices — meta[name=&quot;viewport&quot;] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00018.png" target="_blank"><img src="screenshots/macaco-00018.png" alt="Screenshot of MACACO-00018" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00018.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00019</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Archive record section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00019.png" target="_blank"><img src="screenshots/macaco-00019.png" alt="Screenshot of MACACO-00019" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00019.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00022</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">GTA LORE
+THE GTA VI ENCYCLOPEDIA</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00022.png" target="_blank"><img src="screenshots/macaco-00022.png" alt="Screenshot of MACACO-00022" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00022.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00024</strong>
+      <span class="muted">accessibility · a11y:landmark-main-is-top-level</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Main landmark should not be contained in another landmark (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Main landmark should not be contained in another landmark (1 element)</p>
+    <p class="detail">Fix any of the following:   The main landmark is contained in another landmark. — #article-content — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00024.png" target="_blank"><img src="screenshots/macaco-00024.png" alt="Screenshot of MACACO-00024" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00024.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00025</strong>
+      <span class="muted">accessibility · a11y:landmark-no-duplicate-main</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Document should not have more than one main landmark (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Document should not have more than one main landmark (1 element)</p>
+    <p class="detail">Fix any of the following:   Document has more than one main landmark — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-no-duplicate-main?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00025.png" target="_blank"><img src="screenshots/macaco-00025.png" alt="Screenshot of MACACO-00025" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00025.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00026</strong>
+      <span class="muted">accessibility · a11y:landmark-unique</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)</p>
+    <p class="detail">Fix any of the following:   The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable — #main | .wiki-entry-tertiary — https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00026.png" target="_blank"><img src="screenshots/macaco-00026.png" alt="Screenshot of MACACO-00026" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00026.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00027</strong>
+      <span class="muted">accessibility · a11y:meta-viewport</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Zooming and scaling must not be disabled (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/world/possums</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Zooming and scaling must not be disabled (1 element)</p>
+    <p class="detail">Fix any of the following:   user-scalable=no on &lt;meta&gt; tag disables zooming on mobile devices — meta[name=&quot;viewport&quot;] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00027.png" target="_blank"><img src="screenshots/macaco-00027.png" alt="Screenshot of MACACO-00027" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00027.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00029</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">GTA LORE
+THE GTA VI ENCYCLOPEDIA</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00029.png" target="_blank"><img src="screenshots/macaco-00029.png" alt="Screenshot of MACACO-00029" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00029.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00031</strong>
+      <span class="muted">accessibility · a11y:landmark-main-is-top-level</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Main landmark should not be contained in another landmark (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Main landmark should not be contained in another landmark (1 element)</p>
+    <p class="detail">Fix any of the following:   The main landmark is contained in another landmark. — .px-4 — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00031.png" target="_blank"><img src="screenshots/macaco-00031.png" alt="Screenshot of MACACO-00031" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00031.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00032</strong>
+      <span class="muted">accessibility · a11y:landmark-no-duplicate-main</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Document should not have more than one main landmark (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Document should not have more than one main landmark (1 element)</p>
+    <p class="detail">Fix any of the following:   Document has more than one main landmark — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-no-duplicate-main?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00032.png" target="_blank"><img src="screenshots/macaco-00032.png" alt="Screenshot of MACACO-00032" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00032.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00033</strong>
+      <span class="muted">accessibility · a11y:landmark-unique</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (1 element)</p>
+    <p class="detail">Fix any of the following:   The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00033.png" target="_blank"><img src="screenshots/macaco-00033.png" alt="Screenshot of MACACO-00033" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00033.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="accessibility">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00034</strong>
+      <span class="muted">accessibility · a11y:meta-viewport</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Zooming and scaling must not be disabled (1 element)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/categories/release-and-editions</dd></div>
+      <div><dt>Viewport</dt><dd>1440x900</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (9)</summary><ol><li>Open / (1440x900)</li><li>Click link &quot;OPEN VISUAL ARCHIVE&quot;</li><li>Click card &quot;GTA Lore home&quot;</li><li>Press Back</li><li>Click button &quot;EDITIONS 15&quot;</li><li>Click link &quot;Random entry&quot;</li><li>Click link &quot;POSSUMS&quot;</li><li>Click link &quot;Article categories&quot;</li><li>Click card &quot;FILE 03 05 ARTICLES RELEASE &amp; EDITIONS Platforms, …&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Zooming and scaling must not be disabled (1 element)</p>
+    <p class="detail">Fix any of the following:   user-scalable=no on &lt;meta&gt; tag disables zooming on mobile devices — meta[name=&quot;viewport&quot;] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00034.png" target="_blank"><img src="screenshots/macaco-00034.png" alt="Screenshot of MACACO-00034" loading="lazy"></a>
+      <p><a href="traces/smart-desktop-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00034.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00037</strong>
+      <span class="muted">visual · distorted-image</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Image is stretched (115% of its aspect ratio)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (1)</summary><ol><li>Open / (390x844)</li></ol></details>
+    <p class="result"><b>Result:</b> Image is stretched (115% of its aspect ratio)</p>
+    <p class="detail">https://lusorae.pt/brand/gta-lore-lockup-compact.svg</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00037.png" target="_blank"><img src="screenshots/macaco-00037.png" alt="Screenshot of MACACO-00037" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00037.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00038</strong>
+      <span class="muted">visual · distorted-image</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Image is stretched (115% of its aspect ratio)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki/glossary</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Image is stretched (115% of its aspect ratio)</p>
+    <p class="detail">https://lusorae.pt/brand/gta-lore-lockup-compact.svg</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00038.png" target="_blank"><img src="screenshots/macaco-00038.png" alt="Screenshot of MACACO-00038" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00038.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00040</strong>
+      <span class="muted">visual · clipped-text</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Text is cut off without an ellipsis</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (5)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Text is cut off without an ellipsis</p>
+    <p class="detail">Search the encyclopedia</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00040.png" target="_blank"><img src="screenshots/macaco-00040.png" alt="Screenshot of MACACO-00040" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00040.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00041</strong>
+      <span class="muted">visual · distorted-image</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Image is stretched (115% of its aspect ratio)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (5)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Image is stretched (115% of its aspect ratio)</p>
+    <p class="detail">https://lusorae.pt/brand/gta-lore-lockup-compact.svg</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00041.png" target="_blank"><img src="screenshots/macaco-00041.png" alt="Screenshot of MACACO-00041" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00041.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00042</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Overview section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00042.png" target="_blank"><img src="screenshots/macaco-00042.png" alt="Screenshot of MACACO-00042" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00042.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00043</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Evidence &amp; identity section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00043.png" target="_blank"><img src="screenshots/macaco-00043.png" alt="Screenshot of MACACO-00043" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00043.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00044</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Theft, ownership &amp; storage section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00044.png" target="_blank"><img src="screenshots/macaco-00044.png" alt="Screenshot of MACACO-00044" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00044.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00045</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Variants, inspiration &amp; regional role section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00045.png" target="_blank"><img src="screenshots/macaco-00045.png" alt="Screenshot of MACACO-00045" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00045.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00046</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Performance section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00046.png" target="_blank"><img src="screenshots/macaco-00046.png" alt="Screenshot of MACACO-00046" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00046.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00047</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Specifications section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00047.png" target="_blank"><img src="screenshots/macaco-00047.png" alt="Screenshot of MACACO-00047" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00047.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00048</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Reported in community summaries section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00048.png" target="_blank"><img src="screenshots/macaco-00048.png" alt="Screenshot of MACACO-00048" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00048.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00050</strong>
+      <span class="muted">visual · distorted-image</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Image is stretched (115% of its aspect ratio)</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/mercedes-benz-cle-inspired-convertible</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>200437</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click link &quot;Glossary&quot;</li><li>Click card &quot;GTA Lore main page&quot;</li><li>Press Back</li><li>Click link &quot;Wiki main page&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click card &quot;Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Image is stretched (115% of its aspect ratio)</p>
+    <p class="detail">https://lusorae.pt/brand/gta-lore-lockup-compact.svg</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00050.png" target="_blank"><img src="screenshots/macaco-00050.png" alt="Screenshot of MACACO-00050" loading="lazy"></a>
+      <p><a href="traces/smart-mobile-0.zip">Trace</a> · <code>macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00050.json</code></p>
+    </div>
+  </article></section>
+</main>
+<script>
+  document.querySelectorAll('.filters button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.filters button').forEach((x) => x.classList.toggle('on', x === b))
+    const [kind, value] = b.dataset.filter.split(':')
+    document.querySelectorAll('.incident').forEach((i) => {
+      i.hidden = kind !== 'all' && (kind === 'sev' ? i.dataset.severity !== value : i.dataset.bucket !== value)
+    })
+  }))
+</script></body></html>

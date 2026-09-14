@@ -1,0 +1,8 @@
+{
+  "ignore": [
+    {
+      "check": "a11y:meta-viewport",
+      "reason": "Zoom is disabled on purpose on Lusorae (product decision by the site owner, 11 Sep 2026)."
+    }
+  ]
+}

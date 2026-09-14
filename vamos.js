@@ -1,0 +1,2 @@
+  // No record existed; from a community muscle summary (September 2026).
+  V('vamos', 'VAMOS', 'muscle', [0,0,0,0], ['—','—','—','—'], 'analysis', null, '000', null, null, ['Community summary', null], true, 'SEPTEMBER 2022 FOOTAGE · COMMUNITY IDENTIFICATION', [], ['Reported as the Declasse Vamos, based on the Chevrolet Nova: about 1,380 kg, with a game-file top speed of about 145 km/h.', 'Rockstar confirmation of the name and statistics.'], 'DECLASSE'),

@@ -1,0 +1,1272 @@
+{
+  "summary": {
+    "run": 2,
+    "id": "run-0002-2026-09-11T19-00-40",
+    "target": "https://lusorae.pt",
+    "mode": "chaos",
+    "seed": 843921,
+    "started": "2026-09-11T19:00:40.247Z",
+    "finished": "2026-09-11T19:01:51.158Z",
+    "durationSeconds": 71,
+    "viewports": [
+      "mobile 390x844"
+    ],
+    "pagesDiscovered": 511,
+    "pagesVisited": 26,
+    "routePatterns": 19,
+    "actionsExecuted": 40,
+    "skippedByGuards": {
+      "same page link": 188,
+      "external link": 49,
+      "non-web link": 13,
+      "destructive label": 2
+    },
+    "severity": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "MEDIUM": 17,
+      "LOW": 7
+    },
+    "counts": {
+      "jsErrors": 0,
+      "http5xx": 0,
+      "brokenImages": 0,
+      "network": 0,
+      "visual": 24,
+      "ux": 0,
+      "accessibility": 0,
+      "security": 0
+    },
+    "occurrences": 53
+  },
+  "incidents": [
+    {
+      "id": "MACACO-00006",
+      "fingerprint": "overlap|/map/location/:slug",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (57%): one is covered by the other",
+      "detail": " ↔ Sign in for personal tools",
+      "selector": "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]",
+      "page": "/map/location/vc-port",
+      "pattern": "/map/location/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/map/location/vc-port"
+      ],
+      "elements": [
+        "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]",
+        "div.space-y-3.border-t > div.wiki-info-row > div.wiki-info-value > a.text-pink.transition-colors"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\"",
+        "Click link \"Location VC PORT Confirmed\""
+      ],
+      "result": "Controls overlap (57%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00006.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00006.json",
+      "occurrences": 2,
+      "firstSeen": "2026-09-11T19:00:48.525Z",
+      "lastSeen": "2026-09-11T19:00:48.915Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00006.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 3"
+    },
+    {
+      "id": "MACACO-00001",
+      "fingerprint": "overlap|/",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (46%): one is covered by the other",
+      "detail": "Explore the wiki ↔ Home",
+      "selector": "section.hq-hero > div.hq-hero-content > div.hq-hero-actions > a.hq-hero-primary",
+      "page": "/",
+      "pattern": "/",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/"
+      ],
+      "elements": [
+        "section.hq-hero > div.hq-hero-content > div.hq-hero-actions > a.hq-hero-primary"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)"
+      ],
+      "result": "Controls overlap (46%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00001.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00001.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:42.441Z",
+      "lastSeen": "2026-09-11T19:00:42.441Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00001.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 0"
+    },
+    {
+      "id": "MACACO-00003",
+      "fingerprint": "overlap|/database/characters/:slug",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (85%): one is covered by the other",
+      "detail": " ↔ Sign in for personal tools",
+      "selector": "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]",
+      "page": "/database/characters/cal-hampton",
+      "pattern": "/database/characters/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/database/characters/cal-hampton"
+      ],
+      "elements": [
+        "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\""
+      ],
+      "result": "Controls overlap (85%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00003.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00003.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:44.967Z",
+      "lastSeen": "2026-09-11T19:00:44.967Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00003.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 1"
+    },
+    {
+      "id": "MACACO-00004",
+      "fingerprint": "overlap|/sources",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (59%): one is covered by the other",
+      "detail": "Character\nNIGHTCLUB DJ\nVerifie ↔ Home",
+      "selector": "section.panel.rounded-sm > ul.mt-4.grid > li > a.flex.items-center",
+      "page": "/sources",
+      "pattern": "/sources",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/sources"
+      ],
+      "elements": [
+        "section.panel.rounded-sm > ul.mt-4.grid > li > a.flex.items-center"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\""
+      ],
+      "result": "Controls overlap (59%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00004.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00004.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:46.487Z",
+      "lastSeen": "2026-09-11T19:00:46.487Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00004.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 2"
+    },
+    {
+      "id": "MACACO-00007",
+      "fingerprint": "overlap|/legal",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (47%): one is covered by the other",
+      "detail": "02\nPRIVACY NOTICE\nWhat persona ↔ Home",
+      "selector": "main#main > div.legal-shell.ambient-bloom > div.legal-card-grid.mt-6 > a.legal-policy-card.panel",
+      "page": "/legal",
+      "pattern": "/legal",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/legal"
+      ],
+      "elements": [
+        "main#main > div.legal-shell.ambient-bloom > div.legal-card-grid.mt-6 > a.legal-policy-card.panel"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\"",
+        "Click link \"Location VC PORT Confirmed\"",
+        "Click card \"PTT YOUNGIN$ COMPOUND\"",
+        "Hover link \"GTA VI overview\"",
+        "Click link \"LEGAL\""
+      ],
+      "result": "Controls overlap (47%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00007.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00007.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:51.454Z",
+      "lastSeen": "2026-09-11T19:00:51.454Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00007.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 6"
+    },
+    {
+      "id": "MACACO-00009",
+      "fingerprint": "overlap|/guides",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (100%): one is covered by the other",
+      "detail": "NO VERIFIED SUBJECT IMAGE\nAnal ↔ Home",
+      "selector": "main#main > div.px-4.py-6 > div.visual-card-grid.guides-card-grid > a.panel.rounded-sm",
+      "page": "/guides",
+      "pattern": "/guides",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/guides"
+      ],
+      "elements": [
+        "main#main > div.px-4.py-6 > div.visual-card-grid.guides-card-grid > a.panel.rounded-sm"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\"",
+        "Click link \"Location VC PORT Confirmed\"",
+        "Click card \"PTT YOUNGIN$ COMPOUND\"",
+        "Hover link \"GTA VI overview\"",
+        "Click link \"LEGAL\"",
+        "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+        "Click link \"Legal centre\"",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\""
+      ],
+      "result": "Controls overlap (100%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00009.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00009.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:54.966Z",
+      "lastSeen": "2026-09-11T19:00:54.966Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00009.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 11"
+    },
+    {
+      "id": "MACACO-00011",
+      "fingerprint": "overlap|/database/characters",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (100%): one is covered by the other",
+      "detail": "LUCIA CAMINOS\nPROTAGONIST ↔ Home",
+      "selector": "div.wiki-index-layout.px-4 > div.min-w-0.flex > div.grid.grid-cols-2 > button.panel.rounded-sm",
+      "page": "/database/characters",
+      "pattern": "/database/characters",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/database/characters"
+      ],
+      "elements": [
+        "div.wiki-index-layout.px-4 > div.min-w-0.flex > div.grid.grid-cols-2 > button.panel.rounded-sm"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\"",
+        "Click link \"Location VC PORT Confirmed\"",
+        "Click card \"PTT YOUNGIN$ COMPOUND\"",
+        "Hover link \"GTA VI overview\"",
+        "Click link \"LEGAL\"",
+        "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+        "Click link \"Legal centre\"",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\"",
+        "Click link \"Characters\""
+      ],
+      "result": "Controls overlap (100%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00011.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00011.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:57.593Z",
+      "lastSeen": "2026-09-11T19:00:57.593Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00011.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 13"
+    },
+    {
+      "id": "MACACO-00012",
+      "fingerprint": "overlap|/:slug",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (100%): one is covered by the other",
+      "detail": "FINAL CHAPTER MC ↔ News",
+      "selector": "div.flex.items-start > div > h2.mt-2.font-cond > a.transition-colors",
+      "page": "/gangs-factions",
+      "pattern": "/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/gangs-factions"
+      ],
+      "elements": [
+        "div.flex.items-start > div > h2.mt-2.font-cond > a.transition-colors"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(4 earlier steps — see the replay file)",
+        "Click card \"PTT YOUNGIN$ COMPOUND\"",
+        "Hover link \"GTA VI overview\"",
+        "Click link \"LEGAL\"",
+        "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+        "Click link \"Legal centre\"",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\"",
+        "Click link \"Characters\"",
+        "Double-click card \"Open LUCIA CAMINOS full profile\"",
+        "Click link \"Gangs & factions\""
+      ],
+      "result": "Controls overlap (100%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00012.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00012.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:59.593Z",
+      "lastSeen": "2026-09-11T19:00:59.593Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00012.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 15"
+    },
+    {
+      "id": "MACACO-00014",
+      "fingerprint": "overlap|/:slug/:slug",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (54%): one is covered by the other",
+      "detail": " ↔ Sign in for personal tools",
+      "selector": "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]",
+      "page": "/gangs-factions/final-chapter-mc",
+      "pattern": "/:slug/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/gangs-factions/final-chapter-mc"
+      ],
+      "elements": [
+        "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(7 earlier steps — see the replay file)",
+        "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+        "Click link \"Legal centre\"",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\"",
+        "Click link \"Characters\"",
+        "Double-click card \"Open LUCIA CAMINOS full profile\"",
+        "Click link \"Gangs & factions\"",
+        "Hover link \"COOKIES\"",
+        "Click menu \"Open account menu\"",
+        "Click link \"Read full entry →\""
+      ],
+      "result": "Controls overlap (54%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00014.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00014.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:03.006Z",
+      "lastSeen": "2026-09-11T19:01:03.007Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00014.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 18"
+    },
+    {
+      "id": "MACACO-00016",
+      "fingerprint": "overlap|/database/vehicles/:slug",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (83%): one is covered by the other",
+      "detail": " ↔ Sign in for personal tools",
+      "selector": "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]",
+      "page": "/database/vehicles/avarus",
+      "pattern": "/database/vehicles/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/database/vehicles/avarus"
+      ],
+      "elements": [
+        "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(9 earlier steps — see the replay file)",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\"",
+        "Click link \"Characters\"",
+        "Double-click card \"Open LUCIA CAMINOS full profile\"",
+        "Click link \"Gangs & factions\"",
+        "Hover link \"COOKIES\"",
+        "Click menu \"Open account menu\"",
+        "Click link \"Read full entry →\"",
+        "Rapid-click button \"button\" ×4",
+        "Click link \"Avarus\""
+      ],
+      "result": "Controls overlap (83%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00016.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00016.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:13.133Z",
+      "lastSeen": "2026-09-11T19:01:13.133Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00016.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 20"
+    },
+    {
+      "id": "MACACO-00017",
+      "fingerprint": "overlap|/wiki",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (66%): one is covered by the other",
+      "detail": "VEHICLES\nCars, bikes, boats, a ↔ Home",
+      "selector": "section.wiki-main-box.wiki-main-box-violet > div.wiki-main-box-body > div.wiki-topic-directory > a",
+      "page": "/wiki",
+      "pattern": "/wiki",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/wiki"
+      ],
+      "elements": [
+        "section.wiki-main-box.wiki-main-box-violet > div.wiki-main-box-body > div.wiki-topic-directory > a"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(10 earlier steps — see the replay file)",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\"",
+        "Click link \"Characters\"",
+        "Double-click card \"Open LUCIA CAMINOS full profile\"",
+        "Click link \"Gangs & factions\"",
+        "Hover link \"COOKIES\"",
+        "Click menu \"Open account menu\"",
+        "Click link \"Read full entry →\"",
+        "Rapid-click button \"button\" ×4",
+        "Click link \"Avarus\"",
+        "Rapid-click link \"Wiki\" ×4"
+      ],
+      "result": "Controls overlap (66%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00017.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00017.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:14.454Z",
+      "lastSeen": "2026-09-11T19:01:14.454Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00017.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 21"
+    },
+    {
+      "id": "MACACO-00018",
+      "fingerprint": "overlap|/wiki/statistics",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (100%): one is covered by the other",
+      "detail": "4\n\nSecrets ↔ Home",
+      "selector": "div.ambient-bloom.px-4 > section.mt-6 > div.grid.grid-cols-2 > a.bg-ink.p-4",
+      "page": "/wiki/statistics",
+      "pattern": "/wiki/statistics",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/wiki/statistics"
+      ],
+      "elements": [
+        "div.ambient-bloom.px-4 > section.mt-6 > div.grid.grid-cols-2 > a.bg-ink.p-4"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(13 earlier steps — see the replay file)",
+        "Click link \"Characters\"",
+        "Double-click card \"Open LUCIA CAMINOS full profile\"",
+        "Click link \"Gangs & factions\"",
+        "Hover link \"COOKIES\"",
+        "Click menu \"Open account menu\"",
+        "Click link \"Read full entry →\"",
+        "Rapid-click button \"button\" ×4",
+        "Click link \"Avarus\"",
+        "Rapid-click link \"Wiki\" ×4",
+        "Click link \"LUCIA CAMINOS\"",
+        "Rapid-click link \"https://lusorae.pt/wiki/what-links-here?kind=chara…\" ×4",
+        "Click link \"Statistics\""
+      ],
+      "result": "Controls overlap (100%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00018.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00018.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:24.889Z",
+      "lastSeen": "2026-09-11T19:01:24.889Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00018.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 24"
+    },
+    {
+      "id": "MACACO-00019",
+      "fingerprint": "overlap|/wiki/changes",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (100%): one is covered by the other",
+      "detail": "Character\nConfirmed\nJASON DUVA ↔ Home",
+      "selector": "section > ul.mt-3.grid > li > a.flex.min-h-[108px]",
+      "page": "/wiki/changes",
+      "pattern": "/wiki/changes",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/wiki/changes"
+      ],
+      "elements": [
+        "section > ul.mt-3.grid > li > a.flex.min-h-[108px]"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(16 earlier steps — see the replay file)",
+        "Hover link \"COOKIES\"",
+        "Click menu \"Open account menu\"",
+        "Click link \"Read full entry →\"",
+        "Rapid-click button \"button\" ×4",
+        "Click link \"Avarus\"",
+        "Rapid-click link \"Wiki\" ×4",
+        "Click link \"LUCIA CAMINOS\"",
+        "Rapid-click link \"https://lusorae.pt/wiki/what-links-here?kind=chara…\" ×4",
+        "Click link \"Statistics\"",
+        "Click link \"Easter eggs\"",
+        "Click link \"GATOR SHACK\"",
+        "Click link \"Recent changes\""
+      ],
+      "result": "Controls overlap (100%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00019.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00019.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:27.624Z",
+      "lastSeen": "2026-09-11T19:01:27.624Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00019.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 27"
+    },
+    {
+      "id": "MACACO-00020",
+      "fingerprint": "overlap|/wiki/go",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (70%): one is covered by the other",
+      "detail": "Vehicles ↔ Home",
+      "selector": "section.footer-v3-group > ul > li > a",
+      "page": "/wiki/go",
+      "pattern": "/wiki/go",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/wiki/go"
+      ],
+      "elements": [
+        "section.footer-v3-group > ul > li > a"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(25 earlier steps — see the replay file)",
+        "Click link \"Easter eggs\"",
+        "Click link \"GATOR SHACK\"",
+        "Click link \"Recent changes\"",
+        "Click link \"Location Rumour NORTH BEACHES Stub entry\"",
+        "Click card \"ELECTRIC FANG TATTOO\"",
+        "Hover link \"Articles\"",
+        "Click link \"GAMBIT BAY\"",
+        "Click link \"Easter eggs\"",
+        "Click link \"Editions\"",
+        "Hover link \"Special pages\"",
+        "Click link \"Characters\"",
+        "Click link \"Go to page\""
+      ],
+      "result": "Controls overlap (70%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00020.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00020.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:35.036Z",
+      "lastSeen": "2026-09-11T19:01:35.036Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00020.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 36"
+    },
+    {
+      "id": "MACACO-00021",
+      "fingerprint": "overlap|/wiki/special",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (40%): one is covered by the other",
+      "detail": "10\nTOPIC PORTALS\n\nSubject gate ↔ Home",
+      "selector": "main#main > div.ambient-bloom.px-4 > div.mt-6.grid > a.panel.rounded-sm",
+      "page": "/wiki/special",
+      "pattern": "/wiki/special",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/wiki/special"
+      ],
+      "elements": [
+        "main#main > div.ambient-bloom.px-4 > div.mt-6.grid > a.panel.rounded-sm"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(26 earlier steps — see the replay file)",
+        "Click link \"GATOR SHACK\"",
+        "Click link \"Recent changes\"",
+        "Click link \"Location Rumour NORTH BEACHES Stub entry\"",
+        "Click card \"ELECTRIC FANG TATTOO\"",
+        "Hover link \"Articles\"",
+        "Click link \"GAMBIT BAY\"",
+        "Click link \"Easter eggs\"",
+        "Click link \"Editions\"",
+        "Hover link \"Special pages\"",
+        "Click link \"Characters\"",
+        "Click link \"Go to page\"",
+        "Rapid-click link \"Special pages\" ×4"
+      ],
+      "result": "Controls overlap (40%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00021.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00021.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:36.507Z",
+      "lastSeen": "2026-09-11T19:01:36.507Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00021.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 37"
+    },
+    {
+      "id": "MACACO-00022",
+      "fingerprint": "overlap|/wiki/discover",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (68%): one is covered by the other",
+      "detail": "003\nWEAPON\nUNNAMED RIFLE\n\nRIFL ↔ Home",
+      "selector": "div.ambient-bloom.mx-auto > ol.mt-5.grid > li > a.wiki-discovery-entry",
+      "page": "/wiki/discover",
+      "pattern": "/wiki/discover",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/wiki/discover"
+      ],
+      "elements": [
+        "div.ambient-bloom.mx-auto > ol.mt-5.grid > li > a.wiki-discovery-entry"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(27 earlier steps — see the replay file)",
+        "Click link \"Recent changes\"",
+        "Click link \"Location Rumour NORTH BEACHES Stub entry\"",
+        "Click card \"ELECTRIC FANG TATTOO\"",
+        "Hover link \"Articles\"",
+        "Click link \"GAMBIT BAY\"",
+        "Click link \"Easter eggs\"",
+        "Click link \"Editions\"",
+        "Hover link \"Special pages\"",
+        "Click link \"Characters\"",
+        "Click link \"Go to page\"",
+        "Rapid-click link \"Special pages\" ×4",
+        "Click link \"Discover 100\""
+      ],
+      "result": "Controls overlap (68%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00022.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00022.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:37.484Z",
+      "lastSeen": "2026-09-11T19:01:37.484Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00022.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 38"
+    },
+    {
+      "id": "MACACO-00024",
+      "fingerprint": "overlap|/database/radio/:slug",
+      "check": "overlap",
+      "bucket": "visual",
+      "severity": "MEDIUM",
+      "title": "Controls overlap (83%): one is covered by the other",
+      "detail": " ↔ Sign in for personal tools",
+      "selector": "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]",
+      "page": "/database/radio/la-ola",
+      "pattern": "/database/radio/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/database/radio/la-ola"
+      ],
+      "elements": [
+        "div.wiki-tools-stack.mt-3 > details.archive-page-toolbox > nav.wiki-page-tools.flex > a.inline-flex.min-h-[34px]"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(28 earlier steps — see the replay file)",
+        "Click link \"Location Rumour NORTH BEACHES Stub entry\"",
+        "Click card \"ELECTRIC FANG TATTOO\"",
+        "Hover link \"Articles\"",
+        "Click link \"GAMBIT BAY\"",
+        "Click link \"Easter eggs\"",
+        "Click link \"Editions\"",
+        "Hover link \"Special pages\"",
+        "Click link \"Characters\"",
+        "Click link \"Go to page\"",
+        "Rapid-click link \"Special pages\" ×4",
+        "Click link \"Discover 100\"",
+        "Rapid-click link \"060 RADIO STATION LA OLA Latin/Salsa Rumour\" ×4"
+      ],
+      "result": "Controls overlap (83%): one is covered by the other",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00024.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00024.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:01:44.729Z",
+      "lastSeen": "2026-09-11T19:01:44.729Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00024.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 39"
+    },
+    {
+      "id": "MACACO-00013",
+      "fingerprint": "invisible-control|/:slug/:slug",
+      "check": "invisible-control",
+      "bucket": "visual",
+      "severity": "LOW",
+      "title": "Focusable control is fully transparent",
+      "detail": "Link to the Overview section",
+      "selector": "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+      "page": "/gangs-factions/final-chapter-mc",
+      "pattern": "/:slug/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/gangs-factions/final-chapter-mc"
+      ],
+      "elements": [
+        "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#evidence > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#ecosystem > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#networks > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#confirmed > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#unknown > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#related > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(7 earlier steps — see the replay file)",
+        "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+        "Click link \"Legal centre\"",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\"",
+        "Click link \"Characters\"",
+        "Double-click card \"Open LUCIA CAMINOS full profile\"",
+        "Click link \"Gangs & factions\"",
+        "Hover link \"COOKIES\"",
+        "Click menu \"Open account menu\"",
+        "Click link \"Read full entry →\""
+      ],
+      "result": "Focusable control is fully transparent",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00013.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00013.json",
+      "occurrences": 8,
+      "firstSeen": "2026-09-11T19:01:02.767Z",
+      "lastSeen": "2026-09-11T19:01:03.006Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00013.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 18"
+    },
+    {
+      "id": "MACACO-00015",
+      "fingerprint": "invisible-control|/database/vehicles/:slug",
+      "check": "invisible-control",
+      "bucket": "visual",
+      "severity": "LOW",
+      "title": "Focusable control is fully transparent",
+      "detail": "Link to the Overview section",
+      "selector": "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+      "page": "/database/vehicles/avarus",
+      "pattern": "/database/vehicles/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/database/vehicles/avarus"
+      ],
+      "elements": [
+        "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#evidence > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#ownership > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#customisation > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#performance > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#specifications > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#related > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(9 earlier steps — see the replay file)",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\"",
+        "Click link \"Characters\"",
+        "Double-click card \"Open LUCIA CAMINOS full profile\"",
+        "Click link \"Gangs & factions\"",
+        "Hover link \"COOKIES\"",
+        "Click menu \"Open account menu\"",
+        "Click link \"Read full entry →\"",
+        "Rapid-click button \"button\" ×4",
+        "Click link \"Avarus\""
+      ],
+      "result": "Focusable control is fully transparent",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00015.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00015.json",
+      "occurrences": 8,
+      "firstSeen": "2026-09-11T19:01:12.708Z",
+      "lastSeen": "2026-09-11T19:01:13.133Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00015.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 20"
+    },
+    {
+      "id": "MACACO-00008",
+      "fingerprint": "invisible-control|/legal/copyright",
+      "check": "invisible-control",
+      "bucket": "visual",
+      "severity": "LOW",
+      "title": "Focusable control is fully transparent",
+      "detail": "Link to the 1. Independent fan project section",
+      "selector": "section#status > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+      "page": "/legal/copyright",
+      "pattern": "/legal/copyright",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/legal/copyright"
+      ],
+      "elements": [
+        "section#status > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#ownership > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#fan-material > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#music > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#notice > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#process > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#trademarks > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\"",
+        "Click link \"Location VC PORT Confirmed\"",
+        "Click card \"PTT YOUNGIN$ COMPOUND\"",
+        "Hover link \"GTA VI overview\"",
+        "Click link \"LEGAL\"",
+        "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\""
+      ],
+      "result": "Focusable control is fully transparent",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00008.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00008.json",
+      "occurrences": 7,
+      "firstSeen": "2026-09-11T19:00:52.359Z",
+      "lastSeen": "2026-09-11T19:00:52.587Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00008.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 7"
+    },
+    {
+      "id": "MACACO-00002",
+      "fingerprint": "invisible-control|/database/characters/:slug",
+      "check": "invisible-control",
+      "bucket": "visual",
+      "severity": "LOW",
+      "title": "Focusable control is fully transparent",
+      "detail": "Link to the Background section",
+      "selector": "section#background > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+      "page": "/database/characters/cal-hampton",
+      "pattern": "/database/characters/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/database/characters/cal-hampton"
+      ],
+      "elements": [
+        "section#background > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#details > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#relationships > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#mechanics > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\""
+      ],
+      "result": "Focusable control is fully transparent",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00002.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00002.json",
+      "occurrences": 5,
+      "firstSeen": "2026-09-11T19:00:44.611Z",
+      "lastSeen": "2026-09-11T19:00:44.967Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00002.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 1"
+    },
+    {
+      "id": "MACACO-00005",
+      "fingerprint": "invisible-control|/map/location/:slug",
+      "check": "invisible-control",
+      "bucket": "visual",
+      "severity": "LOW",
+      "title": "Focusable control is fully transparent",
+      "detail": "Link to the Overview section",
+      "selector": "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+      "page": "/map/location/vc-port",
+      "pattern": "/map/location/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/map/location/vc-port"
+      ],
+      "elements": [
+        "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#evidence > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#nearby > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\"",
+        "Click link \"Location VC PORT Confirmed\""
+      ],
+      "result": "Focusable control is fully transparent",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00005.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00005.json",
+      "occurrences": 3,
+      "firstSeen": "2026-09-11T19:00:48.056Z",
+      "lastSeen": "2026-09-11T19:00:48.525Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00005.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 3"
+    },
+    {
+      "id": "MACACO-00023",
+      "fingerprint": "invisible-control|/database/radio/:slug",
+      "check": "invisible-control",
+      "bucket": "visual",
+      "severity": "LOW",
+      "title": "Focusable control is fully transparent",
+      "detail": "Link to the Overview section",
+      "selector": "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+      "page": "/database/radio/la-ola",
+      "pattern": "/database/radio/:slug",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/database/radio/la-ola"
+      ],
+      "elements": [
+        "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#related > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+        "section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "(28 earlier steps — see the replay file)",
+        "Click link \"Location Rumour NORTH BEACHES Stub entry\"",
+        "Click card \"ELECTRIC FANG TATTOO\"",
+        "Hover link \"Articles\"",
+        "Click link \"GAMBIT BAY\"",
+        "Click link \"Easter eggs\"",
+        "Click link \"Editions\"",
+        "Hover link \"Special pages\"",
+        "Click link \"Characters\"",
+        "Click link \"Go to page\"",
+        "Rapid-click link \"Special pages\" ×4",
+        "Click link \"Discover 100\"",
+        "Rapid-click link \"060 RADIO STATION LA OLA Latin/Salsa Rumour\" ×4"
+      ],
+      "result": "Focusable control is fully transparent",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00023.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00023.json",
+      "occurrences": 3,
+      "firstSeen": "2026-09-11T19:01:44.507Z",
+      "lastSeen": "2026-09-11T19:01:44.729Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00023.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 39"
+    },
+    {
+      "id": "MACACO-00010",
+      "fingerprint": "invisible-control|/editions",
+      "check": "invisible-control",
+      "bucket": "visual",
+      "severity": "LOW",
+      "title": "Focusable control is fully transparent",
+      "detail": "Link to the Reported in community summaries section",
+      "selector": "section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+      "page": "/editions",
+      "pattern": "/editions",
+      "viewport": "390x844",
+      "viewports": [
+        "mobile"
+      ],
+      "pages": [
+        "/editions"
+      ],
+      "elements": [
+        "section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+      ],
+      "mode": "chaos",
+      "steps": [
+        "Open / (390x844)",
+        "Click card \"CAL HAMPTON ALLY\"",
+        "Click link \"SOURCE POLICY\"",
+        "Click link \"Location VC PORT Confirmed\"",
+        "Click card \"PTT YOUNGIN$ COMPOUND\"",
+        "Hover link \"GTA VI overview\"",
+        "Click link \"LEGAL\"",
+        "Double-click card \"04 COPYRIGHT & IP POLICY Ownership, fan-project st…\"",
+        "Click link \"Legal centre\"",
+        "Hover link \"Go to page\"",
+        "Hover card \"GTA Lore home\"",
+        "Double-click link \"Guides\"",
+        "Click link \"Editions\""
+      ],
+      "result": "Focusable control is fully transparent",
+      "console": [],
+      "network": [],
+      "screenshot": "screenshots/macaco-00010.png",
+      "trace": "traces/chaos-mobile-0.zip",
+      "video": "videos/chaos-mobile-0.webm",
+      "seed": 843921,
+      "sessionSeed": 276006,
+      "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00010.json",
+      "occurrences": 1,
+      "firstSeen": "2026-09-11T19:00:56.301Z",
+      "lastSeen": "2026-09-11T19:00:56.301Z",
+      "session": "chaos-mobile-0",
+      "replayFile": "incidents/MACACO-00010.json",
+      "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 12"
+    }
+  ]
+}

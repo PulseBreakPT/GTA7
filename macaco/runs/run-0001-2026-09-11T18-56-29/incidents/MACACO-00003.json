@@ -1,0 +1,48 @@
+{
+  "id": "MACACO-00003",
+  "fingerprint": "a11y:color-contrast|/|.footer-v3-legal > p|Elements must meet minimum color contrast ratio thresholds (N elements)",
+  "check": "a11y:color-contrast",
+  "bucket": "accessibility",
+  "severity": "MEDIUM",
+  "title": "Elements must meet minimum color contrast ratio thresholds (2 elements)",
+  "detail": "Fix any of the following:   Element has insufficient color contrast of 4.36 (foreground color: #806873, background color: #f0edf0, font size: 7.7pt (10.24px), font weight: normal). Expected contrast ratio of 4.5:1 — .footer-v3-legal > p | .footer-v3-release > span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+  "selector": ".footer-v3-legal > p",
+  "page": "/",
+  "pattern": "/",
+  "viewport": "1440x900",
+  "viewports": [
+    "desktop"
+  ],
+  "pages": [
+    "/"
+  ],
+  "mode": "smart",
+  "steps": [
+    "Open / (1440x900)"
+  ],
+  "result": "Elements must meet minimum color contrast ratio thresholds (2 elements)",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00003.png",
+  "trace": "traces/smart-desktop-0.zip",
+  "video": null,
+  "seed": 200437,
+  "sessionSeed": 484073,
+  "replay": "macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00003.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T18:56:42.006Z",
+  "lastSeen": "2026-09-11T18:56:42.006Z",
+  "session": "smart-desktop-0",
+  "replaySteps": [],
+  "replayFile": "incidents/MACACO-00003.json",
+  "seedReplay": "macaco lusorae.pt --mode smart --seed 200437 --viewports desktop --actions 0",
+  "text": "MACACO-00003\n\nSeverity: MEDIUM\nPage: /\nViewport: 1440x900\nOccurrences: 1\n\nProblem:\nElements must meet minimum color contrast ratio thresholds (2 elements)\n\nSteps:\n1. Open / (1440x900)\n\nResult:\nElements must meet minimum color contrast ratio thresholds (2 elements)\n\nDetail:\nFix any of the following:   Element has insufficient color contrast of 4.36 (foreground color: #806873, background color: #f0edf0, font size: 7.7pt (10.24px), font weight: normal). Expected contrast ratio of 4.5:1 — .footer-v3-legal > p | .footer-v3-release > span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI\n\nScreenshot:\nscreenshots/macaco-00003.png\n\nTrace:\ntraces/smart-desktop-0.zip (npx playwright show-trace)\n\nSeed:\n200437\n\nReplay:\nmacaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00003.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "desktop",
+    "label": "desktop 1440x900",
+    "width": 1440,
+    "height": 900
+  }
+}

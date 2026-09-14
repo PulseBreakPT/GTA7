@@ -1,0 +1,113 @@
+{
+  "id": "MACACO-00041",
+  "fingerprint": "distorted-image|/:slug|section.footer-v3-brand > a.footer-v3-lockup > span > img.footer-v3-lockup-art|Image is stretched (N% of its aspect ratio)",
+  "check": "distorted-image",
+  "bucket": "visual",
+  "severity": "LOW",
+  "title": "Image is stretched (115% of its aspect ratio)",
+  "detail": "https://lusorae.pt/brand/gta-lore-lockup-compact.svg",
+  "selector": "section.footer-v3-brand > a.footer-v3-lockup > span > img.footer-v3-lockup-art",
+  "page": "/wiki",
+  "pattern": "/:slug",
+  "viewport": "390x844",
+  "viewports": [
+    "mobile"
+  ],
+  "pages": [
+    "/wiki"
+  ],
+  "mode": "smart",
+  "steps": [
+    "Open / (390x844)",
+    "Click link \"Glossary\"",
+    "Click card \"GTA Lore main page\"",
+    "Press Back",
+    "Click link \"Wiki main page\""
+  ],
+  "result": "Image is stretched (115% of its aspect ratio)",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00041.png",
+  "trace": "traces/smart-mobile-0.zip",
+  "video": null,
+  "seed": 200437,
+  "sessionSeed": 174013,
+  "replay": "macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00041.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T18:57:34.341Z",
+  "lastSeen": "2026-09-11T18:57:34.341Z",
+  "session": "smart-mobile-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Glossary",
+        "href": "https://lusorae.pt/wiki/glossary",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Glossary\"",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "GTA Lore main page",
+        "href": "https://lusorae.pt/",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"GTA Lore main page\"",
+      "at": "/wiki/glossary"
+    },
+    {
+      "type": "back",
+      "descriptor": null,
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Press Back",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Wiki main page",
+        "href": "https://lusorae.pt/wiki",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Wiki main page\"",
+      "at": "/wiki/glossary"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00041.json",
+  "seedReplay": "macaco lusorae.pt --mode smart --seed 200437 --viewports mobile --actions 4",
+  "text": "MACACO-00041\n\nSeverity: LOW\nPage: /wiki\nViewport: 390x844\nOccurrences: 1\n\nProblem:\nImage is stretched (115% of its aspect ratio)\n\nSteps:\n1. Open / (390x844)\n2. Click link \"Glossary\"\n3. Click card \"GTA Lore main page\"\n4. Press Back\n5. Click link \"Wiki main page\"\n\nResult:\nImage is stretched (115% of its aspect ratio)\n\nDetail:\nhttps://lusorae.pt/brand/gta-lore-lockup-compact.svg\n\nScreenshot:\nscreenshots/macaco-00041.png\n\nTrace:\ntraces/smart-mobile-0.zip (npx playwright show-trace)\n\nSeed:\n200437\n\nReplay:\nmacaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00041.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "mobile",
+    "label": "mobile 390x844",
+    "width": 390,
+    "height": 844,
+    "mobile": true,
+    "scale": 3,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+  }
+}

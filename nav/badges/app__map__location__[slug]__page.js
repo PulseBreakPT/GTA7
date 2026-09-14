@@ -1,0 +1,133 @@
+'use client'
+
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import { ChevronRight, FileText, Images, Compass, BookMarked, ShieldCheck, MapPinned } from 'lucide-react'
+import { locations, regions, mapFilters, confirmedLocationImage } from '@/lib/content'
+import { reportedFor, REPORTED_SOURCE } from '@/lib/reported'
+import { SourceChip, StatusBadge, TypeChip } from '@/components/site/ui'
+import { ReportedNotes, Breadcrumb, TableOfContents, WikiSection, InfoRow, InfoboxShell, LocationLocator, LocationThumb, CategoryFooter, WhatLinksHere, StubNotice, WikiText, References, Hatnote, CitePage, PageInformation, Navbox, WhatThisLinks, ShortDescription, PageTools } from '@/components/site/wiki'
+import { identityAttributes, regionIdentity } from '@/lib/entity-identity'
+import { mapBibleForLocation, mapLayerForEvidence } from '@/lib/map-bible'
+
+export default function LocationPage() {
+  const { slug } = useParams()
+  const loc = locations.find((item) => item.slug === slug)
+
+  if (!loc) {
+    return <div className="px-6 py-20 text-paper">Location not found.</div>
+  }
+
+  const region = regions.find((r) => r.id === loc.region)
+  const identity = regionIdentity(loc.region, region?.label || 'Leonida')
+  const bible = mapBibleForLocation(loc)
+  const confirmedImage = confirmedLocationImage(loc)
+  const categoryLabel = (mapFilters.find((f) => f.id === loc.category) || {}).label || loc.category
+  const related = locations.filter((item) => item.region === loc.region && item.slug !== loc.slug)
+
+  // As secções seguem a ficha de sítio das wikis: descrição, imagem, e o
+  // que fica à volta. «Nearby» só entra no índice se houver vizinhos.
+  const sections = [
+    { id: 'overview', label: 'Overview', icon: FileText },
+    { id: 'evidence', label: 'Evidence & placement', icon: ShieldCheck },
+    ...(related.length > 0 && region ? [{ id: 'nearby', label: 'Nearby', icon: Compass }] : []),
+    { id: 'references', label: 'References', icon: BookMarked },
+  ]
+
+  return (
+    <div {...identityAttributes(identity)} className="entity-identity ambient-bloom px-4 sm:px-6 lg:px-8 py-6 max-w-[1400px] w-full mx-auto">
+      <Breadcrumb trail={[{ label: 'Home', href: '/' }, { label: 'Locations', href: '/map' }, ...(region ? [{ label: region.label, href: `/map/${region.id}` }] : []), { label: loc.name }]} />
+
+      <header className="wiki-article-header mt-6">
+        <h1 data-ghost="PLACES" className="ghost-type chromatic-title mt-2 font-cond font-bold uppercase leading-[0.9] tracking-tight text-[52px] sm:text-[64px] text-paper">{loc.name}</h1>
+        <div className="wiki-article-meta mt-3 flex flex-wrap items-center gap-2">
+          <StatusBadge status={loc.status} />
+          <TypeChip>{categoryLabel}</TypeChip>
+          <span className="map-evidence-chip" data-layer={mapLayerForEvidence(bible.evidenceLevel)}>{bible.evidenceLevel}</span>
+          {region && <span className="font-cond uppercase tracking-[0.1em] text-[12px] text-dim">{region.label}</span>}
+        </div>
+        <ShortDescription>
+            Named place in {region ? region.label : 'Leonida'}{categoryLabel ? ` · ${categoryLabel}` : ''}
+          </ShortDescription>
+          <StubNotice kind="locations" slug={loc.slug} />
+          <Hatnote kind="locations" slug={loc.slug} />
+      </header>
+
+      <PageTools kind="locations" slug={loc.slug} />
+
+      <div className="wiki-entry-grid mt-6 grid grid-cols-1 lg:grid-cols-[1fr_200px_300px] gap-8">
+        {/* Corpo do artigo */}
+        <div id="article-content" className="wiki-entry-primary wiki-article-body min-w-0 order-3 lg:order-1">
+          <WikiSection id="overview" title="Overview">
+            <p className="text-[15px] leading-[1.85] text-paper/90 max-w-[68ch]"><WikiText exclude={`/map/location/${loc.slug}`}>{loc.desc}</WikiText></p>
+          </WikiSection>
+
+          <WikiSection id="evidence" title="Evidence & placement">
+            <div className="map-bible-fact-grid">
+              <div><dt>Evidence level</dt><dd><ShieldCheck size={14} className="inline mr-1 text-mint" />{bible.evidenceLevel}</dd></div>
+              <div><dt>Placement status</dt><dd>{bible.placement}</dd></div>
+              <div><dt>Related entities</dt><dd>{bible.links}</dd></div>
+              <div><dt>Coordinates</dt><dd><MapPinned size={14} className="inline mr-1 text-violet" />Not published by Rockstar</dd></div>
+            </div>
+            <p className="map-bible-disclaimer">The archive may show a contextual image or atlas position so the record is browseable. That visual treatment is not a claim that Rockstar published exact coordinates.</p>
+          </WikiSection>
+
+          {related.length > 0 && region && (
+            <WikiSection id="nearby" title={`Also in ${region.label}`} className="mb-0">
+              <p className="mb-3 text-[12px] leading-relaxed text-dim">Places without a frame of their own show official imagery of the surrounding region, not the exact place.</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {related.map((item) => (
+                  <Link key={item.slug} href={`/map/location/${item.slug}`}
+                    className="panel rounded-sm p-2 flex flex-col hover:border-black/30 transition-colors">
+                    <LocationThumb image={confirmedLocationImage(item)} fallbackImage={item.contextImage || region.image} name={item.name} className="h-[84px] w-full rounded-[2px]" showLabel={false} />
+                    <span className="flex items-center justify-between gap-1 mt-2">
+                      <span className="font-cond font-semibold uppercase tracking-[0.06em] text-[12px] text-paper truncate">{item.name}</span>
+                      <ChevronRight size={12} className="text-dim shrink-0" aria-hidden="true" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </WikiSection>
+          )}
+          <ReportedNotes items={reportedFor('location', loc.slug)} source={REPORTED_SOURCE} />
+          <References items={[{ name: loc.sourceName, url: loc.sourceUrl, retrieved: loc.updatedAt }]} />
+          <CategoryFooter kind="locations" slug={loc.slug} />
+            <CitePage kind="locations" slug={loc.slug} />
+            <PageInformation kind="locations" slug={loc.slug} />
+            <Navbox kind="locations" slug={loc.slug} />
+        </div>
+
+        {/* Índice */}
+        <div className="wiki-entry-tertiary order-1 lg:order-2">
+          <TableOfContents sections={sections} />
+        </div>
+
+        {/* Caixa de dados */}
+        <div className="wiki-entry-secondary order-2 lg:order-3">
+          <InfoboxShell title={loc.name} subtitle="Place profile">
+            <LocationLocator image={confirmedImage} fallbackImage={loc.contextImage || region?.image} name={loc.name} />
+
+            <div className="space-y-3 border-t border-black/10 pt-4">
+              <InfoRow label="Region">
+                {region ? (
+                  <Link href={`/map/${region.id}`} className="text-pink hover:text-paper transition-colors">{region.label}</Link>
+                ) : loc.region}
+              </InfoRow>
+              <InfoRow label="Category" value={categoryLabel} />
+              <InfoRow label="Visual directory">
+                <Link href={`/map?loc=${loc.slug}`} className="text-mint hover:text-paper transition-colors">Open in places directory</Link>
+              </InfoRow>
+            </div>
+
+            <div className="border-t border-black/10 pt-4">
+              <SourceChip name={loc.sourceName} url={loc.sourceUrl} prefix={null} />
+              <p className="font-mono text-[9px] text-dim mt-2">Updated {loc.updatedAt}</p>
+            </div>
+            <WhatLinksHere kind="locations" slug={loc.slug} />
+              <WhatThisLinks kind="locations" slug={loc.slug} />
+          </InfoboxShell>
+        </div>
+      </div>
+    </div>
+  )
+}

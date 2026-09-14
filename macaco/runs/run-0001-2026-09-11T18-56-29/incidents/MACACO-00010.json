@@ -1,0 +1,127 @@
+{
+  "id": "MACACO-00010",
+  "fingerprint": "invisible-control|/:slug/:slug/duke-arms-company|section#record > h2.deco-rule.font-cond > a.opacity-0.transition-opacity|Focusable control is fully transparent",
+  "check": "invisible-control",
+  "bucket": "visual",
+  "severity": "LOW",
+  "title": "Focusable control is fully transparent",
+  "detail": "Link to the Archive record section",
+  "selector": "section#record > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+  "page": "/database/world/duke-arms-company",
+  "pattern": "/:slug/:slug/duke-arms-company",
+  "viewport": "1440x900",
+  "viewports": [
+    "desktop"
+  ],
+  "pages": [
+    "/database/world/duke-arms-company"
+  ],
+  "mode": "smart",
+  "steps": [
+    "Open / (1440x900)",
+    "Click link \"OPEN VISUAL ARCHIVE\"",
+    "Click card \"GTA Lore home\"",
+    "Press Back",
+    "Click button \"EDITIONS 15\"",
+    "Click link \"Random entry\""
+  ],
+  "result": "Focusable control is fully transparent",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00010.png",
+  "trace": "traces/smart-desktop-0.zip",
+  "video": null,
+  "seed": 200437,
+  "sessionSeed": 484073,
+  "replay": "macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00010.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T18:56:53.489Z",
+  "lastSeen": "2026-09-11T18:56:53.489Z",
+  "session": "smart-desktop-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "OPEN VISUAL ARCHIVE",
+        "href": "https://lusorae.pt/media",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"OPEN VISUAL ARCHIVE\"",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "GTA Lore home",
+        "href": "https://lusorae.pt/",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"GTA Lore home\"",
+      "at": "/media"
+    },
+    {
+      "type": "back",
+      "descriptor": null,
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Press Back",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "button",
+        "role": null,
+        "name": "EDITIONS 15",
+        "href": null,
+        "kind": "button",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click button \"EDITIONS 15\"",
+      "at": "/media"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Random entry",
+        "href": "https://lusorae.pt/wiki/random",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Random entry\"",
+      "at": "/media"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00010.json",
+  "seedReplay": "macaco lusorae.pt --mode smart --seed 200437 --viewports desktop --actions 5",
+  "text": "MACACO-00010\n\nSeverity: LOW\nPage: /database/world/duke-arms-company\nViewport: 1440x900\nOccurrences: 1\n\nProblem:\nFocusable control is fully transparent\n\nSteps:\n1. Open / (1440x900)\n2. Click link \"OPEN VISUAL ARCHIVE\"\n3. Click card \"GTA Lore home\"\n4. Press Back\n5. Click button \"EDITIONS 15\"\n6. Click link \"Random entry\"\n\nResult:\nFocusable control is fully transparent\n\nDetail:\nLink to the Archive record section\n\nScreenshot:\nscreenshots/macaco-00010.png\n\nTrace:\ntraces/smart-desktop-0.zip (npx playwright show-trace)\n\nSeed:\n200437\n\nReplay:\nmacaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00010.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "desktop",
+    "label": "desktop 1440x900",
+    "width": 1440,
+    "height": 900
+  }
+}

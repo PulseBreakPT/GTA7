@@ -1,0 +1,1 @@
+  'vehicle:pegassi-sports-car': ['May correspond to the Pegassi Zorrusso (Italdesign Zerouno, Trailer 1) or the Pegassi Tempesta (Lamborghini Huracán / Centenario, Trailer 2), both listed by the summary and given their own records. Not confirmed.'],

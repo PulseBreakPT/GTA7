@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Macaco run #2</title>
+<style>
+  :root { --bg:#faf8f4; --ink:#26232b; --muted:#625d69; --line:#dfdbe1; --accent:#b81761; }
+  * { box-sizing: border-box } body { margin:0; padding: 24px 16px 64px; background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui, sans-serif }
+  main { max-width: 1100px; margin: 0 auto }
+  h1 { font-size: 26px; margin: 0 0 4px } .muted { color: var(--muted) }
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 10px; margin: 18px 0 }
+  .stat { background:#fff; border:1px solid var(--line); border-radius: 12px; padding: 12px 14px } .stat b { display:block; font-size: 22px }
+  .filters { display:flex; flex-wrap:wrap; gap:6px; margin: 18px 0 } .filters button { border:1px solid var(--line); background:#fff; border-radius: 999px; padding: 6px 12px; cursor:pointer; font: inherit }
+  .filters button.on { border-color: var(--accent); color: var(--accent) }
+  .incident { background:#fff; border:1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin: 12px 0 }
+  .incident header { display:flex; flex-wrap:wrap; gap:8px; align-items:center } .incident h3 { margin: 8px 0; font-size: 16px }
+  .count { margin-left:auto; font-weight:600 } dl { display:flex; flex-wrap:wrap; gap: 4px 20px; margin: 4px 0 } dt { color: var(--muted); font-size: 12px } dd { margin:0 }
+  .sev { border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 600; border:1px solid }
+  .sev-critical { color:#8f0b2e; background:#fde8ee; border-color:#f3b3c4 } .sev-high { color:#a3124f; background:#fcedf3; border-color:#efbcd1 }
+  .sev-medium { color:#7a4f00; background:#fcf4e3; border-color:#e9cf97 } .sev-low { color:#1b5496; background:#ebf2fb; border-color:#b3cdec }
+  pre { white-space: pre-wrap; background:#f6f3f6; padding: 10px; border-radius: 8px; font-size: 12px } .detail { color: var(--muted); word-break: break-word }
+  .evidence img { max-width: 100%; max-height: 260px; border:1px solid var(--line); border-radius: 8px; margin-top: 8px } code { font-size: 12px; background:#f6f3f6; padding: 2px 6px; border-radius: 6px }
+</style></head><body><main>
+<h1>Macaco run #2</h1>
+<p class="muted">https://lusorae.pt · CHAOS · seed 843921 · mobile 390x844 · 1 min · 2026-09-11T19:00:40.247Z</p>
+<section class="grid">
+  <div class="stat"><span class="muted">Pages discovered</span><b>511</b></div>
+  <div class="stat"><span class="muted">Pages visited</span><b>26</b></div>
+  <div class="stat"><span class="muted">Actions</span><b>40</b></div>
+  <div class="stat"><span class="sev sev-critical">CRITICAL</span><b>0</b></div><div class="stat"><span class="sev sev-high">HIGH</span><b>0</b></div><div class="stat"><span class="sev sev-medium">MEDIUM</span><b>17</b></div><div class="stat"><span class="sev sev-low">LOW</span><b>7</b></div>
+  <div class="stat"><span class="muted">JS errors</span><b>0</b></div>
+  <div class="stat"><span class="muted">HTTP 500</span><b>0</b></div>
+  <div class="stat"><span class="muted">Broken images</span><b>0</b></div>
+  <div class="stat"><span class="muted">Visual</span><b>24</b></div>
+  <div class="stat"><span class="muted">UX</span><b>0</b></div>
+  <div class="stat"><span class="muted">Accessibility</span><b>0</b></div>
+  <div class="stat"><span class="muted">Security</span><b>0</b></div>
+</section>
+<nav class="filters" aria-label="Filter incidents">
+  <button class="on" data-filter="all">All (24)</button>
+  <button data-filter="sev:CRITICAL">CRITICAL (0)</button><button data-filter="sev:HIGH">HIGH (0)</button><button data-filter="sev:MEDIUM">MEDIUM (17)</button><button data-filter="sev:LOW">LOW (7)</button>
+  <button data-filter="bucket:visual">visual (24)</button>
+</nav>
+<section id="incidents">
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00006</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">2×</span>
+    </header>
+    <h3>Controls overlap (57%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/map/location/vc-port</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (4)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li><li>Click link &quot;Location VC PORT Confirmed&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (57%): one is covered by the other</p>
+    <p class="detail"> ↔ Sign in for personal tools</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00006.png" target="_blank"><img src="screenshots/macaco-00006.png" alt="Screenshot of MACACO-00006" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00006.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00001</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (46%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (1)</summary><ol><li>Open / (390x844)</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (46%): one is covered by the other</p>
+    <p class="detail">Explore the wiki ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00001.png" target="_blank"><img src="screenshots/macaco-00001.png" alt="Screenshot of MACACO-00001" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00001.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00003</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (85%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/characters/cal-hampton</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (85%): one is covered by the other</p>
+    <p class="detail"> ↔ Sign in for personal tools</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00003.png" target="_blank"><img src="screenshots/macaco-00003.png" alt="Screenshot of MACACO-00003" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00003.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00004</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (59%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/sources</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (3)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (59%): one is covered by the other</p>
+    <p class="detail">Character
+NIGHTCLUB DJ
+Verifie ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00004.png" target="_blank"><img src="screenshots/macaco-00004.png" alt="Screenshot of MACACO-00004" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00004.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00007</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (47%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/legal</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (7)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li><li>Click link &quot;Location VC PORT Confirmed&quot;</li><li>Click card &quot;PTT YOUNGIN$ COMPOUND&quot;</li><li>Hover link &quot;GTA VI overview&quot;</li><li>Click link &quot;LEGAL&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (47%): one is covered by the other</p>
+    <p class="detail">02
+PRIVACY NOTICE
+What persona ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00007.png" target="_blank"><img src="screenshots/macaco-00007.png" alt="Screenshot of MACACO-00007" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00007.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00009</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (100%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/guides</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (12)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li><li>Click link &quot;Location VC PORT Confirmed&quot;</li><li>Click card &quot;PTT YOUNGIN$ COMPOUND&quot;</li><li>Hover link &quot;GTA VI overview&quot;</li><li>Click link &quot;LEGAL&quot;</li><li>Double-click card &quot;04 COPYRIGHT &amp; IP POLICY Ownership, fan-project st…&quot;</li><li>Click link &quot;Legal centre&quot;</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (100%): one is covered by the other</p>
+    <p class="detail">NO VERIFIED SUBJECT IMAGE
+Anal ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00009.png" target="_blank"><img src="screenshots/macaco-00009.png" alt="Screenshot of MACACO-00009" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00009.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00011</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (100%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/characters</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (14)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li><li>Click link &quot;Location VC PORT Confirmed&quot;</li><li>Click card &quot;PTT YOUNGIN$ COMPOUND&quot;</li><li>Hover link &quot;GTA VI overview&quot;</li><li>Click link &quot;LEGAL&quot;</li><li>Double-click card &quot;04 COPYRIGHT &amp; IP POLICY Ownership, fan-project st…&quot;</li><li>Click link &quot;Legal centre&quot;</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li><li>Click link &quot;Characters&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (100%): one is covered by the other</p>
+    <p class="detail">LUCIA CAMINOS
+PROTAGONIST ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00011.png" target="_blank"><img src="screenshots/macaco-00011.png" alt="Screenshot of MACACO-00011" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00011.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00012</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (100%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/gangs-factions</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(4 earlier steps — see the replay file)</li><li>Click card &quot;PTT YOUNGIN$ COMPOUND&quot;</li><li>Hover link &quot;GTA VI overview&quot;</li><li>Click link &quot;LEGAL&quot;</li><li>Double-click card &quot;04 COPYRIGHT &amp; IP POLICY Ownership, fan-project st…&quot;</li><li>Click link &quot;Legal centre&quot;</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li><li>Click link &quot;Characters&quot;</li><li>Double-click card &quot;Open LUCIA CAMINOS full profile&quot;</li><li>Click link &quot;Gangs &amp; factions&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (100%): one is covered by the other</p>
+    <p class="detail">FINAL CHAPTER MC ↔ News</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00012.png" target="_blank"><img src="screenshots/macaco-00012.png" alt="Screenshot of MACACO-00012" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00012.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00014</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (54%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/gangs-factions/final-chapter-mc</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(7 earlier steps — see the replay file)</li><li>Double-click card &quot;04 COPYRIGHT &amp; IP POLICY Ownership, fan-project st…&quot;</li><li>Click link &quot;Legal centre&quot;</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li><li>Click link &quot;Characters&quot;</li><li>Double-click card &quot;Open LUCIA CAMINOS full profile&quot;</li><li>Click link &quot;Gangs &amp; factions&quot;</li><li>Hover link &quot;COOKIES&quot;</li><li>Click menu &quot;Open account menu&quot;</li><li>Click link &quot;Read full entry →&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (54%): one is covered by the other</p>
+    <p class="detail"> ↔ Sign in for personal tools</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00014.png" target="_blank"><img src="screenshots/macaco-00014.png" alt="Screenshot of MACACO-00014" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00014.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00016</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (83%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/avarus</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(9 earlier steps — see the replay file)</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li><li>Click link &quot;Characters&quot;</li><li>Double-click card &quot;Open LUCIA CAMINOS full profile&quot;</li><li>Click link &quot;Gangs &amp; factions&quot;</li><li>Hover link &quot;COOKIES&quot;</li><li>Click menu &quot;Open account menu&quot;</li><li>Click link &quot;Read full entry →&quot;</li><li>Rapid-click button &quot;button&quot; ×4</li><li>Click link &quot;Avarus&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (83%): one is covered by the other</p>
+    <p class="detail"> ↔ Sign in for personal tools</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00016.png" target="_blank"><img src="screenshots/macaco-00016.png" alt="Screenshot of MACACO-00016" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00016.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00017</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (66%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(10 earlier steps — see the replay file)</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li><li>Click link &quot;Characters&quot;</li><li>Double-click card &quot;Open LUCIA CAMINOS full profile&quot;</li><li>Click link &quot;Gangs &amp; factions&quot;</li><li>Hover link &quot;COOKIES&quot;</li><li>Click menu &quot;Open account menu&quot;</li><li>Click link &quot;Read full entry →&quot;</li><li>Rapid-click button &quot;button&quot; ×4</li><li>Click link &quot;Avarus&quot;</li><li>Rapid-click link &quot;Wiki&quot; ×4</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (66%): one is covered by the other</p>
+    <p class="detail">VEHICLES
+Cars, bikes, boats, a ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00017.png" target="_blank"><img src="screenshots/macaco-00017.png" alt="Screenshot of MACACO-00017" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00017.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00018</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (100%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki/statistics</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(13 earlier steps — see the replay file)</li><li>Click link &quot;Characters&quot;</li><li>Double-click card &quot;Open LUCIA CAMINOS full profile&quot;</li><li>Click link &quot;Gangs &amp; factions&quot;</li><li>Hover link &quot;COOKIES&quot;</li><li>Click menu &quot;Open account menu&quot;</li><li>Click link &quot;Read full entry →&quot;</li><li>Rapid-click button &quot;button&quot; ×4</li><li>Click link &quot;Avarus&quot;</li><li>Rapid-click link &quot;Wiki&quot; ×4</li><li>Click link &quot;LUCIA CAMINOS&quot;</li><li>Rapid-click link &quot;https://lusorae.pt/wiki/what-links-here?kind=chara…&quot; ×4</li><li>Click link &quot;Statistics&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (100%): one is covered by the other</p>
+    <p class="detail">4
+
+Secrets ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00018.png" target="_blank"><img src="screenshots/macaco-00018.png" alt="Screenshot of MACACO-00018" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00018.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00019</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (100%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki/changes</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(16 earlier steps — see the replay file)</li><li>Hover link &quot;COOKIES&quot;</li><li>Click menu &quot;Open account menu&quot;</li><li>Click link &quot;Read full entry →&quot;</li><li>Rapid-click button &quot;button&quot; ×4</li><li>Click link &quot;Avarus&quot;</li><li>Rapid-click link &quot;Wiki&quot; ×4</li><li>Click link &quot;LUCIA CAMINOS&quot;</li><li>Rapid-click link &quot;https://lusorae.pt/wiki/what-links-here?kind=chara…&quot; ×4</li><li>Click link &quot;Statistics&quot;</li><li>Click link &quot;Easter eggs&quot;</li><li>Click link &quot;GATOR SHACK&quot;</li><li>Click link &quot;Recent changes&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (100%): one is covered by the other</p>
+    <p class="detail">Character
+Confirmed
+JASON DUVA ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00019.png" target="_blank"><img src="screenshots/macaco-00019.png" alt="Screenshot of MACACO-00019" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00019.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00020</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (70%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki/go</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(25 earlier steps — see the replay file)</li><li>Click link &quot;Easter eggs&quot;</li><li>Click link &quot;GATOR SHACK&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click link &quot;Location Rumour NORTH BEACHES Stub entry&quot;</li><li>Click card &quot;ELECTRIC FANG TATTOO&quot;</li><li>Hover link &quot;Articles&quot;</li><li>Click link &quot;GAMBIT BAY&quot;</li><li>Click link &quot;Easter eggs&quot;</li><li>Click link &quot;Editions&quot;</li><li>Hover link &quot;Special pages&quot;</li><li>Click link &quot;Characters&quot;</li><li>Click link &quot;Go to page&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (70%): one is covered by the other</p>
+    <p class="detail">Vehicles ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00020.png" target="_blank"><img src="screenshots/macaco-00020.png" alt="Screenshot of MACACO-00020" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00020.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00021</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (40%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki/special</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(26 earlier steps — see the replay file)</li><li>Click link &quot;GATOR SHACK&quot;</li><li>Click link &quot;Recent changes&quot;</li><li>Click link &quot;Location Rumour NORTH BEACHES Stub entry&quot;</li><li>Click card &quot;ELECTRIC FANG TATTOO&quot;</li><li>Hover link &quot;Articles&quot;</li><li>Click link &quot;GAMBIT BAY&quot;</li><li>Click link &quot;Easter eggs&quot;</li><li>Click link &quot;Editions&quot;</li><li>Hover link &quot;Special pages&quot;</li><li>Click link &quot;Characters&quot;</li><li>Click link &quot;Go to page&quot;</li><li>Rapid-click link &quot;Special pages&quot; ×4</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (40%): one is covered by the other</p>
+    <p class="detail">10
+TOPIC PORTALS
+
+Subject gate ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00021.png" target="_blank"><img src="screenshots/macaco-00021.png" alt="Screenshot of MACACO-00021" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00021.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00022</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (68%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/wiki/discover</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(27 earlier steps — see the replay file)</li><li>Click link &quot;Recent changes&quot;</li><li>Click link &quot;Location Rumour NORTH BEACHES Stub entry&quot;</li><li>Click card &quot;ELECTRIC FANG TATTOO&quot;</li><li>Hover link &quot;Articles&quot;</li><li>Click link &quot;GAMBIT BAY&quot;</li><li>Click link &quot;Easter eggs&quot;</li><li>Click link &quot;Editions&quot;</li><li>Hover link &quot;Special pages&quot;</li><li>Click link &quot;Characters&quot;</li><li>Click link &quot;Go to page&quot;</li><li>Rapid-click link &quot;Special pages&quot; ×4</li><li>Click link &quot;Discover 100&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (68%): one is covered by the other</p>
+    <p class="detail">003
+WEAPON
+UNNAMED RIFLE
+
+RIFL ↔ Home</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00022.png" target="_blank"><img src="screenshots/macaco-00022.png" alt="Screenshot of MACACO-00022" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00022.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="MEDIUM" data-bucket="visual">
+    <header>
+      <span class="sev sev-medium">MEDIUM</span>
+      <strong>MACACO-00024</strong>
+      <span class="muted">visual · overlap</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Controls overlap (83%): one is covered by the other</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/radio/la-ola</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(28 earlier steps — see the replay file)</li><li>Click link &quot;Location Rumour NORTH BEACHES Stub entry&quot;</li><li>Click card &quot;ELECTRIC FANG TATTOO&quot;</li><li>Hover link &quot;Articles&quot;</li><li>Click link &quot;GAMBIT BAY&quot;</li><li>Click link &quot;Easter eggs&quot;</li><li>Click link &quot;Editions&quot;</li><li>Hover link &quot;Special pages&quot;</li><li>Click link &quot;Characters&quot;</li><li>Click link &quot;Go to page&quot;</li><li>Rapid-click link &quot;Special pages&quot; ×4</li><li>Click link &quot;Discover 100&quot;</li><li>Rapid-click link &quot;060 RADIO STATION LA OLA Latin/Salsa Rumour&quot; ×4</li></ol></details>
+    <p class="result"><b>Result:</b> Controls overlap (83%): one is covered by the other</p>
+    <p class="detail"> ↔ Sign in for personal tools</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00024.png" target="_blank"><img src="screenshots/macaco-00024.png" alt="Screenshot of MACACO-00024" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00024.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00013</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">8×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/gangs-factions/final-chapter-mc</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(7 earlier steps — see the replay file)</li><li>Double-click card &quot;04 COPYRIGHT &amp; IP POLICY Ownership, fan-project st…&quot;</li><li>Click link &quot;Legal centre&quot;</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li><li>Click link &quot;Characters&quot;</li><li>Double-click card &quot;Open LUCIA CAMINOS full profile&quot;</li><li>Click link &quot;Gangs &amp; factions&quot;</li><li>Hover link &quot;COOKIES&quot;</li><li>Click menu &quot;Open account menu&quot;</li><li>Click link &quot;Read full entry →&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Overview section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00013.png" target="_blank"><img src="screenshots/macaco-00013.png" alt="Screenshot of MACACO-00013" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00013.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00015</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">8×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/vehicles/avarus</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(9 earlier steps — see the replay file)</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li><li>Click link &quot;Characters&quot;</li><li>Double-click card &quot;Open LUCIA CAMINOS full profile&quot;</li><li>Click link &quot;Gangs &amp; factions&quot;</li><li>Hover link &quot;COOKIES&quot;</li><li>Click menu &quot;Open account menu&quot;</li><li>Click link &quot;Read full entry →&quot;</li><li>Rapid-click button &quot;button&quot; ×4</li><li>Click link &quot;Avarus&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Overview section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00015.png" target="_blank"><img src="screenshots/macaco-00015.png" alt="Screenshot of MACACO-00015" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00015.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00008</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">7×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/legal/copyright</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (8)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li><li>Click link &quot;Location VC PORT Confirmed&quot;</li><li>Click card &quot;PTT YOUNGIN$ COMPOUND&quot;</li><li>Hover link &quot;GTA VI overview&quot;</li><li>Click link &quot;LEGAL&quot;</li><li>Double-click card &quot;04 COPYRIGHT &amp; IP POLICY Ownership, fan-project st…&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the 1. Independent fan project section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00008.png" target="_blank"><img src="screenshots/macaco-00008.png" alt="Screenshot of MACACO-00008" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00008.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00002</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">5×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/characters/cal-hampton</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (2)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Background section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00002.png" target="_blank"><img src="screenshots/macaco-00002.png" alt="Screenshot of MACACO-00002" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00002.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00005</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">3×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/map/location/vc-port</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (4)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li><li>Click link &quot;Location VC PORT Confirmed&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Overview section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00005.png" target="_blank"><img src="screenshots/macaco-00005.png" alt="Screenshot of MACACO-00005" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00005.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00023</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">3×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/database/radio/la-ola</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>(28 earlier steps — see the replay file)</li><li>Click link &quot;Location Rumour NORTH BEACHES Stub entry&quot;</li><li>Click card &quot;ELECTRIC FANG TATTOO&quot;</li><li>Hover link &quot;Articles&quot;</li><li>Click link &quot;GAMBIT BAY&quot;</li><li>Click link &quot;Easter eggs&quot;</li><li>Click link &quot;Editions&quot;</li><li>Hover link &quot;Special pages&quot;</li><li>Click link &quot;Characters&quot;</li><li>Click link &quot;Go to page&quot;</li><li>Rapid-click link &quot;Special pages&quot; ×4</li><li>Click link &quot;Discover 100&quot;</li><li>Rapid-click link &quot;060 RADIO STATION LA OLA Latin/Salsa Rumour&quot; ×4</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Overview section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00023.png" target="_blank"><img src="screenshots/macaco-00023.png" alt="Screenshot of MACACO-00023" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00023.json</code></p>
+    </div>
+  </article>
+  <article class="incident" data-severity="LOW" data-bucket="visual">
+    <header>
+      <span class="sev sev-low">LOW</span>
+      <strong>MACACO-00010</strong>
+      <span class="muted">visual · invisible-control</span>
+      <span class="count">1×</span>
+    </header>
+    <h3>Focusable control is fully transparent</h3>
+    <dl>
+      <div><dt>Page</dt><dd>/editions</dd></div>
+      <div><dt>Viewport</dt><dd>390x844</dd></div>
+      <div><dt>Seed</dt><dd>843921</dd></div>
+    </dl>
+    <details open><summary>Steps (13)</summary><ol><li>Open / (390x844)</li><li>Click card &quot;CAL HAMPTON ALLY&quot;</li><li>Click link &quot;SOURCE POLICY&quot;</li><li>Click link &quot;Location VC PORT Confirmed&quot;</li><li>Click card &quot;PTT YOUNGIN$ COMPOUND&quot;</li><li>Hover link &quot;GTA VI overview&quot;</li><li>Click link &quot;LEGAL&quot;</li><li>Double-click card &quot;04 COPYRIGHT &amp; IP POLICY Ownership, fan-project st…&quot;</li><li>Click link &quot;Legal centre&quot;</li><li>Hover link &quot;Go to page&quot;</li><li>Hover card &quot;GTA Lore home&quot;</li><li>Double-click link &quot;Guides&quot;</li><li>Click link &quot;Editions&quot;</li></ol></details>
+    <p class="result"><b>Result:</b> Focusable control is fully transparent</p>
+    <p class="detail">Link to the Reported in community summaries section</p>
+    
+    
+    <div class="evidence">
+      <a href="screenshots/macaco-00010.png" target="_blank"><img src="screenshots/macaco-00010.png" alt="Screenshot of MACACO-00010" loading="lazy"></a>
+      <p><a href="traces/chaos-mobile-0.zip">Trace</a> · <a href="videos/chaos-mobile-0.webm">Video</a> · <code>macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00010.json</code></p>
+    </div>
+  </article></section>
+</main>
+<script>
+  document.querySelectorAll('.filters button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.filters button').forEach((x) => x.classList.toggle('on', x === b))
+    const [kind, value] = b.dataset.filter.split(':')
+    document.querySelectorAll('.incident').forEach((i) => {
+      i.hidden = kind !== 'all' && (kind === 'sev' ? i.dataset.severity !== value : i.dataset.bucket !== value)
+    })
+  }))
+</script></body></html>

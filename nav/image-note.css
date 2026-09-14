@@ -1,0 +1,3 @@
+
+/* Credit line under a news hero image (text only; outbound links stay Rockstar-only) */
+.wiki-article-image-note { margin-top: .5rem; color: var(--archive-muted, #5d5563); font: 400 12.5px/1.4 var(--font-inter), sans-serif; }

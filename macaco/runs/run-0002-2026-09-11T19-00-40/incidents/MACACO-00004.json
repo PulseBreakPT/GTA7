@@ -1,0 +1,89 @@
+{
+  "id": "MACACO-00004",
+  "fingerprint": "overlap|/sources",
+  "check": "overlap",
+  "bucket": "visual",
+  "severity": "MEDIUM",
+  "title": "Controls overlap (59%): one is covered by the other",
+  "detail": "Character\nNIGHTCLUB DJ\nVerifie ↔ Home",
+  "selector": "section.panel.rounded-sm > ul.mt-4.grid > li > a.flex.items-center",
+  "page": "/sources",
+  "pattern": "/sources",
+  "viewport": "390x844",
+  "viewports": [
+    "mobile"
+  ],
+  "pages": [
+    "/sources"
+  ],
+  "elements": [
+    "section.panel.rounded-sm > ul.mt-4.grid > li > a.flex.items-center"
+  ],
+  "mode": "chaos",
+  "steps": [
+    "Open / (390x844)",
+    "Click card \"CAL HAMPTON ALLY\"",
+    "Click link \"SOURCE POLICY\""
+  ],
+  "result": "Controls overlap (59%): one is covered by the other",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00004.png",
+  "trace": "traces/chaos-mobile-0.zip",
+  "video": "videos/chaos-mobile-0.webm",
+  "seed": 843921,
+  "sessionSeed": 276006,
+  "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00004.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T19:00:46.487Z",
+  "lastSeen": "2026-09-11T19:00:46.487Z",
+  "session": "chaos-mobile-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "CAL HAMPTON ALLY",
+        "href": "https://lusorae.pt/database/characters/cal-hampton",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"CAL HAMPTON ALLY\"",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "SOURCE POLICY",
+        "href": "https://lusorae.pt/sources",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"SOURCE POLICY\"",
+      "at": "/database/characters/cal-hampton"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00004.json",
+  "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 2",
+  "text": "MACACO-00004\n\nSeverity: MEDIUM\nPage: /sources\nViewport: 390x844\nOccurrences: 1\n\nProblem:\nControls overlap (59%): one is covered by the other\n\nSteps:\n1. Open / (390x844)\n2. Click card \"CAL HAMPTON ALLY\"\n3. Click link \"SOURCE POLICY\"\n\nResult:\nControls overlap (59%): one is covered by the other\n\nDetail:\nCharacter\nNIGHTCLUB DJ\nVerifie ↔ Home\n\nScreenshot:\nscreenshots/macaco-00004.png\n\nTrace:\ntraces/chaos-mobile-0.zip (npx playwright show-trace)\n\nVideo:\nvideos/chaos-mobile-0.webm\n\nSeed:\n843921\n\nReplay:\nmacaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00004.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "mobile",
+    "label": "mobile 390x844",
+    "width": 390,
+    "height": 844,
+    "mobile": true,
+    "scale": 3,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+  }
+}

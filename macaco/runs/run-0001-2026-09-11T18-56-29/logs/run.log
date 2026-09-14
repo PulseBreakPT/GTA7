@@ -1,0 +1,50 @@
+2026-09-11T18:56:39.737Z LOW MACACO-00001 Text is cut off without an ellipsis
+2026-09-11T18:56:40.095Z LOW MACACO-00002 Text is cut off without an ellipsis
+2026-09-11T18:56:42.482Z MEDIUM MACACO-00003 Elements must meet minimum color contrast ratio thresholds (2 elements)
+2026-09-11T18:56:42.885Z LOW MACACO-00004 Zooming and scaling must not be disabled (1 element)
+2026-09-11T18:56:44.958Z LOW MACACO-00005 Focusable control is fully transparent
+2026-09-11T18:56:45.355Z LOW MACACO-00006 Text is cut off without an ellipsis
+2026-09-11T18:56:45.782Z LOW MACACO-00007 Text is cut off without an ellipsis
+2026-09-11T18:56:48.181Z MEDIUM MACACO-00008 Elements must meet minimum color contrast ratio thresholds (8 elements)
+2026-09-11T18:56:48.540Z LOW MACACO-00009 Zooming and scaling must not be disabled (1 element)
+2026-09-11T18:56:53.646Z LOW MACACO-00010 Focusable control is fully transparent
+2026-09-11T18:56:53.804Z LOW MACACO-00011 Focusable control is fully transparent
+2026-09-11T18:56:53.966Z LOW MACACO-00012 Text is cut off without an ellipsis
+2026-09-11T18:56:54.120Z LOW MACACO-00013 Text is cut off without an ellipsis
+2026-09-11T18:56:55.750Z MEDIUM MACACO-00014 Elements must meet minimum color contrast ratio thresholds (3 elements)
+2026-09-11T18:56:56.037Z LOW MACACO-00015 Main landmark should not be contained in another landmark (1 element)
+2026-09-11T18:56:56.260Z LOW MACACO-00016 Document should not have more than one main landmark (1 element)
+2026-09-11T18:56:56.425Z LOW MACACO-00017 Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)
+2026-09-11T18:56:56.578Z LOW MACACO-00018 Zooming and scaling must not be disabled (1 element)
+2026-09-11T18:56:57.521Z LOW MACACO-00019 Focusable control is fully transparent
+2026-09-11T18:56:57.673Z LOW MACACO-00020 Focusable control is fully transparent
+2026-09-11T18:56:57.823Z LOW MACACO-00021 Text is cut off without an ellipsis
+2026-09-11T18:56:58.026Z LOW MACACO-00022 Text is cut off without an ellipsis
+2026-09-11T18:56:59.461Z MEDIUM MACACO-00023 Elements must meet minimum color contrast ratio thresholds (3 elements)
+2026-09-11T18:56:59.741Z LOW MACACO-00024 Main landmark should not be contained in another landmark (1 element)
+2026-09-11T18:56:59.993Z LOW MACACO-00025 Document should not have more than one main landmark (1 element)
+2026-09-11T18:57:00.228Z LOW MACACO-00026 Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)
+2026-09-11T18:57:00.411Z LOW MACACO-00027 Zooming and scaling must not be disabled (1 element)
+2026-09-11T18:57:02.510Z LOW MACACO-00028 Text is cut off without an ellipsis
+2026-09-11T18:57:02.888Z LOW MACACO-00029 Text is cut off without an ellipsis
+2026-09-11T18:57:04.537Z MEDIUM MACACO-00030 Elements must meet minimum color contrast ratio thresholds (3 elements)
+2026-09-11T18:57:04.882Z LOW MACACO-00031 Main landmark should not be contained in another landmark (1 element)
+2026-09-11T18:57:05.151Z LOW MACACO-00032 Document should not have more than one main landmark (1 element)
+2026-09-11T18:57:05.322Z LOW MACACO-00033 Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (1 element)
+2026-09-11T18:57:05.514Z LOW MACACO-00034 Zooming and scaling must not be disabled (1 element)
+2026-09-11T18:57:05.690Z MEDIUM MACACO-00035 Scrollable region must have keyboard access (1 element)
+2026-09-11T18:57:29.914Z MEDIUM MACACO-00036 Controls overlap (46%): one is covered by the other
+2026-09-11T18:57:30.340Z LOW MACACO-00037 Image is stretched (115% of its aspect ratio)
+2026-09-11T18:57:31.673Z LOW MACACO-00038 Image is stretched (115% of its aspect ratio)
+2026-09-11T18:57:33.983Z MEDIUM MACACO-00039 Controls overlap (66%): one is covered by the other
+2026-09-11T18:57:34.341Z LOW MACACO-00040 Text is cut off without an ellipsis
+2026-09-11T18:57:34.693Z LOW MACACO-00041 Image is stretched (115% of its aspect ratio)
+2026-09-11T18:57:37.288Z LOW MACACO-00042 Focusable control is fully transparent
+2026-09-11T18:57:37.660Z LOW MACACO-00043 Focusable control is fully transparent
+2026-09-11T18:57:37.956Z LOW MACACO-00044 Focusable control is fully transparent
+2026-09-11T18:57:38.263Z LOW MACACO-00045 Focusable control is fully transparent
+2026-09-11T18:57:38.618Z LOW MACACO-00046 Focusable control is fully transparent
+2026-09-11T18:57:39.012Z LOW MACACO-00047 Focusable control is fully transparent
+2026-09-11T18:57:39.303Z LOW MACACO-00048 Focusable control is fully transparent
+2026-09-11T18:57:39.614Z MEDIUM MACACO-00049 Controls overlap (83%): one is covered by the other
+2026-09-11T18:57:39.991Z LOW MACACO-00050 Image is stretched (115% of its aspect ratio)

@@ -1,0 +1,51 @@
+{
+  "id": "MACACO-00036",
+  "fingerprint": "overlap|/|section.hq-hero > div.hq-hero-content > div.hq-hero-actions > a.hq-hero-primary|Controls overlap (N%): one is covered by the other",
+  "check": "overlap",
+  "bucket": "visual",
+  "severity": "MEDIUM",
+  "title": "Controls overlap (46%): one is covered by the other",
+  "detail": "Explore the wiki ↔ Home",
+  "selector": "section.hq-hero > div.hq-hero-content > div.hq-hero-actions > a.hq-hero-primary",
+  "page": "/",
+  "pattern": "/",
+  "viewport": "390x844",
+  "viewports": [
+    "mobile"
+  ],
+  "pages": [
+    "/"
+  ],
+  "mode": "smart",
+  "steps": [
+    "Open / (390x844)"
+  ],
+  "result": "Controls overlap (46%): one is covered by the other",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00036.png",
+  "trace": "traces/smart-mobile-0.zip",
+  "video": null,
+  "seed": 200437,
+  "sessionSeed": 174013,
+  "replay": "macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00036.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T18:57:29.432Z",
+  "lastSeen": "2026-09-11T18:57:29.432Z",
+  "session": "smart-mobile-0",
+  "replaySteps": [],
+  "replayFile": "incidents/MACACO-00036.json",
+  "seedReplay": "macaco lusorae.pt --mode smart --seed 200437 --viewports mobile --actions 0",
+  "text": "MACACO-00036\n\nSeverity: MEDIUM\nPage: /\nViewport: 390x844\nOccurrences: 1\n\nProblem:\nControls overlap (46%): one is covered by the other\n\nSteps:\n1. Open / (390x844)\n\nResult:\nControls overlap (46%): one is covered by the other\n\nDetail:\nExplore the wiki ↔ Home\n\nScreenshot:\nscreenshots/macaco-00036.png\n\nTrace:\ntraces/smart-mobile-0.zip (npx playwright show-trace)\n\nSeed:\n200437\n\nReplay:\nmacaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00036.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "mobile",
+    "label": "mobile 390x844",
+    "width": 390,
+    "height": 844,
+    "mobile": true,
+    "scale": 3,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+  }
+}

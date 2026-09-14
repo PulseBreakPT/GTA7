@@ -1,0 +1,144 @@
+{
+  "id": "MACACO-00024",
+  "fingerprint": "a11y:landmark-main-is-top-level|/:slug/:slug/:slug|#article-content|Main landmark should not be contained in another landmark (N element)",
+  "check": "a11y:landmark-main-is-top-level",
+  "bucket": "accessibility",
+  "severity": "LOW",
+  "title": "Main landmark should not be contained in another landmark (1 element)",
+  "detail": "Fix any of the following:   The main landmark is contained in another landmark. — #article-content — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI",
+  "selector": "#article-content",
+  "page": "/database/world/possums",
+  "pattern": "/:slug/:slug/:slug",
+  "viewport": "1440x900",
+  "viewports": [
+    "desktop"
+  ],
+  "pages": [
+    "/database/world/possums"
+  ],
+  "mode": "smart",
+  "steps": [
+    "Open / (1440x900)",
+    "Click link \"OPEN VISUAL ARCHIVE\"",
+    "Click card \"GTA Lore home\"",
+    "Press Back",
+    "Click button \"EDITIONS 15\"",
+    "Click link \"Random entry\"",
+    "Click link \"POSSUMS\""
+  ],
+  "result": "Main landmark should not be contained in another landmark (1 element)",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00024.png",
+  "trace": "traces/smart-desktop-0.zip",
+  "video": null,
+  "seed": 200437,
+  "sessionSeed": 484073,
+  "replay": "macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00024.json",
+  "occurrences": 1,
+  "firstSeen": "2026-09-11T18:56:59.462Z",
+  "lastSeen": "2026-09-11T18:56:59.462Z",
+  "session": "smart-desktop-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "OPEN VISUAL ARCHIVE",
+        "href": "https://lusorae.pt/media",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"OPEN VISUAL ARCHIVE\"",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "GTA Lore home",
+        "href": "https://lusorae.pt/",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"GTA Lore home\"",
+      "at": "/media"
+    },
+    {
+      "type": "back",
+      "descriptor": null,
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Press Back",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "button",
+        "role": null,
+        "name": "EDITIONS 15",
+        "href": null,
+        "kind": "button",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click button \"EDITIONS 15\"",
+      "at": "/media"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Random entry",
+        "href": "https://lusorae.pt/wiki/random",
+        "kind": "link",
+        "nth": 2
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Random entry\"",
+      "at": "/media"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "POSSUMS",
+        "href": "https://lusorae.pt/database/world/possums",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"POSSUMS\"",
+      "at": "/database/world/duke-arms-company"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00024.json",
+  "seedReplay": "macaco lusorae.pt --mode smart --seed 200437 --viewports desktop --actions 6",
+  "text": "MACACO-00024\n\nSeverity: LOW\nPage: /database/world/possums\nViewport: 1440x900\nOccurrences: 1\n\nProblem:\nMain landmark should not be contained in another landmark (1 element)\n\nSteps:\n1. Open / (1440x900)\n2. Click link \"OPEN VISUAL ARCHIVE\"\n3. Click card \"GTA Lore home\"\n4. Press Back\n5. Click button \"EDITIONS 15\"\n6. Click link \"Random entry\"\n7. Click link \"POSSUMS\"\n\nResult:\nMain landmark should not be contained in another landmark (1 element)\n\nDetail:\nFix any of the following:   The main landmark is contained in another landmark. — #article-content — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI\n\nScreenshot:\nscreenshots/macaco-00024.png\n\nTrace:\ntraces/smart-desktop-0.zip (npx playwright show-trace)\n\nSeed:\n200437\n\nReplay:\nmacaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00024.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "desktop",
+    "label": "desktop 1440x900",
+    "width": 1440,
+    "height": 900
+  }
+}

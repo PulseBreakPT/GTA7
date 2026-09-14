@@ -1,0 +1,76 @@
+{
+  "id": "MACACO-00001",
+  "fingerprint": "invisible-control|/database/characters/:slug",
+  "check": "invisible-control",
+  "bucket": "visual",
+  "severity": "LOW",
+  "title": "Focusable control is fully transparent",
+  "detail": "Link to the Background section",
+  "selector": "section#background > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+  "page": "/database/characters/cal-hampton",
+  "pattern": "/database/characters/:slug",
+  "viewport": "390x844",
+  "viewports": [
+    "mobile"
+  ],
+  "pages": [
+    "/database/characters/cal-hampton"
+  ],
+  "elements": [
+    "section#background > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+    "section#details > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+    "section#relationships > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+    "section#mechanics > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+    "section#reported > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+  ],
+  "mode": "chaos",
+  "steps": [
+    "Open / (390x844)",
+    "Click card \"CAL HAMPTON ALLY\""
+  ],
+  "result": "Focusable control is fully transparent",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00001.png",
+  "trace": "traces/chaos-mobile-0.zip",
+  "video": "videos/chaos-mobile-0.webm",
+  "seed": 843921,
+  "sessionSeed": 276006,
+  "replay": "macaco replay /home/ubuntu/gta7/.claude/worktrees/gta7-vehicles-wiki/macaco/runs/run-0002-2026-09-11T19-00-40/replay-MACACO-00013-1789153340772/incidents/MACACO-00001.json",
+  "occurrences": 5,
+  "firstSeen": "2026-09-11T19:02:24.737Z",
+  "lastSeen": "2026-09-11T19:02:25.144Z",
+  "session": "chaos-mobile-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "CAL HAMPTON ALLY",
+        "href": "https://lusorae.pt/database/characters/cal-hampton",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"CAL HAMPTON ALLY\"",
+      "at": "/"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00001.json",
+  "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 1",
+  "text": "MACACO-00001\n\nSeverity: LOW\nPage: /database/characters/cal-hampton\nViewport: 390x844\nOccurrences: 5\n\nProblem:\nFocusable control is fully transparent\n\nSteps:\n1. Open / (390x844)\n2. Click card \"CAL HAMPTON ALLY\"\n\nResult:\nFocusable control is fully transparent\n\nDetail:\nLink to the Background section\n\nScreenshot:\nscreenshots/macaco-00001.png\n\nTrace:\ntraces/chaos-mobile-0.zip (npx playwright show-trace)\n\nVideo:\nvideos/chaos-mobile-0.webm\n\nSeed:\n843921\n\nReplay:\nmacaco replay /home/ubuntu/gta7/.claude/worktrees/gta7-vehicles-wiki/macaco/runs/run-0002-2026-09-11T19-00-40/replay-MACACO-00013-1789153340772/incidents/MACACO-00001.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "mobile",
+    "label": "mobile 390x844",
+    "width": 390,
+    "height": 844,
+    "mobile": true,
+    "scale": 3,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+  }
+}

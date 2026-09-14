@@ -1,0 +1,1913 @@
+MACACO RUN #1
+
+Target: https://lusorae.pt · mode SMART · seed 200437 · desktop 1440x900, mobile 390x844 · 1 min
+
+Pages discovered: 434
+Pages visited: 21
+Route patterns: 5
+Actions executed: 40
+
+Critical: 0
+High: 0
+Medium: 9
+Low: 41
+
+JS errors: 0
+HTTP 500: 0
+Broken images: 0
+Network issues: 0
+Visual issues: 30
+UX issues: 0
+Accessibility issues: 20
+Possible security issues: 0
+
+============================================================
+
+MACACO-00003
+
+Severity: MEDIUM
+Page: /
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Elements must meet minimum color contrast ratio thresholds (2 elements)
+
+Steps:
+1. Open / (1440x900)
+
+Result:
+Elements must meet minimum color contrast ratio thresholds (2 elements)
+
+Detail:
+Fix any of the following:   Element has insufficient color contrast of 4.36 (foreground color: #806873, background color: #f0edf0, font size: 7.7pt (10.24px), font weight: normal). Expected contrast ratio of 4.5:1 — .footer-v3-legal > p | .footer-v3-release > span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00003.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00003.json
+
+------------------------------------------------------------
+
+MACACO-00008
+
+Severity: MEDIUM
+Page: /media
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Elements must meet minimum color contrast ratio thresholds (8 elements)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+
+Result:
+Elements must meet minimum color contrast ratio thresholds (8 elements)
+
+Detail:
+Fix any of the following:   Element has insufficient color contrast of 3.6 (foreground color: #ca5289, background color: #f9ecf2, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1 — .border-pink > .font-mono.opacity-70.tabular-nums | .hover\:border-black\/40.filter-chip.h-9:nth-child(4) > .font-mono.opacity-70.tabular-nums | .hover\:border-black\/40.filter-chip.h-9:nth-child(5) > .font-mono.opacity-70.tabular-nums — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00008.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00008.json
+
+------------------------------------------------------------
+
+MACACO-00014
+
+Severity: MEDIUM
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Elements must meet minimum color contrast ratio thresholds (3 elements)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Elements must meet minimum color contrast ratio thresholds (3 elements)
+
+Detail:
+Fix any of the following:   Element has insufficient color contrast of 2.87 (foreground color: #9b8c93, background color: #f5f2f5, font size: 8.0pt (10.72px), font weight: normal). Expected contrast ratio of 4.5:1 — .wiki-toc-summary > span > small | .footer-v3-legal > p | .footer-v3-release > span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00014.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00014.json
+
+------------------------------------------------------------
+
+MACACO-00023
+
+Severity: MEDIUM
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Elements must meet minimum color contrast ratio thresholds (3 elements)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Elements must meet minimum color contrast ratio thresholds (3 elements)
+
+Detail:
+Fix any of the following:   Element has insufficient color contrast of 2.87 (foreground color: #9b8c93, background color: #f5f2f5, font size: 8.0pt (10.72px), font weight: normal). Expected contrast ratio of 4.5:1 — .wiki-toc-summary > span > small | .footer-v3-legal > p | .footer-v3-release > span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00023.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00023.json
+
+------------------------------------------------------------
+
+MACACO-00030
+
+Severity: MEDIUM
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Elements must meet minimum color contrast ratio thresholds (3 elements)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Elements must meet minimum color contrast ratio thresholds (3 elements)
+
+Detail:
+Fix any of the following:   Element has insufficient color contrast of 4.47 (foreground color: #625d69, background color: #e6d3dd, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1 — a[data-macaco-id="m34"] > span | .footer-v3-legal > p | .footer-v3-release > span — https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00030.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00030.json
+
+------------------------------------------------------------
+
+MACACO-00035
+
+Severity: MEDIUM
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Scrollable region must have keyboard access (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Scrollable region must have keyboard access (1 element)
+
+Detail:
+Fix any of the following:   Element should have focusable content   Element should be focusable — .film-rail — https://dequeuniversity.com/rules/axe/4.13/scrollable-region-focusable?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00035.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00035.json
+
+------------------------------------------------------------
+
+MACACO-00036
+
+Severity: MEDIUM
+Page: /
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (46%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+
+Result:
+Controls overlap (46%): one is covered by the other
+
+Detail:
+Explore the wiki ↔ Home
+
+Screenshot:
+screenshots/macaco-00036.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00036.json
+
+------------------------------------------------------------
+
+MACACO-00039
+
+Severity: MEDIUM
+Page: /wiki
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (66%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+
+Result:
+Controls overlap (66%): one is covered by the other
+
+Detail:
+VEHICLES
+Cars, bikes, boats, a ↔ Home
+
+Screenshot:
+screenshots/macaco-00039.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00039.json
+
+------------------------------------------------------------
+
+MACACO-00049
+
+Severity: MEDIUM
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Controls overlap (83%): one is covered by the other
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Controls overlap (83%): one is covered by the other
+
+Detail:
+ ↔ Sign in for personal tools
+
+Screenshot:
+screenshots/macaco-00049.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00049.json
+
+------------------------------------------------------------
+
+MACACO-00001
+
+Severity: LOW
+Page: /
+Viewport: 1440x900
+Occurrences: 2
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+Skip to content
+
+Screenshot:
+screenshots/macaco-00001.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00001.json
+
+------------------------------------------------------------
+
+MACACO-00006
+
+Severity: LOW
+Page: /media
+Viewport: 1440x900
+Occurrences: 2 on 2+ pages
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+Skip to content
+
+Screenshot:
+screenshots/macaco-00006.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00006.json
+
+------------------------------------------------------------
+
+MACACO-00020
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 2 on 2+ pages
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Related records section
+
+Screenshot:
+screenshots/macaco-00020.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00020.json
+
+------------------------------------------------------------
+
+MACACO-00021
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 2 on 2+ pages
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+Skip to content
+
+Screenshot:
+screenshots/macaco-00021.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00021.json
+
+------------------------------------------------------------
+
+MACACO-00028
+
+Severity: LOW
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 2 on 2+ pages
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+Skip to content
+
+Screenshot:
+screenshots/macaco-00028.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00028.json
+
+------------------------------------------------------------
+
+MACACO-00002
+
+Severity: LOW
+Page: /
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+GTA LORE
+THE GTA VI ENCYCLOPEDIA
+
+Screenshot:
+screenshots/macaco-00002.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00002.json
+
+------------------------------------------------------------
+
+MACACO-00004
+
+Severity: LOW
+Page: /
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Zooming and scaling must not be disabled (1 element)
+
+Steps:
+1. Open / (1440x900)
+
+Result:
+Zooming and scaling must not be disabled (1 element)
+
+Detail:
+Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices — meta[name="viewport"] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00004.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00004.json
+
+------------------------------------------------------------
+
+MACACO-00005
+
+Severity: LOW
+Page: /media
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Reported in community summaries section
+
+Screenshot:
+screenshots/macaco-00005.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00005.json
+
+------------------------------------------------------------
+
+MACACO-00007
+
+Severity: LOW
+Page: /media
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+GTA LORE
+THE GTA VI ENCYCLOPEDIA
+
+Screenshot:
+screenshots/macaco-00007.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00007.json
+
+------------------------------------------------------------
+
+MACACO-00009
+
+Severity: LOW
+Page: /media
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Zooming and scaling must not be disabled (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+
+Result:
+Zooming and scaling must not be disabled (1 element)
+
+Detail:
+Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices — meta[name="viewport"] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00009.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00009.json
+
+------------------------------------------------------------
+
+MACACO-00010
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Archive record section
+
+Screenshot:
+screenshots/macaco-00010.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00010.json
+
+------------------------------------------------------------
+
+MACACO-00011
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Related records section
+
+Screenshot:
+screenshots/macaco-00011.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00011.json
+
+------------------------------------------------------------
+
+MACACO-00012
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+Skip to content
+
+Screenshot:
+screenshots/macaco-00012.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00012.json
+
+------------------------------------------------------------
+
+MACACO-00013
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+GTA LORE
+THE GTA VI ENCYCLOPEDIA
+
+Screenshot:
+screenshots/macaco-00013.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00013.json
+
+------------------------------------------------------------
+
+MACACO-00015
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Main landmark should not be contained in another landmark (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Main landmark should not be contained in another landmark (1 element)
+
+Detail:
+Fix any of the following:   The main landmark is contained in another landmark. — #article-content — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00015.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00015.json
+
+------------------------------------------------------------
+
+MACACO-00016
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Document should not have more than one main landmark (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Document should not have more than one main landmark (1 element)
+
+Detail:
+Fix any of the following:   Document has more than one main landmark — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-no-duplicate-main?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00016.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00016.json
+
+------------------------------------------------------------
+
+MACACO-00017
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)
+
+Detail:
+Fix any of the following:   The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable — #main | .wiki-entry-tertiary — https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00017.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00017.json
+
+------------------------------------------------------------
+
+MACACO-00018
+
+Severity: LOW
+Page: /database/world/duke-arms-company
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Zooming and scaling must not be disabled (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+
+Result:
+Zooming and scaling must not be disabled (1 element)
+
+Detail:
+Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices — meta[name="viewport"] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00018.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00018.json
+
+------------------------------------------------------------
+
+MACACO-00019
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Archive record section
+
+Screenshot:
+screenshots/macaco-00019.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00019.json
+
+------------------------------------------------------------
+
+MACACO-00022
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+GTA LORE
+THE GTA VI ENCYCLOPEDIA
+
+Screenshot:
+screenshots/macaco-00022.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00022.json
+
+------------------------------------------------------------
+
+MACACO-00024
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Main landmark should not be contained in another landmark (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Main landmark should not be contained in another landmark (1 element)
+
+Detail:
+Fix any of the following:   The main landmark is contained in another landmark. — #article-content — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00024.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00024.json
+
+------------------------------------------------------------
+
+MACACO-00025
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Document should not have more than one main landmark (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Document should not have more than one main landmark (1 element)
+
+Detail:
+Fix any of the following:   Document has more than one main landmark — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-no-duplicate-main?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00025.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00025.json
+
+------------------------------------------------------------
+
+MACACO-00026
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (2 elements)
+
+Detail:
+Fix any of the following:   The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable — #main | .wiki-entry-tertiary — https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00026.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00026.json
+
+------------------------------------------------------------
+
+MACACO-00027
+
+Severity: LOW
+Page: /database/world/possums
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Zooming and scaling must not be disabled (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+
+Result:
+Zooming and scaling must not be disabled (1 element)
+
+Detail:
+Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices — meta[name="viewport"] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00027.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00027.json
+
+------------------------------------------------------------
+
+MACACO-00029
+
+Severity: LOW
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+GTA LORE
+THE GTA VI ENCYCLOPEDIA
+
+Screenshot:
+screenshots/macaco-00029.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00029.json
+
+------------------------------------------------------------
+
+MACACO-00031
+
+Severity: LOW
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Main landmark should not be contained in another landmark (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Main landmark should not be contained in another landmark (1 element)
+
+Detail:
+Fix any of the following:   The main landmark is contained in another landmark. — .px-4 — https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00031.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00031.json
+
+------------------------------------------------------------
+
+MACACO-00032
+
+Severity: LOW
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Document should not have more than one main landmark (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Document should not have more than one main landmark (1 element)
+
+Detail:
+Fix any of the following:   Document has more than one main landmark — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-no-duplicate-main?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00032.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00032.json
+
+------------------------------------------------------------
+
+MACACO-00033
+
+Severity: LOW
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Landmarks should have a unique role or role/label/title (i.e. accessible name) combination (1 element)
+
+Detail:
+Fix any of the following:   The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable — #main — https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00033.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00033.json
+
+------------------------------------------------------------
+
+MACACO-00034
+
+Severity: LOW
+Page: /categories/release-and-editions
+Viewport: 1440x900
+Occurrences: 1
+
+Problem:
+Zooming and scaling must not be disabled (1 element)
+
+Steps:
+1. Open / (1440x900)
+2. Click link "OPEN VISUAL ARCHIVE"
+3. Click card "GTA Lore home"
+4. Press Back
+5. Click button "EDITIONS 15"
+6. Click link "Random entry"
+7. Click link "POSSUMS"
+8. Click link "Article categories"
+9. Click card "FILE 03 05 ARTICLES RELEASE & EDITIONS Platforms, …"
+
+Result:
+Zooming and scaling must not be disabled (1 element)
+
+Detail:
+Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices — meta[name="viewport"] — https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=axeAPI
+
+Screenshot:
+screenshots/macaco-00034.png
+
+Trace:
+traces/smart-desktop-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00034.json
+
+------------------------------------------------------------
+
+MACACO-00037
+
+Severity: LOW
+Page: /
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Image is stretched (115% of its aspect ratio)
+
+Steps:
+1. Open / (390x844)
+
+Result:
+Image is stretched (115% of its aspect ratio)
+
+Detail:
+https://lusorae.pt/brand/gta-lore-lockup-compact.svg
+
+Screenshot:
+screenshots/macaco-00037.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00037.json
+
+------------------------------------------------------------
+
+MACACO-00038
+
+Severity: LOW
+Page: /wiki/glossary
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Image is stretched (115% of its aspect ratio)
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+
+Result:
+Image is stretched (115% of its aspect ratio)
+
+Detail:
+https://lusorae.pt/brand/gta-lore-lockup-compact.svg
+
+Screenshot:
+screenshots/macaco-00038.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00038.json
+
+------------------------------------------------------------
+
+MACACO-00040
+
+Severity: LOW
+Page: /wiki
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Text is cut off without an ellipsis
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+
+Result:
+Text is cut off without an ellipsis
+
+Detail:
+Search the encyclopedia
+
+Screenshot:
+screenshots/macaco-00040.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00040.json
+
+------------------------------------------------------------
+
+MACACO-00041
+
+Severity: LOW
+Page: /wiki
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Image is stretched (115% of its aspect ratio)
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+
+Result:
+Image is stretched (115% of its aspect ratio)
+
+Detail:
+https://lusorae.pt/brand/gta-lore-lockup-compact.svg
+
+Screenshot:
+screenshots/macaco-00041.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00041.json
+
+------------------------------------------------------------
+
+MACACO-00042
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Overview section
+
+Screenshot:
+screenshots/macaco-00042.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00042.json
+
+------------------------------------------------------------
+
+MACACO-00043
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Evidence & identity section
+
+Screenshot:
+screenshots/macaco-00043.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00043.json
+
+------------------------------------------------------------
+
+MACACO-00044
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Theft, ownership & storage section
+
+Screenshot:
+screenshots/macaco-00044.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00044.json
+
+------------------------------------------------------------
+
+MACACO-00045
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Variants, inspiration & regional role section
+
+Screenshot:
+screenshots/macaco-00045.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00045.json
+
+------------------------------------------------------------
+
+MACACO-00046
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Performance section
+
+Screenshot:
+screenshots/macaco-00046.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00046.json
+
+------------------------------------------------------------
+
+MACACO-00047
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Specifications section
+
+Screenshot:
+screenshots/macaco-00047.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00047.json
+
+------------------------------------------------------------
+
+MACACO-00048
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Focusable control is fully transparent
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Focusable control is fully transparent
+
+Detail:
+Link to the Reported in community summaries section
+
+Screenshot:
+screenshots/macaco-00048.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00048.json
+
+------------------------------------------------------------
+
+MACACO-00050
+
+Severity: LOW
+Page: /database/vehicles/mercedes-benz-cle-inspired-convertible
+Viewport: 390x844
+Occurrences: 1
+
+Problem:
+Image is stretched (115% of its aspect ratio)
+
+Steps:
+1. Open / (390x844)
+2. Click link "Glossary"
+3. Click card "GTA Lore main page"
+4. Press Back
+5. Click link "Wiki main page"
+6. Click link "Recent changes"
+7. Click card "Vehicle Confirmed MERCEDES-BENZ CLE-INSPIRED CONVE…"
+
+Result:
+Image is stretched (115% of its aspect ratio)
+
+Detail:
+https://lusorae.pt/brand/gta-lore-lockup-compact.svg
+
+Screenshot:
+screenshots/macaco-00050.png
+
+Trace:
+traces/smart-mobile-0.zip (npx playwright show-trace)
+
+Seed:
+200437
+
+Replay:
+macaco replay runs/run-0001-2026-09-11T18-56-29/incidents/MACACO-00050.json

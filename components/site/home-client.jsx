@@ -60,3 +60,57 @@ export function ReleaseCountdown({ releaseDate, variant = 'compact', className }
     </div>
   )
 }
+
+// Day one of the public countdown isn't the day this archive picked — it's
+// the day Rockstar confirmed the next game was in development, the first
+// entry in lib/content.js's own sourced releaseHistory. Percentage-to-launch
+// is measured from there, not from an arbitrary round date, so the number
+// means something a reader could check.
+const DEVELOPMENT_CONFIRMED = Date.parse('2022-02-01T00:00:00Z')
+
+export function LaunchBar({ releaseDate }) {
+  const [now, setNow] = useState(null)
+
+  useEffect(() => {
+    const tick = () => setNow(Date.now())
+    tick()
+    const timer = window.setInterval(tick, 1000)
+    return () => window.clearInterval(timer)
+  }, [])
+
+  const target = Date.parse(releaseDate)
+  if (now == null || Number.isNaN(target)) return null
+  const remaining = Math.max(0, target - now)
+  if (!remaining) return null
+
+  const elapsed = now - DEVELOPMENT_CONFIRMED
+  const total = target - DEVELOPMENT_CONFIRMED
+  const percent = Math.min(99.9, Math.max(0, (elapsed / total) * 100))
+
+  const pad = (n) => String(n).padStart(2, '0')
+  const days = Math.floor(remaining / 86400000)
+  const units = [
+    ['Days', days],
+    ['Hrs', pad(Math.floor(remaining / 3600000) % 24)],
+    ['Min', pad(Math.floor(remaining / 60000) % 60)],
+    ['Sec', pad(Math.floor(remaining / 1000) % 60)],
+  ]
+
+  return (
+    <div className="hq-launch-bar" role="group" aria-label={`${days} days until release, scheduled ${releaseDate}`}>
+      <div className="hq-launch-clock">
+        <span className="hq-launch-label">Countdown to {releaseDate}</span>
+        <div className="hq-launch-digits">
+          {units.map(([label, value]) => (
+            <span key={label}><b>{value}</b><small>{label}</small></span>
+          ))}
+        </div>
+      </div>
+      <div className="hq-launch-progress">
+        <span className="hq-launch-label">Development to launch<em>{percent.toFixed(1)}%</em></span>
+        <i><b style={{ width: `${percent}%` }} /></i>
+        <small>Since Rockstar confirmed development · February 2022</small>
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,1083 @@
+[
+ {
+  "cls": "Service",
+  "name": "Airport Bus",
+  "model": "Airport Bus",
+  "based": "Not yet specified",
+  "source": "Extended Look",
+  "slug": "airport-bus",
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Amloco (GE Genesis)",
+  "model": "Amloco (GE Genesis)",
+  "based": "GE Genesis locomotive",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Bus",
+  "model": "Bus",
+  "based": "New Flyer Xcelsior",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Dashound",
+  "model": "Dashound",
+  "based": "MCI Renaissance E-series coach / Greyhound Lines",
+  "source": "Trailer 1",
+  "slug": "dashound",
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Dodge Grand Caravan Taxi",
+  "model": "Dodge Grand Caravan Taxi",
+  "based": "2011-2020 Dodge Grand Caravan / 2011-2016 Chrysler Town & Country",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Freight Train",
+  "model": "Freight Train",
+  "based": "EMD locomotive / GE AC4400CW influences",
+  "source": "Official Screenshots",
+  "slug": "freight-train",
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Declasse Granger Taxi",
+  "maker": "Declasse",
+  "model": "Granger Taxi",
+  "based": "Chevrolet Suburban",
+  "source": "Extended Look",
+  "slug": "declasse-granger-taxi",
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Hitachi Metrorail",
+  "model": "Hitachi Metrorail",
+  "based": "Hitachi Metrorail",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Metromule",
+  "model": "Metromule",
+  "based": "Metromule transit vehicle",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Brute Rental Shuttle Bus",
+  "maker": "Brute",
+  "model": "Rental Shuttle Bus",
+  "based": "1996-2002 Chevrolet Express",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Service",
+  "name": "Vapid Stanier Taxi",
+  "maker": "Vapid",
+  "model": "Stanier Taxi",
+  "based": "Ford Crown Victoria",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Obey 8F Drafter",
+  "maker": "Obey",
+  "model": "8F Drafter",
+  "based": "2018 Audi RS5 Coupe",
+  "source": "Official Screenshots",
+  "slug": "8f-drafter",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Albany Alpha",
+  "maker": "Albany",
+  "model": "Alpha",
+  "based": "Cadillac Sixteen / 2013 Cadillac ATS",
+  "source": "September 2022 Development Footage",
+  "slug": "alpha",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Bravado Banshee",
+  "maker": "Bravado",
+  "model": "Banshee",
+  "based": "Dodge Viper",
+  "source": "Trailer 2",
+  "slug": "banshee",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Dinka Blista Compact",
+  "maker": "Dinka",
+  "model": "Blista Compact",
+  "based": "First-generation Honda CRX",
+  "source": "Official Screenshots",
+  "slug": "blista-compact",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Bravado Buffalo",
+  "maker": "Bravado",
+  "model": "Buffalo",
+  "based": "Dodge Charger",
+  "source": "Trailer 1",
+  "slug": "buffalo",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Grotti Carbonizzare",
+  "maker": "Grotti",
+  "model": "Carbonizzare",
+  "based": "Aston Martin V12 Zagato / Nissan GT-R / Ferrari influences",
+  "source": "Trailer 1",
+  "slug": "carbonizzare",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Pfister Comet Retro Custom",
+  "maker": "Pfister",
+  "model": "Comet Retro Custom",
+  "based": "Rauh-Welt Porsche 911 (930)",
+  "source": "Trailer 1",
+  "slug": "comet-retro-custom",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Pfister Comet S2 Cabrio",
+  "maker": "Pfister",
+  "model": "Comet S2 Cabrio",
+  "based": "Porsche 911 Turbo S Cabriolet",
+  "source": "Trailer 1",
+  "slug": "comet-s2-cabrio",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Invetero Coquette",
+  "maker": "Invetero",
+  "model": "Coquette",
+  "based": "Chevrolet Corvette C7 / 2014 Corvette Stingray",
+  "source": "Trailer 2",
+  "slug": "coquette",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Invetero Coquette D10",
+  "maker": "Invetero",
+  "model": "Coquette D10",
+  "based": "Chevrolet Corvette C8",
+  "source": "Trailer 1",
+  "slug": "coquette-d10",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Übermacht Cypher",
+  "maker": "Übermacht",
+  "model": "Cypher",
+  "based": "BMW M2 F87 with M6/M8 influences",
+  "source": "Trailer 1",
+  "slug": "cypher",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Annis Elegy Retro Custom",
+  "maker": "Annis",
+  "model": "Elegy Retro Custom",
+  "based": "Nissan Skyline GT-R",
+  "source": "Trailer 1",
+  "slug": "elegy-retro-custom",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Karin Futo",
+  "maker": "Karin",
+  "model": "Futo",
+  "based": "Toyota AE86 Levin",
+  "source": "Trailer 1",
+  "slug": "futo",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Pfister Growler",
+  "maker": "Pfister",
+  "model": "Growler",
+  "based": "Porsche 718 Cayman",
+  "source": "Trailer 2",
+  "slug": "growler",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Grotti Itali GTO",
+  "maker": "Grotti",
+  "model": "Itali GTO",
+  "based": "Ferrari 812 Superfast",
+  "source": "Trailer 1",
+  "slug": "itali-gto",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Grotti Itali RSX",
+  "maker": "Grotti",
+  "model": "Itali RSX",
+  "based": "Ferrari SF90 Stradale",
+  "source": "Extended Look",
+  "slug": "itali-rsx",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Ocelot Jugular",
+  "maker": "Ocelot",
+  "model": "Jugular",
+  "based": "Jaguar XE SV Project 8",
+  "source": "Trailer 1",
+  "slug": "jugular",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Ocelot Locust",
+  "maker": "Ocelot",
+  "model": "Locust",
+  "based": "2015 Lotus 3-Eleven",
+  "source": "September 2022 Development Footage",
+  "slug": "locust",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Pfister Neon",
+  "maker": "Pfister",
+  "model": "Neon",
+  "based": "Porsche Taycan with 918 Spyder, Panamera and 911 influences",
+  "source": "Extended Look",
+  "slug": "neon",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Obey Omnis e-GT",
+  "maker": "Obey",
+  "model": "Omnis e-GT",
+  "based": "Audi e-tron GT",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Enus Paragon R",
+  "maker": "Enus",
+  "model": "Paragon R",
+  "based": "2018 Bentley Continental GT",
+  "source": "Official Screenshots",
+  "slug": "paragon-r",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Maibatsu Penumbra",
+  "maker": "Maibatsu",
+  "model": "Penumbra",
+  "based": "Mitsubishi Eclipse / Audi TT",
+  "source": "Trailer 2",
+  "slug": "penumbra",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Maibatsu Penumbra FF",
+  "maker": "Maibatsu",
+  "model": "Penumbra FF",
+  "based": "Second-generation Mitsubishi Eclipse / Eagle Talon",
+  "source": "Extended Look",
+  "slug": "penumbra-ff",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Coil Raiden",
+  "maker": "Coil",
+  "model": "Raiden",
+  "based": "Tesla Model S",
+  "source": "Official Screenshots",
+  "slug": "raiden",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Dinka Sugoi",
+  "maker": "Dinka",
+  "model": "Sugoi",
+  "based": "Honda Civic Type R FK8",
+  "source": "Official Screenshots",
+  "slug": "sugoi",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Karin Sultan",
+  "maker": "Karin",
+  "model": "Sultan",
+  "based": "Lexus IS / Mitsubishi Lancer Evo VI / Subaru Impreza",
+  "source": "Trailer 1",
+  "slug": "sultan",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Albany V-STR",
+  "maker": "Albany",
+  "model": "V-STR",
+  "based": "2019 Cadillac CTS-V",
+  "source": "Official Screenshots",
+  "slug": "v-str",
+  "noted": false
+ },
+ {
+  "cls": "Sports",
+  "name": "Emperor Vectre",
+  "maker": "Emperor",
+  "model": "Vectre",
+  "based": "Lexus RC F",
+  "source": "Trailer 2",
+  "slug": "vectre",
+  "noted": false
+ },
+ {
+  "cls": "Sports Classic",
+  "name": "Grotti Cheetah '95",
+  "maker": "Grotti",
+  "model": "Cheetah '95",
+  "based": "Ferrari Testarossa / Ferrari 512 BB",
+  "source": "Trailer 1",
+  "slug": "cheetah-1995",
+  "noted": false
+ },
+ {
+  "cls": "Sports Classic",
+  "name": "Pegassi Infernus Classic",
+  "maker": "Pegassi",
+  "model": "Infernus Classic",
+  "based": "Lamborghini Diablo / Cizeta V16T / Ferrari Testarossa",
+  "source": "Extended Look",
+  "slug": "infernus-classic",
+  "noted": false
+ },
+ {
+  "cls": "Sports Classic",
+  "name": "Kellison J4",
+  "model": "Kellison J4",
+  "based": "Kellison J4",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Sports Classic",
+  "name": "Declasse Mamba GT",
+  "maker": "Declasse",
+  "model": "Mamba GT",
+  "based": "Shelby Daytona Coupe",
+  "source": "Official Screenshots",
+  "slug": "mamba-gt",
+  "noted": false
+ },
+ {
+  "cls": "Sports Classic",
+  "name": "Albany Manana",
+  "maker": "Albany",
+  "model": "Manana",
+  "based": "Buick LeSabre / Cadillac Eldorado",
+  "source": "Official Screenshots",
+  "slug": "manana",
+  "noted": false
+ },
+ {
+  "cls": "Sports Classic",
+  "name": "Übermacht Sentinel Classic",
+  "maker": "Übermacht",
+  "model": "Sentinel Classic",
+  "based": "BMW E30 M3",
+  "source": "Extended Look",
+  "slug": "sentinel-classic",
+  "noted": false
+ },
+ {
+  "cls": "Sports Classic",
+  "name": "Declasse Tornado",
+  "maker": "Declasse",
+  "model": "Tornado",
+  "based": "Chevrolet Bel Air",
+  "source": "September 2022 Development Footage",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Super",
+  "name": "Progen Emerus",
+  "maker": "Progen",
+  "model": "Emerus",
+  "based": "McLaren Senna",
+  "source": "Extended Look",
+  "slug": "progen-emerus",
+  "noted": false
+ },
+ {
+  "cls": "Super",
+  "name": "Grotti Furia",
+  "maker": "Grotti",
+  "model": "Furia",
+  "based": "Ferrari 488 Pista / SF90 Stradale / Pininfarina Battista influences",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Super",
+  "name": "Lamborghini Aventador",
+  "model": "Lamborghini Aventador",
+  "based": "Lamborghini Aventador",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Super",
+  "name": "Pegassi Tempesta",
+  "maker": "Pegassi",
+  "model": "Tempesta",
+  "based": "Lamborghini Huracán / Centenario with Lotus Esprit influence",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Super",
+  "name": "Truffade Thrax",
+  "maker": "Truffade",
+  "model": "Thrax",
+  "based": "Bugatti Divo / Italdesign Zerouno",
+  "source": "August 2026 Development Material",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Super",
+  "name": "Pegassi Zorrusso",
+  "maker": "Pegassi",
+  "model": "Zorrusso",
+  "based": "Italdesign Zerouno",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Vapid Aleutian",
+  "maker": "Vapid",
+  "model": "Aleutian",
+  "based": "Fourth-generation Ford Expedition (U553)",
+  "source": "Trailer 2",
+  "slug": "aleutian",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Pfister Astron",
+  "maker": "Pfister",
+  "model": "Astron",
+  "based": "Porsche Macan",
+  "source": "Trailer 2",
+  "slug": "astron",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Audi Q7 (2nd Gen)",
+  "model": "Audi Q7 (2nd Gen)",
+  "based": "Second-generation Audi Q7",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Gallivanter Baller II",
+  "maker": "Gallivanter",
+  "model": "Baller II",
+  "based": "Range Rover Evoque / Range Rover Sport",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Gallivanter Baller ST-D",
+  "maker": "Gallivanter",
+  "model": "Baller ST-D",
+  "based": "Fifth-generation Range Rover (L460)",
+  "source": "Official Screenshots",
+  "slug": "baller-st-d",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Albany Cavalcade XL",
+  "maker": "Albany",
+  "model": "Cavalcade XL",
+  "based": "2023 Cadillac Escalade-V",
+  "source": "Official Screenshots",
+  "slug": "cavalcade-xl",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Karin Contender",
+  "maker": "Karin",
+  "model": "Contender",
+  "based": "Toyota Tundra Devolro Diablo / Ford Raptor / Ford F-150",
+  "source": "Official Screenshots",
+  "slug": "contender",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Dodge Durango (3rd Gen)",
+  "model": "Dodge Durango (3rd Gen)",
+  "based": "Third-generation Dodge Durango",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Bravado Dorado",
+  "maker": "Bravado",
+  "model": "Dorado",
+  "based": "First-generation Dodge Durango",
+  "source": "Official Screenshots",
+  "slug": "dorado",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Benefactor Dubsta",
+  "maker": "Benefactor",
+  "model": "Dubsta",
+  "based": "Mercedes-Benz G-Class",
+  "source": "Trailer 1",
+  "slug": "dubsta",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Ford Explorer (2nd Gen)",
+  "model": "Ford Explorer (2nd Gen)",
+  "based": "Second-generation Ford Explorer",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Declasse Granger",
+  "maker": "Declasse",
+  "model": "Granger",
+  "based": "Chevrolet Suburban",
+  "source": "Trailer 2",
+  "slug": "granger",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Declasse Granger 3600LX",
+  "maker": "Declasse",
+  "model": "Granger 3600LX",
+  "based": "2015-2020 Chevrolet Suburban",
+  "source": "Trailer 1",
+  "slug": "granger-3600lx",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Buckingham Jubilee",
+  "maker": "Buckingham",
+  "model": "Jubilee",
+  "based": "Rolls-Royce Cullinan",
+  "source": "Trailer 1",
+  "slug": "jubilee",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Dundreary Landstalker XL",
+  "maker": "Dundreary",
+  "model": "Landstalker XL",
+  "based": "Fourth-generation Lincoln Navigator",
+  "source": "Trailer 2",
+  "slug": "landstalker-xl",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Canis Mesa",
+  "maker": "Canis",
+  "model": "Mesa",
+  "based": "Jeep Wrangler",
+  "source": "Official Screenshots",
+  "slug": "mesa",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Vapid Montagne",
+  "maker": "Vapid",
+  "model": "Montagne",
+  "based": "Sixth-generation Ford Explorer",
+  "source": "Trailer 2",
+  "slug": "montagne",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Lampadati Novak",
+  "maker": "Lampadati",
+  "model": "Novak",
+  "based": "Maserati Levante / Alfa Romeo Stelvio",
+  "source": "Official Screenshots",
+  "slug": "novak",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Übermacht Rebla GTS",
+  "maker": "Übermacht",
+  "model": "Rebla GTS",
+  "based": "Fourth-generation BMW X5",
+  "source": "Extended Look",
+  "slug": "rebla-gts",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Vapid Riata Classic",
+  "maker": "Vapid",
+  "model": "Riata Classic",
+  "based": "First-generation Ford Bronco",
+  "source": "Official Screenshots",
+  "slug": "riata-classic",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Canis Seminole Frontier",
+  "maker": "Canis",
+  "model": "Seminole Frontier",
+  "based": "Second-generation Jeep Cherokee (XJ)",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Pegassi Toros",
+  "maker": "Pegassi",
+  "model": "Toros",
+  "based": "Lamborghini Urus / Aventador / Audi Q8 influences",
+  "source": "Official Screenshots",
+  "slug": "toros",
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Toyota RAV4 (5th Gen)",
+  "model": "Toyota RAV4 (5th Gen)",
+  "based": "Fifth-generation Toyota RAV4",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Karin Vivanite",
+  "maker": "Karin",
+  "model": "Vivanite",
+  "based": "Fourth-generation Toyota Sienna (XL40)",
+  "source": "Extended Look",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "SUVs",
+  "name": "Benefactor XLS",
+  "maker": "Benefactor",
+  "model": "XLS",
+  "based": "Mercedes GL-Class / BMW X5",
+  "source": "Extended Look",
+  "slug": "xls",
+  "noted": false
+ },
+ {
+  "cls": "Utility",
+  "name": "HVY Airtug",
+  "maker": "HVY",
+  "model": "Airtug",
+  "based": "Clark CT30",
+  "source": "Extended Look",
+  "slug": "airtug",
+  "noted": false
+ },
+ {
+  "cls": "Utility",
+  "name": "Ford F-Series Tow Truck",
+  "model": "Ford F-Series Tow Truck",
+  "based": "Ford F-Series tow truck",
+  "source": "Extended Look",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Utility",
+  "name": "HVY Forklift",
+  "maker": "HVY",
+  "model": "Forklift",
+  "based": "Yale GLP060VX forklift",
+  "source": "Official Screenshots",
+  "slug": "forklift",
+  "noted": false
+ },
+ {
+  "cls": "Utility",
+  "name": "International S-Series Semi Truck",
+  "model": "International S-Series Semi Truck",
+  "based": "International S-Series semi truck",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Utility",
+  "name": "Vapid Sadler",
+  "maker": "Vapid",
+  "model": "Sadler",
+  "based": "First-generation Ford F-250 Super Duty",
+  "source": "September 2022 Development Footage",
+  "slug": "sadler",
+  "noted": false
+ },
+ {
+  "cls": "Utility",
+  "name": "Vapid Tow Truck",
+  "maker": "Vapid",
+  "model": "Tow Truck",
+  "based": "1980s International Harvester S-Series",
+  "source": "Trailer 1",
+  "slug": "vapid-tow-truck",
+  "noted": false
+ },
+ {
+  "cls": "Utility",
+  "name": "Brute Utility Truck",
+  "maker": "Brute",
+  "model": "Utility Truck",
+  "based": "International 4700 Series",
+  "source": "Extended Look",
+  "slug": "utility-truck",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Bravado Bison",
+  "maker": "Bravado",
+  "model": "Bison",
+  "based": "Fourth-generation Dodge Ram Quad Cab",
+  "source": "Trailer 2",
+  "slug": "bison",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Bravado Bison 1800",
+  "maker": "Bravado",
+  "model": "Bison 1800",
+  "based": "Ram 1500 (DT)",
+  "source": "Trailer 2",
+  "slug": "bison-1800",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Bravado Bison 900 '95",
+  "maker": "Bravado",
+  "model": "Bison 900 '95",
+  "based": "Second-generation Dodge Ram",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Declasse Bobcat XL",
+  "maker": "Declasse",
+  "model": "Bobcat XL",
+  "based": "Fourth-generation Chevrolet C/K",
+  "source": "Trailer 1",
+  "slug": "bobcat-xl",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Brute Boxville",
+  "maker": "Brute",
+  "model": "Boxville",
+  "based": "GMC Step Van",
+  "source": "Official Screenshots",
+  "slug": "boxville",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Declasse Burrito",
+  "maker": "Declasse",
+  "model": "Burrito",
+  "based": "1996-2002 Chevrolet Express",
+  "source": "Trailer 1",
+  "slug": "burrito",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Brute Camper",
+  "maker": "Brute",
+  "model": "Camper",
+  "based": "1996-2002 Chevrolet Express",
+  "source": "September 2022 Development Footage",
+  "slug": "camper",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Chevrolet Silverado 6500 HD",
+  "model": "Chevrolet Silverado 6500 HD",
+  "based": "Chevrolet Silverado 6500 HD",
+  "source": "Extended Look",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Chrysler Town & Country (5th Gen)",
+  "model": "Chrysler Town & Country (5th Gen)",
+  "based": "Fifth-generation Chrysler Town & Country",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Dodge Dakota Convertible",
+  "model": "Dodge Dakota Convertible",
+  "based": "Dodge Dakota Convertible",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Ford Econoline (4th Gen)",
+  "model": "Ford Econoline (4th Gen)",
+  "based": "Fourth-generation Ford Econoline",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Ford F-Series (3rd Gen)",
+  "model": "Ford F-Series (3rd Gen)",
+  "based": "Third-generation Ford F-Series",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Ford F-Series Flatbed",
+  "model": "Ford F-Series Flatbed",
+  "based": "Sixth-generation Ford F-Series",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Ford Transit (4th Gen)",
+  "model": "Ford Transit (4th Gen)",
+  "based": "Fourth-generation Ford Transit",
+  "source": "Trailer 2",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Ford Transit Cargo (4th Gen)",
+  "model": "Ford Transit Cargo (4th Gen)",
+  "based": "Fourth-generation Ford Transit Cargo",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Jeep Scrambler (CJ-8)",
+  "model": "Jeep Scrambler (CJ-8)",
+  "based": "Jeep Scrambler (CJ-8)",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Zirconium Journey",
+  "maker": "Zirconium",
+  "model": "Journey",
+  "based": "1979-1981 Fleetwood Pace Arrow",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Mercedes-Benz Sprinter (2nd Gen)",
+  "model": "Mercedes-Benz Sprinter (2nd Gen)",
+  "based": "Second-generation Mercedes-Benz Sprinter",
+  "source": "Official Screenshots",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Vapid Minivan",
+  "maker": "Vapid",
+  "model": "Minivan",
+  "based": "Ford Windstar / Dodge Caravan",
+  "source": "September 2022 Development Footage",
+  "slug": "minivan",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Moocher",
+  "model": "Moocher",
+  "based": "1985 Fleetwood Southwind",
+  "source": "Official Screenshots",
+  "slug": "moocher",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "RAM 3500",
+  "model": "RAM 3500",
+  "based": "RAM 3500",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Rexhall Rose Air",
+  "model": "Rexhall Rose Air",
+  "based": "Rexhall Rose Air",
+  "source": "Extended Look",
+  "slug": "rexhall-rose-air",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Bravado Rumpo",
+  "maker": "Bravado",
+  "model": "Rumpo",
+  "based": "Ford E-Series",
+  "source": "Trailer 1",
+  "slug": null,
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Bravado Rumpo Custom",
+  "maker": "Bravado",
+  "model": "Rumpo Custom",
+  "based": "GMC Vandura",
+  "source": "September 2022 Development Footage",
+  "slug": "rumpo-custom",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Vapid Speedo",
+  "maker": "Vapid",
+  "model": "Speedo",
+  "based": "2003-present Chevrolet Express",
+  "source": "Trailer 1",
+  "slug": "speedo",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Bravado Youga",
+  "maker": "Bravado",
+  "model": "Youga",
+  "based": "Dodge Ram Van / Dodge B-Series",
+  "source": "September 2022 Development Footage",
+  "slug": "youga",
+  "noted": false
+ },
+ {
+  "cls": "Vans",
+  "name": "Bravado Youga Classic",
+  "maker": "Bravado",
+  "model": "Youga Classic",
+  "based": "Second-generation Ford Econoline",
+  "source": "Trailer 1",
+  "slug": "youga-classic",
+  "noted": false
+ }
+]

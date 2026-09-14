@@ -1,0 +1,108 @@
+{
+  "id": "MACACO-00005",
+  "fingerprint": "invisible-control|/map/location/:slug",
+  "check": "invisible-control",
+  "bucket": "visual",
+  "severity": "LOW",
+  "title": "Focusable control is fully transparent",
+  "detail": "Link to the Overview section",
+  "selector": "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+  "page": "/map/location/vc-port",
+  "pattern": "/map/location/:slug",
+  "viewport": "390x844",
+  "viewports": [
+    "mobile"
+  ],
+  "pages": [
+    "/map/location/vc-port"
+  ],
+  "elements": [
+    "section#overview > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+    "section#evidence > h2.deco-rule.font-cond > a.opacity-0.transition-opacity",
+    "section#nearby > h2.deco-rule.font-cond > a.opacity-0.transition-opacity"
+  ],
+  "mode": "chaos",
+  "steps": [
+    "Open / (390x844)",
+    "Click card \"CAL HAMPTON ALLY\"",
+    "Click link \"SOURCE POLICY\"",
+    "Click link \"Location VC PORT Confirmed\""
+  ],
+  "result": "Focusable control is fully transparent",
+  "console": [],
+  "network": [],
+  "screenshot": "screenshots/macaco-00005.png",
+  "trace": "traces/chaos-mobile-0.zip",
+  "video": "videos/chaos-mobile-0.webm",
+  "seed": 843921,
+  "sessionSeed": 276006,
+  "replay": "macaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00005.json",
+  "occurrences": 3,
+  "firstSeen": "2026-09-11T19:00:48.056Z",
+  "lastSeen": "2026-09-11T19:00:48.525Z",
+  "session": "chaos-mobile-0",
+  "replaySteps": [
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "CAL HAMPTON ALLY",
+        "href": "https://lusorae.pt/database/characters/cal-hampton",
+        "kind": "card",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click card \"CAL HAMPTON ALLY\"",
+      "at": "/"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "SOURCE POLICY",
+        "href": "https://lusorae.pt/sources",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"SOURCE POLICY\"",
+      "at": "/database/characters/cal-hampton"
+    },
+    {
+      "type": "click",
+      "descriptor": {
+        "tag": "a",
+        "role": null,
+        "name": "Location VC PORT Confirmed",
+        "href": "https://lusorae.pt/map/location/vc-port",
+        "kind": "link",
+        "nth": 0
+      },
+      "value": null,
+      "url": null,
+      "submit": false,
+      "label": "Click link \"Location VC PORT Confirmed\"",
+      "at": "/sources"
+    }
+  ],
+  "replayFile": "incidents/MACACO-00005.json",
+  "seedReplay": "macaco lusorae.pt --mode chaos --seed 843921 --viewports mobile --actions 3",
+  "text": "MACACO-00005\n\nSeverity: LOW\nPage: /map/location/vc-port\nViewport: 390x844\nOccurrences: 3\n\nProblem:\nFocusable control is fully transparent\n\nSteps:\n1. Open / (390x844)\n2. Click card \"CAL HAMPTON ALLY\"\n3. Click link \"SOURCE POLICY\"\n4. Click link \"Location VC PORT Confirmed\"\n\nResult:\nFocusable control is fully transparent\n\nDetail:\nLink to the Overview section\n\nScreenshot:\nscreenshots/macaco-00005.png\n\nTrace:\ntraces/chaos-mobile-0.zip (npx playwright show-trace)\n\nVideo:\nvideos/chaos-mobile-0.webm\n\nSeed:\n843921\n\nReplay:\nmacaco replay runs/run-0002-2026-09-11T19-00-40/incidents/MACACO-00005.json",
+  "origin": "https://lusorae.pt",
+  "startUrl": "https://lusorae.pt/",
+  "viewportSpec": {
+    "name": "mobile",
+    "label": "mobile 390x844",
+    "width": 390,
+    "height": 844,
+    "mobile": true,
+    "scale": 3,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+  }
+}
