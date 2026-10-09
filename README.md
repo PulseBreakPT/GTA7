@@ -5,7 +5,7 @@
 [![Security checks](https://github.com/PulseBreakPT/GTA7/actions/workflows/security.yml/badge.svg)](https://github.com/PulseBreakPT/GTA7/actions/workflows/security.yml)
 
 **Live website:** https://lusorae.pt/  
-**Project homepage on GitHub Pages:** https://pulsebreakpt.github.io/GTA7/ (available after GitHub Pages is enabled and the workflow succeeds)  
+**GitHub Pages project homepage:** https://pulsebreakpt.github.io/GTA7/  
 **Repository:** https://github.com/PulseBreakPT/GTA7
 
 GTA LORE is an independent, English-language reference archive covering **Grand Theft Auto VI**. It brings together characters, vehicles, weapons, places, world details, mechanics, factions, radio, news and guides. Records distinguish official material from observations, analysis and community reporting, with references and evidence labels so readers can trace claims to their sources.
@@ -59,7 +59,7 @@ The primary production website is **https://lusorae.pt/**. It runs the complete 
 
 The [Pages workflow](.github/workflows/pages.yml) automatically publishes the static files in `docs/` on pushes to `main` and can also be run manually. The project homepage links directly to the live encyclopedia's sections; it does **not** attempt to run the server, authentication or database on GitHub Pages.
 
-**One-time setup:** open [Settings → Pages](https://github.com/PulseBreakPT/GTA7/settings/pages), choose **GitHub Actions** under **Build and deployment → Source**, then run or re-run [Publish GitHub Pages](https://github.com/PulseBreakPT/GTA7/actions/workflows/pages.yml). After a successful deployment, the project homepage is at https://pulsebreakpt.github.io/GTA7/.
+**Deployment is configured:** [Publish GitHub Pages](https://github.com/PulseBreakPT/GTA7/actions/workflows/pages.yml) deploys the project homepage to https://pulsebreakpt.github.io/GTA7/. GitHub Pages uses **GitHub Actions** as its source in [repository settings](https://github.com/PulseBreakPT/GTA7/settings/pages). If Pages is ever disabled, re-enable GitHub Actions as the publishing source.
 
 GitHub Pages only serves static files. Do not point the production domain to the Pages project homepage: the full application needs a server. GitHub's Pages publish status and URL are visible in the workflow run.
 
