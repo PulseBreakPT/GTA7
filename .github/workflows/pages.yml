@@ -10,7 +10,7 @@ on:
       - "hooks/**"
       - "public/**"
       - "sources/**"
-      - "scripts/prepare-github-pages.mjs"
+      - "scripts/**"
       - "package.json"
       - "yarn.lock"
       - "tailwind.config.js"
@@ -50,6 +50,9 @@ jobs:
       - name: Prepare static Pages version
         run: node scripts/prepare-github-pages.mjs
 
+      - name: Repair Pages-only navigation
+        run: node scripts/fix-pages-navigation.mjs
+
       - name: Build the actual GTA LORE interface
         env:
           NEXT_TELEMETRY_DISABLED: "1"
@@ -64,6 +67,9 @@ jobs:
           test -s .pages-export/out/media/key-art/jason-lucia-car.webp
           grep -q 'Welcome to' .pages-export/out/index.html
           touch .pages-export/out/.nojekyll
+
+      - name: Validate Pages-specific navigation
+        run: node scripts/validate-pages-export.mjs
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
