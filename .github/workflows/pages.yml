@@ -1,11 +1,21 @@
-name: Publish GitHub Pages
+name: Publish original GTA LORE to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
-      - "docs/**"
-      - "README.md"
+      - "app/**"
+      - "components/**"
+      - "lib/**"
+      - "hooks/**"
+      - "public/**"
+      - "sources/**"
+      - "scripts/prepare-github-pages.mjs"
+      - "package.json"
+      - "yarn.lock"
+      - "tailwind.config.js"
+      - "postcss.config.js"
+      - "jsconfig.json"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -18,30 +28,53 @@ concurrency:
 
 jobs:
   build:
-    name: Prepare public project homepage
+    name: Export original Next.js design
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 25
     steps:
-      - name: Checkout source
+      - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: Validate static site files
-        run: |
-          test -s docs/index.html
-          test -s docs/style.css
-          test -s docs/404.html
-          grep -q "https://lusorae.pt/" docs/index.html
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: yarn
 
-      - name: Configure Pages
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Prepare static Pages version
+        run: node scripts/prepare-github-pages.mjs
+
+      - name: Build the actual GTA LORE interface
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+          NODE_OPTIONS: "--max-old-space-size=6144"
+        run: ./node_modules/.bin/next build .pages-export
+
+      - name: Validate exported site and image assets
+        run: |
+          test -s .pages-export/out/index.html
+          test -s .pages-export/out/wiki/index.html
+          test -s .pages-export/out/database/characters/index.html
+          test -s .pages-export/out/media/key-art/jason-lucia-car.webp
+          grep -q 'Welcome to' .pages-export/out/index.html
+          touch .pages-export/out/.nojekyll
+
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload site
+      - name: Upload full static export
         uses: actions/upload-pages-artifact@v4
         with:
-          path: docs
+          path: .pages-export/out
 
   deploy:
-    name: Deploy public project homepage
+    name: Deploy original GTA LORE design
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -50,8 +83,8 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://pulsebreakpt.github.io/GTA7/
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Publish to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
