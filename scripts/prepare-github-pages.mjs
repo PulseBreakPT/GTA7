@@ -11,7 +11,7 @@ fs.rmSync(staging, { recursive: true, force: true });
 fs.mkdirSync(staging, { recursive: true });
 
 for (const name of ['app', 'components', 'hooks', 'lib', 'public', 'sources',
-  'tailwind.config.js', 'postcss.config.js', 'jsconfig.json', 'package.json']) {
+  'tailwind.config.js', 'postcss.config.js', 'jsconfig.json', 'package.json', 'site-version.json']) {
   const source = path.join(root, name);
   if (fs.existsSync(source)) fs.cpSync(source, path.join(staging, name), { recursive: true });
 }
