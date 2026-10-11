@@ -5,7 +5,7 @@
 [![Security checks](https://github.com/PulseBreakPT/GTA7/actions/workflows/security.yml/badge.svg)](https://github.com/PulseBreakPT/GTA7/actions/workflows/security.yml)
 
 **Live website:** https://lusorae.pt/  
-**GitHub Pages project homepage:** https://pulsebreakpt.github.io/GTA7/  
+**GitHub Pages entry (redirects to the full application):** https://pulsebreakpt.github.io/GTA7/  
 **Repository:** https://github.com/PulseBreakPT/GTA7
 
 GTA LORE is an independent, English-language reference archive covering **Grand Theft Auto VI**. It brings together characters, vehicles, weapons, places, world details, mechanics, factions, radio, news and guides. Records distinguish official material from observations, analysis and community reporting, with references and evidence labels so readers can trace claims to their sources.
@@ -55,13 +55,13 @@ For project checks use `yarn validar`, `yarn security:local` and `yarn build`. S
 
 The primary production website is **https://lusorae.pt/**. It runs the complete Next.js application, including the server functionality required for accounts, APIs and MongoDB. The deployment script `publicar.sh` targets the production server at `/opt/leonida`; `./publicar.sh --verificar` builds and verifies without publishing. Follow `ops/` and the production environment example for infrastructure requirements.
 
-### GitHub Pages (public project homepage)
+### GitHub Pages (redirect to the complete application)
 
-The [Pages workflow](.github/workflows/pages.yml) automatically publishes the static files in `docs/` on pushes to `main` and can also be run manually. The project homepage links directly to the live encyclopedia's sections; it does **not** attempt to run the server, authentication or database on GitHub Pages.
+The [Pages workflow](.github/workflows/pages.yml) automatically publishes the small gateway in `docs/` on pushes to `main` and can also be run manually. Opening `https://pulsebreakpt.github.io/GTA7/` automatically redirects to `https://lusorae.pt/`, preserving the original complete Next.js design. GitHub Pages is static hosting and cannot run this project's server, authentication or MongoDB. Deep links under `/GTA7/` also redirect to their equivalent route on the full application.
 
-**Deployment is configured:** [Publish GitHub Pages](https://github.com/PulseBreakPT/GTA7/actions/workflows/pages.yml) deploys the project homepage to https://pulsebreakpt.github.io/GTA7/. GitHub Pages uses **GitHub Actions** as its source in [repository settings](https://github.com/PulseBreakPT/GTA7/settings/pages). If Pages is ever disabled, re-enable GitHub Actions as the publishing source.
+**Deployment is configured:** [Publish GitHub Pages](https://github.com/PulseBreakPT/GTA7/actions/workflows/pages.yml) deploys the redirect gateway to https://pulsebreakpt.github.io/GTA7/. GitHub Pages uses **GitHub Actions** as its source in [repository settings](https://github.com/PulseBreakPT/GTA7/settings/pages). If Pages is ever disabled, re-enable GitHub Actions as the publishing source.
 
-GitHub Pages only serves static files. Do not point the production domain to the Pages project homepage: the full application needs a server. GitHub's Pages publish status and URL are visible in the workflow run.
+GitHub Pages only serves static files. The production site and its original design remain hosted at `lusorae.pt`; the GitHub Pages URL forwards readers there rather than displaying a disconnected alternative layout. GitHub's Pages publish status and URL are visible in the workflow run.
 
 ## Project structure
 
@@ -71,7 +71,7 @@ GitHub Pages only serves static files. Do not point the production domain to the
 - `public/` — project images, media and assets
 - `scripts/` — content validation, maintenance and security
 - `ops/` — production host setup and operational scripts
-- `docs/` — GitHub Pages project homepage
+- `docs/` — lightweight GitHub Pages redirect gateway
 - `.github/workflows/` — CI and Pages publishing
 
 ## Editorial and legal notes
