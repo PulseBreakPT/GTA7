@@ -87,6 +87,12 @@ function patchDirectory(dir) {
 }
 for (const dir of ['app', 'components', 'lib', 'hooks']) patchDirectory(path.join(staging, dir));
 
+// Explicitly mark generated metadata routes as static for Next.js export.
+for (const fileName of ['robots.js', 'sitemap.js']) {
+  const file = path.join(staging, 'app', fileName);
+  if (fs.existsSync(file)) fs.appendFileSync(file, "\nexport const dynamic = 'force-static'\n");
+}
+
 // Avoid linking to the old domain in canonical metadata.
 const layoutPath = path.join(staging, 'app/layout.js');
 const layout = fs.readFileSync(layoutPath, 'utf8');
