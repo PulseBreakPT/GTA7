@@ -56,7 +56,7 @@ directory = removeBetween(directory,
 write('app/directory/page.js', directory);
 
 let wiki = read('components/site/wiki.jsx');
-const permalink = /await navigator\.clipboard\.writeText\([^\n]*entry\.href\)/;
+const permalink = /await navigator\.clipboard\.writeText\([^\n]*entry\.href[^\n]*\)/;
 if (!permalink.test(wiki)) throw new Error('Cannot locate article permalink');
 wiki = wiki.replace(permalink, 'await navigator.clipboard.writeText(window.location.origin + "/GTA7" + entry.href)');
 wiki = removeBetween(wiki,
